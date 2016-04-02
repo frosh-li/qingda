@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<style>
+    .viewPort{width:20%;height:300px; overflow:scroll}
+    .thumb{position:absolute; width: 20px; background-color: #000;}
+    .track{position:relative; width: 20px; background-color: #ccc;}
+    .xscrollbar .thumb{position:absolute; height: 20px; background-color: #000;}
+    .xscrollbar .track{position:relative; height: 20px; background-color: #ccc;}
+</style>
+<body>
+<div class="viewPort">
+    <div class="box">
+        <p>fawfwaefawefawefawefawfawefaewf</p>
+        <p>fawfwaefawefawefawefawfawefaewf</p>
+        <p>fawfwaefawefawefawefawfawefaewf</p>
+        <p>fawfwaefawefawefawefawfawefaewf</p>
+        <p>fawfwaefawefawefawefawfawefaewf</p>
+        <p>fawfwaefawefawefawefawfawefaewf</p>
+        <p>fawfwaefawefawefawefawfawefaewf</p>
+        <p>fawfwaefawefawefawefawfawefaewffafeawefawefwaefwaefwaefffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</p>
+        <p>fawfwaefawefawefawefawfawefaewffafeawefawefwaefwaefwaefffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</p>
+        <p>fawfwaefawefawefawefawfawefaewffafeawefawefwaefwaefwaefffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</p>
+        <p>fawfwaefawefawefawefawfawefaewffafeawefawefwaefwaefwaefffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</p>
+        <p>fawfwaefawefawefawefawfawefaewffafeawefawefwaefwaefwaefffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</p>
+        <p>fawfwaefawefawefawefawfawefaewffafeawefawefwaefwaefwaefffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</p>
+        <p>fawfwaefawefawefawefawfawefaewffafeawefawefwaefwaefwaefffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</p>
+        <p>fawfwaefawefawefawefawfawefaewffafeawefawefwaefwaefwaefffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</p>
+    </div>
+</div>
+<div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+<div class="xscrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+<input type="button" value="success" id="success"/>
+<input type="button" value="confirm" id="confirm"/>
+<input type="button" value="success" id="success"/>
+<input type="button" value="success" id="success"/>
+
+<script src="libs/jquery.min.js"></script>
+<script src="libs/jquery.tinyscrollbar.js"></script>
+<script src="libs/notify.min.js"></script>
+<script>
+    $(".viewPort").tinyscrollbar({
+        $yBarEl:$(".scrollbar"),
+        $xBarEl:$(".xscrollbar"),
+        $viewPort:$(".viewPort"),
+        $overView:$(".box"),
+        axis:'x||y'
+    })
+</script>
+</body>
+</html>

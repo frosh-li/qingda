@@ -1,0 +1,29 @@
+{
+  "response":{"code":"0","msg":""},
+  "data": [
+    {
+      "name":"站名",//站名
+      "group_id":"123",//组号
+      "id":"124",//站号
+      "time":"2015-12-23",//时间
+      "a":"12",//电流
+      "v":"34",//电压
+      "hydrogen":"22",//氢气浓度
+      "oxygen":"22",//氧气浓度
+      "v_degree":"22",//电池电压均衡度
+      "temperature_degree":"22",//电池温度均衡度
+      "i_r_degree":"22",//电池内阻均衡度
+      "temperature":"22"//环境温度,
+      "humidity":"22",//环境湿度
+      "battery_num":"22",//电池数
+      "discharge_a_max":"22",//最大放电电流
+      "charge_a_max":"22",//最大充电电流
+      "hydrogen_max":"22",//氢气浓度上限
+      "oxygen_max":"22",//氧气浓度上限
+      "humidity_max":"22",//湿度上限
+      "humidity_min":"22",//湿度下限
+      "temperature_max":"22",//温度上限
+      "temperature_min":"22",//温度下限
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "response":{"code":"0","msg":""},
+  "data":
+    [{
+      "name":"丰富",//站名,
+      "address":"丰富丰富丰富",//地址
+      "owner":"丰富丰",//负责人
+      "contacts":"丰富丰",//联系人
+      "ups":"丰富丰",//ups厂商
+      "ups_phone":"丰富丰",//ups厂商电话
+    }]
+}

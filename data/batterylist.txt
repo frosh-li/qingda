@@ -1,0 +1,30 @@
+{
+  "response":{"code":"0","msg":""},
+  "data": [
+    {
+      "name":"站名",//站名
+      "group_id":"123",//组号
+      "id":"124",//站号
+      "module_id":"11",//模块号
+      "time":"2015-12-23",//时间
+      "v":"34",//电压
+      "i_r":"22",//电池内阻
+      "temperature":"22",//电池温度,
+      "range":"22",//量程,
+      "v_deviation":"22",//电压偏离（组均值）度%,
+      "temperature_deviation":"22",//温度偏离（组均值）度%,
+      "i_r_deviation":"22",//内阻偏离（组均值）度%,
+      "expect_capacity":"22",//预估容量（%）（根据正常电压值换算电压容量）,
+      "battery_life":"22",//电池寿命（%）（寿命：老化程度，目前无数据，字段先显示空白，有后数据直接展示）
+      "float_v_max":"22",//浮充态电压上限
+      "charge_v_max":"22",//充电状态电压上限
+      "discharge_v_max":"22",//放电态电压上限
+      "float_v_min":"22",//浮充态电压下限
+      "charge_v_min":"22",//充电状态电压下限
+      "discharge_v_min":"22",//放电态电压下限
+      "temperature_max":"22",//温度上限
+      "temperature_min":"22",//温度下限
+      "i_r_max":"22",//电池内阻上限
+    }
+  ]
+}

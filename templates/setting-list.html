@@ -1,0 +1,268 @@
+
+<div class="left">
+    <div class="set">
+        <div class="status">
+            <i class="icon yunxing"></i><span>运行状态</span><i class="icon zhengchang"></i><b>正常</b>
+        </div><!--status-->
+        <div class="status-hold"></div>
+        <span class="left-hide"></span>
+        <div class="clear"></div>
+        <div class="set-wrap blocks" id="collect">
+            <dl class="set-list">
+                <dd>刷新频率<span>10</span>秒</dd>
+                <dd>已连接站数<span>12</span>个</dd>
+                <dd>未连接站数<span>8</span>个</dd>
+            </dl>
+            <dl class="set-btn">
+                <dd><span class="ggsj">更改时间</span></dd>
+                <dd><span class="kscj">开始采集</span></dd>
+            </dl>
+        </div><!--set-wrap-->
+        <div class="clear"></div>
+        <div class="kscj blocks" id="$collectIRWrap"><span>每次采集只针对同一站点</span><span class="cj-btn"></span></div><!--kscj-->
+        <div class="cx blocks" id="duration">
+            <div class="search-wrap"><input type="text" class="search" value="开始时间"><img src="images/xiala-bg.jpg"> </div>
+            <div class="search-wrap"><input type="text" class="search" value="结束时间"><img src="images/xiala-bg.jpg"> </div>
+            <span class="cj-btn"></span>
+        </div><!--cx-->
+        <div class="choose-nav" ><div class="nav-tree ztree" id="nav"></div></div><!--choose-nav-->
+        <div class="search-bar"><span class="search"></span><input type="text" placeholder="搜索"></div><!--search-bar-->
+    </div><!--set-->
+</div><!--left-->
+<div class="right">
+    <div class="up">
+        <div class="show-bar">
+            <strong>实时数据</strong>
+            <div class="show-list">
+                <dl>
+                    <dd class="normal-tips"><i class="icon grelight"></i><a>数据采集</a></dd>
+                    <dd class="normal-tips"><i class="icon grelight"></i><a>灯光报警</a></dd>
+                    <dd class="normal-tips"><i class="icon grelight"></i><a>声音报警</a></dd>
+                    <dd class="normal-tips"><i class="icon graylight"></i><a>短信</a></dd>
+                    <dd class="normal-tips"><i class="icon graylight"></i><a>短信</a></dd>
+                    <dd class="baojing alert-tips"><i class="icon redlight"></i><em>数据报警</em><span class="bg">5</span><em>条</em></dd>
+                    <dd class="alert-tips"><a class="btn1">查看警情</a></dd>
+                    <dd class="mleft stationinfo-btn"><a class="btn2">站情况(弹窗)</a></dd>
+                    <dd class="export"><a class="btn1">数据导出</a></dd>
+                </dl>
+            </div>
+        </div><!--show-bar-->
+        <div class="title-list">
+            <span class="zoom"></span>
+            <ul class="item-list">
+                <li class="active switch-btn realtime"><span><a href="#/manage/station">站数据</a></span><i></i></li>
+                <li class="switch-btn realtime"><span><a href="#/manage/group">组数据</a></span><i></i></li>
+                <li class="switch-btn realtime"><span><a href="#/manage/battery">电池数据</a></span><i></i></li>
+                <li class="switch-btn realtime"><span><a href="#/manage/caution">报警数据</a></span><i></i></li>
+
+                <!-- 设置 -->
+                <li class="active switch-btn settings"><span><a href="#/manage/stationInfo">站点情况</a></span></li>
+                <li class="switch-btn settings"><span><a href="#/manage/stationTree">树形结构</a></span></li>
+                <li class="switch-btn settings"><span><a href="#/manage/manager">管理人员</a></span></li>
+                <li class="switch-btn settings"><span><a href="#/manage/message">短信接收</a></span></li>
+                <li class="switch-btn settings"><span><a href="#/manage/optionSetting">参数</a></span></li>
+                <li class="switch-btn settings"><span><a href="#/manage/limitationSetting">报警门限</a></span></li>
+                <li class="switch-btn settings"><span><a href="#/manage/cautionEquipmentSetting">报警设备</a></span></li>
+                <li class="switch-btn settings"><span><a href="#/manage/systemInfo">基本信息</a></span></li>
+                <li class="switch-btn settings"><span><a href="#/manage/chargeOrDischargevSetting">充放电维护信息</a></span></li>
+                <li class="switch-btn settings"><span><a href="#/manage/update">远程升级</a></span></li>
+                <li class="switch-btn settings"><span><a href="#/manage/equipmentSetting">外控设备</a></span></li>
+
+            </ul>
+        </div><!--title-list-->
+        <div class="data-wrap">
+            <div class="data-item" id="list"></div><!--data-item-->
+            <div class="list-bottom">
+                <div id="page" class="page">
+                    <span class="next-page">上一页</span>
+                    <span class="current-page">第<label class="current-num">12</label>页</span>
+                    <span class="total-page">共<label class="total-num">212</label>页</span>
+                    <span class="next-page">下一页</span>
+                </div>
+                <div id="xScrollBar" class="x-scroll-bar"></div>
+            </div>
+        </div><!--data-wrap-->
+    </div><!--up-->
+    <div class="down" id="down">
+        <span class="bottom-hide"></span>
+        <div class="clear"></div>
+        <h4></span>环境温度</h4>
+        <div class="show-data" id="chart"></div>
+        <div class="btn-wrap">
+            <div class="btn-bg"><a class="l-radius">组电流</a><a>氢气浓度</a><a>氧气浓度</a><a>组温度</a><a class="r-radius">组湿度</a></div>
+            <span class="shift-btn">柱线切换</span>
+            <p>
+                <em class="color red"></em>超限
+                <em class="color orange"></em>警告
+                <em class="color yellow"></em>关注
+                <em class="color green"></em>正常
+            </p>
+        </div><!--btn-list-->
+    </div><!--down-->
+</div><!--right-->
+<div class="clear"></div>
+
+<!-- 实时数据：站数据列表模版/默认模版 -->
+<script id="defaultListTpl" type="text/html">
+    <div id="lock">
+        <table class="display" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>站名</th>
+                <th>站号</th>
+                <th>时间</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="auto">
+        <table class="display" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th width="80">电流（A）</th>
+                <th width="80">电压（V）</th>
+                <th width="150">环境温度（℃）</th>
+                <th width="150">环境湿度（%）</th>
+                <th width="60">组数</th>
+                <th width="80">电池数</th>
+                <th width="100">电池状态</th>
+                <th width="220">预估后备时间（H）</th>
+                <th width="220">环境温度上限（℃）</th>
+                <th width="220">黄精温度下限（℃）</th>
+                <th width="220">环境湿度上限（%）</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</script>
+<!-- 实时数据：组数据列表模版 -->
+<script id="groupListTpl" type="text/html">
+    <div id="lock">
+        <table class="display" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>站名</th>
+                <th>站号</th>
+                <th>组号</th>
+                <th>时间</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="auto">
+        <table class="display" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th width="80">电流（A）</th>
+                <th width="80">电压（V）</th>
+                <th width="150">氢气浓度</th>
+                <th width="80">电池数</th>
+                <th width="100">电池状态</th>
+                <th width="220">最大放电电流（A）</th>
+                <th width="220">最大充电电流（A）</th>
+                <th width="220">组氢气上限</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</script>
+<!-- 实时数据：电池数据列表模版 -->
+<script id="batteryListTpl" type="text/html">
+    <div id="lock">
+        <table class="display" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>站名</th>
+                <th>站号</th>
+                <th>组号</th>
+                <th>模块号</th>
+                <th>时间</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="auto">
+        <table class="display" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th width="120">电池电压（V）</th>
+                <th width="120">电池温度（℃）</th>
+                <th width="130">电池内阻（MΩ）</th>
+                <th width="120">预估容量（%）</th>
+                <th width="120">电压上限</th>
+                <th width="120">电压下限</th>
+                <th width="120">温度上限</th>
+                <th width="120">温度下限</th>
+                <th width="120">内阻上限</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</script>
+<!-- 实时数据：报警数据列表模版 -->
+<script id="cautionListTpl" type="text/html">
+    <div id="auto">
+        <table class="display" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th width="50">序号</th>
+                <th width="50">站名</th>
+                <th width="50">站号</th>
+                <th width="50">组号</th>
+                <th width="80">模块号</th>
+                <th width="50">时间</th>
+                <th width="80">警情内容</th>
+                <th width="50">数值</th>
+                <th width="120">建议处理方式</th>
+                <th width="80">处理连接</th>
+                <th width="200">处理过程、时间、管理员</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</script>
+<!-- 设置：报警数据列表模版 -->
+<script id="stationInfoListTpl" type="text/html">
+    <div id="auto">
+        <table class="display" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th width="50">序号</th>
+                <th width="50">站名</th>
+                <th width="50">站号</th>
+                <th width="50">组号</th>
+                <th width="80">模块号</th>
+                <th width="50">时间</th>
+                <th width="80">警情内容</th>
+                <th width="50">数值</th>
+                <th width="120">建议处理方式</th>
+                <th width="80">处理连接</th>
+                <th width="200">处理过程、时间、管理员</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</script>
+<!-- 未处理信息弹窗模板 -->
+<script type="text/html" id="unresolveTpl">
+    <div class="unresolve-dialog">abc</div>
+</script>
+
+<!-- 未处理信息弹窗模板 -->
+<script type="text/html" id="stationinfoTpl">
+    <div id="stationinfoTpl-dialog">
+        <table cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th width="50">站号</th>
+                <th width="150">站名</th>
+                <th width="220">地址</th>
+                <th width="120">负责人</th>
+                <th width="130">联系人</th>
+                <th width="120">UPS厂商</th>
+                <th width="120">UPS厂商电话</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</script>

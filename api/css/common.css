@@ -1,0 +1,69 @@
+﻿.c_centw{width:1014px;}
+ 
+/*	margin	*/
+.com_Center_MaT0Auto{margin:0px auto;}
+.com_Center_MaT5Auto{margin:5px auto 0px auto;}
+.com_MaT5{margin:5px 0 0 0;}
+.com_MaT5L5{margin:5px 0 0 5px; _margin:5px 0 0 2px;}
+.com_MaL5{margin:0 0 0 5px;}
+.com_MaT5R5{margin:5px 5px 0 0;}
+.com_Mar2{margin:2px;}
+
+.com_MarL10{margin:0 0 0 10px;}
+/*	padding	*/
+.com_padd2{padding:2px;}
+
+/*	定位	*/
+.com_Absolute{ position:absolute;}
+.com_Relative{ position:relative;}
+
+
+/*	浮动	*/
+.com_ClearAll{ clear:both;}
+.com_fl{float:left;}
+.com_fr{float:right;}
+
+
+/*	display	*/
+.com_DisNone{display:none;}
+.com_DisBlock{display:block;}
+.com_disinblock{display:inline-block;}
+
+/*	font */
+.com_bolder{font-weight:bolder;}
+
+
+/*	width	*/
+.com_w100pen{width:100%!important;}
+.com_w99pen{width:99%;}
+.com_w98pen{width:98%;}
+.com_w95pen{width:95%;}
+.com_w80pen{width:80%;}
+
+
+/*	height	*/
+.com_hauto{height:auto!important;}
+.com_h100pen{height:100%;}
+.com_h5p{height:5px;}
+.com_h10p{height:10px;}
+.com_h15p{height:15px;}
+/*	overflow	*/
+.com_ofxhya{overflow-x:hidden; overflow-y:auto;}
+.com_ofhyx{overflow:hidden;}
+.com_ofauto{overflow:auto;}
+
+/*	指针	*/
+.com_cursorP{cursor:pointer;}
+
+/*	color	*/
+.com_red{color:red;}
+.com_bule{color:#4b9ad5;}
+.com_black{color:#000;}
+
+/*	border	*/
+.com_noBorder{border:0 none!important;}
+
+/*	font	*/
+.com_font1{font-family:Arial Narrow!important; color:#999;}
+.com_font14{font-size:14px;}
+.com_fontB{font-weight:bold;}

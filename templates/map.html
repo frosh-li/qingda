@@ -1,0 +1,40 @@
+<div class="show-bar mb0">
+    <span class="mapbtn"></span>
+    <div class="show-list">
+        <dl>
+            <dd>已连接站数<span class="bg" id="linkingNum"></span>个</dd>
+            <dd class="ml">未连接站数<span class="bg" id="unlinkNum"></span>个</dd>
+            <dd class="baojing"><i class="icon redlight"></i><em>数据报警</em><span class="bg">0</span><em>条</em></dd>
+            <dd><a class="btn1" href="#/manage/caution">查看警情</a></dd>
+        </dl>
+    </div>
+</div>
+
+<div id="map"></div>
+<!-- 未处理信息弹窗模板 -->
+<script type="text/html" id="unresolveTpl">
+    <div class="unresolve-dialog">abc</div>
+</script>
+
+<!-- 未处理信息弹窗模板 -->
+<script type="text/html" id="stationinfoTpl">
+    <div id="stationinfoTpl-dialog" class="dialog">
+        <table cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th width="50">站号</th>
+                <th width="150">站名</th>
+                <th width="220">地址</th>
+                <th width="120">负责人</th>
+                <th width="130">联系人</th>
+                <th width="120">UPS厂商</th>
+                <th width="120">UPS厂商电话</th>
+            </tr>
+            </thead>
+        </table>
+
+        <div class="form-btns">
+            <input type="button" class="submit-btn btn" value="查看实时数据"/>
+        </div>
+    </div>
+</script>

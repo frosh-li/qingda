@@ -1,0 +1,16 @@
+<?php return array (
+'class'=>'CDbConnection',	
+'connectionString' => 'mysql:host=127.0.0.1;dbname=qingdalinghang',
+	'username' => 'root',
+	'password' => 'dowhile',
+	'charset' => 'utf8',
+	'tablePrefix' => 'my_',
+	'emulatePrepare' => true,
+	//'enableProfiling' => true,
+	//'enableParamLogging'=>true,
+	//'queryCacheID'=>'mcache',
+	//'queryCachingDuration'=>36000,
+	'persistent' => false,
+	//'schemaCacheID'=>'mcache',
+	//'schemaCachingDuration'=>864000,
+);

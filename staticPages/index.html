@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+</head>
+<body>
+<div class="top">
+    <img src="images/logo.png" width="305" height="38" class="logo" alt="logo">
+    <div class="top-nav">
+        <ul class="nav-list">
+            <li class="active"><a href="#"><img src="images/nav-1.png"><span>实时数据</span></a></li>
+            <li><a href="#"><img src="images/nav-2.png"><span>查询</span></a></li>
+            <li><a href="#"><img src="images/nav-3.png"><span>报表</span></a></li>
+            <li><a href="#"><img src="images/nav-4.png"><span>设置</span></a></li>
+            <li><a href="#"><img src="images/nav-5.png"><span>关于</span></a></li>
+            <li><a href="#"><img src="images/nav-6.png"><span>帮助</span></a></li>
+        </ul>
+        <div class="user"><img src="images/user-img.png"><span>切换用户</span> </div><!--user-->
+        <span class="exit"></span>
+    </div><!--top-nav-->
+    <div class="clear"></div>
+</div><!--top-->
+<div class="wrap">
+    <div class="left">
+        <div class="set">
+            <div class="status">
+                <i class="icon yunxing"></i><span>运行状态</span><i class="icon zhengchang"></i><b>正常</b>
+            </div><!--status-->
+            <div class="status-hold"></div>
+            <span class="left-hide" onclick="leftHide()"></span>
+            <div class="clear"></div>
+            <div class="set-wrap">
+                <dl class="set-list">
+                    <dd>刷新频率<span>10</span>秒</dd>
+                    <dd>已连接站数<span>12</span>个</dd>
+                    <dd>未连接站数<span>8</span>个</dd>
+                </dl>
+                <dl class="set-btn">
+                <dd><span class="ggsj">更改时间</span></dd>
+                <dd><span class="kscj">开始采集</span></dd>
+            </dl>
+            </div><!--set-wrap-->
+            <div class="clear"></div>
+            <div class="kscj"><span>每次采集只针对同一站点</span><span class="cj-btn"></span></div><!--kscj-->
+            <div class="cx">
+                <div class="search-wrap"><input type="text" class="search" value="开始时间"><img src="images/xiala-bg.jpg"> </div>
+                <div class="search-wrap"><input type="text" class="search" value="结束时间"><img src="images/xiala-bg.jpg"> </div>
+                <span class="cj-btn"></span>
+            </div><!--cx-->
+            <div class="choose-nav"><div class="nav-tree"></div></div><!--choose-nav-->
+            <div class="search-bar"><span class="search"></span><input type="text" placeholder="搜索"></div><!--search-bar-->
+        </div><!--set-->
+    </div><!--left-->
+    <div class="right">
+        <div class="up">
+            <div class="show-bar">
+                <strong>实时数据</strong>
+                <div class="show-list">
+                    <dl>
+                        <dd> <i class="icon grelight"></i><a>数据采集</a></dd>
+                        <dd><i class="icon grelight"></i><a>灯光报警</a></dd>
+                        <dd><i class="icon grelight"></i><a>声音报警</a></dd>
+                        <dd><i class="icon graylight"></i><a>短信</a></dd>
+                        <dd><i class="icon graylight"></i><a>短信</a></dd>
+                        <dd class="baojing"><i class="icon redlight"></i><em>数据报警</em><span class="bg">5</span><em>条</em></dd>
+                        <dd><a class="btn1">查看警情</a></dd>
+                        <dd class="mleft"><a class="btn2">站情况(弹窗)</a></dd>
+                        <dd><a class="btn1">数据导出</a></dd>
+                    </dl>
+                </div>
+            </div><!--show-bar-->
+            <div class="title-list">
+                <span class="zoom" onclick="upShow(this)"></span>
+                <ul class="item-list">
+                    <li class="active"><span>站数据</span><i></i></li>
+                    <li><span>组数据</span><i></i></li>
+                    <li><span>电池数据</span><i></i></li>
+                    <li><span>报警数据</span><i></i></li>
+                </ul>
+            </div><!--title-list-->
+            <div class="data-wrap">
+                <div class="data-item">
+                    <table cellpadding="0" cellspacing="0" class="data-table">
+
+                    </table>
+                </div><!--data-item-->
+            </div><!--data-wrap-->
+        </div><!--up-->
+        <div class="down">
+            <span class="bottom-hide" onclick="downHide()"></span>
+            <div class="clear"></div>
+            <h4></span>环境温度</h4>
+            <div class="show-data"></div>
+            <div class="btn-wrap">
+                <div class="btn-bg"><a class="l-radius">组电流</a><a>氢气浓度</a><a>氧气浓度</a><a>组温度</a><a class="r-radius">组湿度</a></div>
+                <span class="shift-btn">柱线切换</span>
+                <p>
+                <em class="color red"></em>超限
+                <em class="color orange"></em>警告
+                <em class="color yellow"></em>关注
+                <em class="color green"></em>正常
+                </p>
+            </div><!--btn-list-->
+        </div><!--down-->
+    </div><!--right-->
+    <div class="clear"></div>
+</div><!--wra-->
+<div class="bottom">
+    <b class="yx-show" title="运行状态" onclick="leftShow()"><i class="icon yunxing"></i></b>
+    <b class="bottom-show" title="底部状态" onclick="downShow()"><i class="icon yunxing"></i></b>
+    <span>系统启动时间：<i>08：08：08</i></span>
+    <span>当前管理员：<i>XXXX</i></span>
+    <span>登陆时间：<i>11：22：52</i></span>
+    <span>2015年11月30日&nbsp;&nbsp;16:00&nbsp;&nbsp;星期六</span>
+</div><!--bottom-->
+</body><!---->
+</html>
