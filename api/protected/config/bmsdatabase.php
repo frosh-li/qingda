@@ -1,8 +1,8 @@
 <?php return array (
 'class'=>'CDbConnection',	
-'connectionString' => 'mysql:host=127.0.0.1;dbname=db_bms_english',
-	'username' => 'root',
-	'password' => '',
+'connectionString' => "mysql:host='".$_SERVER['DB_BMS_HOST']."';port=".$_SERVER['DB_BMS_PORT'].";dbname='".$_SERVER['DB_BMS_DATABASE']."'",
+	'username' => $_SERVER['DB_BMS_USERNAME'],
+	'password' => $_SERVER['DB_BMS_PASSWORD'],
 	'charset' => 'utf8',
 	'tablePrefix' => 'tb_',
 	'emulatePrepare' => true,

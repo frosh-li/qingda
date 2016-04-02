@@ -1,0 +1,89 @@
+/* data tables */
+table.dataTable tbody tr td{
+    text-align: center;
+}
+table.dataTable tbody tr.even{
+    background-color: #f4fcff;
+}
+table.dataTable tbody tr.highlight.even,
+table.dataTable tbody tr.highlight.odd
+{
+    background-color: #e3f3fa;
+}
+table.dataTable tbody tr.selected
+{
+    background-color: #cff0ff;
+}
+table.dataTable thead tr th
+{
+    color: #254880;
+    font-size: 14px;
+    background: #f5f5f5;
+}
+table.dataTable thead
+{
+    border:1px solid #e6eef1;
+    padding: 1px;
+}
+
+table.dataTable thead th, table.dataTable thead td{
+    border-bottom:0px;
+}
+table.dataTable.no-footer,
+.dataTables_wrapper.no-footer .dataTables_scrollBody{
+    border-bottom: 0px
+}
+.dataTables_scrollBody{height: 100%}
+
+
+/* dialog */
+.ui-dialog{padding: 0px}
+.ui-dialog-title{text-align: center}
+.ui-widget-header {
+    border: 1px solid #38b5eb;
+    border-bottom: 0px;
+    background: #1287cd url("images/ui-bg_gloss-wave_35_f6a828_500x100.png") 50% 50% repeat-x;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br,
+.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl,
+.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr{
+    border-radius: 0px;
+}
+
+.ui-widget-content{
+    border: 0px;
+    background-color: #fff;
+}
+.ui-dialog .ui-dialog-title{width:97%}
+.ui-dialog .ui-dialog-content{
+    border:1px solid #c9c9c7;
+    background-color: #fff;
+    border-top: 0px;
+}
+.ui-dialog .ui-dialog-titlebar-close{
+    background: url(../images/close-btn.gif) no-repeat;
+    border: 0px;
+    cursor:pointer;
+}
+
+.ui-dialog.tips{border: 3px solid #8fc31f}
+.ui-dialog.tips .ui-dialog-titlebar{display:none}
+.ui-dialog.tips .ui-dialog-content{text-align: center;}
+.ui-dialog.tips #loadding .message{color: #888; font-size: 14px; padding-top: 3px}
+
+.ui-dialog.submenu{border: 1px solid #529EC6}
+.ui-dialog.submenu .ui-dialog-titlebar{display:none}
+.ui-dialog.submenu .ui-dialog-content{border: 0px;}
+.ui-dialog.submenu .ui-widget-content{background:none;background-color: #ffffff}
+.ui-dialog.submenu .ui-dialog-buttonset button{ padding: 3px 6px; border:1px solid #1287cd; background-color: #0070a3; color:#ffffff;}
+.ui-dialog.submenu .ui-dialog-buttonpane{ padding: 0px;}
+
+
+/*jqTransform*/
+.search-jqtransform .item-title{padding: 0px 0px 0px 15px;}
+.search-jqtransform button.jqTransformButton{height: 33px; margin-left: 10px;}
+.search-jqtransform button.jqTransformButton span{background: transparent url(img/btn_right_h30.png) no-repeat top right;}
+.search-jqtransform button.jqTransformButton span span{padding-left: 10px; padding-right: 5px; background: transparent url(img/btn_left_h30.png) no-repeat top left;}
