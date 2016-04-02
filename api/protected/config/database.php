@@ -1,6 +1,6 @@
 <?php return array (
 'class'=>'CDbConnection',	
-'connectionString' => "mysql:host='".$_SERVER['DB_QINGDA_HOST']."';port=".$_SERVER['DB_QINGDA_PORT'].";dbname='".$_SERVER['DB_QINGDA_DATABASE']."'",
+'connectionString' => "mysql:host={$_SERVER['DB_QINGDA_HOST']};port={$_SERVER['DB_QINGDA_PORT']};dbname={$_SERVER['DB_QINGDA_DATABASE']}",
 	'username' => $_SERVER['DB_QINGDA_USERNAME'],
 	'password' => $_SERVER['DB_QINGDA_PASSWORD'],
 	'charset' => 'utf8',
