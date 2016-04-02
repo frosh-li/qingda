@@ -105,6 +105,17 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
             }
             return ids;
         },
+        getSelectedNodeId: function(){
+            var getSelectedNodeId = -1;
+            if(navView.tree){
+                var nodes = navView.tree.getSelectedNodes();
+                $.each(nodes, function(i,node){
+                    getSelectedNodeId = node.id;
+                })
+                
+            }
+            return getSelectedNodeId
+        },
         getGroups:function(){
             var ids={ids:[],map:{}},selectedNode;
             if(navView.tree){

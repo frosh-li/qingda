@@ -2,7 +2,7 @@
 'class'=>'CDbConnection',	
 'connectionString' => 'mysql:host=127.0.0.1;dbname=qingdalinghang',
 	'username' => 'root',
-	'password' => 'dowhile',
+	'password' => '',
 	'charset' => 'utf8',
 	'tablePrefix' => 'my_',
 	'emulatePrepare' => true,

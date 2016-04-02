@@ -1,16 +1,29 @@
-define(["require","backbone","context","ui",'common'],function(require,Backbone,context,ui,common){
+define(["require","backbone","context","ui",'common', 'stationsinfoDialog'],function(require,Backbone,context,ui,common, stationsinfoDialog){
     var curModules = [],navTree=null,
         maxLoadingTime = 1000,
         curLoadingTime = 0;
 
-    function init(sys,pageType,sub,ids){
+    function init(sys,pageType,sub){
         var _arg = arguments,
             $navTreeWrap = $("#navTree"),
             $collectWrap = $("#collect").hide(),
             $collectIRWrap = $("#collectIR").hide(),
             $durationWrap = $("#duration").hide(),
             $searchWrap = $(".search-jqtransform").hide();
+            $stationPop = $('.stationPop');
 
+        $stationPop.click(function(e){
+            console.log('click on stationPop');
+            var id = navTree.getSelectedNodeId();
+            if(id < 0){
+                alert('请选择站点');
+                return;
+            }
+            console.log('show stationsinfoDialog', id)
+            //return function(){
+                stationsinfoDialog.show(id);
+            //}
+        });
         $("#dataItem").html('');
         ui.stopCollect();
 
@@ -34,7 +47,7 @@ define(["require","backbone","context","ui",'common'],function(require,Backbone,
             ui.switchChartBtns(pageType);
             require(["blocks/charts","blocks/list","blocks/nav","api"],function(chart,list,nav,API){
                 refreshModules([nav,list,chart],_arg);
-                afterInit(sys,pageType,sub,ids);
+                afterInit(sys,pageType,sub);
 
                 if(!navTree){
                     nav.run();
@@ -149,7 +162,7 @@ define(["require","backbone","context","ui",'common'],function(require,Backbone,
                         nav.run();
                         navTree=nav;
                     }
-
+                    console.log(navTree);
                     isOver();
                 })
             }else{
@@ -254,7 +267,11 @@ define(["require","backbone","context","ui",'common'],function(require,Backbone,
     return {
         init:function(sys,pageType,sub,ids){
             pagetype = pageType;
-            init(sys,pageType,sub,ids);
+            init(sys,pageType,sub);
+            if(ids){
+
+            }
+            stationsinfoDialog.init();
             return this;
         },
         refresh:function(sys,pageType,sub){

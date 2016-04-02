@@ -2,7 +2,7 @@
 'class'=>'CDbConnection',	
 'connectionString' => 'mysql:host=127.0.0.1;dbname=db_bms_english',
 	'username' => 'root',
-	'password' => 'dowhile',
+	'password' => '',
 	'charset' => 'utf8',
 	'tablePrefix' => 'tb_',
 	'emulatePrepare' => true,
