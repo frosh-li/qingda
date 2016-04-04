@@ -443,7 +443,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 ].concat(colums.data)
                             },dataTableDefaultOption)));
                         })
-
+                        _this.checkAllRows();
                         return this;
                     }
                 }
@@ -496,6 +496,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 { "data": "alarm_process_and_memo",title:"处理过程、时间、管理员" }
                             ]
                         },dataTableDefaultOption)));
+                        _this.checkAllRows();
                         return this;
                     }
                 }
@@ -601,7 +602,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     }
                                 ]
                             },dataTableDefaultOption)));
-
+                            _this.checkAllRows();
                         })
                         return this;
                     }
@@ -670,7 +671,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     }
                                 ]
                             },dataTableDefaultOption)));
-
+                            _this.checkAllRows();
                         })
                         return this;
                     }
@@ -743,6 +744,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     }
                                 ]
                             },dataTableDefaultOption)));
+                            _this.checkAllRows();
                         })
                         return this;
                     }
@@ -804,6 +806,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     }
                                 ]
                             },dataTableDefaultOption)));
+                            _this.checkAllRows();
                         })
                         return this;
                     }
@@ -882,6 +885,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     }
                                 ]
                             },dataTableDefaultOption)));
+                            _this.checkAllRows();
                         })
                         return this;
                     }
@@ -971,6 +975,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     }
                                 ]
                             })));
+                            _this.checkAllRows();
                         })
                         return this;
                     }
