@@ -1056,7 +1056,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         $('#lock').hide();
                         require(["fixedColumn"],function() {
                             _this.listPlugin.push($('#auto table').DataTable($.extend(true, {}, dataTableDefaultOption, {
-                                "data": _this.data.concat(_this.data),
+                                "data": _this.data,
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
@@ -1130,7 +1130,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         $('#lock').hide();
                         require(["fixedColumn"],function() {
                             _this.listPlugin.push($('#auto table').DataTable($.extend(true, {}, dataTableDefaultOption, {
-                                "data": _this.data.concat(_this.data),
+                                "data": _this.data,
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
@@ -1249,7 +1249,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         _this.destoryPlugin();
                         require(["fixedColumn"], function () {
                             _this.listPlugin.push($('#auto table').DataTable($.extend(true, {
-                                "data": [_this.data[0]],
+                                "data": _this.data,
                                 "language": {
                                     "emptyTable": "站点数据为空"
                                 },
@@ -1480,7 +1480,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             _this.destoryPlugin();
             require(["fixedColumn"], function () {
                 _this.listPlugin.push($('#auto table').DataTable($.extend(true, {
-                    "data": [_this.data[0]],
+                    "data": _this.data,
                     "language": {
                         "emptyTable": "站点数据为空"
                     },
@@ -1684,7 +1684,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             $('#lock').hide();
             require(["fixedColumn"],function() {
                 _this.listPlugin.push($('#auto table').DataTable($.extend(true, {}, dataTableDefaultOption, {
-                    "data": _this.data.concat(_this.data),
+                    "data": _this.data,
                     "scrollX": ui.getListHeight(),
                     "scrollY": ui.getListHeight(),
                     "fixedColumns": {rightColumns: 1},
@@ -1722,7 +1722,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             $('#lock').hide();
             require(["fixedColumn"],function() {
                 _this.listPlugin.push($('#auto table').DataTable($.extend(true, {}, dataTableDefaultOption, {
-                    "data": _this.data.concat(_this.data),
+                    "data": _this.data,
                     "scrollX": ui.getListHeight(),
                     "scrollY": ui.getListHeight(),
                     "fixedColumns": {rightColumns: 1},
