@@ -378,7 +378,6 @@ define(function(require){
         },
         downHide:function(remove){
             $("div.down").hide();
-            $("div.up").css("height","100%");
             if(!remove || remove.currentTarget){
                 $("b.bottom-show").show();
             }else{
