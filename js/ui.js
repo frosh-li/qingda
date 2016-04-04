@@ -345,10 +345,10 @@ define(function(require){
                 bottomH=$("div.bottom").outerHeight();
 
             //布局--设置容器高度
-            $("div.wrap").height(wH-topH-bottomH);
+            // $("div.wrap").height(wH-topH-bottomH);
             var wrapH=$("div.wrap").height();
             //布局--设置右侧底部的容器高度
-            $("div.down").height(wrapH-wrapH*0.65-10);
+            // $("div.down").height(wrapH-wrapH*0.65-10);
 
             var statusH=$("div.status").is(":visible")?$("div.status").outerHeight():0,
                 kscjH=$("div.kscj").is(":visible")?$("div.kscj").outerHeight():0,
@@ -357,7 +357,7 @@ define(function(require){
             //布局--设置左侧导航树容器高度
             $("div.nav-tree").height(wrapH-statusH-dlH-kscjH-cxH-95);
             //布局--设置右侧上部分显示数据容器高度
-            this.setH();
+            // this.setH();
             return this;
         },
         leftHide:function (){
@@ -397,7 +397,7 @@ define(function(require){
         downShow:function(force){
             if( $("b.bottom-show").is(":visible") || force){
                 $("div.down").show();
-                $("div.up").css("height","65%");
+                //$("div.up").css("height","65%");
                 $("b.bottom-show").hide();
                 if($("span.zoom").hasClass("big")){
                     $("span.zoom").removeClass("big").attr("title","窗口最大化");
@@ -432,8 +432,8 @@ define(function(require){
                 listBottomsH = $(".list-bottom").is(":visible")?$(".list-bottom").height(): 0,
                 listHeaderH = $(".dataTable").is(":visible")?$(".dataTable").height(): 0,
                 treeHeadH = $(".tree-info-head").is(":visible")?$(".tree-info-head").height():0;
-            $("div#list").height(upH-90-subListH-listBtnsH-listBottomsH);
-            $("div#dataItem").height(upH-subListH-listBtnsH);
+            //$("div#list").height(upH-90-subListH-listBtnsH-listBottomsH);
+            //$("div#dataItem").height(upH-subListH-listBtnsH);
             $("div#yScrollBar").height(upH-130-subListH-listBtnsH-listBottomsH-listHeaderH);
             $("div.tree-info-body").height(upH-100-subListH-listBtnsH-treeHeadH-30);
         },
@@ -508,7 +508,7 @@ define(function(require){
             return this;*/
         },
         resizeChartBox:function(){
-            $('#chart').height($(".down").height()-38-60);
+            // $('#chart').height($(".down").height()-38-60);
             return this;
         },
         getListWidth:function(){
@@ -523,7 +523,7 @@ define(function(require){
                 /*subListH = $("#subListTab").is(":visible")?$("#subListTab").height(): 0,
                 listBtnsH = $("#listBtns").is(":visible")?$("#listBtns").height(): 0,
                 listBottomsH = $(".list-bottom").is(":visible")?$(".list-bottom").height(): 0;*/
-            return upH-listHeaderH-rightHeaderH-pageH-39;
+            return 500;
         }
     })
     function changeStyle(){

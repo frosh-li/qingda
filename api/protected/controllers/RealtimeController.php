@@ -12,7 +12,7 @@ class RealtimeController extends Controller
             $arr = explode(',',$id);
             $temp = array();
             foreach ($arr as $key => $value) {
-                $temp[] = $value.'0000';
+                $temp[] = $value;
             }
             $id =  implode(',',$temp);
 

@@ -31,6 +31,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
             _this.listenTo(Backbone.Events,"listdata:update stationdata:get",function(data){
                 curEvtType = "allids:get";
                 overFlag=false;
+                console.log(data);
                 API.getChart({id:curids,field:_this.getFieldValue()},curEvtType,listType);
             });
             //选择行变更
@@ -80,6 +81,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
             });
             _this.listenTo(Backbone.Events,"id:get",function(data){
                 if(data && data.list){
+                    console.log(data.list);
                     require(['charts'],function(chart){
                         var xAixs = [],values = [],dataLen = data.list.length;
                         for(var i=0;i<dataLen;i++){
