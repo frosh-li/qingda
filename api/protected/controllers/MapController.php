@@ -45,9 +45,11 @@ class MapController extends Controller
 	}
     public function actionSites()
     {
+        $sn = Yii::app()->request->getParam('sn',0);
         $sites = Yii::app()->db->createCommand()
             ->select('*')
             ->from('{{site}}')
+            ->where('serial_number = :sn', array(':sn'=>$sn))
             ->order('id desc')
             ->queryAll();
         $ret['response'] = array(
