@@ -66,7 +66,24 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
             this.tree.expandAll(true);
             if(this.ids){
                 if(this.ids.sid){
-
+                    var nodes = this.tree.getNodes();
+                    for (var i=0, l=nodes.length; i < l; i++) {
+                        if(nodes[i].leveltype === 1){
+                            var childrens = nodes[i].children;
+                            for(var j = 0 ; j < childrens.length ;j++){
+                                var subChildren = childrens[j].children;
+                                if(!subChildren){
+                                    continue;
+                                }
+                                for(var k = 0 ; k < subChildren.length ; k++){
+                                    if(subChildren[k].id === this.ids.sid)
+                                        this.tree.checkNode(subChildren[i], true, true); 
+                                }
+                            }
+                           
+                        }
+                        
+                    }
                 }
             }else{
                 this.tree.checkAllNodes(true);

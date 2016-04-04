@@ -32,6 +32,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 curEvtType = "allids:get";
                 overFlag=false;
                 console.log(data);
+                console.log(curids);
                 API.getChart({id:curids,field:_this.getFieldValue()},curEvtType,listType);
             });
             //选择行变更
@@ -46,6 +47,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 }
             });
             _this.listenTo(Backbone.Events,"chart:update",function(data){
+                console.log(curids);
                 if(data){
                     console.log('chart:update');
                     require(['charts'],function(chart){
@@ -56,6 +58,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 }
             });
             _this.listenTo(Backbone.Events,"allids:get",function(data){
+                console.log('allids get', data);
                 if(data && data.list){
                     require(['charts'],function(chart){
                         var xAixs = [],values = [];
@@ -80,6 +83,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 }
             });
             _this.listenTo(Backbone.Events,"id:get",function(data){
+                console.log(curids);
                 if(data && data.list){
                     console.log(data.list);
                     require(['charts'],function(chart){

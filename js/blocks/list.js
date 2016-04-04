@@ -43,6 +43,20 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         var _this = this;
                         _this.destroy();
                         _this.captureEvt();
+                        
+                    },
+                    checkAllRows: function(){
+                        var _this = this;
+                        setTimeout(function(){
+                            var allRows = $('.dataTable tr', _this.el);
+                            console.log('check all rows', allRows)
+                            for(var i = 0 ; i < allRows.length; i++){
+                                _this.changeRowClass($(allRows[i]),'selected')
+                            }
+                            _this.triggerSelectEvent();
+                        },0)
+                        
+                        
                     },
                     captureEvt:function(){
                         var _this = this;
@@ -136,6 +150,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             $tbodys = $("tbody",_this.el),
                             data = _this.getRowData($tr);
 
+                        // console.log(trIndex, data);
+                        if(!data || !data.data){
+                            return this;
+                        }
+                        console.log(data, trIndex);
                         $tbodys.each(function(i,tbody){
                             var $tbody = $(tbody);
                             $tbody.find("tr").eq(trIndex).toggleClass(className);
@@ -260,6 +279,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "record_time",title:"时间",width:180 }
                                 ].concat(colums.data)
                             })));
+                            _this.checkAllRows();
 
                             //_this.resetScrollBar();
                         })
@@ -376,6 +396,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "bid",title:"电池号",width:80  }
                                 ].concat(colums.data)
                             },dataTableDefaultOption)));
+                            _this.checkAllRows();
                         })
 ;
                         return this;

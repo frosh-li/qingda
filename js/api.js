@@ -405,6 +405,7 @@ define(function(require){
             },
             /***************************************图表***************************************/
             getChartData: function (args) {
+                console.log('chart args', args);
                 var url = 'data/stationlist.json';
                 this.fetch(url, "stations:update", args, "get");
                 return this;
@@ -459,6 +460,10 @@ define(function(require){
                     'qureyStation':'/api/index.php/realtime/stationchart',
                     'caution':'/api/index.php/realtime/galarmchart'
                 };
+                console.log('chart args', args, args.id.split(","));
+                if(args.id.split(",").length <= 1){
+                    return this;
+                }
                 this.fetch(url[type], evttype||"chart:update", args, "get");
                 return this;
             }
