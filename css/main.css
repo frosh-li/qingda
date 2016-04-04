@@ -149,7 +149,7 @@ div.search-wrap img{width:31px;height:24px;border-left:1px solid #c1c1c1;cursor:
 .right{height:100%;margin-left:262px;background:#f2f3f3;overflow-y:scroll;}
 
 /*右侧上部分样式*/
-.up{height:500px;margin-bottom:10px;overflow:hidden;background:#eaecee;}
+.up{margin-bottom:10px;overflow:hidden;background:#eaecee;}
 .show-bar{padding:5px 23px 5px 16px;line-height:38px;margin-bottom:7px;font-size:20px;color:#434343;overflow: hidden;background: #f2f3f3;border-bottom: 1px solid #e6e6e6;}
 .show-bar strong{font-weight:normal;}
 .show-bar div.show-list{float:right;font-size:16px;color:#2e3033;}
