@@ -3,7 +3,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog'],func
         maxLoadingTime = 1000,
         curLoadingTime = 0;
 
-    function init(sys,pageType,sub){
+    function init(sys,pageType,sub,params){
         var _arg = arguments,
             $navTreeWrap = $("#navTree"),
             $collectWrap = $("#collect").hide(),
@@ -37,6 +37,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog'],func
         }
 
         common.loadTips.show("系统加载中，请稍后...");
+        console.log(arguments);
         if (/^(station|group|battery|caution)$/.test(pageType)) {
             $("#dataItem").html($("#listTpl").html());
             ui.downShow(true);
@@ -267,7 +268,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog'],func
     return {
         init:function(sys,pageType,sub,ids){
             pagetype = pageType;
-            init(sys,pageType,sub);
+            init(sys,pageType,sub,ids);
             if(ids){
 
             }

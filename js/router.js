@@ -48,12 +48,14 @@ define(["require","api","backbone","context","ui"],function(require,API,Backbone
                             main = _main;
                             ui.switchListAlertBox(pageType)
                                 .switchBtnGroups(sys,pageType,sub);
+                            console.log('init a',ids);
                             main.init(sys,pageType,sub,ids);
                         })
                     })
                 }else{
                     ui.switchListAlertBox(pageType)
                         .switchBtnGroups(sys,pageType,sub);
+                    console.log('init b', ids);
                     main.refresh(sys,pageType,sub,ids);
                 }
             }
@@ -80,6 +82,7 @@ define(["require","api","backbone","context","ui"],function(require,API,Backbone
             }
         },
         manageID:function(sys,pageType,sid){
+            console.log(sys, pageType, sid);
             this.manage(sys,pageType,false,{sid:sid});
         }
     };
