@@ -42,7 +42,8 @@ table.dataTable.no-footer,
 .ui-widget-header {
     border: 1px solid #38b5eb;
     border-bottom: 0px;
-    background: #1287cd url("images/ui-bg_gloss-wave_35_f6a828_500x100.png") 50% 50% repeat-x;
+    background: none;
+    background-color: #1287cd;
     color: #ffffff;
     font-weight: bold;
 }

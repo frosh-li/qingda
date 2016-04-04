@@ -81,15 +81,14 @@ define(["require","api","backbone","context","ui"],function(require,API,Backbone
                 })
             }
         },
-        manageID:function(sys,pageType,sid){
-            console.log(sys, pageType, sid);
-            this.manage(sys,pageType,false,{sid:sid});
+        manageID:function(pageType,sid){
+            this.manage('manage',pageType,false,{sid:sid});
         }
     };
     routeMap.routes = {
         "":"index",
         ":manage/:listType":"manage",
-        ":manage/:listType/:id":"manageID",
+        "manage/:listType/:id":"manageID",
         ":settings/:listType":"manage",
         ":settings/:listType/:subListType":"manage",
         ":report/:listType":"manage",
