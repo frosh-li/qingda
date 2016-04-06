@@ -95,7 +95,7 @@ class ReportController  extends Controller
         }
         echo json_encode($ret);
     }
-    //偏离趋势图
+
     public function actionIndex()
     {
         $type = Yii::app()->request->getParam('type',0);
@@ -138,8 +138,19 @@ class ReportController  extends Controller
                 'msg' => '暂无报警信息！'
             );
         }
+
         echo json_encode($ret);
     }
+
+    //偏离趋势图
+    public function actionDeviationTrend() {
+        $type = Yii::app()->request->getParam('type',0);
+        $begin = Yii::app()->request->getParam('begin',0);
+        $end = Yii::app()->request->getParam('end',0);
+        $id = Yii::app()->request->getParam('id',0);
+        
+    }
+
 
     public function actionUilog()
     {

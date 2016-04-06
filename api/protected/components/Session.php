@@ -26,7 +26,36 @@ class Session
      * @return bool
      */
     public function isLogin() {
-        return ($_SESSION['uid'] > 0) && ($_SESSION['username'] != '') && ($_SESSION['role'] != '');
+        $uid        = $this->getUid();
+        $userName   = $this->getUserName();
+        $role       = $this->getRole();
+
+        return ($uid > 0) && ($userName != '') && ($role != '');
+    }
+
+    /**
+     * get uid
+     * @return int
+     */
+    public function getUid() {
+        return isset($_SESSION['uid']) ? $_SESSION['uid'] : 0;
+    }
+
+    /**
+     * get role
+     *
+     * @return string
+     */
+    public function getRole() {
+        return isset($_SESSION['role']) ? $_SESSION['role'] : '';
+    }
+
+    /**
+     * get user name
+     * @return string
+     */
+    public function getUserName() {
+        return isset($_SESSION['username']) ? $_SESSION['username'] : '';
     }
 
     /**

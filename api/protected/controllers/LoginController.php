@@ -2,14 +2,37 @@
 
 class LoginController extends LController
 {
-	public function actionIndex()
+    /**
+     * @var Session
+     */
+    private $session;
+
+    public function init()
+    {
+        parent::init();
+        $this->session = new Session();
+        $this->session->open();
+    }
+
+    public function actionIndex()
 	{
-		$username = Yii::app()->request->getParam('username','');
-        $password = Yii::app()->request->getParam('password','');
         $ret['response'] = array(
             'code'=>0,
             'msg'=>'ok'
         );
+
+        if ($this->session->isLogin()) {
+            $ret['data'] = array(
+                'uid'=>$this->session->getUid(),
+                'role'=>$this->session->getRole(),
+            );
+            echo json_encode($ret);
+            Yii::app()->end();
+        }
+
+		$username = Yii::app()->request->getParam('username','');
+        $password = Yii::app()->request->getParam('password','');
+
         $ret['data'] = array();
         if ($username == '' || $password =='') {
             $ret['response'] = array(
@@ -26,9 +49,7 @@ class LoginController extends LController
                         'uid'=>$row['id'],
                         'role'=>$row['role']
                     );
-                    $_SESSION['uid'] = $row['id'];
-                    $_SESSION['username'] = $row['username'];
-                    $_SESSION['role'] = $row['role'];
+                    $this->session->register($row['id'], $row['username'], $row['role']);
                     $log = array(
                         'type'=>1,
                         'uid'=>$row['id'],
@@ -55,30 +76,7 @@ class LoginController extends LController
         Yii::app()->end();
 	}
 
-	// Uncomment the following methods and override them if needed
-	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-
-	public function actions()
-	{
-		// return external action classes, e.g.:
-		return array(
-			'action1'=>'path.to.ActionClass',
-			'action2'=>array(
-				'class'=>'path.to.AnotherActionClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-	*/
+    public function actionLoginOut() {
+        $this->session->loginOut();
+    }
 }
