@@ -143,19 +143,128 @@ class ReportController  extends Controller
     }
 
     //偏离趋势图
+    /**
+     * 8、偏离趋势报表字段改为：
+     * 电压均值、电池温度均值、电池内阻均值、异常电池电压、异常电池温度、异常电池内阻 （异常值：取当时异常的实际数值）
+     * 电池电压、温度、内阻均值（指每组均值）：计算当前异常组的所有电池数据的平均值得出。
+     * 注意：当有电池电压异常、温度异常、内阻异常的 报警时才生成此表记录；
+     */
     public function actionDeviationTrend() {
-        $type = Yii::app()->request->getParam('type',0);
+        $id = Yii::app()->request->getParam('id',0);
         $begin = Yii::app()->request->getParam('begin',0);
         $end = Yii::app()->request->getParam('end',0);
-        $id = Yii::app()->request->getParam('id',0);
-        
     }
 
+    /**
+     * 9、充放电统计报表；目前应该只有某块电池的充放电统计表 没有整个站的字段。
+     * 请马总确认这里是针对电池来说的吗？
+     * 充放电统计表针对于站来说的；
+     * 充放电状态，取站中第一块电池的充放电状态
+     * 增加字段：充放电统计列表 增加时间列；
+     */
+    public function actionChargeOrDischarge() {
+        $id = intval(Yii::app()->request->getParam('id',0));
+        $begin = Yii::app()->request->getParam('begin','0000-00-00 00:00:00');
+        $end = Yii::app()->request->getParam('end', '0000-00-00 00:00:00');
 
-    public function actionUilog()
-    {
+        $this->setPageCount();
 
+        $where = '';
+        if ($begin != '0000-00-00 00:00:00') {
+            $where .= "`record_time` >='{$begin}'";
+        }
+
+        if ($end != '0000-00-00 00:00:00') {
+            if ($where != '') {
+                $where .= ' AND ';
+            }
+
+            $where .= "`record_time` <='{$end}'";
+        }
+
+        if ($id != 0) {
+            if ($where != '') {
+                $where .= ' AND ';
+            }
+
+            $where .= "`sid` = '{$id}'";
+        }
+
+        $result = Yii::app()->bms->createCommand()
+            ->select('sn_key, record_time, sid')
+            ->from('{{station_module_history}}')
+            ->where($where)
+            ->limit($this->count)
+            ->offset(($this->page - 1) * $this->count)
+            ->order('record_time, sid')
+            ->queryAll();
+
+        if (empty($result)) {
+            $this->ajaxReturn(-1, '暂无数据');
+        }
+
+        // 获取站点充放电状态
+        $batteryStatus = Yii::app()->bms->createCommand()
+            ->select('sn_key, record_time, sid, BBbCharge, BCbDisCharge')
+            ->from('{{battery_module_history}}')
+            ->where($where);
+
+        $siteArray = array();
+        foreach ($result as $rs) {
+            $site = intval($rs['sid']);
+            $siteArray[$site] = $site;
+        }
+
+        // 获取站点名
+        $where = "sid in (" . implode(',', $siteArray) . ")";
+        $siteInfo =  Yii::app()->db->createCommand()
+                    ->select('site_name, sid')
+                    ->from('{{site}}')
+                    ->where($where)
+                    ->queryAll();
+
+        $siteInfoArray = array();
+        foreach ($siteInfo as $site) {
+            $siteInfoArray[intval($site['sid'])] = $site;
+        }
+
+        if (empty($siteInfoArray)) {
+            $this->ajaxReturn(-1, '暂无数据');
+        }
+
+        $batteryStatus = $batteryStatus->andWhere($where)->queryAll();
+        $batteryInfoArray = array();
+        foreach ($batteryStatus as $battery) {
+            $sid = intval($battery['sid']);
+            $time = trim($battery['record_time']);
+            $snKey = trim($battery['sn_key']);
+
+            if (isset($batteryInfoArray[$sid][$time]['sn_key'])) {
+                if ($batteryInfoArray[$sid][$time]['sn_key'] > $snKey) {
+                    $batteryInfoArray[$sid][$time] = $battery;
+                }
+            } else {
+                $batteryInfoArray[$sid][$time] = $battery;
+            }
+        }
+
+        $dataArray = array();
+        foreach ($result as $rs) {
+            $sid = intval($rs['sid']);
+            if (isset($siteInfoArray[$sid])) {
+                $time = trim($rs['record_time']);
+                $data = array('time' => $time, 'sid'=>$sid, 'name'=> $siteInfoArray[$sid]['site_name']);
+                if (isset($batteryInfoArray[$sid][$time])) {
+                    $data['BBbCharge'] = intval($batteryInfoArray[$sid][$time]['BBbCharge']);
+                    $data['BCbDisCharge'] = intval($batteryInfoArray[$sid][$time]['BCbDisCharge']);
+                    $dataArray[] = $data;
+                }
+            }
+        }
+
+        $this->ajaxReturn(0, '', $dataArray);
     }
+
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.

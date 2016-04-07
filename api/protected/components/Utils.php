@@ -173,5 +173,13 @@ class Utils
             return false;
         }
     }
+
+    public static function ajaxReturn($code = 0, $msg = '', $data = array()) {
+        $result = array(
+            'response' => array('code' => intval($code), 'msg' => trim($msg)),
+            'data' => $data,
+        );
+
+        echo json_encode($result);
+    }
 }
-?>

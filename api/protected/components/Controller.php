@@ -109,4 +109,9 @@ class Controller extends CController
         $ret = Yii::app()->db->createCommand($sql)->execute();
         return $ret;
     }
+
+	protected function ajaxReturn($code = 0, $msg = '', $data = array()) {
+		Utils::ajaxReturn($code, $msg, $data);
+		Yii::app()->end();
+	}
 }
