@@ -59,6 +59,13 @@ class Session
     }
 
     /**
+     * @return string
+     */
+    public function getLoginTime() {
+        return isset($_SESSION['loginTime']) ? $_SESSION['loginTime'] : '';
+    }
+
+    /**
      * @param int $id
      * @param string $name
      * @param string $role
@@ -67,6 +74,20 @@ class Session
         $_SESSION['uid'] = intval($id);
         $_SESSION['username'] = trim($name);
         $_SESSION['role'] = trim($role);
+        $_SESSION['loginTime'] = date('Y-m-d H:i:s');
+    }
+
+    public function registerEnterTime() {
+        if (!isset($_SESSION['enterTime'])) {
+            $_SESSION['enterTime'] = date('Y-m-d H:i:s');
+        }
+    }
+
+    /**
+     * @return bool|string
+     */
+    public function getEnterTime() {
+        return isset($_SESSION['enterTime']) ? $_SESSION['enterTime'] : date('Y-m-d H:i:s');
     }
 
     public function loginOut() {

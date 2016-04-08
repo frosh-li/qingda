@@ -27,6 +27,11 @@ class Controller extends CController
     public $page = 1;
     public $count = 10;
 	/**
+	 * @var Session
+	 */
+	private $session = null;
+
+	/**
 	 * [init description]
 	 * @return [type] [description]
 	 */
@@ -34,6 +39,15 @@ class Controller extends CController
 		//error_reporting(0);
 		defined('DS') or define('DS',DIRECTORY_SEPARATOR);
 		parent::init();
+		$this->session = new Session();
+		$this->session->open();
+	}
+
+	/**
+	 * @return Session
+	 */
+	protected function getSession() {
+		return $this->session;
 	}
 	/**
 	*先进行网站开关的判断
