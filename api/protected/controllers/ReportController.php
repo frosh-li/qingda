@@ -150,9 +150,70 @@ class ReportController  extends Controller
      * 注意：当有电池电压异常、温度异常、内阻异常的 报警时才生成此表记录；
      */
     public function actionDeviationTrend() {
-        $id = Yii::app()->request->getParam('id',0);
-        $begin = Yii::app()->request->getParam('begin',0);
-        $end = Yii::app()->request->getParam('end',0);
+        $id = intval(Yii::app()->request->getParam('id',0));
+        $begin = Yii::app()->request->getParam('begin','0000-00-00 00:00:00');
+        $end = Yii::app()->request->getParam('end', '0000-00-00 00:00:00');
+
+        $this->setPageCount();
+
+        $where = '';
+        if ($begin != '0000-00-00 00:00:00') {
+            $where .= "`record_time` >='{$begin}'";
+        }
+
+        if ($end != '0000-00-00 00:00:00') {
+            if ($where != '') {
+                $where .= ' AND ';
+            }
+
+            $where .= "`record_time` <='{$end}'";
+        }
+
+        if ($id != 0) {
+            if ($where != '') {
+                $where .= ' AND ';
+            }
+
+            $where .= "`sid` = '{$id}'";
+        }
+
+        $result = Yii::app()->bms->createCommand()
+            ->select('sn_key, record_time, sid, U, T, R')
+            ->from('{{battery_module_history}}')
+            ->where($where)
+            ->limit($this->count)
+            ->offset(($this->page - 1) * $this->count)
+            ->order('record_time, sid')
+            ->queryAll();
+
+        if (empty($result)) {
+            $this->ajaxReturn(-1, '暂无数据');
+        }
+
+        $siteArray = array();
+        foreach ($result as $rs) {
+            $site = intval($rs['sid']);
+            $siteArray[$site] = $site;
+        }
+
+        // 获取站点名
+        $where = "sid in (" . implode(',', $siteArray) . ")";
+        $siteInfo =  Yii::app()->db->createCommand()
+            ->select('site_name, sid')
+            ->from('{{site}}')
+            ->where($where)
+            ->queryAll();
+
+        $siteInfoArray = array();
+        foreach ($siteInfo as $site) {
+            $siteInfoArray[intval($site['sid'])] = $site;
+        }
+
+        if (empty($siteInfoArray)) {
+            $this->ajaxReturn(-1, '暂无数据');
+        }
+        
+        var_dump($result, $siteInfo);
     }
 
     /**
