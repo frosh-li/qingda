@@ -78,5 +78,13 @@ class LoginController extends LController
 
     public function actionLoginOut() {
         $this->session->loginOut();
+        $ret = array();
+        $ret['response'] = array(
+            'code'=>0,
+            'msg'=>'ok'
+        );
+
+        echo json_encode($ret);
+        Yii::app()->end();
     }
 }
