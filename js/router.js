@@ -3,7 +3,10 @@ define(["require","api","backbone","context","ui"],function(require,API,Backbone
     var routeMap = {
         index:function(){
             API.getSyestemConfig();
+            var $this = this;
             this.listenTo(Backbone.Events,"systemConfig:update",function(data){
+                $this.login();
+                return;
                 if(data){
                     if(data.show_map && data.show_map =="1"){
                         if(data.is_WAN == "1"){
@@ -14,6 +17,8 @@ define(["require","api","backbone","context","ui"],function(require,API,Backbone
                     }else{
                         route.navigate(defaultManagePage,{trigger:true});
                     }
+                }else{
+
                 }
             })
         },

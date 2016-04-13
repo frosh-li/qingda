@@ -32,6 +32,12 @@ define(function(require){
                     }
                 });
             },
+            /***************************************获取底部状态栏***************************************/
+            stat: function () {
+                var url = '/api/index.php/stat/info';
+                this.fetch(url, "stat", "get");
+                return this;
+            },
             /***************************************登陆***************************************/
             login: function (args) {
                 var url = '/api/index.php/login';
@@ -442,6 +448,12 @@ define(function(require){
             getGerneralalarmlog:function(args){
                 var url = '/api/index.php/gerneralalarm';
                 this.fetch(url, "listdata:update", args, "post");
+                return this;
+            },
+            //充放电
+            getChargeOrDischarge: function(args){
+                var url = '/api/index.php/report/chargeOrDischarge';
+                this.fetch(url, "listdata:update", args, "get");
                 return this;
             },
             //UI日志

@@ -11,7 +11,7 @@
                     <li class="switch-btn"><a href="#/manage/station"><img src="images/nav-6.png"><span>帮助</span></a></li>
                 </ul>
                 <div class="user"><img src="images/user-img.png"><span>切换用户</span> </div><!--user-->
-                <span class="exit"></span>
+                <span class="exit" id="logout"></span>
             </div><!--top-nav-->
             <div class="clear"></div>
         </div><!--top-->
@@ -21,9 +21,9 @@
                 <li>
                     <b class="yx-show" title="显示树形图"><i class="icon yunxing"></i>树形图</b>
                     <b class="bottom-show" title="显示趋势图"><i class="icon yunxing2"></i>趋势图</b>
-                    <span>系统启动时间：<i>08：08：08</i></span></li>
-                <li><span>当前管理员：<i>XXXX</i></span></li>
-                <li><span>登陆时间：<i>11：22：52</i></span></li>
+                    <span>系统启动时间：<i id="stat_sys_uptime">08：08：08</i></span></li>
+                <li><span>当前管理员：<i id="stat_manager">XXXX</i></span></li>
+                <li><span>登陆时间：<i id="stat_login_time">11：22：52</i></span></li>
                 <li><span id="realtime">2015年11月30日&nbsp;&nbsp;16:00&nbsp;&nbsp;星期六</span></li>
             </ul>
         </div><!--bottom-->

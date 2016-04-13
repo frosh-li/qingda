@@ -56,7 +56,7 @@ require.config({
     }
 })
 
-require(["jquery","router","table","jJson","jtimer","charts"],function($,router){
+require(["jquery","router","api","table","jJson","jtimer","charts",],function($,router,API){
     /**
      * 对Date的扩展，将 Date 转化为指定格式的String
      * 月(M)、日(d)、12小时(h)、24小时(H)、分(m)、秒(s)、周(E)、季度(q) 可以用 1-2 个占位符
@@ -102,8 +102,11 @@ require(["jquery","router","table","jJson","jtimer","charts"],function($,router)
         return fmt;
     }
 
+    
+
     setInterval(function(){
         $("#realtime").html((new Date()).pattern("yyyy-MM-dd EEE hh:mm:ss"));
+        // API.stat();
     },1000)
 
     require(["jJson","bootstrap","jqueryUI","ui","jForm"],function(){

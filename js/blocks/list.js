@@ -1406,6 +1406,42 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     }
                 }
             } ,
+            //报表：充放电统计表
+            "chargeOrDischarge":{
+                extObj:{
+                    fetchData:function(_param){
+                        _param = _param || {}
+
+                            var navData = nav.getSites();
+                            console.log('navids',navData.ids, navData);
+                            $.extend(_param,{id:navData.ids.join(",")});
+                            console.log(_param)
+                            API.getChargeOrDischarge(_param);
+
+                        
+                    },
+                    render:function() {
+                        var _this = this;
+                        _this.destoryPlugin();
+                        _this.listPlugin.push($('#auto table').DataTable($.extend(true, {
+                            "data": _this.data,
+                            "language": {
+                                "emptyTable": "报表数据为空"
+                            },
+                            "scrollX": ui.getListHeight(),
+                            "scrollY": ui.getListHeight(),
+                            "columns": [
+                                {"data": "time", title: "序号", width: 100},
+                                {"data": "time", title: "记录时间", width: 200},
+                                {"data": "sid", title: "站点id",width:100},
+                                {"data": "name", title: "站点名称", width: 300},
+                                {"data": "BBbCharge", title: "充电状态", width: 100},
+                                {"data": "BCbDisCharge", title: "放电状态"},
+                            ]
+                        }, dataTableDefaultOption)));
+                    }
+                }
+            } ,
             // 报表：UI日志：设置
             "reportUilog_options":{
                 extObj:{

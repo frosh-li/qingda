@@ -1,9 +1,21 @@
-define(["require","backbone","context","ui",'common', 'stationsinfoDialog'],function(require,Backbone,context,ui,common, stationsinfoDialog){
+define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'],function(require,Backbone,context,ui,common, stationsinfoDialog,API){
     var curModules = [],navTree=null,
         maxLoadingTime = 1000,
         curLoadingTime = 0;
 
     function init(sys,pageType,sub,params){
+
+        Backbone.listenTo(Backbone.Events,"stat",function(data){
+            $("#stat_login_time").html(data.loginTime);
+            $("#stat_sys_uptime").html(data.startTime);
+            $("#stat_manager").html(data.name);
+        })
+        
+        API.stat();
+        $("#logout").click(function(){
+            window.location = "#/login";
+        })
+
         var _arg = arguments,
             $navTreeWrap = $("#navTree"),
             $collectWrap = $("#collect").hide(),

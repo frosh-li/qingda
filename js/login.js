@@ -9,6 +9,7 @@ define(["require","backbone","api","router","common"],function(require,Backbone,
             initialize: function(options) {
                 var _this = this;
                 _this.listenTo(Backbone.Events,"login",function(data){
+                    console.log(data);
                     router.to("manage/station");
                 })
                 _this.listenTo(Backbone.Events,"login:fail",function(data){
