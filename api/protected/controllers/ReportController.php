@@ -174,7 +174,17 @@ class ReportController  extends Controller
                 $where .= ' AND ';
             }
 
-            $where .= '`sid` in ('.implode(',',$id).')';
+            $strArray = explode(',',$id);
+            $ids = array();
+            foreach ($strArray as $k => $v)
+            {
+                $v = intval($v);
+                if ($v >0) {
+                    $ids[$v] = $v;
+                }
+            }
+
+            $where .= '`sid` in ('.implode(',',$ids).')';
         }
 
         $result = Yii::app()->db->createCommand()
@@ -305,7 +315,17 @@ class ReportController  extends Controller
                 $where .= ' AND ';
             }
 
-            $where .= '`sid` in ('.implode(',',$id).')';
+            $strArray = explode(',',$id);
+            $ids = array();
+            foreach ($strArray as $k => $v)
+            {
+                $v = intval($v);
+                if ($v >0) {
+                    $ids[$v] = $v;
+                }
+            }
+
+            $where .= '`sid` in ('.implode(',',$ids).')';
         }
 
         $result = Yii::app()->bms->createCommand()
