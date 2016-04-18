@@ -11,9 +11,9 @@ return array(
 
 	// application components
 	'components'=>array(
-		'db'=>array(
-			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-		),
+		// uncomment the following to use a MySQL database
+		'db'=>require(dirname(__FILE__).'/database.php'),
+		'bms'=>require(dirname(__FILE__).'/bmsdatabase.php'),
 		// uncomment the following to use a MySQL database
 		/*
 		'db'=>array(

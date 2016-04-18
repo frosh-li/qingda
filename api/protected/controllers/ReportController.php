@@ -177,9 +177,9 @@ class ReportController  extends Controller
             $where .= "`sid` = '{$id}'";
         }
 
-        $result = Yii::app()->bms->createCommand()
-            ->select('sn_key, record_time, sid, U, T, R')
-            ->from('{{battery_module_history}}')
+        $result = Yii::app()->db->createCommand()
+            ->select('*')
+            ->from('{{deviation_trend}}')
             ->where($where)
             ->limit($this->count)
             ->offset(($this->page - 1) * $this->count)
@@ -206,14 +206,18 @@ class ReportController  extends Controller
 
         $siteInfoArray = array();
         foreach ($siteInfo as $site) {
-            $siteInfoArray[intval($site['sid'])] = $site;
+            $siteInfoArray[intval($site['sid'])] = $site['site_name'];
         }
 
         if (empty($siteInfoArray)) {
             $this->ajaxReturn(-1, '暂无数据');
         }
-        
-        var_dump($result, $siteInfo);
+
+        foreach ($result as $k =>$v)
+        {
+            $result[$k]['site_name'] = isset($siteInfoArray[$v['sid']]) ? $siteInfoArray[$v['sid']] : '';
+        }
+        $this->ajaxReturn(0, '', $result);
     }
 
     /**
@@ -293,7 +297,7 @@ class ReportController  extends Controller
             $this->ajaxReturn(-1, '暂无数据');
         }
 
-        $batteryStatus = $batteryStatus->andWhere($where)->queryAll();
+        $batteryStatus = $batteryStatus->andWhere($where)->andWhere('(BBbCharge !=0 or BCbDisCharge != 0)')->queryAll();
         $batteryInfoArray = array();
         foreach ($batteryStatus as $battery) {
             $sid = intval($battery['sid']);
@@ -316,8 +320,10 @@ class ReportController  extends Controller
                 $time = trim($rs['record_time']);
                 $data = array('time' => $time, 'sid'=>$sid, 'name'=> $siteInfoArray[$sid]['site_name']);
                 if (isset($batteryInfoArray[$sid][$time])) {
-                    $data['BBbCharge'] = intval($batteryInfoArray[$sid][$time]['BBbCharge']);
-                    $data['BCbDisCharge'] = intval($batteryInfoArray[$sid][$time]['BCbDisCharge']);
+                    $BBbCharge = intval($batteryInfoArray[$sid][$time]['BBbCharge']);
+//                    $BCbDisCharge = intval($batteryInfoArray[$sid][$time]['BCbDisCharge']);
+                    $data['BBbCharge'] = ($BBbCharge == 1);
+                    $data['BCbDisCharge'] = ($BBbCharge != 1);
                     $dataArray[] = $data;
                 }
             }
