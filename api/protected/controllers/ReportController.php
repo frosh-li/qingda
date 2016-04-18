@@ -150,7 +150,7 @@ class ReportController  extends Controller
      * 注意：当有电池电压异常、温度异常、内阻异常的 报警时才生成此表记录；
      */
     public function actionDeviationTrend() {
-        $id = intval(Yii::app()->request->getParam('id',0));
+        $id = Yii::app()->request->getParam('id',0);
         $begin = Yii::app()->request->getParam('begin','0000-00-00 00:00:00');
         $end = Yii::app()->request->getParam('end', '0000-00-00 00:00:00');
 
@@ -169,12 +169,12 @@ class ReportController  extends Controller
             $where .= "`record_time` <='{$end}'";
         }
 
-        if ($id != 0) {
+        if ($id != '') {
             if ($where != '') {
                 $where .= ' AND ';
             }
 
-            $where .= "`sid` = '{$id}'";
+            $where .= '`sid` in ('.implode(',',$id).')';
         }
 
         $result = Yii::app()->db->createCommand()
@@ -228,7 +228,7 @@ class ReportController  extends Controller
      * 增加字段：充放电统计列表 增加时间列；
      */
     public function actionChargeOrDischarge() {
-        $id = intval(Yii::app()->request->getParam('id',0));
+        $id = Yii::app()->request->getParam('id',0);
         $begin = Yii::app()->request->getParam('begin','0000-00-00 00:00:00');
         $end = Yii::app()->request->getParam('end', '0000-00-00 00:00:00');
 
@@ -247,12 +247,12 @@ class ReportController  extends Controller
             $where .= "`record_time` <='{$end}'";
         }
 
-        if ($id != 0) {
+        if ($id != '') {
             if ($where != '') {
                 $where .= ' AND ';
             }
 
-            $where .= "`sid` = '{$id}'";
+            $where .= '`sid` in ('.implode(',',$id).')';
         }
 
         $result = Yii::app()->bms->createCommand()
