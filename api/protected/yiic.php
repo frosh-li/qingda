@@ -22,8 +22,9 @@ function parse_server_params($argv) {
     fclose($fp);
 }
 
-parse_server_params($argv);
-
+if (isset($argv[1])) {
+    parse_server_params($argv);
+}
 // change the following paths if necessary
 $yiic=dirname(__FILE__).'/../framework/yiic.php';
 $config=dirname(__FILE__).'/config/console.php';
