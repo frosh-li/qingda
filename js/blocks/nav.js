@@ -110,17 +110,29 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
             }
         },
         getSites:function(){
-            var ids={ids:[],map:{}},selectedNode;
+            var ids={ids:[],map:{}, pids: []},selectedNode;
             if(navView.tree){
                 selectedNode = navView.tree.getCheckedNodes();
                 $.each(selectedNode,function(i,node){
                     if(node.leveltype == "2"){
                         ids.ids.push(node.id);
+                        ids.pids.push(node.pid);
                         ids.map[node.id] = node;
                     }
                 })
             }
             return ids;
+        },
+        getSelectedNodePid: function(){
+            var getSelectedNodeId = [];
+            if(navView.tree){
+                var nodes = navView.tree.getSelectedNodes();
+                $.each(nodes, function(i,node){
+                    getSelectedNodeId.push(node.pid);
+                })
+                
+            }
+            return getSelectedNodeId;
         },
         getSelectedNodeId: function(){
             var getSelectedNodeId = -1;

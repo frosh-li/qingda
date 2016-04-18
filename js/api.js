@@ -19,7 +19,7 @@ define(function(require){
                                 if(unalert){
                                     return;
                                 }
-                                alert(res.response.msg);
+                                // alert(res.response.msg);
                             }
                         } else {
                             Backbone.Events.trigger(event,"error", res.response.message);

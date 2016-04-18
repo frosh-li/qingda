@@ -154,7 +154,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         if(!data || !data.data){
                             return this;
                         }
-                        console.log(data, trIndex);
+
                         $tbodys.each(function(i,tbody){
                             var $tbody = $(tbody);
                             $tbody.find("tr").eq(trIndex).toggleClass(className);
@@ -1413,8 +1413,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         _param = _param || {}
 
                             var navData = nav.getSites();
-                            console.log('navids',navData.ids, navData);
-                            $.extend(_param,{id:navData.ids.join(",")});
+                            console.log(navData);
+                            console.log('navids',navData.pids, navData);
+                            $.extend(_param,{id:navData.pids.join(",")});
                             console.log(_param)
                             API.getChargeOrDischarge(_param);
 
@@ -1462,7 +1463,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 {"data": "type", title: "序号",width:50},
                                 {"data": "username", title: "用户", width: 100},
                                 {"data": "content", title: "操作内容"},
-                                {"data": "Modify_time", title: "操作时间", width: 150}
+                                {"data": "modify_time", title: "操作时间", width: 150}
                             ]
                         }, dataTableDefaultOption)));
                     }

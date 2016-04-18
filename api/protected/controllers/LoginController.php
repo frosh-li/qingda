@@ -32,7 +32,6 @@ class LoginController extends LController
 
 		$username = Yii::app()->request->getParam('username','');
         $password = Yii::app()->request->getParam('password','');
-
         $ret['data'] = array();
         if ($username == '' || $password =='') {
             $ret['response'] = array(

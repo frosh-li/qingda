@@ -1,6 +1,6 @@
 require.config({
     baseUrl:'',
-    urlArgs:'_v=1.8',
+    urlArgs:'_v='+(+new Date()),
     packages:[
         {
             name: 'zrender',
