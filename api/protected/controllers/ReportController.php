@@ -1,5 +1,4 @@
 <?php
-
 class ReportController  extends Controller
 {
 	/**
@@ -153,6 +152,7 @@ class ReportController  extends Controller
         $id = Yii::app()->request->getParam('id',0);
         $begin = Yii::app()->request->getParam('begin','0000-00-00 00:00:00');
         $end = Yii::app()->request->getParam('end', '0000-00-00 00:00:00');
+        $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
 
         $this->setPageCount();
 
@@ -217,7 +217,59 @@ class ReportController  extends Controller
         {
             $result[$k]['site_name'] = isset($siteInfoArray[$v['sid']]) ? $siteInfoArray[$v['sid']] : '';
         }
-        $this->ajaxReturn(0, '', $result);
+
+        if ($isDownload == 1) {
+            Yii::$enableIncludePath = false;
+            Yii::import('application.extensions.PHPExcel.PHPExcel', 1);
+            $objPHPExcel = new PHPExcel();
+            $workSheet = $objPHPExcel->setActiveSheetIndex(0);
+            // Add some data
+            $workSheet->setCellValue('A1', '序号')
+                ->setCellValue('B1', '站点ID')
+                ->setCellValue('C1', '站名')
+                ->setCellValue('D1', '时间')
+                ->setCellValue('E1', '平均电压')
+                ->setCellValue('F1', '平均温度')
+                ->setCellValue('G1', '平均电阻')
+                ->setCellValue('H1', '异常电压')
+                ->setCellValue('I1', '异常温度')
+                ->setCellValue('J1', '异常电阻');
+            $index = 1;
+            foreach ($result as $v) {
+                $index ++;
+                $workSheet->setCellValue('A'.$index, $index - 1)
+                    ->setCellValue('B'.$index, $v['sid'])
+                    ->setCellValue('C'.$index, $v['site_name'])
+                    ->setCellValue('D'.$index, $v['record_time'])
+                    ->setCellValue('E'.$index, $v['U'])
+                    ->setCellValue('F'.$index, $v['T'])
+                    ->setCellValue('G'.$index, $v['R'])
+                    ->setCellValue('H'.$index, $v['EU'])
+                    ->setCellValue('I'.$index, $v['ET'])
+                    ->setCellValue('J'.$index, $v['ER']);
+            }
+            // Rename worksheet
+            $objPHPExcel->getActiveSheet()->setTitle('偏离趋势报表');
+            // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+            $objPHPExcel->setActiveSheetIndex(0);
+            // Redirect output to a client’s web browser (Excel5)
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="deviation_trend.xls"');
+            header('Cache-Control: max-age=0');
+// If you're serving to IE 9, then the following may be needed
+            header('Cache-Control: max-age=1');
+
+// If you're serving to IE over SSL, then the following may be needed
+            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header ('Pragma: public'); // HTTP/1.0
+
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+        } else {
+            $this->ajaxReturn(0, '', $result);
+        }
     }
 
     /**
