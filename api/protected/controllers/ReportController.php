@@ -283,6 +283,7 @@ class ReportController  extends Controller
         $id = Yii::app()->request->getParam('id',0);
         $begin = Yii::app()->request->getParam('begin','0000-00-00 00:00:00');
         $end = Yii::app()->request->getParam('end', '0000-00-00 00:00:00');
+        $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
 
         $this->setPageCount();
 
@@ -381,7 +382,50 @@ class ReportController  extends Controller
             }
         }
 
-        $this->ajaxReturn(0, '', $dataArray);
+        if ($isDownload == 1) {
+            Yii::$enableIncludePath = false;
+            Yii::import('application.extensions.PHPExcel.PHPExcel', 1);
+            $objPHPExcel = new PHPExcel();
+            $workSheet = $objPHPExcel->setActiveSheetIndex(0);
+            // Add some data
+            $workSheet->setCellValue('A1', '序号')
+                ->setCellValue('B1', '站点ID')
+                ->setCellValue('C1', '站名')
+                ->setCellValue('D1', '时间')
+                ->setCellValue('E1', '充电状态')
+                ->setCellValue('F1', '放电状态');
+            $index = 1;
+            foreach ($dataArray as $v) {
+                $index ++;
+                $workSheet->setCellValue('A'.$index, $index - 1)
+                    ->setCellValue('B'.$index, $v['sid'])
+                    ->setCellValue('C'.$index, $v['name'])
+                    ->setCellValue('D'.$index, $v['time'])
+                    ->setCellValue('E'.$index, $v['BBbCharge'] ? '是':'否')
+                    ->setCellValue('F'.$index, $v['BCbDisCharge'] ? '是':'否');
+            }
+            // Rename worksheet
+            $objPHPExcel->getActiveSheet()->setTitle('充放电统计表');
+            // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+            $objPHPExcel->setActiveSheetIndex(0);
+            // Redirect output to a client’s web browser (Excel5)
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="charge_discharge.xls"');
+            header('Cache-Control: max-age=0');
+// If you're serving to IE 9, then the following may be needed
+            header('Cache-Control: max-age=1');
+
+// If you're serving to IE over SSL, then the following may be needed
+            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header ('Pragma: public'); // HTTP/1.0
+
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+        } else {
+            $this->ajaxReturn(0, '', $dataArray);
+        }
     }
 
     /**
