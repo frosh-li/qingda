@@ -354,13 +354,14 @@ class TreesController extends Controller
                     ->select('serial_number,site_name,sid,aid,is_checked')
                     ->from('{{site}}')
                     ->order('id asc')
-                    ->where("site_name like '%".$keyword."%'")
+                    ->where("site_name like '%".$keyword."%' and is_checked=1")
                     ->queryAll();
             }else{
                 $site = Yii::app()->db->createCommand()
                     ->select('serial_number,site_name,sid,aid,is_checked')
                     ->from('{{site}}')
                     ->order('id asc')
+                    ->where("is_checked=1")
                     ->queryAll();
             }
 

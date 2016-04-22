@@ -473,9 +473,9 @@ define(function(require){
                     'caution':'/api/index.php/realtime/galarmchart'
                 };
                 console.log('chart args', args, args.id.split(","));
-                if(args.id.split(",").length <= 1){
-                    return this;
-                }
+                // if(args.id.split(",").length <= 1){
+                //     return this;
+                // }
                 this.fetch(url[type], evttype||"chart:update", args, "get");
                 return this;
             }

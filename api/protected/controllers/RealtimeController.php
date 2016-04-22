@@ -15,7 +15,7 @@ class RealtimeController extends Controller
                 $temp[] = $value."0000";
             }
             $id =  implode(',',$temp);
-
+            
             $sites = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('{{station_module}}')

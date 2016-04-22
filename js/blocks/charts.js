@@ -38,6 +38,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
             //选择行变更
             _this.listenTo(Backbone.Events,"row:select",function(data){
                 curids = data.join(',');
+                console.log('ids', curids);
                 if(data.length>1){
                     curEvtType = "allids:get";
                     API.getChart({id:curids,field:_this.getFieldValue()},curEvtType,listType);
