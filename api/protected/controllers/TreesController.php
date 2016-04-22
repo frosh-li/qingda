@@ -385,7 +385,7 @@ class TreesController extends Controller
                 foreach ($site as $key => $value) {
                     $i++;
                     $data = array();
-                    $data['id'] = $value['serial_number'];
+                    $data['id'] = substr($value['serial_number'],0,-4);
                     $data['pid'] = $value['aid'];
                     $data['title'] = $value['site_name'];
                     $data['is_checked'] = $value['is_checked'];

@@ -12,7 +12,7 @@ class RealtimeController extends Controller
             $arr = explode(',',$id);
             $temp = array();
             foreach ($arr as $key => $value) {
-                $temp[] = $value;
+                $temp[] = $value."0000";
             }
             $id =  implode(',',$temp);
 
@@ -398,15 +398,17 @@ class RealtimeController extends Controller
         // 数据直接出，通过command来处理数据
         $id = Yii::app()->request->getParam('id',0);
         $this->setPageCount();
+        $total = 0;
         if ($id != 0) {
             $sites = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('{{general_alarm}}')
-                ->where('alarm_para1_name in ('.$id.')')
+                ->where('equipment_sn in ('.$id.')')
                 ->limit($this->count)
                 ->offset(($this->page - 1) * $this->count)
                 ->order('alarm_occur_time desc')
                 ->queryAll();
+
         }else{
             $sites = Yii::app()->bms->createCommand()
                 ->select('*')
@@ -415,7 +417,13 @@ class RealtimeController extends Controller
                 ->offset(($this->page-1)*$this->count)
                 ->order('alarm_occur_time desc')
                 ->queryAll();
+           
         }
+        $total = Yii::app()->bms->createCommand()
+                ->select("count(*) as total")
+                ->from('{{general_alarm}}')
+                ->queryAll();
+        // var_dump($total[0]['total']);
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
@@ -425,7 +433,7 @@ class RealtimeController extends Controller
         if ($sites) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;
-
+            $ret['data']['total'] = $total[0]['total'];
             foreach($sites as $key=>$value){
                 $ret['data']['list'][] = $value;
             }

@@ -496,7 +496,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 { "data": "alarm_process_and_memo",title:"处理过程、时间、管理员" }
                             ]
                         },dataTableDefaultOption)));
-                        _this.checkAllRows();
+                        // _this.checkAllRows();
                         return this;
                     }
                 }
