@@ -15,7 +15,7 @@ define(['require','api','context','table'],function(require,API,context){
                         });
                     },
                     jumpToRealTime:function(){
-                        window.location.href="#/manage/station/"+stationId
+                        window.location.href="#/manage/station/"+stationId.substr(0,10);
                     },
                     refresh:function(){
                         var _this = this,

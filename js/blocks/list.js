@@ -442,8 +442,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "gid",title:"组号",width:50 }
                                 ].concat(colums.data)
                             },dataTableDefaultOption)));
+                            _this.checkAllRows();
                         })
-                        _this.checkAllRows();
+                        
                         return this;
                     }
                 }

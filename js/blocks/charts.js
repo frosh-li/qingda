@@ -124,6 +124,8 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
             API.getChart({id:curids,field:this.getFieldValue($el)},curEvtType,listType);
         },
         getFieldValue:function($el){
+            var el = $el || $(".chart-wrap .switch-btn.active:visible");
+            $(".chart-wrap h4").text(el.text());
             return $el?$el.attr('field'):$(".chart-wrap .switch-btn.active:visible").attr('field');
         },
         createOption:function(type,data,xAixs){

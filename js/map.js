@@ -47,6 +47,7 @@ define(["require","backbone","api","stationsinfoDialog","common"],function(requi
             })
             _this.listenTo(Backbone.Events,"mapdata:update",function(data){
                 _this.data = data.list;
+                console.log('map data update', data);
                 _this.addMarks();
                 _this.buildCityList();
                 _this.centerAndZoom({
@@ -90,6 +91,7 @@ define(["require","backbone","api","stationsinfoDialog","common"],function(requi
                 _map = _this.map,
                 _alarmNum = 0;
             if(_data && _data.length){
+                console.log('mask data', _data)
                 $.each(_data,function(i,d){
                     var pt = new BMap.Point(d["site_longitude"], d["site_latitude"]);
                     var icon = new BMap.Icon(MARK.icon[d.status||'0'], new BMap.Size(MARK.w,MARK.h));
@@ -135,9 +137,16 @@ define(["require","backbone","api","stationsinfoDialog","common"],function(requi
                 var pt = new BMap.Point(d["site_longitude"],d["site_latitude"]);
                 myGeo.getLocation(pt, function(rs){
                     var addComp = rs.addressComponents;
+                    console.log(addComp);
                     if(!common.inArray(addComp.city,adds)){
                         adds.push(addComp.city);
-                        selectHtml += '<option>'+addComp.city+'</option>';
+                        var currentCity = localStorage.getItem('currentCity') || '全国';
+                        if(currentCity == addComp.city){
+                            selectHtml += '<option selected>'+addComp.city+'</option>';
+                        }else{  
+                            selectHtml += '<option>'+addComp.city+'</option>';    
+                        }
+                        
                     }
                     count++;
                     if(count == dataLen){
@@ -145,16 +154,19 @@ define(["require","backbone","api","stationsinfoDialog","common"],function(requi
                         $(".mapbtn").html(selectHtml);
                         $(".mapbtn select").off("change").on("change",function(){
                             var prov = $(".mapbtn select option:selected").html();
+                            localStorage.setItem("currentCity", prov);
                             if("全国" == prov){
                                 _this.centerAndZoom({
                                     x: DEFAULT_CENTER_POINT.x,
                                     y: DEFAULT_CENTER_POINT.y,
                                     zoom:DEFAULT_CENTER_POINT.zoom
                                 })
+
                             }else{
                                 myGeo.getPoint(prov, function(point){
                                     if (point) {
                                         _this.map.centerAndZoom(point, 12);
+                                        
                                     }else{
                                         alert("您选择地址没有解析到结果!");
                                     }
@@ -172,6 +184,7 @@ define(["require","backbone","api","stationsinfoDialog","common"],function(requi
         },
         addCityList:function(){
             var size = new BMap.Size(10, 20);
+            var _this = this;
             this.map.addControl(new BMap.CityListControl({
                 anchor: BMAP_ANCHOR_TOP_LEFT,
                 offset:size,
@@ -182,6 +195,8 @@ define(["require","backbone","api","stationsinfoDialog","common"],function(requi
                 //切换城市之后事件
                 onChangeAfter:function(){
                     //alert('after');
+                    console.log('after select city')
+                    _this.addMarks();
                 }
             }));
         },
