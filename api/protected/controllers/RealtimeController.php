@@ -164,7 +164,8 @@ class RealtimeController extends Controller
                 ->where('sn_key in('.$id.')')
                 ->limit($this->count)
                 ->offset(($this->page - 1) * $this->count)
-                ->order('record_time desc')
+                ->order('gid asc')
+                //->order('record_time desc')
                 ->queryAll();
         }else{
             $sites = Yii::app()->bms->createCommand()
@@ -172,7 +173,8 @@ class RealtimeController extends Controller
                 ->from('{{group_module}}')
                 ->limit($this->count)
                 ->offset(($this->page-1)*$this->count)
-                ->order('record_time desc')
+                ->order('gid asc')
+                //->order('record_time desc')
                 ->queryAll();
         }
 

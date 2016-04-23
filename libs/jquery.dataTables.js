@@ -5058,7 +5058,7 @@
 			msg += '. For more information about this error, please see '+
 			'http://datatables.net/tn/'+tn;
 		}
-	
+		level = true;
 		if ( ! level  ) {
 			// Backwards compatibility pre 1.10
 			var ext = DataTable.ext;

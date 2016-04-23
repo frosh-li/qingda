@@ -26,14 +26,17 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
         $stationPop.click(function(e){
             console.log('click on stationPop');
-            var id = navTree.getSelectedNodeId();
+            var id = navTree.getSites().ids;
             if(id < 0){
                 alert('请选择站点');
                 return;
             }
+            for(var i = 0 ; i < id.length ; i++){
+                id[i] = id[i]+"0000";
+            }
             console.log('show stationsinfoDialog', id)
             //return function(){
-                stationsinfoDialog.show(id);
+                stationsinfoDialog.show(id.join(","));
             //}
         });
         $("#dataItem").html('');

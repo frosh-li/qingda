@@ -1,6 +1,6 @@
 <?php return array (
 'class'=>'CDbConnection',	
-'connectionString' => "mysql:host={$_SERVER['DB_BMS_HOST']};port={$_SERVER['DB_BMS_PORT']};dbname={$_SERVER['DB_BMS_DATABASE']}",
+'connectionString' => "mysql:host={$_SERVER['DB_BMS_HOST']};port={$_SERVER['DB_BMS_PORT']};dbname=db_bms_english4",
 	'username' => $_SERVER['DB_BMS_USERNAME'],
 	'password' => $_SERVER['DB_BMS_PASSWORD'],
 	'charset' => 'utf8',

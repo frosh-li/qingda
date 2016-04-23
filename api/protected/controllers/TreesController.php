@@ -388,7 +388,7 @@ class TreesController extends Controller
                     $data = array();
                     $data['id'] = substr($value['serial_number'],0,-4);
                     $data['pid'] = $value['aid'];
-                    $data['title'] = $value['site_name'];
+                    $data['title'] = $value['site_name'] .$value['sid'];
                     $data['is_checked'] = $value['is_checked'];
                     $data['leveltype'] = 2;
 

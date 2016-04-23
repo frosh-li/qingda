@@ -6,7 +6,7 @@ class StatController extends Controller
 	{
 		$sql = "select count(*) from {{station_module}}";
         $online = Yii::app()->bms->createCommand($sql)->queryScalar();
-        $sql = "select count(*) from {{site}} where is_checked=1";
+        $sql = "select count(*) from {{site}} where is_checked=0";
         $total = Yii::app()->db->createCommand($sql)->queryScalar();
         $ret['response'] = array(
             'code' => 0,
@@ -14,7 +14,7 @@ class StatController extends Controller
         );
         $ret['data'] = array(
             'online'=>$total,
-            'offline'=>$online,
+            'offline'=>$online-$total,
         );
         echo json_encode($ret);
 	}

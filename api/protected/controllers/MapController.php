@@ -54,6 +54,7 @@ class MapController extends Controller
         }
 
         $sites = $sites->order('id desc')
+            ->where('is_checked=1')
             ->queryAll();
         $ret['response'] = array(
             'code' => 0,
