@@ -168,30 +168,30 @@ define(['require','api','context','common','table'],function(require,API,context
                                             })
                                         }
                                     },
-                                    {
-                                        "data": "operator",
-                                        title:"判断操作",
-                                        width:200,
-                                        render:function(value,type,itemData){
-                                            var optionTpl = '<option value="<%= id %>" <%= selected %>><%= name %></option>',
-                                                data = [
-                                                    {id:">",name:"大于等于"},
-                                                    {id:"<",name:"小于等于"},
-                                                    {id:"=",name:"等于"},
-                                                    {id:"o",name:"其他"}
-                                                ],
-                                                optionHtml;
-                                            $.each(data,function(i,d) {
-                                                if(d.id == value){
-                                                    d.selected='selected'
-                                                }else{
-                                                    d.selected=""
-                                                }
-                                                optionHtml += _.template(optionTpl)(d);
-                                            })
-                                            return '<select key="operator">'+optionHtml+'</select>'
-                                        }
-                                    },
+                                    // {
+                                    //     "data": "operator",
+                                    //     title:"判断操作",
+                                    //     width:200,
+                                    //     render:function(value,type,itemData){
+                                    //         var optionTpl = '<option value="<%= id %>" <%= selected %>><%= name %></option>',
+                                    //             data = [
+                                    //                 {id:">",name:"大于等于"},
+                                    //                 {id:"<",name:"小于等于"},
+                                    //                 {id:"=",name:"等于"},
+                                    //                 {id:"o",name:"其他"}
+                                    //             ],
+                                    //             optionHtml;
+                                    //         $.each(data,function(i,d) {
+                                    //             if(d.id == value){
+                                    //                 d.selected='selected'
+                                    //             }else{
+                                    //                 d.selected=""
+                                    //             }
+                                    //             optionHtml += _.template(optionTpl)(d);
+                                    //         })
+                                    //         return '<select key="operator">'+optionHtml+'</select>'
+                                    //     }
+                                    // },
                                     //警情判断依据
                                     {
                                         "data": "type_value",
@@ -202,28 +202,28 @@ define(['require','api','context','common','table'],function(require,API,context
                                         }
                                     },
                                     //警情判断类型
-                                    {
-                                        "data": "judge_type",
-                                        title:"警情判断类型",
-                                        width:200,
-                                        render:function(value,type,itemData){
-                                            var optionTpl = '<option value="<%= id %>" <%= selected %>><%= name %></option>',
-                                                data = [
-                                                    {id:"0",name:"绝对值"},
-                                                    {id:"1",name:"百分比"}
-                                                ],
-                                                optionHtml;
-                                            $.each(data,function(i,d) {
-                                                if(d.id == value){
-                                                    d.selected="selected"
-                                                }else{
-                                                    d.selected=""
-                                                }
-                                                optionHtml += _.template(optionTpl)(d);
-                                            })
-                                            return '<select  key="judge_type">'+optionHtml+'</select>'
-                                        }
-                                    },
+                                    // {
+                                    //     "data": "judge_type",
+                                    //     title:"警情判断类型",
+                                    //     width:200,
+                                    //     render:function(value,type,itemData){
+                                    //         var optionTpl = '<option value="<%= id %>" <%= selected %>><%= name %></option>',
+                                    //             data = [
+                                    //                 {id:"0",name:"绝对值"},
+                                    //                 {id:"1",name:"百分比"}
+                                    //             ],
+                                    //             optionHtml;
+                                    //         $.each(data,function(i,d) {
+                                    //             if(d.id == value){
+                                    //                 d.selected="selected"
+                                    //             }else{
+                                    //                 d.selected=""
+                                    //             }
+                                    //             optionHtml += _.template(optionTpl)(d);
+                                    //         })
+                                    //         return '<select  key="judge_type">'+optionHtml+'</select>'
+                                    //     }
+                                    // },
                                     { "data": "alarm_code",title:"警情代码",width:200 },
                                     {
                                         data:"id",

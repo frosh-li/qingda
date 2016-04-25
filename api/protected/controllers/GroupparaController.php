@@ -21,13 +21,13 @@ class GroupparaController extends Controller
             'msg' => 'ok'
         );
         $ret['data'] = array();
+        
         $batteryparm = Yii::app()->bms->createCommand()
             ->select('*')
             ->from('{{group_parameter}}')
-            ->limit($this->count)
-            ->offset(($this->page-1)*$this->count)
             ->order('gid desc')
             ->queryAll();
+        var_dump($batteryparm);
         if ($batteryparm) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;

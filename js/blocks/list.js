@@ -1264,7 +1264,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     {"data": "site_name", title: "站点简称", width: 200},
                                     {"data": "serial_number", title: "物理地址", width: 250},
                                     {
-                                        data: "id",
+                                        data: "sid",
                                         render: function (data) {
                                             return _.template('<div style="width:80px; margin:0px auto">'+$("#editBtn").html()+'</div>')({
                                                 id: data
