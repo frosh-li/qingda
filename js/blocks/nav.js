@@ -182,7 +182,21 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
                     }
                 })
             }
-
+            console.log('getBatterys', ids);
+            return ids;
+            console.log('getBatterys', ids);
+        },
+        getBatteryIds: function(){
+            var ids={ids:[],map:{}},selectedNode;
+            if(navView.tree){
+                selectedNode = navView.tree.getCheckedNodes();
+                $.each(selectedNode,function(i,node){
+                    if(node.leveltype == "4"){
+                        ids.ids.push(node.id);
+                        ids.map[node.id] = node;
+                    }
+                })
+            }
             return ids;
         }
     };

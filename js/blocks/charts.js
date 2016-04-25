@@ -126,7 +126,11 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
         },
         getFieldValue:function($el){
             var el = $el || $(".chart-wrap .switch-btn.active:visible");
-            $(".chart-wrap h4").text(el.text());
+            
+            if(el.length == 1){
+                $(".chart-wrap h4").text(el.text());    
+            }
+            
             return $el?$el.attr('field'):$(".chart-wrap .switch-btn.active:visible").attr('field');
         },
         createOption:function(type,data,xAixs){

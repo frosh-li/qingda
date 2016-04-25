@@ -359,10 +359,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         return nav.getBatterys(this.curStation);
                     },
                     fetchData:function(){
+                        $("#page").hide();
                         var _param = {};
                         this.destoryPlugin();
                         $.extend(_param,{
-                            id:this.getBatterys()
+                            id:nav.getBatteryIds().ids.join(",")
                         });
                         API.getBatterysRealTimeData(_param);
                     },

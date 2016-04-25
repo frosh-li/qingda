@@ -58,11 +58,9 @@ define(function(require){
                 alert("修改成功")
             });
             _this.listenTo(Backbone.Events,"monitoring:start",function(data){
-                console.log('start monitoring', data);
                 $(".baojing .bg").html(data.total||0);
             });
             _this.listenTo(Backbone.Events,"monitoring:start:fail",function(data){
-                console.log('start monitoring', data);
                 $(".baojing .bg").html(data.total||0);
             });
             _this.listenTo(Backbone.Events,"station:next",function(data){

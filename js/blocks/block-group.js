@@ -24,6 +24,7 @@ define(['require','api','stationsinfoDialog','context','ui','table'],function(re
                         "columns": [
                             {"data": "a"},
                             {"data": "v"},
+                            {"data": "t"},
                             {"data": "hydrogen"},
                             {"data": "battery_num"},
                             {"data": "battery_state"},

@@ -42,6 +42,7 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "record_time",title:"时间",width:150 },
                     { "data": "I",title:"电流（A）",width:100 },
                     { "data": "GroupU",title:"电压（V）",width:100 },
+                    { "data": "T",title:"温度（℃）",width:100 },
                     { "data": "Humi",title:"湿度",width:50 },
                     { "data": "BatteryHealth",title:"电池状态",width:100 },
                     { "data": "IoutMax",title:"最大放电电流（A）",width:150 },
