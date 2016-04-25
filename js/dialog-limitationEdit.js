@@ -168,30 +168,14 @@ define(['require','api','context','common','table'],function(require,API,context
                                             })
                                         }
                                     },
-                                    // {
-                                    //     "data": "operator",
-                                    //     title:"判断操作",
-                                    //     width:200,
-                                    //     render:function(value,type,itemData){
-                                    //         var optionTpl = '<option value="<%= id %>" <%= selected %>><%= name %></option>',
-                                    //             data = [
-                                    //                 {id:">",name:"大于等于"},
-                                    //                 {id:"<",name:"小于等于"},
-                                    //                 {id:"=",name:"等于"},
-                                    //                 {id:"o",name:"其他"}
-                                    //             ],
-                                    //             optionHtml;
-                                    //         $.each(data,function(i,d) {
-                                    //             if(d.id == value){
-                                    //                 d.selected='selected'
-                                    //             }else{
-                                    //                 d.selected=""
-                                    //             }
-                                    //             optionHtml += _.template(optionTpl)(d);
-                                    //         })
-                                    //         return '<select key="operator">'+optionHtml+'</select>'
-                                    //     }
-                                    // },
+                                    {
+                                        "data": "operator",
+                                        title:"字段名称",
+                                        width:200,
+                                        render:function(data,type,itemData){
+                                            return '<input type="text" key="operator" value="'+ data +'"/>'
+                                        }
+                                    },
                                     //警情判断依据
                                     {
                                         "data": "type_value",
