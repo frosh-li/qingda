@@ -477,7 +477,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             "scrollY":ui.getListHeight(),
                             "columns": [
                                 { "data": "alarm_sn",title:"序号" },
-                                { "data": "alarm_para1_value",title:"站名" },
+                                { "data": "alram_equipment",title:"站名" },
                                 { "data": "alarm_para1_name",title:"站号" },
                                 { "data": "alarm_para2_name",title:"组号" },//组序列号
                                 { "data": "alarm_para3_name",title:"模块号" },
