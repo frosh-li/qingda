@@ -406,8 +406,8 @@ class RealtimeController extends Controller
                 ->select('*')
                 ->from('{{general_alarm}}')
                 ->where('equipment_sn in ('.$id.')')
-                ->limit($this->count)
-                ->offset(($this->page - 1) * $this->count)
+                // ->limit($this->count)
+                // ->offset(($this->page - 1) * $this->count)
                 ->order('alarm_occur_time desc')
                 ->queryAll();
 
@@ -415,8 +415,8 @@ class RealtimeController extends Controller
             $sites = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('{{general_alarm}}')
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
+                // ->limit($this->count)
+                // ->offset(($this->page-1)*$this->count)
                 ->order('alarm_occur_time desc')
                 ->queryAll();
            
