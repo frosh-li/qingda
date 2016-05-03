@@ -233,7 +233,11 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
             navView = new (Backbone.View.extend(chart_extobj))();
 
             $(".chart-wrap").off("click");
-            $(".chart-wrap").on("click",".switch-btn",function(){
+            $(".chart-wrap").on("click",".switch-btn",function(e){
+                if($(this).hasClass('disabled')){
+                    e.preventDefault();
+                    return;
+                }
                 navView.onChageField($(this));
             })
             $(".chart-wrap").on("click",".shift-btn",function(){

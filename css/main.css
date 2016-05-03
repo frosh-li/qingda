@@ -21,6 +21,10 @@ a:hover{text-decoration:none}
 
 /* 公共 */
 .input-w-1{ width: 250px}
+.btn-bg .disabled,.btn-bg .disabled:hover{
+    background-color:#ccc;
+    color:white;
+}
 
 /*页面头部导航*/
 .top{width:100%;overflow:hidden;background:url("../images/topbg.jpg") no-repeat top;position: relative;}

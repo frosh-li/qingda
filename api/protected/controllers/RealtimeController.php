@@ -216,7 +216,7 @@ class RealtimeController extends Controller
             //$id =  implode(',',$temp);
             if (is_numeric($id)) {
                 $sites = Yii::app()->bms->createCommand()
-                    ->select($field.',gid,sn_key')
+                    ->select($field.',gid,sn_key,sid')
                     ->from('{{group_module_history}}')
                     ->where('sn_key in('.$id.')')
                     ->limit($this->count)
@@ -227,21 +227,21 @@ class RealtimeController extends Controller
                 $arr = explode(',',$id);
 
                 $sites = Yii::app()->bms->createCommand()
-                    ->selectDistinct($field.',gid,sn_key')
+                    ->selectDistinct($field.',gid,sn_key,sid')
                     ->from('{{group_module}}')
                     ->where('sn_key in('.$id.')')
-                    ->limit(count($arr))
-                    ->offset(($this->page - 1) * $this->count)
+                    //->limit(count($arr))
+                    //->offset(($this->page - 1) * $this->count)
                     ->order('record_time desc')
                     ->queryAll();
             }
 
         }else{
             $sites = Yii::app()->bms->createCommand()
-                ->select($field.',gid,sn_key')
+                ->select($field.',gid,sn_key,sid')
                 ->from('{{group_module}}')
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
+                //->limit($this->count)
+                //->offset(($this->page-1)*$this->count)
                 ->order('record_time desc')
                 ->queryAll();
         }
@@ -262,7 +262,7 @@ class RealtimeController extends Controller
                 $row['name'] = $value['gid'];
                 //这个待定
                 $row['status'] = 0;
-                $row['sn_key'] = $value['sn_key'];
+                $row['sn_key'] = $value['sid'].'站-组'.$value['gid'];
                 $row['id'] = $value['gid'];
                 $ret['data']['list'][] = $row;
             }
@@ -332,7 +332,7 @@ class RealtimeController extends Controller
         if ($id) {
             if (is_numeric($id)) {
                 $sites = Yii::app()->bms->createCommand()
-                    ->select($field.',mid,sn_key')
+                    ->select($field.',mid,sn_key,gid,record_time')
                     ->from('{{battery_module_history}}')
                     ->where('sn_key in('.$id.')')
                     ->limit($this->count)
@@ -343,18 +343,18 @@ class RealtimeController extends Controller
                 $arr = explode(',',$id);
 
                 $sites = Yii::app()->bms->createCommand()
-                    ->selectDistinct($field.',mid,sn_key')
+                    ->selectDistinct($field.',mid,sn_key,gid,record_time')
                     ->from('{{battery_module}}')
                     ->where('sn_key in('.$id.')')
-                    ->limit(count($arr))
-                    ->offset(($this->page-1)*$this->count)
+                    //->limit(count($arr))
+                    //->offset(($this->page-1)*$this->count)
                     ->order('record_time desc')
                     ->queryAll();
             }
 
         }else{
             $sites = Yii::app()->bms->createCommand()
-                ->select($field.',mid,sn_key')
+                ->select($field.',mid,sn_key,gid,record_time')
                 ->from('{{battery_module}}')
                 ->limit($this->count)
                 ->offset(($this->page-1)*$this->count)
@@ -378,7 +378,7 @@ class RealtimeController extends Controller
                 $row['name'] = $value['mid'];
                 //这个待定
                 $row['status'] = 0;
-                $row['sn_key'] = $value['sn_key'];
+                $row['sn_key'] = '组'.$value['gid'].'-电池'.$value['mid'];
                 $row['id'] = $value['mid'];
                 $ret['data']['list'][] = $row;
             }
