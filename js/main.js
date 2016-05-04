@@ -40,7 +40,9 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             //}
         });
         $("#dataItem").html('');
-        ui.stopCollect();
+
+        ui.collectAuto();
+
 
         if("map" == sys){
             navTree=null;

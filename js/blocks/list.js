@@ -482,22 +482,22 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 }},
                                 { "data": "alarm_para1_name",title:"站号" },
                                 { "data": "alarm_para2_name",title:"组号" },//组序列号
-                                { "data": "alarm_para3_name",title:"模块号" },
+                                { "data": "alarm_para3_name",title:"电池号" },
                                 { "data": "alarm_occur_time",title:"时间" },
                                 { "data": "alarm_content",title:"警情内容" },
                                 { "data": "alarm_para1_value",title:"数值" },
                                 { "data": "alarm_suggestion",title:"建议处理方式" },
-                                {
-                                    "data": "alarm_sn",
-                                    title:"处理连接",
-                                    render: function (data,type,itemData) {
-                                        return _.template('<a class="resolveBtn" pid="<%=id%>" suggestion="<%=suggestion%}">未处理</a>')({
-                                            id:data,
-                                            suggestion:itemData.alarm_suggestion
-                                        });
-                                    }
-                                },
-                                { "data": "alarm_process_and_memo",title:"处理过程、时间、管理员" }
+                                // {
+                                //     "data": "alarm_sn",
+                                //     title:"处理连接",
+                                //     render: function (data,type,itemData) {
+                                //         return _.template('<a class="resolveBtn" pid="<%=id%>" suggestion="<%=suggestion%}">未处理</a>')({
+                                //             id:data,
+                                //             suggestion:itemData.alarm_suggestion
+                                //         });
+                                //     }
+                                // },
+                                //{ "data": "alarm_process_and_memo",title:"处理过程、时间、管理员" }
                             ]
                         },dataTableDefaultOption)));
                         // _this.checkAllRows();

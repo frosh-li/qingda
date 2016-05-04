@@ -152,7 +152,8 @@ define(function(require){
          * 定时器---采集
          */
         isCollecting:function(){
-            return $(".tzcj").is(":visible");
+
+            return localStorage.getItem('collecting') === 'true';
         },
         startCollect:function(){
             if(this.isCollecting()){return;}
@@ -161,15 +162,24 @@ define(function(require){
                 $("body").addClass('collecting').everyTime(time+"s",'collect',API.collect);
                 $("#startCollectBtn").hide();
                 $(".tzcj").css('display','block');
+                localStorage.setItem('collecting','true');
             }
 
             return this;
+        },
+        collectAuto: function(){
+            console.log('auto start');
+            if(this.isCollecting()){
+                this.startCollect();
+            }else{
+                this.stopCollect();
+            }
         },
         stopCollect:function(){
             $("body").removeClass('collecting').stopTime('collect',API.collect);
             $("#startCollectBtn").css('display','block');
             $(".tzcj").hide();
-
+            localStorage.setItem('collecting','false');
             return this;
         },
         /**
@@ -532,7 +542,7 @@ define(function(require){
 
     var _ui = new ui();
     _ui.startGetCaution();
-
+    _ui.collectAuto();
     $(window).resize(function(){
         changeStyle();
         _ui.resize();
