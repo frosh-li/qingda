@@ -60,24 +60,64 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
             });
             _this.listenTo(Backbone.Events,"allids:get",function(data){
                 console.log('allids get', data);
-                if(data && data.list){
+                if(data){
                     require(['charts'],function(chart){
                         var xAixs = [],values = [];
                         echart = chart;
-                        $.each(data.list,function(i,d){
-                            xAixs.push(d.sn_key||d.name);
-                            values.push({
-                                value:d.value,
-                                symbol:ALARM_SYMBOL[d.status],
-                                symbolSize:14,
-                                itemStyle:{
-                                    color:ALARM_COLOR[d.status],
-                                    normal:{
-                                        color:ALARM_COLOR[d.status]
+                        if(listType == "caution"){
+                            xAixs = ['红色','橙色','黄色'];
+                            values = [
+                                {
+                                    value:data.red,
+                                    symbol:ALARM_SYMBOL[3],
+                                    symbolSize:14,
+                                    itemStyle:{
+                                        color:ALARM_COLOR[3],
+                                        normal:{
+                                            color:ALARM_COLOR[3]
+                                        }
+                                    }
+                                },
+                                {
+                                    value:data.blue,
+                                    symbol:ALARM_SYMBOL[2],
+                                    symbolSize:14,
+                                    itemStyle:{
+                                        color:ALARM_COLOR[2],
+                                        normal:{
+                                            color:ALARM_COLOR[2]
+                                        }
+                                    }
+                                },
+                                {
+                                    value:data.yellow,
+                                    symbol:ALARM_SYMBOL[1],
+                                    symbolSize:14,
+                                    itemStyle:{
+                                        color:ALARM_COLOR[1],
+                                        normal:{
+                                            color:ALARM_COLOR[1]
+                                        }
                                     }
                                 }
-                            });
-                        })
+
+                            ]
+                        }else{
+                            $.each(data.list,function(i,d){
+                                xAixs.push(d.sn_key||d.name);
+                                values.push({
+                                    value:d.value,
+                                    symbol:ALARM_SYMBOL[d.status],
+                                    symbolSize:14,
+                                    itemStyle:{
+                                        color:ALARM_COLOR[d.status],
+                                        normal:{
+                                            color:ALARM_COLOR[d.status]
+                                        }
+                                    }
+                                });
+                            })
+                        }
                         _this.createOption(charType,values,xAixs).render();
                         overFlag = true;
                     })
@@ -223,6 +263,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
 
     return {
         init:function(_sys,_listType,_sub){
+            console.log('chart init', _sys, _listType, _sub);
             sys = _sys;
             listType = _listType;
             sub = sub;
