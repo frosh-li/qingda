@@ -393,7 +393,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "bid",title:"序号",width:50 },
                                     { "data": "sid",title:"站号",width:50 },
                                     { "data": "gid",title:"组号",width:50 },
-                                    { "data": "mid",title:"模块号",width:80 },
                                     { "data": "bid",title:"电池号",width:80  }
                                 ].concat(colums.data)
                             },dataTableDefaultOption)));
