@@ -156,7 +156,7 @@ define(function(require){
             return localStorage.getItem('collecting') === 'true';
         },
         startCollect:function(){
-            if(this.isCollecting()){return;}
+            // if(this.isCollecting()){return;}
             var time = parseInt($("#collectDuration").val());
             if(time){
                 $("body").addClass('collecting').everyTime(time+"s",'collect',API.collect);

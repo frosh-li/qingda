@@ -424,7 +424,11 @@
                 <label class="item-title">邮政编码: </label>
                 <input class="input-w-1" type="text" key="postal_code"/>
                 <label class="item-title">电池码放状态: </label>
-                <input class="input-w-1" type="text" key="battery_status"/>
+                <select class="input-w-1" key="battery_status">
+                    <option value="平地">平地</option>
+                    <option value="机箱">机箱</option>
+                </select>
+                <!--input class="input-w-1" type="text" key="battery_status"/-->
             </div>
             <div class="rowElem">
                 <label class="item-title">IP地址: </label>
@@ -460,7 +464,11 @@
                 <label class="item-title">电池数据采集器数量: </label>
                 <input class="input-w-1" type="text" key="battery_collect_num"/>
                 <label class="item-title">环境温湿度方式: </label>
-                <input class="input-w-1" type="text" key="humiture_type"/>
+                <!--input class="input-w-1" type="text" key="humiture_type"/-->
+                <select class="input-w-1" key="humiture_type">
+                    <option value="恒温">恒温</option>
+                    <option value="自然">自然</option>
+                </select>
             </div>
            <!--<div class="rowElem">
                 <label class="item-title" for="name">负责人手机: </label>

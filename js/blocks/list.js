@@ -276,7 +276,10 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "columns": [
                                     { "data": "sid", "title":"序号",width:50},
                                     { "data": "sid","title":"站号",width:50 },
-                                    { "data": "record_time",title:"时间",width:180 }
+                                    { "data": "record_time",title:"时间",width:180 },
+                                    { "data": "battery_status",title:"电池码放状态",width:180 },
+                                    { "data": "inductor_type",title:"互感器型号",width:180 },
+                                    
                                 ].concat(colums.data)
                             })));
                             _this.checkAllRows();
@@ -538,13 +541,16 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             _this.refresh();
                         });
                         this.listenTo(Backbone.Events,"station:check",function(data){
-                            alert("校验成功");
                             common.loadTips.close();
+                            alert("校验成功");
+                            
                             _this.refresh();
                         });
                         this.listenTo(Backbone.Events,"station:check:fail",function(data){
                             common.loadTips.close();
-                            _this.refresh();
+                            alert('校验失败');
+                            
+                            // _this.refresh();
                         });
                     },
                     fetchData:function(_param){

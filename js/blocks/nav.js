@@ -29,6 +29,7 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
         tree:null,
         navPlugin:null,
         initialize:function(data){
+            console.log('init')
             var _this = this;
             _this.listenTo(Backbone.Events,"nav:update",function(data){
                 _this.data = data.list;
@@ -99,8 +100,8 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
             }
             return this;
         },
-        run:function(){
-            API.getNavData();
+        run:function(cb){
+            API.getNavData(cb);
         },
         isOver:function(value){
             if(typeof value == 'undefined'){

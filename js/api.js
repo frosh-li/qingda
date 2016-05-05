@@ -1,7 +1,7 @@
 define(function(require){
     var $ = require('jquery'),
         API = {
-            fetch: function (url, event, data, type, context,unalert) {
+            fetch: function (url, event, data, type, context,unalert, cb) {
                 $.ajax({
                     type: type || 'GET',
                     data: $.extend(true,{_r:Math.random()},data),
@@ -11,7 +11,14 @@ define(function(require){
                         typeof res == 'string' && (res = $.parseJSON(res));
                         if (!!res && typeof res === 'object') {
                             if(res.response.code == 0){
+                                if(cb){
+                                    res.data.callback = cb;
+                                }
+                                console.log(res.data);
                                 Backbone.Events.trigger(event, res.data, context);
+                                if(cb){
+                                    cb();
+                                }
                             }else if ( res.response.code == "-100") {
                                 route.navigate('login',{trigger:true});
                             }else{
@@ -51,9 +58,9 @@ define(function(require){
                 return this;
             },
             /***************************************左侧导航***************************************/
-            getNavData: function (args) {
+            getNavData: function (cb) {
                 var url = '/api/index.php/trees/getnav';
-                this.fetch(url, "nav:update", args, "get");
+                this.fetch(url, "nav:update", null, "get",this,true, cb);
                 return this;
             },
             /***************************************人员角色***************************************/

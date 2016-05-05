@@ -15,23 +15,25 @@ class RealtimeController extends Controller
                 $temp[] = $value."0000";
             }
             $id =  implode(',',$temp);
-            
-            $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{station_module}}')
-                ->where('sn_key in('.$id.')')
-                ->limit($this->count)
-                ->offset(($this->page - 1) * $this->count)
-                ->order('record_time desc')
-                ->queryAll();
+            $sql = "select tb_station_module.*,my_site.battery_status, my_site.inductor_type from tb_station_module  left join my_site on my_site.sid=tb_station_module.sid where tb_station_module.sn_key in (".$id.")";
+            $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+                //->select('*')
+                //->from('{{station_module}}')
+                //->where('sn_key in('.$id.')')
+                //->limit($this->count)
+                //->offset(($this->page - 1) * $this->count)
+                //->order('record_time desc')
+                //->queryAll();
         }else{
-            $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{station_module}}')
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
-                ->order('record_time desc')
-                ->queryAll();
+            $sql = "select tb_station_module.*,my_site.battery_status, my_site.inductor_type from tb_station_module left join my_site on my_site.sid=tb_station_module.sid";
+            $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+
+                //->select('*')
+                //->from('{{station_module}}')
+                //->limit($this->count)
+                //->offset(($this->page-1)*$this->count)
+                //->order('record_time desc')
+                //->queryAll();
         }
 
         $ret['response'] = array(

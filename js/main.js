@@ -64,14 +64,22 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             }
             ui.switchChartBtns(pageType);
             require(["blocks/charts","blocks/list","blocks/nav","api"],function(chart,list,nav,API){
-                refreshModules([nav,list,chart],_arg);
+                
                 afterInit(sys,pageType,sub);
 
                 if(!navTree){
-                    nav.run();
-                    navTree=nav;
+                    refreshModules([nav],_arg);
+                    nav.run(function(){
+                        navTree=nav;
+                        console.log('my nav', nav);
+                        refreshModules([list,chart],_arg);        
+                    });
+                    
+                }else{
+                    console.log('refresh node');
+                    refreshModules([list,chart],_arg);    
                 }
-
+                
                 API.getLinkingStationNum().getParam({},'refresh:get');
 
                 isOver();
@@ -271,12 +279,18 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         curModules = [];
     }
     function addModules(modules,arg){
-        $.each(modules,function(i,m){
-            if( m && m.init ){
-                m.init.apply(m,arg);
-                curModules.push(m);
-            }
-        })
+        var c = modules.shift();
+        if(c&&c.init){
+            c.init.apply(c,arg);
+            curModules.push(c);
+            addModules(modules,arg);    
+        }
+        // $.each(modules,function(i,m){
+        //     if( m && m.init ){
+        //         m.init.apply(m,arg);
+        //         curModules.push(m);
+        //     }
+        // })
     }
 
     function afterInit(sys,pageType,sub){
