@@ -22,11 +22,20 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                         _this.oncancel();
                         Backbone.Events.trigger("listdata:refresh", "station");
                     });
+                    _this.listenTo(Backbone.Events,"stationdata:create:fail stationdata:update:fail",function(data){
+                        console.log('fail data', data)
+                        common.loadTips.close();
+                        alert(data.response.msg);
+                    });
                     _this.listenTo(Backbone.Events,"station:create:next",function(data){
                         common.loadTips.close();
                         _this.oncancel();
                         Backbone.Events.trigger("listdata:refresh", "station");
                         Backbone.Events.trigger("station:next", data);
+                    });
+                    _this.listenTo(Backbone.Events,"station:create:next:fail",function(data){
+                        common.loadTips.close();
+                        alert(data.response.msg);
                     });
                 },
                 setValue:function(){
