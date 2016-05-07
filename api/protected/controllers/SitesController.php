@@ -507,8 +507,8 @@ class SitesController extends Controller
         $sites = Yii::app()->db->createCommand()
             ->select('*')
             ->from('{{site}}')
-            ->limit($this->count)
-            ->offset(($this->page-1)*$this->count)
+            //->limit($this->count)
+            //->offset(($this->page-1)*$this->count)
             ->order('id desc')
             ->queryAll();
         $ret['response'] = array(

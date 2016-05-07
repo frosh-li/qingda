@@ -277,8 +277,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "sid", "title":"序号",width:50},
                                     { "data": "sid","title":"站号",width:50 },
                                     { "data": "record_time",title:"时间",width:180 },
-                                    { "data": "battery_status",title:"电池码放状态",width:180 },
-                                    { "data": "inductor_type",title:"互感器型号",width:180 },
+                                    //{ "data": "battery_status",title:"电池码放状态",width:180 },
+                                   // { "data": "inductor_type",title:"互感器型号",width:180 },
                                     
                                 ].concat(colums.data)
                             })));

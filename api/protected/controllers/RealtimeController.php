@@ -164,8 +164,8 @@ class RealtimeController extends Controller
                 ->select('*')
                 ->from('{{group_module}}')
                 ->where('sn_key in('.$id.')')
-                ->limit($this->count)
-                ->offset(($this->page - 1) * $this->count)
+                //->limit($this->count)
+                //->offset(($this->page - 1) * $this->count)
                 ->order('gid asc')
                 //->order('record_time desc')
                 ->queryAll();
@@ -173,8 +173,8 @@ class RealtimeController extends Controller
             $sites = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('{{group_module}}')
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
+                //->limit($this->count)
+                //->offset(($this->page-1)*$this->count)
                 ->order('gid asc')
                 //->order('record_time desc')
                 ->queryAll();
@@ -221,8 +221,8 @@ class RealtimeController extends Controller
                     ->select($field.',gid,sn_key,sid')
                     ->from('{{group_module_history}}')
                     ->where('sn_key in('.$id.')')
-                    ->limit($this->count)
-                    ->offset(($this->page - 1) * $this->count)
+                    //->limit($this->count)
+                    //->offset(($this->page - 1) * $this->count)
                     ->order('record_time desc')
                     ->queryAll();
             }else{
@@ -288,8 +288,8 @@ class RealtimeController extends Controller
                 ->select('*')
                 ->from('{{battery_module}}')
                 ->where('sn_key in('.$id.')')
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
+                //->limit($this->count)
+                //->offset(($this->page-1)*$this->count)
                 ->order('gid asc, record_time desc')
                 //->order('record_time desc')
                 ->queryAll();
@@ -297,8 +297,8 @@ class RealtimeController extends Controller
             $sites = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('{{battery_module}}')
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
+                //->limit($this->count)
+                //->offset(($this->page-1)*$this->count)
                 ->order('gid asc, record_time desc')
                 //->order('record_time desc')
                 ->queryAll();
@@ -339,8 +339,8 @@ class RealtimeController extends Controller
                     ->select($field.',mid,sn_key,gid,record_time')
                     ->from('{{battery_module_history}}')
                     ->where('sn_key in('.$id.')')
-                    ->limit($this->count)
-                    ->offset(($this->page-1)*$this->count)
+                    //->limit($this->count)
+                    //->offset(($this->page-1)*$this->count)
                     ->order('record_time desc')
                     ->queryAll();
             }else{
@@ -360,8 +360,8 @@ class RealtimeController extends Controller
             $sites = Yii::app()->bms->createCommand()
                 ->select($field.',mid,sn_key,gid,record_time')
                 ->from('{{battery_module}}')
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
+                //->limit($this->count)
+                //->offset(($this->page-1)*$this->count)
                 ->order('record_time desc')
                 ->queryAll();
         }
@@ -507,8 +507,8 @@ class RealtimeController extends Controller
                 ->select('*')
                 ->from('{{general_alarm}}')
                 ->where('alarm_sn='.$alarm_sn)
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
+                //->limit($this->count)
+                //->offset(($this->page-1)*$this->count)
                 ->order('alarm_occur_time desc')
                 ->queryRow();
             if ($alarm) {
@@ -540,8 +540,8 @@ class RealtimeController extends Controller
                 ->select($alarm['alarm_para1_name'] . ',sid')
                 ->from('{{station_module_history}}')
                 ->where('sn_key in(' . $alarm['alarm_sn'] . ')')
-                ->limit($this->count)
-                ->offset(($this->page - 1) * $this->count)
+                //->limit($this->count)
+                //->offset(($this->page - 1) * $this->count)
                 ->order('record_time desc')
                 ->queryAll();
             if ($sites) {
@@ -573,8 +573,8 @@ class RealtimeController extends Controller
                 ->select($alarm['alarm_para2_name'].',gid,sn_key')
                 ->from('{{group_module_history}}')
                 ->where('sn_key in('.$alarm['alarm_sn'].')')
-                ->limit($this->count)
-                ->offset(($this->page - 1) * $this->count)
+                //->limit($this->count)
+                //->offset(($this->page - 1) * $this->count)
                 ->order('record_time desc')
                 ->queryAll();
             if ($sites) {
@@ -600,8 +600,8 @@ class RealtimeController extends Controller
                 ->select($alarm['alarm_para3_name'].',mid,sn_key')
                 ->from('{{battery_module_history}}')
                 ->where('sn_key in('.$alarm['alarm_sn'].')')
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
+                //->limit($this->count)
+                //->offset(($this->page-1)*$this->count)
                 ->order('record_time desc')
                 ->queryAll();
             if ($sites) {

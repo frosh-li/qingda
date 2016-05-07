@@ -272,8 +272,7 @@ class BatteryinfoController extends Controller
          $offset = ($this->page-1)*$this->count;
         $sql = "SELECT b . * , s.site_name
                 FROM  {{battery_info}} AS b
-                LEFT JOIN {{site}} AS s ON b.sid = s.sid
-                LIMIT  $offset, $this->count";
+                LEFT JOIN {{site}} AS s ON b.sid = s.id";
         $ups = Yii::app()->db->createCommand($sql)->queryAll();
         //$ups = Yii::app()->db->createCommand()
         //    ->select('s.site_name,bi.*')
