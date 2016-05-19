@@ -198,6 +198,9 @@ define(function(require){
                             '</div>',
                     html = _.template(tpl)({message:message||''});
                 this.close();
+                if($("#loadding").length){
+                    $("#loadding").parents('.ui-dialog').remove();    
+                }
                 this.dialogEl = $(html).dialog({
                     modal:true,
                     dialogClass:'tips',
