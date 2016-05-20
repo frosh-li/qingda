@@ -24,6 +24,27 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             $searchWrap = $(".search-jqtransform").hide();
             $stationPop = $('.stationPop');
 
+        $('.cj-btn').click(function(){
+            // 查询
+            
+        })
+
+        $( "#dbeginTime" ).datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            onClose: function( selectedDate ) {
+                $( "#dendTime" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $( "#dendTime" ).datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            onClose: function( selectedDate ) {
+                $( "#dbeginTime" ).datepicker( "option", "maxDate", selectedDate );
+            }
+        });
+
+
         $stationPop.click(function(e){
             console.log('click on stationPop');
             var id = navTree.getSites().ids;
@@ -101,6 +122,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             ui.downHide(true);
             $("#dataItem").html($("#listTpl").html());
         	$durationWrap.show();
+
             require(["blocks/list","blocks/nav"],function(list,nav){
                 refreshModules([nav,list],_arg);
                 afterInit(sys,pageType,sub);

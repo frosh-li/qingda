@@ -6,10 +6,24 @@ class UserlogController extends Controller
 	public function actionIndex()
 	{
 		$type = Yii::app()->request->getParam('type' ,0);
+        $start =Yii::app()->request->getParam('start');
+        $end = Yii::app()->request->getParam('end');
+        
+        
+
         $where = ' 1 =1 ';
         if ($type != 0 ) {
             $where .= ' and type='.$type;
         }
+        if($start){
+            $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
+            $where .= ' and modify_time >= "'.$start.'"';
+        }
+        if($end){
+            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $where .= ' and modify_time <= "'.$end.'"';
+        }
+        //var_dump($where);
         $this->setPageCount();
         $logs = Yii::app()->db->createCommand()
             ->select('*')

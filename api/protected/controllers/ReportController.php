@@ -291,42 +291,41 @@ class ReportController  extends Controller
      */
     public function actionChargeOrDischarge() {
         $id = Yii::app()->request->getParam('id',0);
-        $begin = Yii::app()->request->getParam('begin','0000-00-00 00:00:00');
-        $end = Yii::app()->request->getParam('end', '0000-00-00 00:00:00');
+        
         $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
 
         $this->setPageCount();
 
         $where = '';
-        if ($begin != '0000-00-00 00:00:00') {
-            $where .= "`record_time` >='{$begin}'";
+        $start =Yii::app()->request->getParam('start');
+        $end = Yii::app()->request->getParam('end');
+
+        if($start){
+            $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
+            $where .= ' and alarm_recovered_time >= "'.$start.'"';
+        }
+        if($end){
+            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $where .= ' and alarm_recovered_time <= "'.$end.'"';
         }
 
-        if ($end != '0000-00-00 00:00:00') {
-            if ($where != '') {
-                $where .= ' AND ';
-            }
+        // if ($id != '') {
+        //     if ($where != '') {
+        //         $where .= ' AND ';
+        //     }
 
-            $where .= "`record_time` <='{$end}'";
-        }
+        //     $strArray = explode(',',$id);
+        //     $ids = array();
+        //     foreach ($strArray as $k => $v)
+        //     {
+        //         $v = intval($v);
+        //         if ($v >0) {
+        //             $ids[$v] = $v;
+        //         }
+        //     }
 
-        if ($id != '') {
-            if ($where != '') {
-                $where .= ' AND ';
-            }
-
-            $strArray = explode(',',$id);
-            $ids = array();
-            foreach ($strArray as $k => $v)
-            {
-                $v = intval($v);
-                if ($v >0) {
-                    $ids[$v] = $v;
-                }
-            }
-
-            $where .= '`sid` in ('.implode(',',$ids).')';
-        }
+        //     $where .= '`sid` in ('.implode(',',$ids).')';
+        // }
 
         $result = Yii::app()->bms->createCommand()
             ->select('sn_key, record_time, sid')

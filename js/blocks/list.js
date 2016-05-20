@@ -69,6 +69,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             _this.render();
                             overFlag = true;
                         });
+                        
+                        _this.listenTo(Backbone.Events,"search:done",function(){
+                            console.log('search clicked');
+                            _this.refresh();
+                        });
                         _this.listenTo(Backbone.Events,"listdata:refresh",function(){
                             _this.refresh();
                         });
@@ -1349,8 +1354,14 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             //报表：报警历史
             "reportCaution":{
                 extObj:{
-                    fetchData:function(_param){
-                        API.getGerneralalarmlog(_param);
+                    fetchData:function(){
+                        var type = $("#cationCategory").val();
+                        console.log('cation type is', type);
+                        var param = {start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
+                        if(type > 0){
+                            param.type = type;
+                        }
+                        API.getGerneralalarmlog(param);
                     },
                     render:function() {
                         var _this = this;
@@ -1363,24 +1374,29 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             "scrollX": ui.getListHeight(),
                             "scrollY": ui.getListHeight(),
                             "columns": [
-                                {"data": "id", title: "序号",width:50},
-                                {"data": "id", title: "站号", width: 100},
-                                {"data": "begin", title: "开始时间", width: 100},
-                                {"data": "end", title: "结束时间", width: 100},
-                                {
-                                    "data": "type",
-                                    title: "类型",
-                                    render:function(data,itemData){
-                                        switch(data){
-                                            case '0':
-                                                return '<label style="color:#f86464">红</label>+<label style="color:#fbf17d">黄</label>'
-                                            case '1':
-                                                return '<label style="color:#f86464">红</label>'
-                                            case '2':
-                                                return '<label style="color:#fbf17d">黄</label>'
-                                        }
-                                    }
-                                }
+                                { "data": "alarm_sn",title:"序号" },
+                                { "data": "alram_equipment",title:"站名" ,render:function(data,type,itemData){
+                                    var color = ['red', 'green', '#f90']
+                                    return '<span style="color:white;background-color:'+color[itemData.alarm_emergency_level -1]+'">'+itemData.alram_equipment+'</span>';
+                                }},
+                                { "data": "alarm_para1_name",title:"站号" },
+                                { "data": "alarm_para2_name",title:"组号" },//组序列号
+                                { "data": "alarm_para3_name",title:"电池号" },
+                                { "data": "alarm_occur_time",title:"时间" },
+                                { "data": "alarm_content",title:"警情内容" },
+                                { "data": "alarm_para1_value",title:"数值" },
+                                { "data": "alarm_suggestion",title:"建议处理方式" },
+                                // {
+                                //     "data": "alarm_sn",
+                                //     title:"处理连接",
+                                //     render: function (data,type,itemData) {
+                                //         return _.template('<a class="resolveBtn" pid="<%=id%>" suggestion="<%=suggestion%}">未处理</a>')({
+                                //             id:data,
+                                //             suggestion:itemData.alarm_suggestion
+                                //         });
+                                //     }
+                                // },
+                                //{ "data": "alarm_process_and_memo",title:"处理过程、时间、管理员" }
                             ]
                         }, dataTableDefaultOption)));
                     }
@@ -1420,16 +1436,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             "chargeOrDischarge":{
                 extObj:{
                     fetchData:function(_param){
-                        _param = _param || {}
-
-                            var navData = nav.getSites();
-                            console.log(navData);
-                            console.log('navids',navData.pids, navData);
-                            $.extend(_param,{id:navData.pids.join(",")});
-                            console.log(_param)
-                            API.getChargeOrDischarge(_param);
-
-                        
+                        var param = {start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
+                        API.getChargeOrDischarge(_param);
                     },
                     render:function() {
                         var _this = this;
@@ -1457,13 +1465,14 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             "reportUilog_options":{
                 extObj:{
                     fetchData:function(_param){
-                        API.getUserlog({type:'2'});
+                        API.getUserlog({type:'2', start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""})
                     },
                     render:function() {
                         var _this = this;
                         _this.destoryPlugin();
                         _this.listPlugin.push($('#auto table').DataTable($.extend(true, {
                             "data": _this.data,
+                            "paging":true,
                             "language": {
                                 "emptyTable": "UI日志数据为空"
                             },
@@ -1484,7 +1493,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.reportUilog_user = $.extend(true,{},listConfig.reportUilog_options,{
         extObj:{
             fetchData:function(_param){
-                API.getUserlog({type:'1'});
+                API.getUserlog({type:'1', start:$('#startTime').val()?+new Date($('#startTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""})
             }
         }
     })
@@ -1492,32 +1501,58 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.reportUilog_other = $.extend(true,{},listConfig.reportUilog_options,{
         extObj:{
             fetchData:function(_param){
-                API.getUserlog({type:'3'});
+                API.getUserlog({type:'3', start:$('#startTime').val()?+new Date($('#startTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""})
             }
         }
     })
 
 
     //查询：UI日志：设置
-    listConfig.uilog_options = $.extend(true,{},listConfig.reportUilog_options)
+    listConfig.uilog_options = $.extend(true,{},listConfig.reportUilog_options,{
+        extObj:{
+            fetchData:function(_param){
+                API.getUserlog({type:'2', start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+            }
+        }
+    })
     //查询：UI日志：用户登录登出
-    listConfig.uilog_user = $.extend(true,{},listConfig.reportUilog_user)
+    listConfig.uilog_user = $.extend(true,{},listConfig.reportUilog_user,{
+        extObj:{
+            fetchData:function(_param){
+                API.getUserlog({type:'1', start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+            }
+        }
+    })
     //查询：UI日志：其他
-    listConfig.uilog_other = $.extend(true,{},listConfig.reportUilog_other)
+    listConfig.uilog_other = $.extend(true,{},listConfig.reportUilog_other,{
+        extObj:{
+            fetchData:function(_param){
+                API.getUserlog({type:'3', start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+            }
+        }
+    })
     //查询：站
-    listConfig.qureyStation = $.extend(true,{},listConfig.station)
+    listConfig.qureyStation = $.extend(true,{},listConfig.station,{
+        extObj:{
+            fetchData:function(_param){
+                API.getStationHistoryData({start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+            }
+        }
+    })
     //查询：组
-    listConfig.qureyGroup = $.extend(true,{},listConfig.group)
+    listConfig.qureyGroup = $.extend(true,{},listConfig.group,{
+        extObj:{
+            fetchData:function(_param){
+                API.getGroupHistoryData({start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+            }
+        }
+    })
     //查询：电池
     listConfig.qureyBattery = $.extend(true,{},listConfig.battery,{
         extObj:{
             fetchData:function(_param){
-                var _param = {};
-                var navData = nav.getBatterys();
-
-                $.extend(_param,{id:navData.ids.join(",")});
-                API.getBatterysRealTimeData(_param);
-            },
+                API.getBatteryHistoryData({start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+            }
         }
     })
     //查询：门限

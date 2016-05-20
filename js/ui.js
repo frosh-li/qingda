@@ -31,7 +31,9 @@ define(function(require){
             "click #startCollectBtn":"startCollect",
             "click #navSearchBtn":"onSearchNav",
             "click .tzcj":"stopCollect",
-            "click .title-list .switch-btn i":"showItemsLayer"
+            "click .title-list .switch-btn i":"showItemsLayer",
+            "click .cj-btn":"onSearch",
+            "click #searchBtn span span":"onSearch"
         },
         initialize:function(){
             var _this = this;
@@ -69,6 +71,9 @@ define(function(require){
             _this.listenTo(Backbone.Events,"battery:next",function(data){
                 _this.showUPSEditDialog(false,data);
             });
+        },
+        onSearch: function(){
+            Backbone.Events.trigger('search:done');
         },
         showItemsLayer:function(evt){
             var $el = $(evt.currentTarget),

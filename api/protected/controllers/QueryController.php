@@ -7,32 +7,44 @@ class QueryController extends Controller
 	{
         $this->setPageCount();
         $id = Yii::app()->request->getParam('id',0);
+        $start =Yii::app()->request->getParam('start');
+        $end = Yii::app()->request->getParam('end');
+        $where = ' 1 =1 ';
+        if($start){
+            $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
+            $where .= ' and record_time >= "'.$start.'"';
+        }
+        if($end){
+            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $where .= ' and record_time <= "'.$end.'"';
+        }
 
-        if ($id) {
-            $arr = explode(',',$id);
-            $temp = array();
-            foreach ($arr as $key => $value) {
-                $temp[] = $value.'0000';
-            }
-            $id =  implode(',',$temp);
+        // if ($id) {
+        //     $arr = explode(',',$id);
+        //     $temp = array();
+        //     foreach ($arr as $key => $value) {
+        //         $temp[] = $value.'0000';
+        //     }
+        //     $id =  implode(',',$temp);
 
+        //     $sites = Yii::app()->bms->createCommand()
+        //         ->select('*')
+        //         ->from('{{station_module_history}}')
+        //         ->where('sn_key in('.$id.')')
+        //         ->limit($this->count)
+        //         ->offset(($this->page - 1) * $this->count)
+        //         ->order('record_time desc')
+        //         ->queryAll();
+        // }else{
             $sites = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('{{station_module_history}}')
-                ->where('sn_key in('.$id.')')
-                ->limit($this->count)
-                ->offset(($this->page - 1) * $this->count)
-                ->order('record_time desc')
-                ->queryAll();
-        }else{
-            $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{station_module_history}}')
+                ->where($where)
                 ->limit($this->count)
                 ->offset(($this->page-1)*$this->count)
                 ->order('record_time desc')
                 ->queryAll();
-        }
+        //}
 
         $ret['response'] = array(
             'code' => 0,
@@ -151,30 +163,42 @@ class QueryController extends Controller
     {
         $this->setPageCount();
         $id = Yii::app()->request->getParam('id',0);
-        if ($id) {
-            $arr = explode(',',$id);
-            $temp = array();
-            foreach ($arr as $key => $value) {
-                $temp[] = $value.'00';
-            }
-            $id =  implode(',',$temp);
+        $start =Yii::app()->request->getParam('start');
+        $end = Yii::app()->request->getParam('end');
+        $where = ' 1 =1 ';
+        if($start){
+            $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
+            $where .= ' and record_time >= "'.$start.'"';
+        }
+        if($end){
+            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $where .= ' and record_time <= "'.$end.'"';
+        }
+        // if ($id) {
+        //     $arr = explode(',',$id);
+        //     $temp = array();
+        //     foreach ($arr as $key => $value) {
+        //         $temp[] = $value.'00';
+        //     }
+        //     $id =  implode(',',$temp);
+        //     $sites = Yii::app()->bms->createCommand()
+        //         ->select('*')
+        //         ->from('{{group_module_history}}')
+        //         ->where('sn_key in('.$id.')')
+        //         ->limit($this->count)
+        //         ->offset(($this->page - 1) * $this->count)
+        //         ->order('record_time desc')
+        //         ->queryAll();
+        // }else{
             $sites = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('{{group_module_history}}')
-                ->where('sn_key in('.$id.')')
-                ->limit($this->count)
-                ->offset(($this->page - 1) * $this->count)
-                ->order('record_time desc')
-                ->queryAll();
-        }else{
-            $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{group_module_history}}')
+                ->where($where)
                 ->limit($this->count)
                 ->offset(($this->page-1)*$this->count)
                 ->order('record_time desc')
                 ->queryAll();
-        }
+        //}
 
         $ret['response'] = array(
             'code' => 0,
@@ -279,24 +303,36 @@ class QueryController extends Controller
     {
         $this->setPageCount();
         $id = Yii::app()->request->getParam('id',0);
-        if ($id) {
-            $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{battery_module_history}}')
-                ->where('sn_key in('.$id.')')
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
-                ->order('record_time desc')
-                ->queryAll();
-        }else{
-            $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{battery_module_history}}')
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
-                ->order('record_time desc')
-                ->queryAll();
+        $start =Yii::app()->request->getParam('start');
+        $end = Yii::app()->request->getParam('end');
+        $where = ' 1 =1 ';
+        if($start){
+            $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
+            $where .= ' and record_time >= "'.$start.'"';
         }
+        if($end){
+            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $where .= ' and record_time <= "'.$end.'"';
+        }
+        // if ($id) {
+        //     $sites = Yii::app()->bms->createCommand()
+        //         ->select('*')
+        //         ->from('{{battery_module_history}}')
+        //         ->where('sn_key in('.$id.')')
+        //         ->limit($this->count)
+        //         ->offset(($this->page-1)*$this->count)
+        //         ->order('record_time desc')
+        //         ->queryAll();
+        // }else{
+            $sites = Yii::app()->bms->createCommand()
+                ->select('*')
+                ->from('{{battery_module_history}}')
+                ->where($where)
+                ->limit($this->count)
+                ->offset(($this->page-1)*$this->count)
+                ->order('record_time desc')
+                ->queryAll();
+        //}
 
         $ret['response'] = array(
             'code' => 0,
@@ -398,24 +434,36 @@ class QueryController extends Controller
         // 数据直接出，通过command来处理数据
         $id = Yii::app()->request->getParam('id',0);
         $this->setPageCount();
-        if ($id != 0) {
+        $start =Yii::app()->request->getParam('start');
+        $end = Yii::app()->request->getParam('end');
+        $where = ' 1 =1 ';
+        if($start){
+            $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
+            $where .= ' and alarm_occur_time >= "'.$start.'"';
+        }
+        if($end){
+            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $where .= ' and alarm_occur_time <= "'.$end.'"';
+        }
+        // if ($id != 0) {
+        //     $sites = Yii::app()->bms->createCommand()
+        //         ->select('*')
+        //         ->from('{{general_alarm_history}}')
+        //         ->where('alarm_para1_name in ('.$id.')')
+        //         ->limit($this->count)
+        //         ->offset(($this->page - 1) * $this->count)
+        //         ->order('alarm_occur_time desc')
+        //         ->queryAll();
+        // }else{
             $sites = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('{{general_alarm_history}}')
-                ->where('alarm_para1_name in ('.$id.')')
-                ->limit($this->count)
-                ->offset(($this->page - 1) * $this->count)
-                ->order('alarm_occur_time desc')
-                ->queryAll();
-        }else{
-            $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{general_alarm_history}}')
+                ->where($where)
                 ->limit($this->count)
                 ->offset(($this->page-1)*$this->count)
                 ->order('alarm_occur_time desc')
                 ->queryAll();
-        }
+        //}
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'

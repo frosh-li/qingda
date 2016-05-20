@@ -121,6 +121,21 @@ define(function(require){
                 this.fetch(url, "stationdata:get", args, "get");
                 return this;
             },
+            getStationHistoryData:function(args){
+                var url = '/api/index.php/query';
+                this.fetch(url, "stationdata:get", args, "get");
+                return this;
+            },
+            getGroupHistoryData:function(args){
+                var url = '/api/index.php/query/groupmodule';
+                this.fetch(url, "listdata:update", args, "get");
+                return this;
+            },
+            getBatteryHistoryData:function(args){
+                var url = '/api/index.php/query/batterymodule';
+                this.fetch(url, "listdata:update", args, "get");
+                return this;
+            },
             getLinkingStationNum:function(args,event){
                 var url = '/api/index.php/stat';
                 this.fetch(url, event||"linknum:get", args, "get");
@@ -457,6 +472,7 @@ define(function(require){
                 this.fetch(url, "listdata:update", args, "post");
                 return this;
             },
+            
             //充放电
             getChargeOrDischarge: function(args){
                 var url = '/api/index.php/report/chargeOrDischarge';

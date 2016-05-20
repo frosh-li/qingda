@@ -73,14 +73,23 @@ class GerneralalarmController extends Controller
         if ($type != 0) {
             $where .= ' and alarm_emergency_level='.$type;
         }
-        if ($id != 0) {
-            $where .= '  and alarm_para1_name in(' . $id . ') ';
+
+        $start =Yii::app()->request->getParam('start');
+        $end = Yii::app()->request->getParam('end');
+
+        if($start){
+            $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
+            $where .= ' and alarm_recovered_time >= "'.$start.'"';
         }
-        $where .= ' and alarm_recovered_time >='.$begin . " and alarm_recovered_time <= ".$end;
+        if($end){
+            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $where .= ' and alarm_recovered_time <= "'.$end.'"';
+        }
+
         $this->setPageCount();
         $alarms = Yii::app()->bms->createCommand()
             ->select('*')
-            ->from('{{general_alarm}}')
+            ->from('{{general_alarm_history}}')
             ->where($where)
             ->limit($this->count)
             ->offset(($this->page - 1) * $this->count)
