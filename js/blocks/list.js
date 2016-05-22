@@ -43,7 +43,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         var _this = this;
                         _this.destroy();
                         _this.captureEvt();
-                        
+
                     },
                     checkAllRows: function(){
                         var _this = this;
@@ -55,8 +55,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             }
                             _this.triggerSelectEvent();
                         },0)
-                        
-                        
+
+
                     },
                     captureEvt:function(){
                         var _this = this;
@@ -69,7 +69,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             _this.render();
                             overFlag = true;
                         });
-                        
+
                         _this.listenTo(Backbone.Events,"search:done",function(){
                             console.log('search clicked');
                             _this.refresh();
@@ -89,13 +89,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             _this.refresh();
                         });
                         /*_this.listenTo(Backbone.Events,"pageType:change",function(type){
-                            if(!$(_this.el).length || !$(_this.el).is(":visible")){
-                                return;
-                            }
-                            initPage(type);
-                            console.log("pageType:change");
-                            _this.refresh();
-                        });*/
+                         if(!$(_this.el).length || !$(_this.el).is(":visible")){
+                         return;
+                         }
+                         initPage(type);
+                         console.log("pageType:change");
+                         _this.refresh();
+                         });*/
                         _this.listenTo(Backbone.Events,"curstation:change",function(data){
                             _this.ids = null;
                             if(!$(_this.el).length || !$(_this.el).is(":visible")){
@@ -137,18 +137,18 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         var _this = this;
                         _this.changeRowClass($(evt.currentTarget),'highlight');
                     },/*
-                    outRow:function(evt){
-                        var _this = this,
-                            $tr = $(evt.currentTarget),
-                            trIndex = $tr.index(),
-                            $tbodys = $("tbody",_this.el),
-                            data = _this.getRowData(evt.currentTarget);
+                     outRow:function(evt){
+                     var _this = this,
+                     $tr = $(evt.currentTarget),
+                     trIndex = $tr.index(),
+                     $tbodys = $("tbody",_this.el),
+                     data = _this.getRowData(evt.currentTarget);
 
-                        $tbodys.each(function(i,tbody){
-                             var $tbody = $(tbody);
-                             $tbody.find("tr").eq(trIndex).toggleClass('highlight');
-                         })
-                    },*/
+                     $tbodys.each(function(i,tbody){
+                     var $tbody = $(tbody);
+                     $tbody.find("tr").eq(trIndex).toggleClass('highlight');
+                     })
+                     },*/
                     changeRowClass:function($tr,className){
                         var _this = this,
                             trIndex = $tr.index(),
@@ -172,7 +172,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         _this.changeRowClass($(evt.currentTarget),'selected').triggerSelectEvent();
                     },
                     destroy:function(){
-                        this.stopListening();
+                        this.remove();
                         this.destoryPlugin();
                         this.clearTables();
                     },
@@ -283,8 +283,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "sid","title":"站号",width:50 },
                                     { "data": "record_time",title:"时间",width:180 },
                                     //{ "data": "battery_status",title:"电池码放状态",width:180 },
-                                   // { "data": "inductor_type",title:"互感器型号",width:180 },
-                                    
+                                    // { "data": "inductor_type",title:"互感器型号",width:180 },
+
                                 ].concat(colums.data)
                             })));
                             _this.checkAllRows();
@@ -303,7 +303,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     stations:null,
                     prevIds:[],
                     curStation:'',
-                    el:$('#dataItem'),
+                    //el:$('#dataItem'),
                     events:{
                         'click #page .prev':'onPrev',
                         'click #page .next':'onNext'
@@ -406,7 +406,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             },dataTableDefaultOption)));
                             _this.checkAllRows();
                         })
-;
+                        ;
                         return this;
                     }
                 }
@@ -452,7 +452,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             },dataTableDefaultOption)));
                             _this.checkAllRows();
                         })
-                        
+
                         return this;
                     }
                 }
@@ -548,13 +548,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         this.listenTo(Backbone.Events,"station:check",function(data){
                             common.loadTips.close();
                             alert("校验成功");
-                            
+
                             _this.refresh();
                         });
                         this.listenTo(Backbone.Events,"station:check:fail",function(data){
                             common.loadTips.close();
                             alert('校验失败');
-                            
+
                             // _this.refresh();
                         });
                     },
@@ -917,25 +917,25 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         $('#lock').hide();
                         $('#auto').width('100%');
                         /*this.listPlugin.push($('#auto table').DataTable( $.extend(true,{
-                            "data": this.data,
-                            "scrollX":true,
-                            "columns": [
-                                { "data": "name" },
-                                { "data": "id" },
-                                { "data": "time" },
-                                { "data": "a" },
-                                { "data": "v" },
-                                { "data": "temperature" },
-                                { "data": "temperature_max" },
-                                { "data": "temperature_min" },
-                                { "data": "humidity" },
-                                { "data": "humidity_max" },
-                                { "data": "group_num" },
-                                { "data": "battery_num" },
-                                { "data": "battery_state" },
-                                { "data": "reserve_time" }
-                            ]
-                        },dataTableDefaultOption)));*/
+                         "data": this.data,
+                         "scrollX":true,
+                         "columns": [
+                         { "data": "name" },
+                         { "data": "id" },
+                         { "data": "time" },
+                         { "data": "a" },
+                         { "data": "v" },
+                         { "data": "temperature" },
+                         { "data": "temperature_max" },
+                         { "data": "temperature_min" },
+                         { "data": "humidity" },
+                         { "data": "humidity_max" },
+                         { "data": "group_num" },
+                         { "data": "battery_num" },
+                         { "data": "battery_state" },
+                         { "data": "reserve_time" }
+                         ]
+                         },dataTableDefaultOption)));*/
                         return this;
                     }
                 }
@@ -1924,13 +1924,14 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     function initPage(listType,sub,ids){
         if(listView){
             listView.destroy();
-            $("#list").html('');
+            listView = null;
+            //$("#list").html('');
         }
         var _listType = listType?listType+(sub?"_"+sub:""):'defaultConfig';
         var _listTpl = 'defaultListTpl';
         var _extObj= listConfig[_listType]?listConfig[_listType].extObj:{};
         _extObj = $.extend({},listConfig.defaultConfig.extObj,_extObj);
-        $("#list").html($("#"+_listTpl).html());
+        //$("#list").html($("#"+_listTpl).html());
         listView = new (Backbone.View.extend($.extend({},{el:$("#list"),ids:ids},_extObj)))();
         overFlag = false;
         listView.fetchData();
@@ -2004,6 +2005,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             if(listView){
                 console.log('destroy list');
                 listView.destroy();
+                listView = null;
                 $("#list").html('');
             }
             return this;
