@@ -41,7 +41,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     },
                     initialize:function(data){
                         var _this = this;
-                        _this.destroy();
                         _this.captureEvt();
 
                     },
