@@ -398,7 +398,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     fetchData:function(){
                         $("#page").hide();
                         var _param = {};
-                        this.destoryPlugin();
                         $.extend(_param,{
                             id:nav.getBatteryIds().ids.join(",")
                         });
