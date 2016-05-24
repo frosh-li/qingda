@@ -253,7 +253,6 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
             if(!this.chart){
                 this.chart = echart.init($('#chart')[0])
             }
-            this.chart = echart.init($('#chart')[0]);
             this.chart.setOption(this.chartOption);
         }
     }
