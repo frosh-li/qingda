@@ -27,7 +27,7 @@ class GroupparaController extends Controller
             ->from('{{group_parameter}}')
             ->order('gid desc')
             ->queryAll();
-        var_dump($batteryparm);
+
         if ($batteryparm) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;
