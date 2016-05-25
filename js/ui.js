@@ -163,7 +163,11 @@ define(function(require){
         startCollect:function(){
             // if(this.isCollecting()){return;}
             var time = parseInt($("#collectDuration").val());
-            if(time){
+            // 判断是否在实时页面
+            var hash = window.location.hash;
+            var refreshpage = ['#/manage/station', '#/manage/group', '#/manage/battery', '#/manage/caution'];
+            console.log(hash,refreshpage);
+            if(time && refreshpage.indexOf(hash) > -1){
                 $("body").addClass('collecting').everyTime(time+"s",'collect',API.collect);
                 $("#startCollectBtn").hide();
                 $(".tzcj").css('display','block');
