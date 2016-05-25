@@ -138,7 +138,7 @@ define(function(require){
          */
         onSearchNav:function(){
             var keyword = $("#navSearchKeyword").val();
-            API.getNavData({
+            API.getNavData(function(){},{
                 key:keyword
             });
         },

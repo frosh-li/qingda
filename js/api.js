@@ -58,9 +58,9 @@ define(function(require){
                 return this;
             },
             /***************************************左侧导航***************************************/
-            getNavData: function (cb) {
+            getNavData: function (cb,args) {
                 var url = '/api/index.php/trees/getnav';
-                this.fetch(url, "nav:update", null, "get",this,true, cb);
+                this.fetch(url, "nav:update", args, "get",this,true, cb);
                 return this;
             },
             /***************************************人员角色***************************************/
