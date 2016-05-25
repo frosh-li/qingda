@@ -167,8 +167,12 @@ define(function(require){
             var hash = window.location.hash;
             var refreshpage = ['#/manage/station', '#/manage/group', '#/manage/battery', '#/manage/caution'];
             console.log(hash,refreshpage);
-            if(time && refreshpage.indexOf(hash) > -1){
-                $("body").addClass('collecting').everyTime(time+"s",'collect',API.collect);
+            if(time){
+                if(refreshpage.indexOf(hash) > -1){
+                    $("body").addClass('collecting').everyTime(time+"s",'collect',API.collect);
+                }else{
+                    $("body").removeClass('collecting').stopTime('collect',API.collect);
+                }
                 $("#startCollectBtn").hide();
                 $(".tzcj").css('display','block');
                 localStorage.setItem('collecting','true');
