@@ -49,6 +49,35 @@ define(function(require){
             _this.listenTo(Backbone.Events,"linknum:get",function(data){
                 $("#linkingNum").html(data.online)
                 $("#unlinkNum").html(data.offline)
+                // 更新灯的状态
+                console.log('update lights', data);
+                if(data.status.sound_alarm_is_ON == "1"){
+                    $("#alarm_sound").removeClass("graylight").addClass("grelight")
+                }else{
+                    $("#alarm_sound").removeClass("grelight").addClass("graylight");
+                }
+                if(data.status.light_alarm_is_ON == "1"){
+                    $("#alarm_light").removeClass("graylight").addClass("grelight")
+                }else{
+                    $("#alarm_light").removeClass("grelight").addClass("graylight");
+                }
+                if(data.status.sms_is_Send == "1"){
+                    $("#alarm_sms").removeClass("graylight").addClass("grelight")
+                }else{
+                    $("#alarm_sms").removeClass("grelight").addClass("graylight");
+                }
+                if(data.status.email_is_Send == "1"){
+                    $("#alarm_mail").removeClass("graylight").addClass("grelight")
+                }else{
+                    $("#alarm_mail").removeClass("grelight").addClass("graylight");
+                }
+                if(data.status.DataSamplingStarted == "1"){
+                    $("#alarm_collecting").removeClass("graylight").addClass("grelight")
+                }else{
+                    $("#alarm_collecting").removeClass("grelight").addClass("graylight");
+                }
+                
+                //$("#alarm_sound").removeClass("graylight").removeClass("")
             });
             _this.listenTo(Backbone.Events,"otherOption:get",function(data){
                 require(["common"],function(common){
