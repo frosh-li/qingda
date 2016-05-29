@@ -51,7 +51,7 @@ class AlarmsiteconfController extends Controller
 	{
         $id = Yii::app()->request->getParam('id',0);
         $status = Yii::app()->request->getParam('status',0);
-        $sid=Yii::app()->request->getParam('sid','');
+        $sn_key=Yii::app()->request->getParam('sn_key','');
         $category=Yii::app()->request->getParam('category','');
         $type=Yii::app()->request->getParam('type','');
         $content=Yii::app()->request->getParam('content','');
@@ -72,7 +72,7 @@ class AlarmsiteconfController extends Controller
         $ret['data'] = array();
         $model=$this->loadModel($id);
         if ($model) {
-            $sid!='' && $model->sid=$sid;
+            $sn_key!='' && $model->sn_key=$sn_key;
             $category!='' && $model->category=$category;
             $type!='' && $model->type=$type;
             $content!='' && $model->content=$content;
@@ -89,7 +89,7 @@ class AlarmsiteconfController extends Controller
             if ($model->save()) {
                 $ret['data'] = array(
                     'id'=>$model->id,
-                    'sid'=>$model->sid,
+                    'sn_key'=>$model->sn_key,
                     'status'=>$model->status,
                 );
             }else{
@@ -137,8 +137,8 @@ class AlarmsiteconfController extends Controller
         $category = Yii::app()->request->getParam('category' ,1);
 
         $sql = "select asi.*,s.site_name from {{alarm_siteconf}} asi
-                LEFT JOIN  {{site}} s on asi.sid=s.id
-                where asi.sid=".$sid." and asi.category=".$category;
+                LEFT JOIN  {{site}} s on asi.sn_key=s.serial_number
+                where asi.sn_key=".$sid." and asi.category=".$category;
 
         $rows =  Yii::app()->db->createCommand($sql)->queryAll();
         if($rows){

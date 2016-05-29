@@ -49,8 +49,8 @@ class AlarmSiteconf extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('sid, category, type, content, suggest, send_email, send_msg, can_ignore, create_time, update_time', 'required'),
-			array('sid, category, type, send_msg, alarm_type, judge_type, can_ignore,status, create_time, update_time', 'numerical', 'integerOnly'=>true),
+			array('sn_key, category, type, content, suggest, send_email, send_msg, can_ignore, create_time, update_time', 'required'),
+			array('sn_key, category, type, send_msg, alarm_type, judge_type, can_ignore,status, create_time, update_time', 'numerical', 'integerOnly'=>true),
 			array('content', 'length', 'max'=>100),
 			array('suggest', 'length', 'max'=>255),
 			array('type_value', 'length', 'max'=>50),
@@ -58,7 +58,7 @@ class AlarmSiteconf extends CActiveRecord
 			array('alarm_code', 'length', 'max'=>30),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, sid, category, type, content, suggest, send_email, send_msg, alarm_type, type_value, operator, judge_type, can_ignore, alarm_code, create_time, update_time', 'safe', 'on'=>'search'),
+			array('id, sn_key, category, type, content, suggest, send_email, send_msg, alarm_type, type_value, operator, judge_type, can_ignore, alarm_code, create_time, update_time', 'safe', 'on'=>'search'),
 		);
 	}
 
