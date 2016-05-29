@@ -6,6 +6,7 @@ class QueryController extends Controller
 	public function actionIndex()
 	{
         $this->setPageCount();
+        $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
         $id = Yii::app()->request->getParam('id',0);
         $start =Yii::app()->request->getParam('start');
         $end = Yii::app()->request->getParam('end');
@@ -45,6 +46,8 @@ class QueryController extends Controller
                 ->order('record_time desc')
                 ->queryAll();
         //}
+        //
+        
 
         $ret['response'] = array(
             'code' => 0,
@@ -66,8 +69,64 @@ class QueryController extends Controller
                 'msg' => '暂无站点数据！'
             );
         }
+        if ($isDownload == 1) {
+            Yii::$enableIncludePath = false;
+            Yii::import('application.extensions.PHPExcel.PHPExcel', 1);
+            $objPHPExcel = new PHPExcel();
+            $workSheet = $objPHPExcel->setActiveSheetIndex(0);
+            // Add some data
+            $workSheet->setCellValue('A1', '序号')
+                ->setCellValue('B1', '站号')
+                ->setCellValue('C1', '时间')
+                ->setCellValue('D1', '总电流')
+                ->setCellValue('E1', '平均电压')
+                ->setCellValue('F1', '环境温度')
+                ->setCellValue('G1', '环境温度上限')
+                ->setCellValue('H1', '环境温度下限')
+                ->setCellValue('I1', '环境湿度')
+                ->setCellValue('J1', '环境湿度上限')
+                ->setCellValue('K1', '环境湿度下限')
+                ->setCellValue('L1', '电池状态')
+                ->setCellValue('M1', '预估后备时间');
+            $index = 1;
+            foreach ($result as $v) {
+                $index ++;
+                $workSheet->setCellValue('A'.$index, $index - 1)
+                    ->setCellValue('B'.$index, $v['sid'])
+                    ->setCellValue('C'.$index, $v['record_time'])
+                    ->setCellValue('D'.$index, $v['a'])
+                    ->setCellValue('E'.$index, $v['v'])
+                    ->setCellValue('F'.$index, $v['temperature'])
+                    ->setCellValue('G'.$index, $v['temperature_max'])
+                    ->setCellValue('H'.$index, $v['temperature_min'])
+                    ->setCellValue('I'.$index, $v['humidity'])
+                    ->setCellValue('J'.$index, $v['humidity_max'])
+                    ->setCellValue('K'.$index, $v['humidity_min'])
+                    ->setCellValue('L'.$index, $v['battery_state'])
+                    ->setCellValue('M'.$index, $v['reserve_time']);                    
+            }
+            // Rename worksheet
+            $objPHPExcel->getActiveSheet()->setTitle('偏离趋势报表');
+            // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+            $objPHPExcel->setActiveSheetIndex(0);
+            // Redirect output to a client’s web browser (Excel5)
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="deviation_trend.xls"');
+            header('Cache-Control: max-age=0');
+// If you're serving to IE 9, then the following may be needed
+            header('Cache-Control: max-age=1');
 
-        echo json_encode($ret);
+// If you're serving to IE over SSL, then the following may be needed
+            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header ('Pragma: public'); // HTTP/1.0
+
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+        } else {
+            echo json_encode($ret);
+        }
 	}
     //站点数据折线图
     public function actionStationchart()

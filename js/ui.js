@@ -33,6 +33,7 @@ define(function(require){
             "click .tzcj":"stopCollect",
             "click .title-list .switch-btn i":"showItemsLayer",
             "click .cj-btn":"onSearch",
+            "click .exportdata": "onExportCSV",
             "click #searchBtn span span":"onSearch"
         },
         initialize:function(){
@@ -103,6 +104,9 @@ define(function(require){
         },
         onSearch: function(){
             Backbone.Events.trigger('search:done');
+        },
+        onExportCSV: function(){
+            Backbone.Events.trigger('export:done');
         },
         showItemsLayer:function(evt){
             var $el = $(evt.currentTarget),

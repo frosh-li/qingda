@@ -34,6 +34,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     data:null,
                     el:'#list',
                     "listPlugin":[],
+                    downloadUrl:"",
                     events:{
                         "click .dataTable tr":"selectRow",
                         "click .show-info":"openStationInfoDialog",
@@ -44,6 +45,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         var _this = this;
                         //_this.destroy();
                         _this.listPlugin=[];
+                        _this.downloadUrl="";
                         _this.captureEvt();
 
                     },
@@ -75,6 +77,28 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         _this.listenTo(Backbone.Events,"search:done",function(){
                             console.log('search clicked');
                             _this.refresh();
+                        });
+                        _this.listenTo(Backbone.Events,"export:done",function(){
+                            console.log('export clicked',_this);
+                            if(!_this.downloadUrl){
+                                return;
+                            }
+                            console.log(_this.downloadUrl);
+                            if(window.location.hash.indexOf("/qurey/") > -1){
+                                var startTime = $("#dbeginTime").val();
+                                var endTime = $("#dendTime").val();
+                                if(startTime && endTime){
+                                    startTime = new Date(startTime) / 1000;
+                                    endTime = new Date(endTime) / 1000;
+                                }
+                                var durl = _this.downloadUrl + "?isdownload=1&start="+startTime+"&end="+endTime;
+                                console.log(durl);
+                                window.location = durl;
+                                //query页面
+                            }else if(window.location.hash.indexOf("/report/") > -1){
+                                //报表导出
+                            }
+                            // _this.refresh();
                         });
                         _this.listenTo(Backbone.Events,"listdata:refresh",function(){
                             _this.refresh();
@@ -1627,6 +1651,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         render:function(){
             var _this = this;
             _this.destoryPlugin();
+            _this.downloadUrl="/api/index.php/query";
             require(["fixedColumn"],function() {
                 _this.listPlugin.push($('#auto table').DataTable( $.extend(true,{
                     "data": _this.data,
