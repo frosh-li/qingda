@@ -23,7 +23,7 @@ class UpsinfoController extends Controller
 
         if ($id) {
             $sql = "select ui.*,s.site_name from {{ups_info}} ui
-                    LEFT  JOIN  {{site}} s on ui.sid = s.id where ui.id=" . $id;
+                    LEFT  JOIN  {{site}} s on ui.sid = s.serial_number where ui.id=" . $id;
             $row = Yii::app()->db->createCommand($sql)->queryRow();
             if ($row) {
                 $ret['data'] = $row;

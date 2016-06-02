@@ -331,10 +331,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     "scrollY":ui.getListHeight(),
                                     "columns": [
                                         { "data": "sid", "title":"序号",width:50},
+                                        { "data": "site_name", "title":"名称",width:150},
                                         { "data": "sid","title":"站号",width:50 },
-                                        { "data": "record_time",title:"时间",width:180 }
+                                        { "data": "record_time",title:"时间",width:180 },
+                                        { "data": "total","title":"组数",width:50 },
+                                        { "data": "batteryCount","title":"电池个数",width:50 },
                                         //{ "data": "battery_status",title:"电池码放状态",width:180 },
-                                        // { "data": "inductor_type",title:"互感器型号",width:180 },
+                                        //{ "data": "inductor_type",title:"互感器型号",width:180 },
 
                                     ].concat(colums.data)
                                 })));

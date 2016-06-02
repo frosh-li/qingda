@@ -15,7 +15,7 @@ class RealtimeController extends Controller
                 $temp[] = $value."0000";
             }
             $id =  implode(',',$temp);
-            $sql = "select tb_station_module.*,my_site.battery_status, my_site.inductor_type from tb_station_module  left join my_site on my_site.serial_number=tb_station_module.sn_key where tb_station_module.sn_key in (".$id.")";
+            $sql = "select tb_station_module.*,groupmodule.total,batterymodule.batteryCount,my_site.battery_status, my_site.inductor_type,my_site.site_name from tb_station_module  left join my_site on my_site.serial_number=tb_station_module.sn_key left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as total FROM tb_group_module GROUP BY FLOOR(sn_key/1000)) as groupmodule on groupmodule.sn_key=tb_station_module.sn_key left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as batteryCount FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)) as batterymodule on batterymodule.sn_key = tb_station_module.sn_key where tb_station_module.sn_key in (".$id.")";
             $sites = Yii::app()->bms->createCommand($sql)->queryAll();
                 //->select('*')
                 //->from('{{station_module}}')
@@ -25,7 +25,8 @@ class RealtimeController extends Controller
                 //->order('record_time desc')
                 //->queryAll();
         }else{
-            $sql = "select tb_station_module.*,my_site.battery_status, my_site.inductor_type from tb_station_module left join my_site on my_site.serial_number=tb_station_module.sn_key";
+            //$sql = "select tb_station_module.*,groupmodule.total,my_site.battery_status, my_site.inductor_type,my_site.site_name from tb_station_module  left join my_site on my_site.serial_number=tb_station_module.sn_key left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as total FROM tb_group_module GROUP BY FLOOR(sn_key/1000)) as groupmodule on groupmodule.sn_key=tb_station_module.sn_key";
+            $sql = "select tb_station_module.*,groupmodule.total,batterymodule.batteryCount,my_site.battery_status, my_site.inductor_type,my_site.site_name from tb_station_module  left join my_site on my_site.serial_number=tb_station_module.sn_key left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as total FROM tb_group_module GROUP BY FLOOR(sn_key/1000)) as groupmodule on groupmodule.sn_key=tb_station_module.sn_key left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as batteryCount FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)) as batterymodule on batterymodule.sn_key = tb_station_module.sn_key";
             $sites = Yii::app()->bms->createCommand($sql)->queryAll();
 
                 //->select('*')

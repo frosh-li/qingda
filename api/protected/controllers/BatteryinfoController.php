@@ -24,7 +24,7 @@ class BatteryinfoController extends Controller
 
         if ($id) {
             $sql = "select bi.*,s.site_name from {{battery_info}} bi
-                    left JOIN {{site}} s on bi.sid=s.id where bi.id=" . $id;
+                    left JOIN {{site}} s on bi.sid=s.serial_number where bi.id=" . $id;
             $row = Yii::app()->db->createCommand($sql)->queryRow();
             if ($row) {
                 $ret['data'] = $row;
@@ -270,9 +270,9 @@ class BatteryinfoController extends Controller
 	{
         $this->setPageCount();
          $offset = ($this->page-1)*$this->count;
-        $sql = "SELECT b . * , s.site_name
+        $sql = "SELECT b . * , s.site_name, s.sid
                 FROM  {{battery_info}} AS b
-                LEFT JOIN {{site}} AS s ON b.sid = s.id";
+                LEFT JOIN {{site}} AS s ON b.sid = s.serial_number";
         $ups = Yii::app()->db->createCommand($sql)->queryAll();
         //$ups = Yii::app()->db->createCommand()
         //    ->select('s.site_name,bi.*')

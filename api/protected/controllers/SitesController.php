@@ -574,12 +574,12 @@ class SitesController extends Controller
         $ret['data'] = array();
         if(isset($_GET['q']) && ($keyword=trim($_GET['q']))!=='')
         {
-            $sql = "select id,sid,site_name from {{site}} where site_name like '".$keyword."%' limit 20";
+            $sql = "select id,sid,site_name,serial_number from {{site}} where site_name like '".$keyword."%' limit 20";
             $sites = Yii::app()->db->createCommand($sql)->queryAll();
             $data = array();
             if($sites){
                 foreach ($sites as  $key=> $value ) {
-                    $ret['data']['list'][$value['id']] = $value['site_name'];
+                    $ret['data']['list'][$value['serial_number']] = $value['site_name'];
                 }
             }
         }
