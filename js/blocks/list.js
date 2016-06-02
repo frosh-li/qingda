@@ -233,6 +233,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         var _listdata = [].concat(_this.data),
                             _lisiLen = _listdata.length;
                         _this.listPlugin[0].rows().every(function(rowIdx, tableLoop, rowLoop){
+                            if(_.isEqual(this.data(),_listdata[rowIdx])){
+                                return;
+                            }
                             if(_listdata.length){
                                 this.data(_listdata.splice(0,1)[0]);
                             }else{//删除
@@ -359,25 +362,23 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     prevIds:[],
                     curStation:'',
                     //el:$('#dataItem'),
-                    events:{
-                        'click #page .prev':'onPrev',
-                        'click #page .next':'onNext'
-                    },
                     onNext:function(){
                         this.nextStation();
-                        this.fetchData();
+                        this._fetch();
                     },
                     onPrev:function(){
                         this.prevStation();
-                        this.fetchData();
+                        this._fetch();
                     },
                     nextStation:function(){
-                        if(!this.stations.ids.length){return}
+                        if(!this.stations || !this.stations.ids.length){return}
+                        $("#page").show();
                         this.curStation && this.prevIds.push(this.curStation);
                         this.curStation = this.stations.ids.shift();
                     },
                     prevStation:function(){
                         if(!this.prevIds.length){return}
+                        $("#page").show();
                         this.curStation && this.stations.ids.unshift(this.curStation);
                         this.curStation = this.prevIds.pop();
                     },
@@ -411,21 +412,23 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         return this;
                     },
                     refresh:function(){
-                        this.updateStations();
-                        if(this.curStation && this.curStation == this.stations[0]){
-                            return;
-                        }
-                        this.nextStation();
-                        this.fetchData();
+                        this._fetch();
                     },
                     getNavData:function(){
                         return nav.getBatterys(this.curStation);
                     },
                     fetchData:function(){
-                        $("#page").hide();
+                        this.updateStations();
+                        if(this.curStation && this.curStation == this.stations[0]){
+                            return;
+                        }
+                        this.nextStation();
+                        this._fetch();
+                    },
+                    _fetch:function(){
                         var _param = {};
                         $.extend(_param,{
-                            id:nav.getBatteryIds().ids.join(",")
+                            id:this.getBatterys()
                         });
                         API.getBatterysRealTimeData(_param);
                     },
@@ -434,6 +437,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         _this.listenTo(Backbone.Events,"batteryColsChange",function(data){
                             _this.refresh();
                         });
+                        $('#dataItem').off('click').on('click','#page .prev',function(){_this.onPrev()});
+                        $('#dataItem').off('click').on('click','#page .next',function(){_this.onNext()});
                     },
                     render:function(){
                         var _this = this,colums = _this.getCols('battery');
