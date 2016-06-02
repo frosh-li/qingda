@@ -286,9 +286,9 @@ class UpsinfoController extends Controller
 	{
         $this->setPageCount();
         $ups = Yii::app()->db->createCommand()
-            ->select('ui.*,s.site_name')
+            ->select('ui.*,s.site_name,s.sid as truesid')
             ->from('{{ups_info}} ui')
-            ->leftJoin('{{site}} s','ui.sid = s.id')
+            ->leftJoin('{{site}} s','ui.sid = s.serial_number')
             ->limit($this->count)
             ->offset(($this->page-1)*$this->count)
             ->order('ui.id desc')

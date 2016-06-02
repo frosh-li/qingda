@@ -313,6 +313,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     },
                     render:function(){
                         var _this = this,colums = _this.getCols('station');
+                        console.log(colums);
                         //_this.destoryPlugin();
                         if(_this.listPlugin && _this.listPlugin[0]){
                             _this.updateList();
@@ -334,8 +335,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         { "data": "site_name", "title":"名称",width:150},
                                         { "data": "sid","title":"站号",width:50 },
                                         { "data": "record_time",title:"时间",width:180 },
-                                        { "data": "total","title":"组数",width:50 },
-                                        { "data": "batteryCount","title":"电池个数",width:50 },
                                         //{ "data": "battery_status",title:"电池码放状态",width:180 },
                                         //{ "data": "inductor_type",title:"互感器型号",width:180 },
 
@@ -458,6 +457,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     "scrollX":true,
                                     "columns": [
                                         { "data": "bid",title:"序号",width:50 },
+                                        { "data": "site_name",title:"站名",width:120 },
                                         { "data": "sid",title:"站号",width:50 },
                                         { "data": "gid",title:"组号",width:50 },
                                         { "data": "bid",title:"电池号",width:80  }
@@ -508,6 +508,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     "scrollY":ui.getListHeight(),
                                     "columns": [
                                         { "data": "sid",title:"序号",width:50 },
+                                        { "data": "site_name",title:"站名",width:120 },
                                         { "data": "sid",title:"站号",width:50 },
                                         { "data": "gid",title:"组号",width:50 }
                                     ].concat(colums.data)
