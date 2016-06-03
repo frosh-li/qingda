@@ -75,22 +75,22 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "U",title:"电池电压（V）",width:150 },
                     { "data": "T",title:"电极温度（℃）",width:150 },
                     { "data": "R",title:"电池内阻（MΩ）",width:150 },
-                    { "data": "R",title:"量程",width:150 },
-                    { "data": "R",title:"电压偏离（组均值）度%",width:150 },
-                    { "data": "R",title:"温度偏离（组均值）度%",width:150 },
-                    { "data": "R",title:"内阻偏离（组均值）度%",width:150 },
-                    { "data": "PredictCapacity",title:"预估容量（%）",width:150 },
-                    { "data": "PredictCapacity",title:"电池寿命（%）",width:150 },
-                    { "data": "U",title:"时间",width:150 },
-                    { "data": "U",title:"浮充态电压上限",width:150 },
-                    { "data": "U",title:"充电状态电压上限",width:150 },
-                    { "data": "U",title:"放电态电压上限",width:150 },
-                    { "data": "U",title:"浮充态电压下限",width:150 },
-                    { "data": "U",title:"充电态电压下限",width:150 },
-                    { "data": "U",title:"放电态电压下限",width:150 },
+                    { "data": "AmpRange",title:"量程",width:80 },
+                    { "data": "cau",title:"电压偏离（组均值）度%",width:150, render: function(data){return Math.abs(data*100).toFixed(2)} },
+                    { "data": "cat",title:"温度偏离（组均值）度%",width:150, render: function(data){return Math.abs(data*100).toFixed(2)} },
+                    { "data": "car",title:"内阻偏离（组均值）度%",width:150, render: function(data){return Math.abs(data*100).toFixed(2)} },
+                    { "data": "",title:"预估容量（%）",width:150 },// 错误
+                    { "data": "",title:"电池寿命（%）",width:150 },// 错误
+                    { "data": "record_time",title:"时间",width:150 },
+                    { "data": "battery_float_up",title:"浮充态电压上限",width:80 },
+                    { "data": "BatteryU_H",title:"充电状态电压上限",width:150 },// 错误
+                    { "data": "",title:"放电态电压上限",width:150 },// 错误
+                    { "data": "battery_float_dow",title:"浮充态电压下限",width:80 },
+                    { "data": "BaterryU_L",title:"充电态电压下限",width:150 },// 错误
+                    { "data": "battery_discharge_down",title:"放电态电压下限",width:150 },
                     { "data": "charge_a_max",title:"温度上限（A）",width:150 },
-                    { "data": "group_hydrogen_max",title:"温度下限",width:150 },
-                    { "data": "group_hydrogen_max",title:"内阻上限",width:150 },
+                    { "data": "Electrode_T_L_Limit",title:"温度下限",width:150 },
+                    { "data": "Rin_High_Limit",title:"内阻上限",width:150 },
                     /*
                     { "data": "N_R_measure_times",title:"内阻测量有效次数",width:150 },
                     { "data": "R_measure_error",title:"内阻测量状况",width:150 },

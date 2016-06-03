@@ -15,7 +15,14 @@ class RealtimeController extends Controller
                 $temp[] = $value."0000";
             }
             $id =  implode(',',$temp);
-            $sql = "select tb_station_module.*,groupmodule.total,batterymodule.batteryCount,my_site.battery_status, my_site.inductor_type,my_site.site_name from tb_station_module  left join my_site on my_site.serial_number=tb_station_module.sn_key left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as total FROM tb_group_module GROUP BY FLOOR(sn_key/1000)) as groupmodule on groupmodule.sn_key=tb_station_module.sn_key left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as batteryCount FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)) as batterymodule on batterymodule.sn_key = tb_station_module.sn_key where tb_station_module.sn_key in (".$id.")";
+            $sql = "select tb_station_module.*,
+            groupmodule.total,
+            batterymodule.batteryCount,
+            my_site.battery_status, 
+            my_site.inductor_type,my_site.site_name 
+            from tb_station_module  
+            left join my_site on my_site.serial_number=tb_station_module.sn_key 
+            left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as total FROM tb_group_module GROUP BY FLOOR(sn_key/1000)) as groupmodule on groupmodule.sn_key=tb_station_module.sn_key left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as batteryCount FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)) as batterymodule on batterymodule.sn_key = tb_station_module.sn_key where tb_station_module.sn_key in (".$id.")";
             $sites = Yii::app()->bms->createCommand($sql)->queryAll();
                 //->select('*')
                 //->from('{{station_module}}')
@@ -154,32 +161,26 @@ class RealtimeController extends Controller
     {
         $this->setPageCount();
         $id = Yii::app()->request->getParam('id',0);
+        $sql = "
+        select my_site.site_name, g.* from tb_group_module as g
+        left join my_site on my_site.serial_number/10000 = floor(g.sn_key/10000)
+        ";
         if ($id) {
+
             $arr = explode(',',$id);
             $temp = array();
             foreach ($arr as $key => $value) {
                 $temp[] = $value.'00';
             }
             $id =  implode(',',$temp);
-            $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{group_module}}')
-                ->where('sn_key in('.$id.')')
-                //->limit($this->count)
-                //->offset(($this->page - 1) * $this->count)
-                ->order('gid asc')
-                //->order('record_time desc')
-                ->queryAll();
-        }else{
-            $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{group_module}}')
-                //->limit($this->count)
-                //->offset(($this->page-1)*$this->count)
-                ->order('gid asc')
-                //->order('record_time desc')
-                ->queryAll();
+
+            $sql .= ' where g.sn_key in ('.$id.')';
+
         }
+
+        $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+
+        // $sites = Yii::app()->bms->createCommand($sql).queryAll();
 
         $ret['response'] = array(
             'code' => 0,
@@ -284,27 +285,37 @@ class RealtimeController extends Controller
     {
         $this->setPageCount();
         $id = Yii::app()->request->getParam('id',0);
+        $sql = "
+            select 
+            my_site.site_name,
+            tb_battery_parameter.*,
+            my_battery_info.*,
+            my_ups_info.*,
+            b.*,
+            a.*,
+            (b.U-a.au)/a.au as cau,
+            (b.T-a.at)/a.at as cat,
+            (b.R-a.ar)/a.ar as car
+            from tb_battery_module as b
+            left join my_site on my_site.serial_number/10000 = FLOOR(b.sn_key/10000)
+            left join my_ups_info on my_ups_info.sid/10000 = FLOOR(b.sn_key/10000)
+            left join my_battery_info on my_battery_info.sid/10000 = FLOOR(b.sn_key/10000)
+            left join tb_battery_parameter on tb_battery_parameter.battery_sn_key=b.sn_key
+            left join (SELECT AVG(U) as au, avg(T) as at, avg(R) as ar,FLOOR(sn_key/10000) as a_sn FROM tb_battery_module GROUP BY FLOOR(sn_key/10000)) as a on a.a_sn = FLOOR(b.sn_key/10000)
+        ";
         if ($id) {
-            $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{battery_module}}')
-                ->where('sn_key in('.$id.')')
-                //->limit($this->count)
-                //->offset(($this->page-1)*$this->count)
-                ->order('gid asc, record_time desc')
-                //->order('record_time desc')
-                ->queryAll();
-        }else{
-            $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{battery_module}}')
-                //->limit($this->count)
-                //->offset(($this->page-1)*$this->count)
-                ->order('gid asc, record_time desc')
-                //->order('record_time desc')
-                ->queryAll();
+            $sql .= " where sn_key in (".$id.")";
+            // $sites = Yii::app()->bms->createCommand()
+            //     ->select('*')
+            //     ->from('{{battery_module}}')
+            //     ->where('sn_key in('.$id.')')
+            //     //->limit($this->count)
+            //     //->offset(($this->page-1)*$this->count)
+            //     ->order('gid asc, record_time desc')
+            //     //->order('record_time desc')
+            //     ->queryAll();
         }
-
+        $sites = Yii::app()->bms->createCommand($sql)->queryAll();
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'

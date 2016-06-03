@@ -12,7 +12,7 @@ class BatteryparaController extends Controller
         $data = array();
         if ($site) {
             foreach ($site as $key => $value) {
-                $data[$value['sid']] = $value;
+                $data[substr($value['serial_number'],0,10)] = $value;
             }
         }
 
@@ -33,8 +33,10 @@ class BatteryparaController extends Controller
             $ret['data']['pageSize'] = $this->count;
 
             foreach($batteryparm as $key=>$value){
-                if (isset($data[$value['sid']])) {
-                    $value['site_name'] = $data[$value['sid']]['site_name'];
+                //var_dump(strval(floor($value['battery_sn_key']/10000)));
+                if (isset($data[strval(floor($value['battery_sn_key']/10000))])) {
+                    
+                    $value['site_name'] = $data[strval(floor($value['battery_sn_key']/10000))]['site_name'];
                 }else{
                     $value['site_name'] = '未添加站点';
                 }
