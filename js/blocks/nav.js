@@ -170,7 +170,7 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
                     }
                 })
             }
-
+            console.log('groups', groupids);
             if(navView.tree){
                 selectedNode = navView.tree.getCheckedNodes();
                 $.each(selectedNode,function(i,node){
@@ -178,14 +178,16 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
                         if(groupids && groupids.length && !common.inArray(node.pid,groupids)){
                             return;
                         }
-                        ids.ids.push(node.id);
-                        ids.map[node.id] = node;
+                        console.log(siteid, node.id)
+                        if(node.id.substring(0,10) == siteid){
+                            ids.ids.push(node.id);
+                            ids.map[node.id] = node;
+                        }
                     }
                 })
             }
-            console.log('getBatterys', ids);
+            console.log('getBatterys', ids, siteid);
             return ids;
-            console.log('getBatterys', ids);
         },
         getBatteryIds: function(){
             var ids={ids:[],map:{}},selectedNode;

@@ -14,7 +14,6 @@ define(function(require){
                                 if(cb){
                                     res.data.callback = cb;
                                 }
-                                console.log(res.data);
                                 Backbone.Events.trigger(event, res.data, context);
                                 if(cb){
                                     cb();

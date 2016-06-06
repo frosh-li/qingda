@@ -31,14 +31,13 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
             _this.listenTo(Backbone.Events,"listdata:update stationdata:get",function(data){
                 curEvtType = "allids:get";
                 overFlag=false;
-                console.log(data);
-                console.log(curids);
+
                 API.getChart({id:curids,field:_this.getFieldValue()},curEvtType,listType);
             });
             //选择行变更
             _this.listenTo(Backbone.Events,"row:select",function(data){
                 curids = data.join(',');
-                console.log('ids', curids);
+
                 if(data.length>1){
                     curEvtType = "allids:get";
                     API.getChart({id:curids,field:_this.getFieldValue()},curEvtType,listType);
@@ -48,9 +47,9 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 }
             });
             _this.listenTo(Backbone.Events,"chart:update",function(data){
-                console.log(curids);
+
                 if(data){
-                    console.log('chart:update');
+
                     require(['charts'],function(chart){
                         echart = chart;
                         _this.createOption(data).render();
@@ -59,7 +58,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 }
             });
             _this.listenTo(Backbone.Events,"allids:get",function(data){
-                console.log('allids get', data);
+
                 if(data){
                     require(['charts'],function(chart){
                         var xAixs = [],values = [];
@@ -124,9 +123,9 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 }
             });
             _this.listenTo(Backbone.Events,"id:get",function(data){
-                console.log(curids);
+
                 if(data && data.list){
-                    console.log(data.list);
+
                     require(['charts'],function(chart){
                         var xAixs = [],values = [],dataLen = data.list.length;
                         for(var i=0;i<dataLen;i++){
@@ -265,7 +264,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
 
     return {
         init:function(_sys,_listType,_sub){
-            console.log('chart init', _sys, _listType, _sub);
+
             sys = _sys;
             listType = _listType;
             sub = sub;

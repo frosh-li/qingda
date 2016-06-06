@@ -348,40 +348,26 @@ class TreesController extends Controller
                 $value['leveltype'] = 1;
                 $ret['data']['list'][] = $value;
             }
-
+            $sql = "";
             if ($keyword) {
-                $site = Yii::app()->db->createCommand()
-                    ->select('serial_number,site_name,sid,aid,is_checked')
-                    ->from('{{site}}')
-                    ->order('id asc')
-                    ->where("site_name like '%".$keyword."%' and is_checked=1")
-                    ->queryAll();
-            }else{
-                $site = Yii::app()->db->createCommand()
-                    ->select('serial_number,site_name,sid,aid,is_checked')
-                    ->from('{{site}}')
-                    ->order('id asc')
-                    ->where("is_checked=1")
-                    ->queryAll();
-            }
+                $sql ="
+                    select m.*, a.* from tb_station_module as a
+                    left join (select * from my_site where is_checked = 1 and site_name like '%".$keyword."%') as m 
+                    on a.sn_key = m.serial_number
 
+                ";
+
+            }else{
+                $sql ="
+                    select m.*, a.* from tb_station_module as a
+                    left join (select * from my_site where is_checked = 1) as m 
+                    on a.sn_key = m.serial_number
+                ";
+            }
+            $site = Yii::app()->bms->createCommand($sql)->queryAll();
             $temp = $sids = array();
 
             if ($site) {
-                //$station = Yii::app()->bms->createCommand()
-                //    ->selectDistinct('sid as id,sn_key')
-                //    ->from('{{station_module}}')
-                //    ->where('sid in ('.implode(',',$sids).')')
-                //    //->order('id asc')
-                //    ->queryAll();
-                //
-                //foreach ($site as  $key =>$value ) {
-                //    $temp[$value['sid']] = $value;
-                //    $sids[] = $value['sid'];
-                //    //$temp[$value['serial_number']] = $value;
-                //}
-
-
                 $i = 0;
                 foreach ($site as $key => $value) {
                     $i++;
@@ -391,27 +377,12 @@ class TreesController extends Controller
                     $data['title'] = $value['site_name'] .$value['sid'];
                     $data['is_checked'] = $value['is_checked'];
                     $data['leveltype'] = 2;
+                    if($value['site_name']){
+                        $ret['data']['list'][] = $data;
 
-                    $ret['data']['list'][] = $data;
-
-                    $sids[] = $value['sid'];
+                        $sids[] = $value['sid'];
+                    }
                 }
-                //if ($station) {
-                //    foreach ($station as $key => $value) {
-                //        if (isset($temp[$value['id']])) {
-                //            $i++;
-                //            $data = array();
-                //            $data['id'] = substr($value['sn_key'],0,-4);
-                //            $data['pid'] = $temp[$value['id']]['aid'];
-                //            $data['title'] = $temp[$value['id']]['site_name'];
-                //            $data['is_checked'] = $temp[$value['id']]['is_checked'];
-                //            $data['leveltype'] = 2;
-                //
-                //            $ret['data']['list'][] = $data;
-                //        }
-                //    }
-                //    //array_push($ret['data']['list'],$station);
-                //}
                 if ($i) {
                     // group
                     $group = Yii::app()->bms->createCommand()
@@ -452,17 +423,7 @@ class TreesController extends Controller
                     }
                 }
             }
-            //else{
-            //    $ret['response'] = array(
-            //        'code' => -1,
-            //        'msg' => '没有该级别的数据！'
-            //    );
-            //}
         }else{
-            //$ret['response'] = array(
-            //    'code' => -1,
-            //    'msg' => '没有该级别的数据！'
-            //);
             $ret['data']['list'][] = array(
                 'leveltype'=>1,
                 'id'=>1,

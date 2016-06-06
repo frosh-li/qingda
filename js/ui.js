@@ -51,7 +51,7 @@ define(function(require){
                 $("#linkingNum").html(data.online)
                 $("#unlinkNum").html(data.offline)
                 // 更新灯的状态
-                console.log('update lights', data);
+
                 if(data.status.sound_alarm_is_ON == "1"){
                     $("#alarm_sound").removeClass("graylight").addClass("grelight")
                 }else{
@@ -199,7 +199,6 @@ define(function(require){
             // 判断是否在实时页面
             var hash = window.location.hash;
             var refreshpage = ['#/manage/station', '#/manage/group', '#/manage/battery', '#/manage/caution'];
-            console.log(hash,refreshpage);
             if(time){
                 if(refreshpage.indexOf(hash) > -1){
                     $("body").addClass('collecting').everyTime(time+"s",'collect',API.collect);
@@ -214,7 +213,6 @@ define(function(require){
             return this;
         },
         collectAuto: function(){
-            console.log('auto start');
             if(this.isCollecting()){
                 this.startCollect();
             }else{

@@ -46,7 +46,6 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
 
         $stationPop.click(function(e){
-            console.log('click on stationPop');
             var id = navTree.getSites().ids;
             if(id < 0){
                 alert('请选择站点');
@@ -55,7 +54,6 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             for(var i = 0 ; i < id.length ; i++){
                 id[i] = id[i]+"0000";
             }
-            console.log('show stationsinfoDialog', id)
             //return function(){
                 stationsinfoDialog.show(id.join(","));
             //}
@@ -75,7 +73,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         }
 
         common.loadTips.show("系统加载中，请稍后...");
-        console.log(arguments);
+
         if (/^(station|group|battery|caution)$/.test(pageType)) {
             $("#dataItem").html($("#listTpl").html());
             ui.downShow(true);
@@ -92,12 +90,12 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     refreshModules([nav],_arg);
                     nav.run(function(){
                         navTree=nav;
-                        console.log('my nav', nav);
+
                         refreshModules([list,chart],_arg);        
                     });
                     
                 }else{
-                    console.log('refresh node');
+
                     refreshModules([list,chart],_arg);    
                 }
                 
@@ -210,7 +208,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                         nav.run();
                         navTree=nav;
                     }
-                    console.log(navTree);
+
                     isOver();
                 })
             }else{

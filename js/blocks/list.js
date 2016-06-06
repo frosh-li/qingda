@@ -53,7 +53,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         var _this = this;
                         setTimeout(function(){
                             var allRows = $('.dataTable tr', _this.el);
-                            console.log('check all rows', allRows)
+
                             for(var i = 0 ; i < allRows.length; i++){
                                 _this.changeRowClass($(allRows[i]),'selected')
                             }
@@ -75,15 +75,15 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         });
 
                         _this.listenTo(Backbone.Events,"search:done",function(){
-                            console.log('search clicked');
+    
                             _this.refresh();
                         });
                         _this.listenTo(Backbone.Events,"export:done",function(){
-                            console.log('export clicked',_this);
+         
                             if(!_this.downloadUrl){
                                 return;
                             }
-                            console.log(_this.downloadUrl);
+            
                             if(window.location.hash.indexOf("/qurey/") > -1){
                                 var startTime = $("#dbeginTime").val();
                                 var endTime = $("#dendTime").val();
@@ -92,7 +92,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     endTime = new Date(endTime) / 1000;
                                 }
                                 var durl = _this.downloadUrl + "?isdownload=1&start="+startTime+"&end="+endTime;
-                                console.log(durl);
+     
                                 window.location = durl;
                                 //query页面
                             }else if(window.location.hash.indexOf("/report/") > -1){
@@ -316,7 +316,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     },
                     render:function(){
                         var _this = this,colums = _this.getCols('station');
-                        console.log(colums);
+       
                         //_this.destoryPlugin();
                         if(_this.listPlugin && _this.listPlugin[0]){
                             _this.updateList();
@@ -1431,7 +1431,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 extObj:{
                     fetchData:function(){
                         var type = $("#cationCategory").val();
-                        console.log('cation type is', type);
                         var param = {start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
                         if(type > 0){
                             param.type = type;
@@ -2079,7 +2078,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         },
         destory:function(){
             if(listView){
-                console.log('destroy list');
+
                 listView.destroy();
                 listView = null;
                 $("#list").html('');

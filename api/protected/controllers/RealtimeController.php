@@ -314,30 +314,37 @@ class RealtimeController extends Controller
             //     ->order('gid asc, record_time desc')
             //     //->order('record_time desc')
             //     ->queryAll();
-        }
-        $sites = Yii::app()->bms->createCommand($sql)->queryAll();
-        $ret['response'] = array(
-            'code' => 0,
-            'msg' => 'ok'
-        );
-        $ret['data'] = array();
+            $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+            $ret['response'] = array(
+                'code' => 0,
+                'msg' => 'ok'
+            );
+            $ret['data'] = array();
 
-        if ($sites) {
-            $ret['data']['page'] = $this->page;
-            $ret['data']['pageSize'] = $this->count;
+            if ($sites) {
+                $ret['data']['page'] = $this->page;
+                $ret['data']['pageSize'] = $this->count;
 
-            foreach($sites as $key=>$value){
-                $ret['data']['list'][] = $value;
+                foreach($sites as $key=>$value){
+                    $ret['data']['list'][] = $value;
+                }
+
+            }else{
+                $ret['response'] = array(
+                    'code' => -1,
+                    'msg' => '暂无电池数据！'
+                );
             }
 
+            echo json_encode($ret);
         }else{
             $ret['response'] = array(
                 'code' => -1,
                 'msg' => '暂无电池数据！'
             );
+            echo json_encode($ret);
         }
-
-        echo json_encode($ret);
+        
     }
     // 电池实时数据折线图
     public function actionBatterychart()
