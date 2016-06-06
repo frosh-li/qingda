@@ -37,13 +37,33 @@ class QueryController extends Controller
         //         ->order('record_time desc')
         //         ->queryAll();
         // }else{
-            $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{station_module_history}}')
-                ->where($where)
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
-                ->order('record_time desc')
+        $sql = "select 
+            tb_station_module.*,
+            groupmodule.total,
+            batterymodule.batteryCount,
+            my_site.battery_status, 
+            my_site.inductor_type,my_site.site_name,
+            my_ups_info.ups_max_charge,
+            my_ups_info.ups_max_discharge,
+            my_ups_info.ups_maintain_date,
+            bb.BBbCharge+bb.BCbDisCharge as charges
+            from tb_station_module  
+            left join my_site 
+                on my_site.serial_number=tb_station_module.sn_key 
+            left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, 
+                COUNT(FLOOR(sn_key/1000)) as total 
+                FROM tb_group_module GROUP BY FLOOR(sn_key/1000)) as groupmodule 
+                on groupmodule.sn_key=tb_station_module.sn_key 
+            left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as batteryCount 
+                FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)) as batterymodule 
+                on batterymodule.sn_key = tb_station_module.sn_key 
+            left join my_ups_info 
+                on my_ups_info.sid = tb_station_module.sn_key
+            LEFT JOIN (SELECT BBbCharge,BCbDisCharge,FLOOR(sn_key/1000)*1000 AS b_key 
+                FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)*1000) AS bb 
+                ON bb.b_key = tb_station_module.sn_key
+            where ".$where;
+            $sites = Yii::app()->bms->createCommand($sql)
                 ->queryAll();
         //}
         //
@@ -364,6 +384,7 @@ class QueryController extends Controller
         $id = Yii::app()->request->getParam('id',0);
         $start =Yii::app()->request->getParam('start');
         $end = Yii::app()->request->getParam('end');
+        $isDownload = Yii::app()->request->getParam('isdownload',0);
         $where = ' 1 =1 ';
         if($start){
             $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
@@ -383,10 +404,33 @@ class QueryController extends Controller
         //         ->order('record_time desc')
         //         ->queryAll();
         // }else{
-            $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{battery_module_history}}')
-                ->where($where)
+         $sql = "
+            select 
+            my_site.site_name,
+            tb_battery_parameter.*,
+            my_battery_info.*,
+            my_ups_info.*,
+            b.*,
+            a.*,
+            tb_station_parameter.bytegeStatus_U_upper,
+            tb_station_parameter.bytegeStatus_U_lower,
+            tb_station_parameter.FloatingbytegeStatus_U_upper,
+            tb_station_parameter.FloatingbytegeStatus_U_lower,
+            tb_station_parameter.DisbytegeStatus_U_upper,
+            tb_station_parameter.DisbytegeStatus_U_lower,
+            (b.U-a.au)/a.au as cau,
+            (b.T-a.at)/a.at as cat,
+            (b.R-a.ar)/a.ar as car
+            from tb_battery_module as b
+            left join my_site on my_site.serial_number/10000 = FLOOR(b.sn_key/10000)
+            left join my_ups_info on my_ups_info.sid/10000 = FLOOR(b.sn_key/10000)
+            left join my_battery_info on my_battery_info.sid/10000 = FLOOR(b.sn_key/10000)
+            left join tb_battery_parameter on tb_battery_parameter.battery_sn_key=b.sn_key
+            left join (SELECT AVG(U) as au, avg(T) as at, avg(R) as ar,FLOOR(sn_key/10000) as a_sn FROM tb_battery_module GROUP BY FLOOR(sn_key/10000)) as a on a.a_sn = FLOOR(b.sn_key/10000)
+            left join tb_station_parameter on tb_station_parameter.station_sn_key/10000 = FLOOR(b.sn_key/10000)
+        ";
+        $sql .= " where ".$where;
+            $sites = Yii::app()->bms->createCommand($sql)
                 ->limit($this->count)
                 ->offset(($this->page-1)*$this->count)
                 ->order('record_time desc')
@@ -413,8 +457,108 @@ class QueryController extends Controller
                 'msg' => '暂无电池数据！'
             );
         }
+        /*
+        { "data": "site_name",title:"站名",width:120 },
+        { "data": "sid",title:"站号",width:50 },
+        { "data": "gid",title:"组号",width:50 },
+        { "data": "bid",title:"电池号",width:80  }
+        { "data": "U",title:"电池电压（V）",width:150 },
+        { "data": "T",title:"电极温度（℃）",width:150 },
+        { "data": "R",title:"电池内阻（MΩ）",width:150 },
+        { "data": "cau",title:"电压偏离（组均值）度%",width:150, render: function(data){return Math.abs(data*100).toFixed(2)} },
+        { "data": "cat",title:"温度偏离（组均值）度%",width:150, render: function(data){return Math.abs(data*100).toFixed(2)} },
+        { "data": "car",title:"内阻偏离（组均值）度%",width:150, render: function(data){return Math.abs(data*100).toFixed(2)} },
+        { "data": "",title:"预估容量（%）",width:150 },// 错误
+        { "data": "",title:"电池寿命（%）",width:150 },// 错误
+        { "data": "record_time",title:"时间",width:150 },
+        { "data": "FloatingbytegeStatus_U_upper",title:"浮充态电压上限",width:80 },
+        { "data": "bytegeStatus_U_upper",title:"充电状态电压上限",width:80 },// 错误
+        { "data": "DisbytegeStatus_U_upper",title:"放电态电压上限",width:80 },// 错误
+        { "data": "FloatingbytegeStatus_U_lower",title:"浮充态电压下限",width:80 },
+        { "data": "bytegeStatus_U_lower",title:"充电态电压下限",width:80 },// 错误
+        { "data": "DisbytegeStatus_U_lower",title:"放电态电压下限",width:80 },
+        { "data": "BatteryU_H",title:"温度上限（A）",width:150 },
+        { "data": "BaterryU_L",title:"温度下限",width:150 },
+        { "data": "Rin_High_Limit",title:"内阻上限",width:150 },
+       
+        */
+        if ($isDownload == 1) {
+            Yii::$enableIncludePath = false;
+            Yii::import('application.extensions.PHPExcel.PHPExcel', 1);
+            $objPHPExcel = new PHPExcel();
+            $workSheet = $objPHPExcel->setActiveSheetIndex(0);
+            // Add some data
+            $workSheet->setCellValue('A1', '站名')
+                ->setCellValue('B1', '站号')
+                ->setCellValue('C1', '组号')
+                ->setCellValue('D1', '电池号')
+                ->setCellValue('E1', '电池电压（V）')
+                ->setCellValue('F1', '电极温度（℃）')
+                ->setCellValue('G1', '电池内阻（MΩ）')
+                ->setCellValue('H1', '电压偏离（组均值）度%')
+                ->setCellValue('I1', '温度偏离（组均值）度%')
+                ->setCellValue('J1', '内阻偏离（组均值）度%')
+                ->setCellValue('K1', '预估容量（%）')
+                ->setCellValue('L1', '电池寿命（%）')
+                ->setCellValue('M1', '时间')
+                ->setCellValue('N1', '浮充态电压上限')
+                ->setCellValue('O1', '充电状态电压上限')
+                ->setCellValue('P1', '放电态电压上限')
+                ->setCellValue('Q1', '浮充态电压下限')
+                ->setCellValue('R1', '充电态电压下限')
+                ->setCellValue('S1', '放电态电压下限')
+                ->setCellValue('T1', '温度上限（A）')
+                ->setCellValue('U1', '温度下限')
+                ->setCellValue('V1', '内阻上限');
+            $index = 1;
+            foreach ($ret['data']['list'] as $v) {
+                $index ++;
+                $workSheet->setCellValue('A'.$index, $v['site_name'])
+                    ->setCellValue('B'.$index, $v['sid'])
+                    ->setCellValue('C'.$index, $v['gid'])
+                    ->setCellValue('D'.$index, $v['bid'])
+                    ->setCellValue('E'.$index, $v['U'])
+                    ->setCellValue('F'.$index, $v['T'])
+                    ->setCellValue('G'.$index, $v['R'])
+                    ->setCellValue('H'.$index, round(abs($v['cau']*100),2))
+                    ->setCellValue('I'.$index, round(abs($v['cat']*100),2))
+                    ->setCellValue('J'.$index, round(abs($v['car']*100),2))
+                    ->setCellValue('K'.$index, "")
+                    ->setCellValue('L'.$index, "")
+                    ->setCellValue('M'.$index, $v['record_time'])
+                    ->setCellValue('N'.$index, $v['FloatingbytegeStatus_U_upper'])
+                    ->setCellValue('O'.$index, $v['bytegeStatus_U_upper'])
+                    ->setCellValue('P'.$index, $v['DisbytegeStatus_U_upper'])
+                    ->setCellValue('Q'.$index, $v['FloatingbytegeStatus_U_lower'])
+                    ->setCellValue('R'.$index, $v['bytegeStatus_U_lower'])
+                    ->setCellValue('S'.$index, $v['DisbytegeStatus_U_lower'])
+                    ->setCellValue('T'.$index, $v['BatteryU_H'])
+                    ->setCellValue('U'.$index, $v['BaterryU_L'])
+                    ->setCellValue('V'.$index, $v['Rin_High_Limit']);
+            }
+            // Rename worksheet
+            $objPHPExcel->getActiveSheet()->setTitle('电池数据查询');
+            // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+            $objPHPExcel->setActiveSheetIndex(0);
+            // Redirect output to a client’s web browser (Excel5)
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="query_battery.xls"');
+            header('Cache-Control: max-age=0');
+// If you're serving to IE 9, then the following may be needed
+            header('Cache-Control: max-age=1');
 
-        echo json_encode($ret);
+// If you're serving to IE over SSL, then the following may be needed
+            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header ('Pragma: public'); // HTTP/1.0
+
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+        } else {
+            echo json_encode($ret);
+        }
+
     }
     // 电池实时数据折线图
     public function actionBatterychart()

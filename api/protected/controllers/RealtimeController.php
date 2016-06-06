@@ -15,15 +15,37 @@ class RealtimeController extends Controller
                 $temp[] = $value."0000";
             }
             $id =  implode(',',$temp);
-            $sql = "select tb_station_module.*,
+            $sql = "select 
+            tb_station_module.*,
             groupmodule.total,
             batterymodule.batteryCount,
             my_site.battery_status, 
-            my_site.inductor_type,my_site.site_name 
+            my_site.inductor_type,my_site.site_name,
+            my_ups_info.ups_max_charge,
+            my_ups_info.ups_max_discharge,
+            my_ups_info.ups_maintain_date,
+            bb.BBbCharge+bb.BCbDisCharge as charges
             from tb_station_module  
-            left join my_site on my_site.serial_number=tb_station_module.sn_key 
-            left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as total FROM tb_group_module GROUP BY FLOOR(sn_key/1000)) as groupmodule on groupmodule.sn_key=tb_station_module.sn_key left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as batteryCount FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)) as batterymodule on batterymodule.sn_key = tb_station_module.sn_key where tb_station_module.sn_key in (".$id.")";
+            left join my_site 
+                on my_site.serial_number=tb_station_module.sn_key 
+            left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, 
+                COUNT(FLOOR(sn_key/1000)) as total 
+                FROM tb_group_module GROUP BY FLOOR(sn_key/1000)) as groupmodule 
+                on groupmodule.sn_key=tb_station_module.sn_key 
+            left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as batteryCount 
+                FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)) as batterymodule 
+                on batterymodule.sn_key = tb_station_module.sn_key 
+            left join my_ups_info 
+                on my_ups_info.sid = tb_station_module.sn_key
+            LEFT JOIN (SELECT BBbCharge,BCbDisCharge,FLOOR(sn_key/1000)*1000 AS b_key 
+                FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)*1000) AS bb 
+                ON bb.b_key = tb_station_module.sn_key
+            where tb_station_module.sn_key in (".$id.")";
+
             $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+
+            //left join (select BBbCharge+BCbDisCharge as charges,sn_key,record_time from tb_battery_module_history where BBbCharge+BCbDisCharge=1 and 10000*floor(sn_key/10000) in (".$id.") order by record_time desc ) as lastDisCharge
+                //on floor(lastDisCharge.sn_key/10000) = tb_station_module.sn_key/10000
                 //->select('*')
                 //->from('{{station_module}}')
                 //->where('sn_key in('.$id.')')

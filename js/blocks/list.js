@@ -34,7 +34,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     data:null,
                     el:'#list',
                     "listPlugin":[],
-                    downloadUrl:"",
                     events:{
                         "click .dataTable tr":"selectRow",
                         "click .show-info":"openStationInfoDialog",
@@ -43,9 +42,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     },
                     initialize:function(data){
                         var _this = this;
+                        console.log(_this);
                         //_this.destroy();
                         _this.listPlugin=[];
-                        _this.downloadUrl="";
                         _this.captureEvt();
 
                     },
@@ -79,10 +78,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             _this.refresh();
                         });
                         _this.listenTo(Backbone.Events,"export:done",function(){
-         
+                            console.log(_this.downloadUrl, window.location.hash);
                             if(!_this.downloadUrl){
                                 return;
                             }
+                            console.log(_this.downloadUrl, window.location.hash);
             
                             if(window.location.hash.indexOf("/qurey/") > -1){
                                 var startTime = $("#dbeginTime").val();
@@ -92,7 +92,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     endTime = new Date(endTime) / 1000;
                                 }
                                 var durl = _this.downloadUrl + "?isdownload=1&start="+startTime+"&end="+endTime;
-     
+                                
                                 window.location = durl;
                                 //query页面
                             }else if(window.location.hash.indexOf("/report/") > -1){
@@ -1623,10 +1623,12 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     })
     //查询：电池
     listConfig.qureyBattery = $.extend(true,{},listConfig.battery,{
+
         extObj:{
             fetchData:function(_param){
                 API.getBatteryHistoryData({start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
-            }
+            },
+            downloadUrl:"/api/index.php/query/batterymodule",
         }
     })
     //查询：门限
@@ -1656,10 +1658,10 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     }})
     //查询：基本信息：站
     listConfig.baseinfo_queryStationSituation = $.extend(true,{},listConfig.stationInfo_stationSituation,{extObj:{
+        downloadUrl:"/api/index.php/query",
         render:function(){
             var _this = this;
             _this.destoryPlugin();
-            _this.downloadUrl="/api/index.php/query";
             require(["fixedColumn"],function() {
                 _this.listPlugin.push($('#auto table').DataTable( $.extend(true,{
                     "data": _this.data,
@@ -1704,6 +1706,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     }})
     //查询：基本信息：电池
     listConfig.baseinfo_queryBatterys = $.extend(true,{},listConfig.stationInfo_batterys,{extObj:{
+        downloadUrl:"/api/index.php/query/batterymodule",
         render:function(){
             var _this = this;
             _this.destoryPlugin();

@@ -23,14 +23,22 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "total",title:"组数",width:50  },
                     { "data": "batteryCount",title:"电池数",width:80  },
                     { "data": "BatteryHealth",title:"电池状态",width:70 },
-                    { "data": "UpsState",title:"UPS状态",width:70, render: function(data){return ""} },
+                    { "data": "charges",title:"UPS状态",width:70, render: function(data){
+                        if(data == 2){
+                            return "充电";
+                        }else if(data == 1){
+                            return "放电";
+                        }else{
+                            return "浮充";
+                        }
+                    } },
                     { "data": "BackupTime",title:"预估候备时间（H）",width:130 },
                     { "data": "BackupW",title:"候备功率W/h",width:70, render: function(data){return ""} },
-                    { "data": "weihuDate",title:"预约维护日期",width:70, render: function(data){return ""} },
+                    { "data": "ups_maintain_date",title:"预约维护日期",width:70},
                     { "data": "disChargeDate",title:"放电日期",width:70, render: function(data){return ""} },
                     { "data": "disChargeLast",title:"放电时长",width:70, render: function(data){return ""} },
-                    { "data": "IoutMax",title:"最大放电电流（A）",width:70 },
-                    { "data": "IinMax",title:"最大充电电流（A）",width:70 },
+                    { "data": "ups_max_discharge",title:"最大放电电流（A）",width:70 },
+                    { "data": "ups_max_charge",title:"最大充电电流（A）",width:70 },
                     /*{ "data": "B0_TH",title:"站环境温度超上限",width:130,render:function(data){return createCautionStatusHtml(data);} },
                      { "data": "B1_TL",title:"站环境温度超下限",width:130,render:function(data){return createCautionStatusHtml(data);} },
                      { "data": "B2_HumiH",title:"站环境湿度超上限",width:130,render:function(data){return createCautionStatusHtml(data);} },
@@ -49,8 +57,8 @@ define(["require","backbone"],function(require,Backbone){
                     
                     { "data": "GroupU",title:"电压（V）",width:100 },
                     { "data": "I",title:"电流（A）",width:100 },
-                    { "data": "I",title:"氢气浓度（%）",width:100 },
-                    { "data": "I",title:"氧气浓度（%）",width:100 },
+                    { "data": "",title:"氢气浓度（%）",width:100 },
+                    { "data": "",title:"氧气浓度（%）",width:100 },
                     { "data": "I",title:"电池电压均衡度",width:100 },
                     { "data": "I",title:"电池温度均衡度",width:100 },
                     { "data": "I",title:"电池内阻均衡度",width:100 },
