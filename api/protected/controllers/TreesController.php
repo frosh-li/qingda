@@ -354,7 +354,6 @@ class TreesController extends Controller
                     select m.*, a.* from tb_station_module as a
                     left join (select * from my_site where is_checked = 1 and site_name like '%".$keyword."%') as m 
                     on a.sn_key = m.serial_number
-
                 ";
 
             }else{

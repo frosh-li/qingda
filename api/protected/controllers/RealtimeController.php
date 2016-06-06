@@ -293,6 +293,12 @@ class RealtimeController extends Controller
             my_ups_info.*,
             b.*,
             a.*,
+            tb_station_parameter.bytegeStatus_U_upper,
+            tb_station_parameter.bytegeStatus_U_lower,
+            tb_station_parameter.FloatingbytegeStatus_U_upper,
+            tb_station_parameter.FloatingbytegeStatus_U_lower,
+            tb_station_parameter.DisbytegeStatus_U_upper,
+            tb_station_parameter.DisbytegeStatus_U_lower,
             (b.U-a.au)/a.au as cau,
             (b.T-a.at)/a.at as cat,
             (b.R-a.ar)/a.ar as car
@@ -302,6 +308,7 @@ class RealtimeController extends Controller
             left join my_battery_info on my_battery_info.sid/10000 = FLOOR(b.sn_key/10000)
             left join tb_battery_parameter on tb_battery_parameter.battery_sn_key=b.sn_key
             left join (SELECT AVG(U) as au, avg(T) as at, avg(R) as ar,FLOOR(sn_key/10000) as a_sn FROM tb_battery_module GROUP BY FLOOR(sn_key/10000)) as a on a.a_sn = FLOOR(b.sn_key/10000)
+            left join tb_station_parameter on tb_station_parameter.station_sn_key/10000 = FLOOR(b.sn_key/10000)
         ";
         if ($id) {
             $sql .= " where sn_key in (".$id.")";
