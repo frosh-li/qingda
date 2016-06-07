@@ -74,7 +74,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         });
 
                         _this.listenTo(Backbone.Events,"search:done",function(){
-    
+
                             _this.refresh();
                         });
                         _this.listenTo(Backbone.Events,"export:done",function(){
@@ -83,7 +83,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 return;
                             }
                             console.log(_this.downloadUrl, window.location.hash);
-            
+
                             if(window.location.hash.indexOf("/qurey/") > -1){
                                 var startTime = $("#dbeginTime").val();
                                 var endTime = $("#dendTime").val();
@@ -92,7 +92,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     endTime = new Date(endTime) / 1000;
                                 }
                                 var durl = _this.downloadUrl + "?isdownload=1&start="+startTime+"&end="+endTime;
-                                
+
                                 window.location = durl;
                                 //query页面
                             }else if(window.location.hash.indexOf("/report/") > -1){
@@ -201,6 +201,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         this.remove();
                         this.destoryPlugin();
                         this.clearTables();
+                        $('#dataItem').off('click');
                     },
                     triggerSelectEvent:function(){
                         //整理数据发送选择行
@@ -232,7 +233,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         var _this = this;
                         var _listdata = [].concat(_this.data),
                             _lisiLen = _listdata.length;
-                        _this.listPlugin[0].rows().every(function(rowIdx, tableLoop, rowLoop){
+                        _this.listPlugin[0].rows().remove();
+                        /*_this.listPlugin[0].rows().every(function(rowIdx, tableLoop, rowLoop){
                             if(_.isEqual(this.data(),_listdata[rowIdx])){
                                 return;
                             }
@@ -241,7 +243,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             }else{//删除
                                 this.remove().draw();
                             }
-                        });
+                        });*/
                         if(_listdata.length){
                             _this.listPlugin[0].rows.add(_listdata).draw();
                         }
@@ -251,6 +253,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             _this.listPlugin[0].fixedColumns().relayout();
                         }
                         _this.listPlugin[0].draw();
+
+                        _this.checkAllRows();
 
                     },
                     fetchData:function(_param){
@@ -316,7 +320,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     },
                     render:function(){
                         var _this = this,colums = _this.getCols('station');
-       
+
                         //_this.destoryPlugin();
                         if(_this.listPlugin && _this.listPlugin[0]){
                             _this.updateList();
@@ -402,7 +406,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             var batteryId = nav.getBatterys(curStation);
                             $("#page .cur").html('当前站点：'+stations.map[curStation].title);
                             this.updatePageView();
-                            return batteryId.ids.join(',');
+                            return batteryId?batteryId.ids.join(','):'';
                         }
                     },
                     updateStations:function(){
@@ -426,10 +430,20 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         this._fetch();
                     },
                     _fetch:function(){
-                        var _param = {};
+                        var _this = this,_param = {};
                         $.extend(_param,{
                             id:this.getBatterys()
                         });
+                        if(!_param.id){
+                            _this.data=[];
+                            if(_this.listPlugin && _this.listPlugin[0]){
+                                _this.updateList();
+                            }else{
+                                _this.render();
+                            }
+                            return;
+                        }
+                        console.log('_param'+ $.toJSON(_param));
                         API.getBatterysRealTimeData(_param);
                     },
                     extEvent:function(){
@@ -437,8 +451,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         _this.listenTo(Backbone.Events,"batteryColsChange",function(data){
                             _this.refresh();
                         });
-                        $('#dataItem').off('click').on('click','#page .prev',function(){_this.onPrev()});
-                        $('#dataItem').off('click').on('click','#page .next',function(){_this.onNext()});
+                        $('#dataItem').on('click','#page .prev',function(){_this.onPrev()});
+                        $('#dataItem').on('click','#page .next',function(){_this.onNext()});
                     },
                     render:function(){
                         var _this = this,colums = _this.getCols('battery');
