@@ -38,13 +38,13 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
             });
         },
         /*selectFirst:function(){
-            if(this.tree){
-                var nodes = this.tree.getNodes();
-                if(nodes.length){
-                    this.tree.checkNode(nodes[0],true,true,true);
-                }
-            }
-        },*/
+         if(this.tree){
+         var nodes = this.tree.getNodes();
+         if(nodes.length){
+         this.tree.checkNode(nodes[0],true,true,true);
+         }
+         }
+         },*/
         filterData:function(){
             return this;
         },
@@ -78,12 +78,12 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
                                 }
                                 for(var k = 0 ; k < subChildren.length ; k++){
                                     if(subChildren[k].id === this.ids.sid)
-                                        this.tree.checkNode(subChildren[i], true, true); 
+                                        this.tree.checkNode(subChildren[i], true, true);
                                 }
                             }
-                           
+
                         }
-                        
+
                     }
                 }
             }else{
@@ -131,7 +131,7 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
                 $.each(nodes, function(i,node){
                     getSelectedNodeId.push(node.pid);
                 })
-                
+
             }
             return getSelectedNodeId;
         },
@@ -142,7 +142,7 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
                 $.each(nodes, function(i,node){
                     getSelectedNodeId = node.id;
                 })
-                
+
             }
             return getSelectedNodeId
         },
@@ -170,7 +170,7 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
                     }
                 })
             }
-            console.log('groups', groupids);
+            if(siteid && !groupids.length){return false}
             if(navView.tree){
                 selectedNode = navView.tree.getCheckedNodes();
                 $.each(selectedNode,function(i,node){
