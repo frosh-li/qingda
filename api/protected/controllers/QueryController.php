@@ -388,11 +388,11 @@ class QueryController extends Controller
         $where = ' 1 =1 ';
         if($start){
             $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
-            $where .= ' and record_time >= "'.$start.'"';
+            $where .= ' and b.record_time >= "'.$start.'"';
         }
         if($end){
             $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
-            $where .= ' and record_time <= "'.$end.'"';
+            $where .= ' and b.record_time <= "'.$end.'"';
         }
         // if ($id) {
         //     $sites = Yii::app()->bms->createCommand()
@@ -405,35 +405,32 @@ class QueryController extends Controller
         //         ->queryAll();
         // }else{
          $sql = "
-            select 
-            my_site.site_name,
-            tb_battery_parameter.*,
-            my_battery_info.*,
-            my_ups_info.*,
-            b.*,
-            a.*,
-            tb_station_parameter.bytegeStatus_U_upper,
-            tb_station_parameter.bytegeStatus_U_lower,
-            tb_station_parameter.FloatingbytegeStatus_U_upper,
-            tb_station_parameter.FloatingbytegeStatus_U_lower,
-            tb_station_parameter.DisbytegeStatus_U_upper,
-            tb_station_parameter.DisbytegeStatus_U_lower,
-            (b.U-a.au)/a.au as cau,
-            (b.T-a.at)/a.at as cat,
-            (b.R-a.ar)/a.ar as car
-            from tb_battery_module as b
-            left join my_site on my_site.serial_number/10000 = FLOOR(b.sn_key/10000)
-            left join my_ups_info on my_ups_info.sid/10000 = FLOOR(b.sn_key/10000)
-            left join my_battery_info on my_battery_info.sid/10000 = FLOOR(b.sn_key/10000)
-            left join tb_battery_parameter on tb_battery_parameter.battery_sn_key=b.sn_key
-            left join (SELECT AVG(U) as au, avg(T) as at, avg(R) as ar,FLOOR(sn_key/10000) as a_sn FROM tb_battery_module GROUP BY FLOOR(sn_key/10000)) as a on a.a_sn = FLOOR(b.sn_key/10000)
-            left join tb_station_parameter on tb_station_parameter.station_sn_key/10000 = FLOOR(b.sn_key/10000)
+            select b.* from tb_battery_module_history as b
         ";
+            // my_site.site_name,
+            // tb_battery_parameter.*,
+            // my_battery_info.*,
+            // my_ups_info.*,
+            // tb_station_parameter.bytegeStatus_U_upper,
+            // tb_station_parameter.bytegeStatus_U_lower,
+            // tb_station_parameter.FloatingbytegeStatus_U_upper,
+            // tb_station_parameter.FloatingbytegeStatus_U_lower,
+            // tb_station_parameter.DisbytegeStatus_U_upper,
+            // tb_station_parameter.DisbytegeStatus_U_lower
+            // left join my_site on my_site.serial_number/10000 = FLOOR(b.sn_key/10000)
+            // left join my_ups_info on my_ups_info.sid/10000 = FLOOR(b.sn_key/10000)
+            // left join my_battery_info on my_battery_info.sid/10000 = FLOOR(b.sn_key/10000)
+            // left join tb_battery_parameter on tb_battery_parameter.battery_sn_key=b.sn_key
+            // left join tb_station_parameter on tb_station_parameter.station_sn_key/10000 = FLOOR(b.sn_key/10000)
+            // (b.U-a.au)/a.au as cau,
+            // (b.T-a.at)/a.at as cat,
+            // (b.R-a.ar)/a.ar as car
+            // left join (SELECT AVG(U) as au, avg(T) as at, avg(R) as ar,FLOOR(sn_key/10000) as a_sn FROM tb_battery_module GROUP BY FLOOR(sn_key/10000)) as a on a.a_sn = FLOOR(b.sn_key/10000)
+        $offset = ($this->page-1)*$this->count;
         $sql .= " where ".$where;
+        $sql .= " order by b.record_time desc ";
+        $sql .= " limit $offset, $this->count ";
             $sites = Yii::app()->bms->createCommand($sql)
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
-                ->order('record_time desc')
                 ->queryAll();
         //}
 
@@ -448,6 +445,95 @@ class QueryController extends Controller
             $ret['data']['pageSize'] = $this->count;
 
             foreach($sites as $key=>$value){
+                $sn_key = $value['sn_key'];
+                $query = Yii::app()->bms->createCommand()
+                            ->select('site_name')
+                            ->from('my_site')
+                            ->where("floor({$sn_key}/10000) = floor(serial_number/10000)")
+                            ->limit(1)
+                            ->queryScalar();
+                //var_dump($value);
+                if($query){
+                   $value['site_name'] = $query;
+                }
+                $query = Yii::app()->bms->createCommand()
+                            ->select('*')
+                            ->from('tb_battery_parameter')
+                            ->where("floor({$sn_key}/10000) = floor(battery_sn_key/10000)")
+                            ->limit(1)
+                            ->queryAll();
+                if($query){
+                    foreach($query[0] as $key=>$val){
+                        $value[$key] = $val;
+                    }
+                }
+
+                $query = Yii::app()->bms->createCommand()
+                            ->select('*')
+                            ->from('my_ups_info')
+                            ->where("floor({$sn_key}/10000) = floor(sid/10000)")
+                            ->limit(1)
+                            ->queryAll();
+                if($query){
+                    foreach($query[0] as $key=>$val){
+                        $value[$key] = $val;
+                    }
+                }
+            // tb_station_parameter.bytegeStatus_U_upper,
+            // tb_station_parameter.bytegeStatus_U_lower,
+            // tb_station_parameter.FloatingbytegeStatus_U_upper,
+            // tb_station_parameter.FloatingbytegeStatus_U_lower,
+            // tb_station_parameter.DisbytegeStatus_U_upper,
+            // tb_station_parameter.DisbytegeStatus_U_lower
+                $query = Yii::app()->bms->createCommand()
+                            ->select('*')
+                            ->from('my_battery_info')
+                            ->where("floor({$sn_key}/10000) = floor(sid/10000)")
+                            ->limit(1)
+                            ->queryAll();
+                if($query){
+                    foreach($query[0] as $key=>$val){
+                        $value[$key] = $val;
+                    }
+                }
+
+                $query = Yii::app()->bms->createCommand()
+                            ->select('bytegeStatus_U_upper,bytegeStatus_U_lower,FloatingbytegeStatus_U_upper,FloatingbytegeStatus_U_lower,DisbytegeStatus_U_upper,DisbytegeStatus_U_lower')
+                            ->from('tb_station_parameter')
+                            ->where("floor({$sn_key}/10000) = floor(station_sn_key/10000)")
+                            ->limit(1)
+                            ->queryAll();
+                if($query){
+                    foreach($query[0] as $key=>$val){
+                        $value[$key] = $val;
+                    }
+                }
+
+                $query = Yii::app()->bms->createCommand("
+                    select * from (
+                        SELECT 
+                        ({$value["U"]}-AVG(U))/AVG(U) as cau, 
+                        ({$value['T']}-AVG(T))/AVG(T) as cat, 
+                        ({$value['R']}-AVG(R))/AVG(R) as car,
+                        FLOOR(sn_key/10000) as a_sn 
+                        FROM tb_battery_module_history 
+                        where record_time='{$value['record_time']}'
+                        GROUP BY FLOOR(sn_key/10000)
+                        )
+                         as a where a.a_sn = FLOOR({$sn_key}/10000) limit 1")
+                            ->queryAll();
+                if($query){
+                    foreach($query[0] as $key=>$val){
+                        $value[$key] = $val;
+                    }
+                }
+
+                // (b.U-a.au)/a.au as cau,
+                // (b.T-a.at)/a.at as cat,
+                // (b.R-a.ar)/a.ar as car
+                // left join (SELECT AVG(U) as au, avg(T) as at, avg(R) as ar,FLOOR(sn_key/10000) as a_sn FROM tb_battery_module GROUP BY FLOOR(sn_key/10000)) as a on a.a_sn = FLOOR(b.sn_key/10000)
+
+
                 $ret['data']['list'][] = $value;
             }
 
