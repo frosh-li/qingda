@@ -1515,7 +1515,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             "batteryLife":{
                 extObj:{
                     fetchData:function(_param){
-                        API.getByearlog(_param);
+
+                        var param = {start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
+                        API.getByearlog(param);
                     },
                     downloadUrl:"/api/index.php/report/byearlog",
                     render:function() {
@@ -1542,6 +1544,71 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     }
                 }
             } ,
+            //报表：偏离趋势报表
+            "deviationTrend":{
+                extObj:{
+                    fetchData:function(_param){
+                        var param = {start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
+                        
+                        API.getDeviationTrend(param);
+                    },
+                    downloadUrl:"/api/index.php/report/deviationTrend",
+                    render:function() {
+                        var _this = this;
+                        _this.destoryPlugin();
+                        _this.listPlugin.push($('#auto table').DataTable($.extend(true, {
+                            "data": _this.data,
+                            "language": {
+                                "emptyTable": "报表数据为空"
+                            },
+                            "scrollX": ui.getListHeight(),
+                            "scrollY": ui.getListHeight(),
+                            "columns": [
+                                {"data": "sn_key", title: "序号",width:50},
+                                {"data": "site_name", title: "名称", width: 100},
+                                {"data": "sid", title: "站号", width: 100},
+                                {"data": "record_time", title: "时间", width: 100},
+                                {"data": "avgU", title: "电压均值", width: 100,render:function(data){
+                                    if(!data){
+                                        return "";
+                                    }
+                                    return parseFloat(data).toFixed(2);
+                                }},
+                                {"data": "avgT", title: "温度均值", width: 100,render:function(data){
+                                    if(!data){
+                                        return "";
+                                    }
+                                    return parseFloat(data).toFixed(2);
+                                }},
+                                {"data": "avgR", title: "内阻均值", width: 100,render:function(data){
+                                    if(!data){
+                                        return "";
+                                    }
+                                    return parseFloat(data).toFixed(2);
+                                }},
+                                {"data": "avgU", title: "电压偏离度(%)",render:function(data){
+                                    if(!data){
+                                        return "";
+                                    }
+                                    return (Math.abs(0.3-data)/0.3*100).toFixed(2);
+                                }},
+                                {"data": "avgT", title: "温度偏离度(%)",render:function(data){
+                                    if(!data){
+                                        return "";
+                                    }
+                                    return (Math.abs(3-data)/3*100).toFixed(2);
+                                }},
+                                {"data": "avgR", title: "内阻偏离度(%)",render:function(data){
+                                    if(!data){
+                                        return "";
+                                    }
+                                    return (Math.abs(5-data)/5*100).toFixed(2);
+                                }}
+                            ]
+                        }, dataTableDefaultOption)));
+                    }
+                }
+            } ,
             //报表：充放电统计表
             "chargeOrDischarge":{
                 extObj:{
@@ -1561,11 +1628,15 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             "scrollY": ui.getListHeight(),
                             "columns": [
                                 {"data": "time", title: "序号", width: 100},
-                                {"data": "time", title: "记录时间", width: 200},
+                                {"data": "record_time", title: "记录时间", width: 200},
                                 {"data": "sid", title: "站点id",width:100},
-                                {"data": "name", title: "站点名称", width: 300},
-                                {"data": "BBbCharge", title: "充电状态", width: 100},
-                                {"data": "BCbDisCharge", title: "放电状态"},
+                                {"data": "site_name", title: "站点名称", width: 300},
+                                {"data": "BBbCharge", title: "充电状态", width: 100, render: function(data){
+                                    return data == 1 ?'是':'否'
+                                }},
+                                {"data": "BCbDisCharge", title: "放电状态", render: function(data){
+                                    return data == 1 ?'是':'否'
+                                }},
                             ]
                         }, dataTableDefaultOption)));
                     }

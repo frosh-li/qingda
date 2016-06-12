@@ -226,30 +226,27 @@ class ReportController  extends Controller
      */
     public function actionDeviationTrend() {
         $id = Yii::app()->request->getParam('id',0);
-        $begin = Yii::app()->request->getParam('begin','0000-00-00 00:00:00');
-        $end = Yii::app()->request->getParam('end', '0000-00-00 00:00:00');
+        
         $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
 
         $this->setPageCount();
 
-        $where = '';
-        if ($begin != '0000-00-00 00:00:00') {
-            $where .= "`record_time` >='{$begin}'";
+        $start =Yii::app()->request->getParam('start');
+        $end = Yii::app()->request->getParam('end');
+
+        $where = 'where 1=1 ';
+        if($start){
+            $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
+            $where .= ' and record_time >= "'.$start.'"';
+        }
+        if($end){
+            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $where .= ' and record_time <= "'.$end.'"';
         }
 
-        if ($end != '0000-00-00 00:00:00') {
-            if ($where != '') {
-                $where .= ' AND ';
-            }
-
-            $where .= "`record_time` <='{$end}'";
-        }
+        
 
         if ($id != '') {
-            if ($where != '') {
-                $where .= ' AND ';
-            }
-
             $strArray = explode(',',$id);
             $ids = array();
             foreach ($strArray as $k => $v)
@@ -262,47 +259,68 @@ class ReportController  extends Controller
 
             $where .= '`sid` in ('.implode(',',$ids).')';
         }
-
-        $result = Yii::app()->db->createCommand()
-            ->select('*')
-            ->from('{{deviation_trend}}')
-            ->where($where)
-            ->limit($this->count)
-            ->offset(($this->page - 1) * $this->count)
-            ->order('record_time, sid')
-            ->queryAll();
+        $offset = ($this->page - 1) * $this->count;
+        $counts = $this->count;
+        $sql = "select * from tb_station_module_history {$where} order by record_time desc limit {$offset},{$counts} ";
+        $result = Yii::app()->db->createCommand($sql)->queryAll();
 
         if (empty($result)) {
-            $this->ajaxReturn(-1, '暂无数据');
+            $this->ajaxReturn(-1, '暂无数据a');
         }
 
         $siteArray = array();
         foreach ($result as $rs) {
-            $site = intval($rs['sid']);
+            $site = $rs['sn_key'];
+            // var_dump($site);
             $siteArray[$site] = $site;
         }
 
         // 获取站点名
-        $where = "sid in (" . implode(',', $siteArray) . ")";
+        $where = "serial_number in (" . implode(',', $siteArray) . ")";
         $siteInfo =  Yii::app()->db->createCommand()
-            ->select('site_name, sid')
+            ->select('site_name, sid, serial_number')
             ->from('{{site}}')
             ->where($where)
             ->queryAll();
 
         $siteInfoArray = array();
         foreach ($siteInfo as $site) {
-            $siteInfoArray[intval($site['sid'])] = $site['site_name'];
+            $siteInfoArray[$site['serial_number']] = $site['site_name'];
         }
 
-        if (empty($siteInfoArray)) {
-            $this->ajaxReturn(-1, '暂无数据');
-        }
+        // if (empty($siteInfoArray)) {
+        //     $this->ajaxReturn(-1, '暂无数据b');
+        // }
 
         foreach ($result as $k =>$v)
         {
-            $result[$k]['site_name'] = isset($siteInfoArray[$v['sid']]) ? $siteInfoArray[$v['sid']] : '';
+            $result[$k]['site_name'] = isset($siteInfoArray[$v['sn_key']]) ? $siteInfoArray[$v['sn_key']] : '';
         }
+
+        // 获取对应电池的3个主要指标数据TUR
+
+        foreach ($result as $k =>$v)
+        {
+            $sql = "
+                        SELECT 
+                        AVG(U) as avgU, 
+                        AVG(T) as avgT, 
+                        AVG(R) as avgR,
+                        FLOOR(sn_key/10000) as a_sn 
+                        FROM tb_battery_module_history
+                        where record_time='{$v['record_time']}'
+                        and floor(sn_key/10000)*10000 = {$v['sn_key']}
+                        GROUP BY FLOOR(sn_key/10000)
+                        ";
+            $bdata =  Yii::app()->db->createCommand($sql)->queryAll();
+            if($bdata){
+                foreach($bdata[0] as $key=>$val){
+                    $result[$k][$key] = $val;
+                }
+            }
+            // $result[$k]['site_name'] = isset($siteInfoArray[$v['sid']]) ? $siteInfoArray[$v['sid']] : '';
+        }
+
 
         if ($isDownload == 1) {
             Yii::$enableIncludePath = false;
@@ -327,12 +345,12 @@ class ReportController  extends Controller
                     ->setCellValue('B'.$index, $v['sid'])
                     ->setCellValue('C'.$index, $v['site_name'])
                     ->setCellValue('D'.$index, $v['record_time'])
-                    ->setCellValue('E'.$index, $v['U'])
-                    ->setCellValue('F'.$index, $v['T'])
-                    ->setCellValue('G'.$index, $v['R'])
-                    ->setCellValue('H'.$index, $v['EU'])
-                    ->setCellValue('I'.$index, $v['ET'])
-                    ->setCellValue('J'.$index, $v['ER']);
+                    ->setCellValue('E'.$index, $v['avgU'])
+                    ->setCellValue('F'.$index, $v['avgT'])
+                    ->setCellValue('G'.$index, $v['avgR'])
+                    ->setCellValue('H'.$index, abs($v['avgU']-0.3)/0.3*100)
+                    ->setCellValue('I'.$index, abs($v['avgT']-3)/3*100)
+                    ->setCellValue('J'.$index, abs($v['avgR']-5)/5*100);
             }
             // Rename worksheet
             $objPHPExcel->getActiveSheet()->setTitle('偏离趋势报表');
@@ -378,30 +396,12 @@ class ReportController  extends Controller
 
         if($start){
             $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
-            $where .= ' and alarm_recovered_time >= "'.$start.'"';
+            $where .= ' and record_time >= "'.$start.'"';
         }
         if($end){
             $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
-            $where .= ' and alarm_recovered_time <= "'.$end.'"';
+            $where .= ' and record_time <= "'.$end.'"';
         }
-
-        // if ($id != '') {
-        //     if ($where != '') {
-        //         $where .= ' AND ';
-        //     }
-
-        //     $strArray = explode(',',$id);
-        //     $ids = array();
-        //     foreach ($strArray as $k => $v)
-        //     {
-        //         $v = intval($v);
-        //         if ($v >0) {
-        //             $ids[$v] = $v;
-        //         }
-        //     }
-
-        //     $where .= '`sid` in ('.implode(',',$ids).')';
-        // }
 
         $result = Yii::app()->bms->createCommand()
             ->select('sn_key, record_time, sid')
@@ -416,65 +416,30 @@ class ReportController  extends Controller
             $this->ajaxReturn(-1, '暂无数据');
         }
 
-        // 获取站点充放电状态
-        $batteryStatus = Yii::app()->bms->createCommand()
-            ->select('sn_key, record_time, sid, BBbCharge, BCbDisCharge')
-            ->from('{{battery_module_history}}')
-            ->where($where);
+        // // 获取站点充放电状态
+        // $batteryStatus = Yii::app()->bms->createCommand()
+        //     ->select('sn_key, record_time, sid, BBbCharge, BCbDisCharge')
+        //     ->from('{{battery_module_history}}')
+        //     ->where($where);
 
-        $siteArray = array();
-        foreach ($result as $rs) {
-            $site = intval($rs['sid']);
-            $siteArray[$site] = $site;
-        }
-
-        // 获取站点名
-        $where = "sid in (" . implode(',', $siteArray) . ")";
-        $siteInfo =  Yii::app()->db->createCommand()
-                    ->select('site_name, sid')
-                    ->from('{{site}}')
-                    ->where($where)
-                    ->queryAll();
-
-        $siteInfoArray = array();
-        foreach ($siteInfo as $site) {
-            $siteInfoArray[intval($site['sid'])] = $site;
-        }
-
-        if (empty($siteInfoArray)) {
-            $this->ajaxReturn(-1, '暂无数据');
-        }
-
-        $batteryStatus = $batteryStatus->andWhere($where)->andWhere('(BBbCharge !=0 or BCbDisCharge != 0)')->queryAll();
-        $batteryInfoArray = array();
-        foreach ($batteryStatus as $battery) {
-            $sid = intval($battery['sid']);
-            $time = trim($battery['record_time']);
-            $snKey = trim($battery['sn_key']);
-
-            if (isset($batteryInfoArray[$sid][$time]['sn_key'])) {
-                if ($batteryInfoArray[$sid][$time]['sn_key'] > $snKey) {
-                    $batteryInfoArray[$sid][$time] = $battery;
-                }
-            } else {
-                $batteryInfoArray[$sid][$time] = $battery;
-            }
-        }
-
-        $dataArray = array();
-        foreach ($result as $rs) {
-            $sid = intval($rs['sid']);
-            if (isset($siteInfoArray[$sid])) {
-                $time = trim($rs['record_time']);
-                $data = array('time' => $time, 'sid'=>$sid, 'name'=> $siteInfoArray[$sid]['site_name']);
-                if (isset($batteryInfoArray[$sid][$time])) {
-                    $BBbCharge = intval($batteryInfoArray[$sid][$time]['BBbCharge']);
-//                    $BCbDisCharge = intval($batteryInfoArray[$sid][$time]['BCbDisCharge']);
-                    $data['BBbCharge'] = ($BBbCharge == 1);
-                    $data['BCbDisCharge'] = ($BBbCharge != 1);
-                    $dataArray[] = $data;
+        foreach ($result as $mainkey=>$value) {
+            $sql = "select sid, site_name from my_site where serial_number={$value['sn_key']} limit 1";
+            $joinData = Yii::app()->bms->createCommand($sql)->queryAll();
+            if($joinData){
+                foreach($joinData[0] as $key=>$val){
+                    $result[$mainkey][$key] = $val;
                 }
             }
+
+            $sql = "select BBbCharge,BCbDisCharge from tb_battery_module_history where 10000*floor(sn_key/10000) = {$value['sn_key']} limit 1";
+
+            $joinData = Yii::app()->bms->createCommand($sql)->queryAll();
+            if($joinData){
+                foreach($joinData[0] as $key=>$val){
+                    $result[$mainkey][$key] = $val;
+                }
+            }
+
         }
 
         if ($isDownload == 1) {
@@ -519,7 +484,7 @@ class ReportController  extends Controller
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
             $objWriter->save('php://output');
         } else {
-            $this->ajaxReturn(0, '', $dataArray);
+            $this->ajaxReturn(0, '', $result);
         }
     }
 

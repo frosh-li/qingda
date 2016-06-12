@@ -465,7 +465,7 @@ define(function(require){
                 this.fetch(url, "listdata:update", args, "post");
                 return this;
             },
-            //电池使用年限
+            //报警
             getGerneralalarmlog:function(args){
                 var url = '/api/index.php/gerneralalarm';
                 this.fetch(url, "listdata:update", args, "post");
@@ -475,6 +475,12 @@ define(function(require){
             //充放电
             getChargeOrDischarge: function(args){
                 var url = '/api/index.php/report/chargeOrDischarge';
+                this.fetch(url, "listdata:update", args, "get");
+                return this;
+            },
+            //偏离趋势
+            getDeviationTrend: function(args){
+                var url = '/api/index.php/report/deviationTrend';
                 this.fetch(url, "listdata:update", args, "get");
                 return this;
             },
