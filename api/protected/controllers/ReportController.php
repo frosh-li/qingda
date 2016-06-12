@@ -259,8 +259,14 @@ class ReportController  extends Controller
 
             $where .= '`sid` in ('.implode(',',$ids).')';
         }
-        $offset = ($this->page - 1) * $this->count;
-        $counts = $this->count;
+        if($isDownload == 1){
+            $offset = 0;
+            $counts = 5000;
+        }else{
+            $offset = ($this->page - 1) * $this->count;
+            $counts = $this->count;
+        }
+       
         $sql = "select * from tb_station_module_history {$where} order by record_time desc limit {$offset},{$counts} ";
         $result = Yii::app()->db->createCommand($sql)->queryAll();
 
@@ -335,9 +341,9 @@ class ReportController  extends Controller
                 ->setCellValue('E1', '平均电压')
                 ->setCellValue('F1', '平均温度')
                 ->setCellValue('G1', '平均电阻')
-                ->setCellValue('H1', '异常电压')
-                ->setCellValue('I1', '异常温度')
-                ->setCellValue('J1', '异常电阻');
+                ->setCellValue('H1', '电压偏离度(%)')
+                ->setCellValue('I1', '温度偏离度(%)')
+                ->setCellValue('J1', '内阻偏离度(%)');
             $index = 1;
             foreach ($result as $v) {
                 $index ++;
@@ -345,12 +351,12 @@ class ReportController  extends Controller
                     ->setCellValue('B'.$index, $v['sid'])
                     ->setCellValue('C'.$index, $v['site_name'])
                     ->setCellValue('D'.$index, $v['record_time'])
-                    ->setCellValue('E'.$index, $v['avgU'])
-                    ->setCellValue('F'.$index, $v['avgT'])
-                    ->setCellValue('G'.$index, $v['avgR'])
-                    ->setCellValue('H'.$index, abs($v['avgU']-0.3)/0.3*100)
-                    ->setCellValue('I'.$index, abs($v['avgT']-3)/3*100)
-                    ->setCellValue('J'.$index, abs($v['avgR']-5)/5*100);
+                    ->setCellValue('E'.$index, isset($v['avgU']) ? $v['avgU']:"")
+                    ->setCellValue('F'.$index, isset($v['avgT']) ? $v['avgT']:"")
+                    ->setCellValue('G'.$index, isset($v['avgR']) ? $v['avgR']:"")
+                    ->setCellValue('H'.$index, isset($v['avgU']) ? abs($v['avgU']-0.3)/0.3*100:"")
+                    ->setCellValue('I'.$index, isset($v['avgT']) ? abs($v['avgT']-3)/3*100:"")
+                    ->setCellValue('J'.$index, isset($v['avgR']) ? abs($v['avgR']-5)/5*100:"");
             }
             // Rename worksheet
             $objPHPExcel->getActiveSheet()->setTitle('偏离趋势报表');
