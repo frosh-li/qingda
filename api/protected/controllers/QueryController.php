@@ -20,49 +20,16 @@ class QueryController extends Controller
             $where .= ' and record_time <= "'.$end.'"';
         }
 
-        // if ($id) {
-        //     $arr = explode(',',$id);
-        //     $temp = array();
-        //     foreach ($arr as $key => $value) {
-        //         $temp[] = $value.'0000';
-        //     }
-        //     $id =  implode(',',$temp);
-
-        //     $sites = Yii::app()->bms->createCommand()
-        //         ->select('*')
-        //         ->from('{{station_module_history}}')
-        //         ->where('sn_key in('.$id.')')
-        //         ->limit($this->count)
-        //         ->offset(($this->page - 1) * $this->count)
-        //         ->order('record_time desc')
-        //         ->queryAll();
-        // }else{
-        $sql = "select 
-            tb_station_module.*,
-            groupmodule.total,
-            batterymodule.batteryCount,
-            my_site.battery_status, 
-            my_site.inductor_type,my_site.site_name,
-            my_ups_info.ups_max_charge,
-            my_ups_info.ups_max_discharge,
-            my_ups_info.ups_maintain_date,
-            bb.BBbCharge+bb.BCbDisCharge as charges
-            from tb_station_module  
-            left join my_site 
-                on my_site.serial_number=tb_station_module.sn_key 
-            left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, 
-                COUNT(FLOOR(sn_key/1000)) as total 
-                FROM tb_group_module GROUP BY FLOOR(sn_key/1000)) as groupmodule 
-                on groupmodule.sn_key=tb_station_module.sn_key 
-            left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as batteryCount 
-                FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)) as batterymodule 
-                on batterymodule.sn_key = tb_station_module.sn_key 
-            left join my_ups_info 
-                on my_ups_info.sid = tb_station_module.sn_key
-            LEFT JOIN (SELECT BBbCharge,BCbDisCharge,FLOOR(sn_key/1000)*1000 AS b_key 
-                FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)*1000) AS bb 
-                ON bb.b_key = tb_station_module.sn_key
-            where ".$where;
+        $sql = "select * from tb_station_module_history";
+        $offset = ($this->page-1)*$this->count;
+        $sql .= " where ".$where;
+        $sql .= " order by record_time desc ";
+        if ($isDownload != 1){
+            $sql .= " limit $offset, $this->count ";
+        }else{
+            $sql .= " limit 0,5000";
+        }
+        
             $sites = Yii::app()->bms->createCommand($sql)
                 ->queryAll();
         //}
@@ -80,6 +47,37 @@ class QueryController extends Controller
             $ret['data']['pageSize'] = $this->count;
 
             foreach($sites as $key=>$value){
+                // 获取site_name
+                $sql = "select site_name from my_site where serial_number={$value['sn_key']}";
+                $joinData = Yii::app()->bms->createCommand($sql)->queryScalar();
+                $value['site_name'] = $joinData;
+                // 获取组数
+                $sql = "select count(*) from tb_group_module_history where floor(sn_key/10000)*10000={$value['sn_key']} and record_time='{$value['record_time']}'";
+                $joinData = Yii::app()->bms->createCommand($sql)->queryScalar();
+                $value['total'] = $joinData;
+                // 获取电池数
+                $sql = "select count(*) from tb_battery_module_history where floor(sn_key/10000)*10000={$value['sn_key']} and record_time='{$value['record_time']}'";
+                $joinData = Yii::app()->bms->createCommand($sql)->queryScalar();
+                $value['batteryCount'] = $joinData;
+                //     my_ups_info.ups_max_charge,
+                //     my_ups_info.ups_max_discharge,
+                //     my_ups_info.ups_maintain_date,
+                $sql = "select ups_max_charge,ups_max_discharge,ups_maintain_date from my_ups_info where sid={$value['sn_key']} limit 1";
+                $joinData = Yii::app()->bms->createCommand($sql)->queryAll();
+                if($joinData){
+                    foreach($joinData[0] as $key=>$val){
+                        $value[$key] = $val;
+                    }
+                }
+
+                // 获取电池充电状态
+                $sql = "SELECT BBbCharge+BCbDisCharge as charges 
+                FROM tb_battery_module_history
+                where floor(sn_key/10000)*10000={$value['sn_key']} and record_time='{$value['record_time']}'";
+
+                $joinData = Yii::app()->bms->createCommand($sql)->queryScalar();
+                $value['charges'] = $joinData;
+
                 $ret['data']['list'][] = $value;
             }
 
@@ -95,43 +93,61 @@ class QueryController extends Controller
             $objPHPExcel = new PHPExcel();
             $workSheet = $objPHPExcel->setActiveSheetIndex(0);
             // Add some data
-            $workSheet->setCellValue('A1', '序号')
+            $workSheet->setCellValue('A1', '名称')
                 ->setCellValue('B1', '站号')
                 ->setCellValue('C1', '时间')
-                ->setCellValue('D1', '总电流')
-                ->setCellValue('E1', '平均电压')
-                ->setCellValue('F1', '环境温度')
-                ->setCellValue('G1', '环境温度上限')
-                ->setCellValue('H1', '环境温度下限')
-                ->setCellValue('I1', '环境湿度')
-                ->setCellValue('J1', '环境湿度上限')
-                ->setCellValue('K1', '环境湿度下限')
-                ->setCellValue('L1', '电池状态')
-                ->setCellValue('M1', '预估后备时间');
+                ->setCellValue('D1', '总电流(A)')
+                ->setCellValue('E1', '平均电压(V)')
+                ->setCellValue('F1', '环境温度（℃）')
+                ->setCellValue('G1', '环境温度上限（℃）')
+                ->setCellValue('H1', '环境温度下限（℃）')
+                ->setCellValue('I1', '环境湿度（%）')
+                ->setCellValue('J1', '环境湿度上限（%）')
+                ->setCellValue('K1', '环境湿度下限（%）')
+                ->setCellValue('L1', '组数')
+                ->setCellValue('M1', '电池数')
+                ->setCellValue('N1', '电池状态')
+                ->setCellValue('O1', 'UPS状态')
+                ->setCellValue('P1', '预估候备时间（H）')
+                ->setCellValue('Q1', '候备功率W/h')
+                ->setCellValue('R1', '预约维护日期')
+                ->setCellValue('S1', '放电日期')
+                ->setCellValue('T1', '放电时长')
+                ->setCellValue('U1', '最大放电电流（A）')
+                ->setCellValue('V1', '最大充电电流（A）');
             $index = 1;
-            foreach ($result as $v) {
+            foreach ($ret['data']['list'] as $v) {
                 $index ++;
-                $workSheet->setCellValue('A'.$index, $index - 1)
-                    ->setCellValue('B'.$index, $v['sid'])
-                    ->setCellValue('C'.$index, $v['record_time'])
-                    ->setCellValue('D'.$index, $v['a'])
-                    ->setCellValue('E'.$index, $v['v'])
-                    ->setCellValue('F'.$index, $v['temperature'])
-                    ->setCellValue('G'.$index, $v['temperature_max'])
-                    ->setCellValue('H'.$index, $v['temperature_min'])
-                    ->setCellValue('I'.$index, $v['humidity'])
-                    ->setCellValue('J'.$index, $v['humidity_max'])
-                    ->setCellValue('K'.$index, $v['humidity_min'])
-                    ->setCellValue('L'.$index, $v['battery_state'])
-                    ->setCellValue('M'.$index, $v['reserve_time']);                    
+                $workSheet->setCellValue('A'.$index, isset($v['site_name']) ? $v['site_name']:"")
+                    ->setCellValue('B'.$index, isset($v['sid']) ? $v['sid']:"")
+                    ->setCellValue('C'.$index, isset($v['record_time']) ? $v['record_time']:"")
+                    ->setCellValue('D'.$index, isset($v['I']) ? $v['I']:"")
+                    ->setCellValue('E'.$index, isset($v['U']) ? $v['U']:"")
+                    ->setCellValue('F'.$index, isset($v['T']) ? $v['T']:"")
+                    ->setCellValue('G'.$index, isset($v['TH']) ? $v['TH']:"")
+                    ->setCellValue('H'.$index, isset($v['TL']) ? $v['TL']:"")
+                    ->setCellValue('I'.$index, isset($v['Humi']) ? $v['Humi']:"")
+                    ->setCellValue('J'.$index, isset($v['HumiH']) ? $v['HumiH']:"")
+                    ->setCellValue('K'.$index, isset($v['HumiL']) ? $v['HumiL']:"")
+                    ->setCellValue('L'.$index, isset($v['total']) ? $v['total']:"")
+                    ->setCellValue('M'.$index, isset($v['batteryCount']) ? $v['batteryCount']:"")
+                    ->setCellValue('N'.$index, isset($v['BatteryHealth']) ? $v['BatteryHealth']:"")
+                    ->setCellValue('O'.$index, isset($v['charges']) ? ($v['charges'] == 2 ? "充电":$v['charges'] == 1? "放电":"浮充"):"")
+                    ->setCellValue('P'.$index, isset($v['BackupTime']) ? $v['BackupTime']:"")
+                    ->setCellValue('Q'.$index, isset($v['BackupW']) ? $v['BackupW']:"")
+                    ->setCellValue('R'.$index, isset($v['ups_maintain_date']) ? $v['ups_maintain_date']:"")
+                    ->setCellValue('S'.$index, isset($v['disChargeDate']) ? $v['disChargeDate']:"")
+                    ->setCellValue('T'.$index, isset($v['disChargeLast']) ? $v['disChargeLast']:"")
+                    ->setCellValue('U'.$index, isset($v['ups_max_discharge']) ? $v['ups_max_discharge']:"")
+                    ->setCellValue('V'.$index, isset($v['ups_max_charge']) ? $v['ups_max_charge']:"");                    
             }
             // Rename worksheet
-            $objPHPExcel->getActiveSheet()->setTitle('偏离趋势报表');
+            $objPHPExcel->getActiveSheet()->setTitle('站历史数据');
             // Set active sheet index to the first sheet, so Excel opens this as the first sheet
             $objPHPExcel->setActiveSheetIndex(0);
             // Redirect output to a client’s web browser (Excel5)
             header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename="deviation_trend.xls"');
+            header('Content-Disposition: attachment;filename="station_history.xls"');
             header('Cache-Control: max-age=0');
 // If you're serving to IE 9, then the following may be needed
             header('Cache-Control: max-age=1');
@@ -407,29 +423,15 @@ class QueryController extends Controller
          $sql = "
             select b.* from tb_battery_module_history as b
         ";
-            // my_site.site_name,
-            // tb_battery_parameter.*,
-            // my_battery_info.*,
-            // my_ups_info.*,
-            // tb_station_parameter.bytegeStatus_U_upper,
-            // tb_station_parameter.bytegeStatus_U_lower,
-            // tb_station_parameter.FloatingbytegeStatus_U_upper,
-            // tb_station_parameter.FloatingbytegeStatus_U_lower,
-            // tb_station_parameter.DisbytegeStatus_U_upper,
-            // tb_station_parameter.DisbytegeStatus_U_lower
-            // left join my_site on my_site.serial_number/10000 = FLOOR(b.sn_key/10000)
-            // left join my_ups_info on my_ups_info.sid/10000 = FLOOR(b.sn_key/10000)
-            // left join my_battery_info on my_battery_info.sid/10000 = FLOOR(b.sn_key/10000)
-            // left join tb_battery_parameter on tb_battery_parameter.battery_sn_key=b.sn_key
-            // left join tb_station_parameter on tb_station_parameter.station_sn_key/10000 = FLOOR(b.sn_key/10000)
-            // (b.U-a.au)/a.au as cau,
-            // (b.T-a.at)/a.at as cat,
-            // (b.R-a.ar)/a.ar as car
-            // left join (SELECT AVG(U) as au, avg(T) as at, avg(R) as ar,FLOOR(sn_key/10000) as a_sn FROM tb_battery_module GROUP BY FLOOR(sn_key/10000)) as a on a.a_sn = FLOOR(b.sn_key/10000)
         $offset = ($this->page-1)*$this->count;
         $sql .= " where ".$where;
         $sql .= " order by b.record_time desc ";
-        $sql .= " limit $offset, $this->count ";
+        if ($isDownload != 1){
+            $sql .= " limit $offset, $this->count ";
+        }else{
+            $sql .= " limit 0,5000";
+        }
+
             $sites = Yii::app()->bms->createCommand($sql)
                 ->queryAll();
         //}

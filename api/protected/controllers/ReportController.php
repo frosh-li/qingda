@@ -31,14 +31,42 @@ class ReportController  extends Controller
     public function actionByearlog()
     {
         $id = Yii::app()->request->getParam('id',0);
+
+        $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
+
+        $this->setPageCount();
+
+        if ($isDownload == 1) {
+            $limit = 5000;
+            $offset = 0;
+        }else{
+            $limit = $this->count;
+            $offset = ($this->page - 1) * $this->count;
+        }
+
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
         );
         $ret['data'] = array();
-        $this->setPageCount();
+        
 
         $sql = "select * from {{battery_info}} ";
+
+        $start =Yii::app()->request->getParam('start');
+        $end = Yii::app()->request->getParam('end');
+        $where = 'where 1=1 ';
+        if($start){
+            $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
+            $where .= ' and battery_date >= "'.$start.'"';
+        }
+        if($end){
+            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $where .= ' and battery_date <= "'.$end.'"';
+        }
+
+        $sql .= $where;
+
         $bettery = Yii::app()->db->createCommand($sql)->queryAll();
         if ($bettery) {
             foreach ($bettery as $index => $item) {
@@ -46,16 +74,19 @@ class ReportController  extends Controller
             }
         }
 
+
+
         if ($id) {
-            $sql = "select sid from {{site}} where serial_number in (".$id.")";
+            $sql = "select sid from my_site where serial_number in (".$id.")";
             $sids =  Yii::app()->db->createCommand($sql)->queryColumn();
+
 
             $bets = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('{{battery_module_history}}')
                 ->where('sid in ('.implode(',',$sids).')')
-                ->limit($this->count)
-                ->offset(($this->page - 1) * $this->count)
+                ->limit($limit)
+                ->offset($offset)
                 ->order('record_time desc')
                 ->queryAll();
 
@@ -63,8 +94,8 @@ class ReportController  extends Controller
             $bets = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('{{battery_module_history}}')
-                ->limit($this->count)
-                ->offset(($this->page - 1) * $this->count)
+                ->limit($limit)
+                ->offset($offset)
                 ->order('record_time desc')
                 ->queryAll();
         }
@@ -92,7 +123,52 @@ class ReportController  extends Controller
                 'msg' => '暂无电池信息！'
             );
         }
-        echo json_encode($ret);
+        if ($isDownload == 1) {
+            Yii::$enableIncludePath = false;
+            Yii::import('application.extensions.PHPExcel.PHPExcel', 1);
+            $objPHPExcel = new PHPExcel();
+            $workSheet = $objPHPExcel->setActiveSheetIndex(0);
+            // Add some data
+            $workSheet->setCellValue('A1', '品牌')
+                ->setCellValue('B1', '生产日期')
+                ->setCellValue('C1', '电池安装日期')
+                ->setCellValue('D1', '电池的电压')
+                ->setCellValue('E1', '出厂标称内阻')
+                ->setCellValue('F1', '电池的内阻')
+                ->setCellValue('G1', '强制报废日期');
+            $index = 1;
+            foreach ($ret['data']['list'] as $v) {
+                $index ++;
+                $workSheet->setCellValue('A'.$index, isset($v['brand']) ? $v['brand']:"")
+                    ->setCellValue('B'.$index, isset($v['battery_date']) ? $v['battery_date']:"")
+                    ->setCellValue('C'.$index, isset($v['battery_install_date']) ? $v['battery_install_date']:"")
+                    ->setCellValue('D'.$index, isset($v['U']) ? $v['U']:"")
+                    ->setCellValue('E'.$index, isset($v['battery_oum']) ? $v['battery_oum']:"")
+                    ->setCellValue('F'.$index, isset($v['R']) ? $v['R']:"")
+                    ->setCellValue('G'.$index, isset($v['battery_scrap_date']) ? $v['battery_scrap_date']:"");
+            }
+            // Rename worksheet
+            $objPHPExcel->getActiveSheet()->setTitle('电池使用年限');
+            // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+            $objPHPExcel->setActiveSheetIndex(0);
+            // Redirect output to a client’s web browser (Excel5)
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="byearlog.xls"');
+            header('Cache-Control: max-age=0');
+// If you're serving to IE 9, then the following may be needed
+            header('Cache-Control: max-age=1');
+
+// If you're serving to IE over SSL, then the following may be needed
+            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header ('Pragma: public'); // HTTP/1.0
+
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+        } else {
+            echo json_encode($ret);
+        }
     }
 
     public function actionIndex()

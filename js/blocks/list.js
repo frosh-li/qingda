@@ -91,12 +91,32 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     startTime = new Date(startTime) / 1000;
                                     endTime = new Date(endTime) / 1000;
                                 }
-                                var durl = _this.downloadUrl + "?isdownload=1&start="+startTime+"&end="+endTime;
+                                if(this.downloadUrl.indexOf("?") > -1){
+                                    var durl = _this.downloadUrl + "&isdownload=1&start="+startTime+"&end="+endTime;
+                                }else{
+                                    var durl = _this.downloadUrl + "?isdownload=1&start="+startTime+"&end="+endTime;
+                                }
+                                
 
                                 window.location = durl;
                                 //query页面
                             }else if(window.location.hash.indexOf("/report/") > -1){
                                 //报表导出
+                                var startTime = $("#beginTime").val();
+                                var endTime = $("#endTime").val();
+                                if(startTime && endTime){
+                                    startTime = new Date(startTime) / 1000;
+                                    endTime = new Date(endTime) / 1000;
+                                }
+                                var type = $("#cationCategory").val();
+                                if(this.downloadUrl.indexOf("?") > -1){
+                                    var durl = _this.downloadUrl + "&isdownload=1&start="+startTime+"&end="+endTime;
+                                }else{
+                                    var durl = _this.downloadUrl + "?isdownload=1&start="+startTime+"&end="+endTime;
+                                }
+                                
+
+                                window.location = durl;
                             }
                             // _this.refresh();
                         });
@@ -1451,6 +1471,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         }
                         API.getGerneralalarmlog(param);
                     },
+                    downloadUrl:"/api/index.php/gerneralalarm",
                     render:function() {
                         var _this = this;
                         _this.destoryPlugin();
@@ -1496,6 +1517,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     fetchData:function(_param){
                         API.getByearlog(_param);
                     },
+                    downloadUrl:"/api/index.php/report/byearlog",
                     render:function() {
                         var _this = this;
                         _this.destoryPlugin();
@@ -1508,7 +1530,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             "scrollY": ui.getListHeight(),
                             "columns": [
                                 {"data": "brand", title: "序号",width:50},
-                                {"data": "brand", title: "评判", width: 100},
+                                {"data": "brand", title: "品牌", width: 100},
                                 {"data": "battery_date", title: "生产日期", width: 100},
                                 {"data": "battery_install_date", title: "电池安装日期", width: 100},
                                 {"data": "U", title: "电池的电压", width: 100},
@@ -1573,7 +1595,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 {"data": "modify_time", title: "操作时间", width: 150}
                             ]
                         }, dataTableDefaultOption)));
-                    }
+                    },
+                    downloadUrl:"/api/index.php/userlog?type=2"
                 }
             }
         };
@@ -1582,7 +1605,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         extObj:{
             fetchData:function(_param){
                 API.getUserlog({type:'1', start:$('#startTime').val()?+new Date($('#startTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""})
-            }
+            },
+            downloadUrl:"/api/index.php/userlog?type=1"
         }
     })
     //报表：UI日志：其他
@@ -1590,7 +1614,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         extObj:{
             fetchData:function(_param){
                 API.getUserlog({type:'3', start:$('#startTime').val()?+new Date($('#startTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""})
-            }
+            },
+            downloadUrl:"/api/index.php/userlog?type=3"
         }
     })
 
@@ -1600,7 +1625,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         extObj:{
             fetchData:function(_param){
                 API.getUserlog({type:'2', start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
-            }
+            },
+            downloadUrl:"/api/index.php/userlog?type=2"
         }
     })
     //查询：UI日志：用户登录登出
@@ -1608,7 +1634,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         extObj:{
             fetchData:function(_param){
                 API.getUserlog({type:'1', start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
-            }
+            },
+            downloadUrl:"/api/index.php/userlog?type=1"
         }
     })
     //查询：UI日志：其他
@@ -1616,7 +1643,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         extObj:{
             fetchData:function(_param){
                 API.getUserlog({type:'3', start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
-            }
+            },
+            downloadUrl:"/api/index.php/userlog?type=3"
         }
     })
     //查询：站
@@ -1624,7 +1652,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         extObj:{
             fetchData:function(_param){
                 API.getStationHistoryData({start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
-            }
+            },
+            downloadUrl:"/api/index.php/query/",
         }
     })
     //查询：组
@@ -1632,7 +1661,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         extObj:{
             fetchData:function(_param){
                 API.getGroupHistoryData({start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
-            }
+            },
+            downloadUrl:"/api/index.php/query/groupmodule",
         }
     })
     //查询：电池

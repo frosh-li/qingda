@@ -8,7 +8,7 @@ class UserlogController extends Controller
 		$type = Yii::app()->request->getParam('type' ,0);
         $start =Yii::app()->request->getParam('start');
         $end = Yii::app()->request->getParam('end');
-        
+        $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
         
 
         $where = ' 1 =1 ';
@@ -23,9 +23,19 @@ class UserlogController extends Controller
             $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
             $where .= ' and modify_time <= "'.$end.'"';
         }
-        //var_dump($where);
+
         $this->setPageCount();
-        $logs = Yii::app()->db->createCommand()
+        if ($isDownload == 1) {
+            $logs = Yii::app()->db->createCommand()
+            ->select('*')
+            ->from('{{action_log}}')
+            ->where($where)
+            ->limit(5000)
+            ->offset(0)
+            ->order('id desc')
+            ->queryAll();
+        }else{
+            $logs = Yii::app()->db->createCommand()
             ->select('*')
             ->from('{{action_log}}')
             ->where($where)
@@ -33,6 +43,8 @@ class UserlogController extends Controller
             ->offset(($this->page-1)*$this->count)
             ->order('id desc')
             ->queryAll();
+        }
+        
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
@@ -52,7 +64,45 @@ class UserlogController extends Controller
                 'msg' => '暂无站点！'
             );
         }
-        echo json_encode($ret);
+
+        if ($isDownload == 1) {
+            Yii::$enableIncludePath = false;
+            Yii::import('application.extensions.PHPExcel.PHPExcel', 1);
+            $objPHPExcel = new PHPExcel();
+            $workSheet = $objPHPExcel->setActiveSheetIndex(0);
+            // Add some data
+            $workSheet->setCellValue('A1', '用户')
+                ->setCellValue('B1', '操作内容')
+                ->setCellValue('C1', '操作时间');
+            $index = 1;
+            foreach ($ret['data']['list'] as $v) {
+                $index ++;
+                $workSheet->setCellValue('A'.$index, $v['username'])
+                    ->setCellValue('B'.$index, $v['content'])
+                    ->setCellValue('C'.$index, $v['modify_time']);
+            }
+            // Rename worksheet
+            $objPHPExcel->getActiveSheet()->setTitle('UI日志设置');
+            // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+            $objPHPExcel->setActiveSheetIndex(0);
+            // Redirect output to a client’s web browser (Excel5)
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="userlog.xls"');
+            header('Cache-Control: max-age=0');
+// If you're serving to IE 9, then the following may be needed
+            header('Cache-Control: max-age=1');
+
+// If you're serving to IE over SSL, then the following may be needed
+            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header ('Pragma: public'); // HTTP/1.0
+
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+        } else {
+            echo json_encode($ret);
+        }
 	}
 
 	// Uncomment the following methods and override them if needed

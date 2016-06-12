@@ -69,6 +69,7 @@ class GerneralalarmController extends Controller
         $begin = Yii::app()->request->getParam('begin',0);
         $end = Yii::app()->request->getParam('end',0);
         $id = Yii::app()->request->getParam('id',0);
+        
         $where = '1=1 ';
         if ($type != 0) {
             $where .= ' and alarm_emergency_level='.$type;
@@ -87,7 +88,18 @@ class GerneralalarmController extends Controller
         }
 
         $this->setPageCount();
-        $alarms = Yii::app()->bms->createCommand()
+        $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
+        if ($isDownload == 1) {
+            $alarms = Yii::app()->bms->createCommand()
+            ->select('*')
+            ->from('{{general_alarm_history}}')
+            ->where($where)
+            ->limit(5000)
+            ->offset(0)
+            ->order('alarm_occur_time desc')
+            ->queryAll();
+        }else{
+            $alarms = Yii::app()->bms->createCommand()
             ->select('*')
             ->from('{{general_alarm_history}}')
             ->where($where)
@@ -95,6 +107,8 @@ class GerneralalarmController extends Controller
             ->offset(($this->page - 1) * $this->count)
             ->order('alarm_occur_time desc')
             ->queryAll();
+        }
+        
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
@@ -114,7 +128,54 @@ class GerneralalarmController extends Controller
                 'msg' => '暂无报警信息！'
             );
         }
-        echo json_encode($ret);
+        if ($isDownload == 1) {
+            Yii::$enableIncludePath = false;
+            Yii::import('application.extensions.PHPExcel.PHPExcel', 1);
+            $objPHPExcel = new PHPExcel();
+            $workSheet = $objPHPExcel->setActiveSheetIndex(0);
+            // Add some data
+            $workSheet->setCellValue('A1', '站名')
+                ->setCellValue('B1', '站号')
+                ->setCellValue('C1', '组号')
+                ->setCellValue('D1', '电池号')
+                ->setCellValue('E1', '时间')
+                ->setCellValue('F1', '警情内容')
+                ->setCellValue('G1', '数值')
+                ->setCellValue('H1', '建议处理方式');
+            $index = 1;
+            foreach ($ret['data']['list'] as $v) {
+                $index ++;
+                $workSheet->setCellValue('A'.$index, isset($v['alram_equipment']) ? $v['alram_equipment']:"")
+                    ->setCellValue('B'.$index, isset($v['alarm_para1_name']) ? $v['alarm_para1_name']:"")
+                    ->setCellValue('C'.$index, isset($v['alarm_para2_name']) ? $v['alarm_para2_name']:"")
+                    ->setCellValue('D'.$index, isset($v['alarm_para3_name']) ? $v['alarm_para3_name']:"")
+                    ->setCellValue('E'.$index, isset($v['alarm_occur_time']) ? $v['alarm_occur_time']:"")
+                    ->setCellValue('F'.$index, isset($v['alarm_content']) ? $v['alarm_content']:"")
+                    ->setCellValue('G'.$index, isset($v['alarm_para1_value']) ? $v['alarm_para1_value']:"")
+                    ->setCellValue('H'.$index, isset($v['alarm_suggestion']) ? $v['alarm_suggestion']:"");
+            }
+            // Rename worksheet
+            $objPHPExcel->getActiveSheet()->setTitle('历史报警表');
+            // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+            $objPHPExcel->setActiveSheetIndex(0);
+            // Redirect output to a client’s web browser (Excel5)
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="alarms.xls"');
+            header('Cache-Control: max-age=0');
+// If you're serving to IE 9, then the following may be needed
+            header('Cache-Control: max-age=1');
+
+// If you're serving to IE over SSL, then the following may be needed
+            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header ('Pragma: public'); // HTTP/1.0
+
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+        } else {
+            echo json_encode($ret);
+        }
     }
 
     /**
