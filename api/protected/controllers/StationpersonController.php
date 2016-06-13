@@ -171,7 +171,7 @@ class StationpersonController extends Controller
         $this->setPageCount();
         $ups = Yii::app()->db->createCommand()
             ->select('sp.*,s.site_name')
-            ->from('{{sys_user}} sp')
+            ->from('{{station_person}} sp')
             ->leftJoin('{{site}} s','sp.sid = s.serial_number')
             ->limit($this->count)
             ->offset(($this->page-1)*$this->count)
