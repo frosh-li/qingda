@@ -52,6 +52,9 @@ return array(
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
 		),
+		'authManager' => [
+            'class' => 'yii\rbac\PhpManager',
+        ],
 		
 		/*
 		'db'=>array(

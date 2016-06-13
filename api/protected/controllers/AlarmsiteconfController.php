@@ -146,10 +146,19 @@ class AlarmsiteconfController extends Controller
                 $ret['data']['list'][] = $value;
             }
         }else{
-            $ret['response'] = array(
-                'code' => -1,
-                'msg' => '暂无门限数据！'
-            );
+        	// 如果没有门限数据，默认取门限数据插入到对应表中
+        	$sql = "select * from {{alarm_conf}} where category=$category";
+        	$rows = Yii::app()->db->createCommand($sql)->queryAll();
+
+        	foreach ($rows as  $key=> $value ) {
+        		$value['sn_key'] = $sid;
+        		$value['status'] = 0;
+                
+                unset($value['id']);
+                Yii::app()->db->createCommand()->insert('my_alarm_siteconf',$value);
+                $value['id'] = Yii::app()->db->getLastInsertID();
+                $ret['data']['list'][] = $value;
+            }
         }
 
 
