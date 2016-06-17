@@ -64,8 +64,8 @@ define(function(require){
             },
             /***************************************人员角色***************************************/
             getRolesData:function (args) {
-                var url = 'data/nav.json';
-                this.fetch(url, "nav:update", args, "get");
+                var url = '/api/index.php/role/index';
+                this.fetch(url, "listdata:update", args, "get");
                 return this;
             },
             getPersonalsData:function (args) {

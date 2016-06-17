@@ -1022,29 +1022,19 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     },
                     render:function(){
                         this.destoryPlugin();
-                        //this.clearTables();
+                        this.clearTables();
+                        $("#addRole").hide();
                         $('#lock').hide();
                         $('#auto').width('100%');
-                        /*this.listPlugin.push($('#auto table').DataTable( $.extend(true,{
+                        this.listPlugin.push($('#auto table').DataTable( $.extend(true,{
                          "data": this.data,
                          "scrollX":true,
                          "columns": [
-                         { "data": "name" },
-                         { "data": "id" },
-                         { "data": "time" },
-                         { "data": "a" },
-                         { "data": "v" },
-                         { "data": "temperature" },
-                         { "data": "temperature_max" },
-                         { "data": "temperature_min" },
-                         { "data": "humidity" },
-                         { "data": "humidity_max" },
-                         { "data": "group_num" },
-                         { "data": "battery_num" },
-                         { "data": "battery_state" },
-                         { "data": "reserve_time" }
+                            {"data": "", title: "序号"},
+                            {"data": "id", title: "编号"},
+                            {"data": "rolename", title: "角色名称"}
                          ]
-                         },dataTableDefaultOption)));*/
+                         },dataTableDefaultOption)));
                         return this;
                     }
                 }
@@ -1054,12 +1044,10 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 extObj:{
                     events:{
                         "click .list-edit-btn":"onEdit",
-                        "click .list-del-btn":"onDel",
-                        "mouseover .dataTable tr":"inRow",
-                        "mouseout .dataTable tr":"inRow"
+                        "click .list-del-btn":"onDel"
                     },
                     onEdit:function(e){
-                        ui.showPersonalEditDialog($(e.currentTarget).attr('pid'));
+                        ui.showPersonalEditDialog($(e.currentTarget).attr('id'));
                     },
                     onDel:function(e){
                         if(confirm("是否确定删除此人员")){
@@ -1083,12 +1071,15 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    {"data": "site_name", title: "序号"},
-                                    {"data": "site_name", title: "站名称"},
-                                    {"data": "Operater", title: "操作员"},
-                                    {"data": "Operater_cellphone", title: "操作员手机"},
-                                    {"data": "Alarm_SMS_receive_cellphone", title: "报警短信接收"},
-                                    {"data": "Alarm_SMS_receive_email", title: "报警邮箱接收"},
+                                    {"data": "", title: "序号"},
+                                    {"data": "username", title: "姓名"},
+                                    {"data": "phone", title: "联系电话"},
+                                    {"data": "email", title: "邮箱"},
+                                    {"data": "postname", title: "职位"},
+                                    {"data": "location", title: "住址"},
+                                    {"data": "manageAreas", title: "管理范围"},
+                                    {"data": "rolename", title: "角色"},
+                                    {"data": "name", title: "登陆名"},
                                     {
                                         data:"id",
                                         render: function (data) {

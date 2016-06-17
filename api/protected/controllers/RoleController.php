@@ -1,6 +1,6 @@
 <?php
 
-class StationpersonController extends Controller
+class RoleController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -170,13 +170,9 @@ class StationpersonController extends Controller
 	{
         $this->setPageCount();
         $ups = Yii::app()->db->createCommand()
-            ->select('sp.*,s.site_name,r.rolename')
-            ->from('{{sysuser}} sp')
-            ->leftJoin('{{site}} s','sp.sn_key = s.serial_number')
-            ->leftJoin('{{roles}} r', 'sp.role = r.id')
-            ->limit($this->count)
-            ->offset(($this->page-1)*$this->count)
-            ->order('id desc')
+            ->select('*')
+            ->from('{{roles}}')
+            ->order('id asc')
             ->queryAll();
         $ret['response'] = array(
             'code' => 0,
@@ -184,21 +180,10 @@ class StationpersonController extends Controller
         );
         $ret['data'] = array();
 
-        if ($ups) {
-            $ret['data']['page'] = $this->page;
-            $ret['data']['pageSize'] = $this->count;
-
-            foreach($ups as $key=>$value){
-                $ret['data']['list'][] = $value;
-            }
-
-        }else{
-            $ret['response'] = array(
-                'code' => -1,
-                'msg' => '暂无站点人员数据！'
-            );
+       
+        foreach($ups as $key=>$value){
+            $ret['data']['list'][] = $value;
         }
-
         echo json_encode($ret);
 	}
 
