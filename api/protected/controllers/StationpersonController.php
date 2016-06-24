@@ -22,8 +22,7 @@ class StationpersonController extends Controller
         $ret['data'] = array();
 
         if ($id) {
-            $sql = "select sp.*,s.site_name from {{station_person}} sp
-                    LEFT JOIN  {{site}} s on sp.sid= s.id where sp.id=" . $id;
+            $sql = "select * from my_sysuser where id=" . $id;
             $row = Yii::app()->db->createCommand($sql)->queryRow();
             if ($row) {
                 $ret['data'] = $row;
@@ -48,43 +47,21 @@ class StationpersonController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new StationPerson;
+		$model=new Sysuser;
         $ret['response'] = array(
             'code'=>0,
             'msg'=>'ok'
         );
-        $ret['data'] = array();
-        $sid=Yii::app()->request->getParam('sid','');
-        $Operater=Yii::app()->request->getParam('Operater','');
-        $Operater_cellphone=Yii::app()->request->getParam('Operater_cellphone','');
-        $Alarm_SMS_receive_cellphone=Yii::app()->request->getParam('Alarm_SMS_receive_cellphone','');
-        $Alarm_SMS_receive_email=Yii::app()->request->getParam('Alarm_SMS_receive_email','');
-        if ($sid != '') {
-            $model->sid = $sid;
-            $model->Operater = $Operater;
-            $model->Operater_cellphone = $Operater_cellphone;
-            $model->Alarm_SMS_receive_cellphone = $Alarm_SMS_receive_cellphone;
-            $model->Alarm_SMS_receive_email = $Alarm_SMS_receive_email;
-            if ($model->save()) {
+        if(isset($_POST))  
+        {
+
+            $model->attributes=$_POST;  
+            if($model->save()){
                 $ret['data'] = array(
-                    'id'=>$model->id,
-                    'sid'=>$model->sid,
-                    'Operater'=>$model->Operater,
-                );
-            }else{
-                var_dump($model->getErrors());
-                $ret['response'] = array(
-                    'code'=>-1,
-                    'msg'=>'新建站点人员失败！'
+                    'id'=>$model->id
                 );
             }
-        }else{
-            $ret['response'] = array(
-                'code'=>-1,
-                'msg'=>'站点不能为空！'
-            );
         }
-
         echo json_encode($ret);
 	}
 

@@ -51,6 +51,15 @@ class Session
     }
 
     /**
+     * get area
+     *
+     * @return string
+     */
+    public function getArea() {
+        return isset($_SESSION['area']) ? $_SESSION['area'] : '';
+    }
+
+    /**
      * get user name
      * @return string
      */
@@ -70,11 +79,12 @@ class Session
      * @param string $name
      * @param string $role
      */
-    public function register($id, $name, $role) {
+    public function register($id, $name, $role, $area) {
         $_SESSION['uid'] = intval($id);
         $_SESSION['username'] = trim($name);
         $_SESSION['role'] = trim($role);
         $_SESSION['loginTime'] = date('Y-m-d H:i:s');
+        $_SESSION['area'] = trim($area);
     }
 
     public function registerEnterTime() {

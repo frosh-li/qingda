@@ -13,7 +13,15 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         
         API.stat();
         $("#logout").click(function(){
-            window.location = "#/login";
+            $.ajax({
+                url:"/api/index.php/login/loginOut",
+                type:"get",
+                success:function(){
+                    localStorage.clear();
+                    window.location = "#/login";        
+                }
+            })
+            
         })
 
         var _arg = arguments,

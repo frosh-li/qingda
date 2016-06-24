@@ -10,10 +10,12 @@ define(["require","backbone","api","router","common"],function(require,Backbone,
                 var _this = this;
                 _this.listenTo(Backbone.Events,"login",function(data){
                     console.log(data);
+                    localStorage.setItem('userinfo', JSON.stringify(data));
                     router.to("manage/station");
                 })
                 _this.listenTo(Backbone.Events,"login:fail",function(data){
-
+                    localStorage.clear();
+                    alert('登录失败，请重试');
                 })
             },
             onSbumit:function(){

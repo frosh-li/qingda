@@ -25,6 +25,7 @@ class LoginController extends LController
             $ret['data'] = array(
                 'uid'=>$this->session->getUid(),
                 'role'=>$this->session->getRole(),
+                'area'=>$this->session->getArea()
             );
             echo json_encode($ret);
             Yii::app()->end();
@@ -43,12 +44,13 @@ class LoginController extends LController
             $row = Yii::app()->db->createCommand($sql)->queryRow();
 
             if ($row) {
-                if (md5($password.$row['salt']) == $row['password']) {
+                if ($password == $row['password']) {
                     $ret['data'] = array(
                         'uid'=>$row['id'],
-                        'role'=>$row['role']
+                        'role'=>$row['role'],
+                        'area'=>$row['area']
                     );
-                    $this->session->register($row['id'], $row['username'], $row['role']);
+                    $this->session->register($row['id'], $row['username'], $row['role'],$row['area']);
                     $log = array(
                         'type'=>1,
                         'uid'=>$row['id'],

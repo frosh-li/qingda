@@ -15,11 +15,12 @@
  * @property string $email
  * @property string $postname
  * @property string $location
+ * @property string $sn_key
  * @property string $site
  * @property string $profile
- * @property string $last_login_time
  * @property string $create_time
  * @property string $update_time
+ * @property string $area
  */
 class Sysuser extends CActiveRecord
 {
@@ -40,18 +41,7 @@ class Sysuser extends CActiveRecord
 	{
 		return '{{sysuser}}';
 	}
-    /**
-     * Prepares posttime  attributes before performing validation.
-     */
-    protected function beforeValidate() {
 
-        if ($this->isNewRecord) {
-            $this->create_time = $this->update_time = date('Y-m-d H:i:s');
-        }else{
-            $this->update_time = date('Y-m-d H:i:s');
-        }
-        return parent::beforeValidate();
-    }
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -60,18 +50,18 @@ class Sysuser extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('username, name, gender, password, salt, role, phone, email, postname, location, site, create_time, update_time', 'required'),
+			array('username, name, password, role, postname, location, area', 'required'),
 			array('role', 'numerical', 'integerOnly'=>true),
 			array('username, password, email', 'length', 'max'=>128),
 			array('name', 'length', 'max'=>20),
-            array('username', 'unique'),
 			array('gender, salt', 'length', 'max'=>10),
 			array('phone, postname', 'length', 'max'=>50),
-			array('location, site', 'length', 'max'=>255),
-			array('profile', 'safe'),
+			array('location, site, area', 'length', 'max'=>255),
+			array('sn_key', 'length', 'max'=>14),
+			array('profile, create_time, update_time', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, username, name, gender, password, salt, role, phone, email, postname, location, site, profile, last_login_time, create_time, update_time', 'safe', 'on'=>'search'),
+			array('id, username, name, gender, password, salt, role, phone, email, postname, location, sn_key, site, profile, create_time, update_time, area', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -103,11 +93,12 @@ class Sysuser extends CActiveRecord
 			'email' => 'Email',
 			'postname' => 'Postname',
 			'location' => 'Location',
+			'sn_key' => 'Sn Key',
 			'site' => 'Site',
 			'profile' => 'Profile',
-			'last_login_time' => 'Last Login Time',
 			'create_time' => 'Create Time',
 			'update_time' => 'Update Time',
+			'area' => 'Area',
 		);
 	}
 
@@ -133,11 +124,12 @@ class Sysuser extends CActiveRecord
 		$criteria->compare('email',$this->email,true);
 		$criteria->compare('postname',$this->postname,true);
 		$criteria->compare('location',$this->location,true);
+		$criteria->compare('sn_key',$this->sn_key,true);
 		$criteria->compare('site',$this->site,true);
 		$criteria->compare('profile',$this->profile,true);
-		$criteria->compare('last_login_time',$this->last_login_time,true);
 		$criteria->compare('create_time',$this->create_time,true);
 		$criteria->compare('update_time',$this->update_time,true);
+		$criteria->compare('area',$this->area,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

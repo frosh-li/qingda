@@ -1047,7 +1047,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         "click .list-del-btn":"onDel"
                     },
                     onEdit:function(e){
-                        ui.showPersonalEditDialog($(e.currentTarget).attr('id'));
+                        ui.showPersonalEditDialog($(e.currentTarget).attr('pid'));
                     },
                     onDel:function(e){
                         if(confirm("是否确定删除此人员")){
@@ -1071,13 +1071,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    {"data": "", title: "序号"},
+                                    {"data": "username", title: "序号"},
                                     {"data": "username", title: "姓名"},
                                     {"data": "phone", title: "联系电话"},
                                     {"data": "email", title: "邮箱"},
                                     {"data": "postname", title: "职位"},
                                     {"data": "location", title: "住址"},
-                                    {"data": "manageAreas", title: "管理范围"},
+                                    {"data": "area", title: "管理范围"},
                                     {"data": "rolename", title: "角色"},
                                     {"data": "name", title: "登陆名"},
                                     {

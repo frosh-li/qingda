@@ -1,4 +1,4 @@
-define(['require','api','common','blocks/stationSelector'],function(require,API,common,stationSelector){
+define(['require','api','common','blocks/areaSelector'],function(require,API,common,areaSelector){
     var view = null,
         config = {
             extobj : {
@@ -11,6 +11,12 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                 },
                 initialize:function(data){
                     var _this = this;
+
+                    //_this.listenTo(Backbone.Events,"stationinfo:foredit:update",function(data){
+                    this.level = this.level||areaSelector.init();
+                    console.log(this.level);
+                    //});
+
                     _this.listenTo(Backbone.Events,"personalInfo:get",function(data){
                         _this.data = data;
                         _this.setValue();
@@ -33,18 +39,15 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     return false;
                 },
                 validate:function(param){
-                    if(!param.site_name){
-                        return this.showErrTips('站点为必填项');
-                    }
-                    if(!param.sid){
-                        return this.showErrTips('站点不存在');
-                    }
                     return true;
                 },
                 onsubmit:function(){
                     var _this = this,
                         _param = _this.getParam();
-
+                    _param.area = this.level.getValue();
+                    _param.role = $("[key=role]",this.el).val();
+                    console.log(_param);
+                    console.log(this.level,'level');
                     if(_this.validate(_param)){
                         if(_param.id){
                             API.updatePersonalInfo(_param);
@@ -57,19 +60,25 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     this.stopListening();
                     this.dialogObj.dialog( "destroy" );
                     $(".ui-dialog,.ui-widget-overlay").remove();
-                    stationList.autocomplete('destroy');
+                    this.level.destroy();
+                    this.level = null;
                 }
             }
-        },
-        stationList;
+        };
     return {
         show:function(id){
             var $dialogWrap = $("#personalEditTpl-dialog").length?$("#personalEditTpl-dialog").replaceWith($($("#personalEditTpl").html())):$($("#personalEditTpl").html());
+            try{
+                var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+            }catch(e){
+                var roleid = 3;
+                console.log(e);
+            }
 
             $dialogWrap.dialog({
                 modal:true,
                 show:300,
-                height:300,
+                height:500,
                 width:1000,
                 title:id?"编辑人员信息":"添加人员",
                 close:function(evt,ui){
@@ -81,18 +90,23 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     view.dialogObj = $(this);
 
                     if(id){
-                        API.getPersonalInfo({id:id});
+                        API.getPersonalInfo({id:id}, function(){
+                            console.log('get data');
+                        });
                     }
+                    setTimeout(function(){
+                        // if(roleid == 1){
+                        //     $('.rolelist').append('<option value=1>超级管理员</option>');
+                        //     $('.rolelist').append('<option value=2>管理员</option>');
+                        //     $('.rolelist').append('<option value=3>观察员</option>');
+                        // }else if(roleid == 2){
+                        //     $('.rolelist').append('<option value=1>超级管理员</option>');
+                        //     $('.rolelist').append('<option value=2>管理员</option>');
+                        //     $('.rolelist').append('<option value=3>观察员</option>');
+                        // }
+                    },1000)
+                    
 
-                    stationList = stationSelector.init({
-                        extOption:{
-                            select:function(event, ui){
-                                $(this).val(ui.item.label);
-                                $("[key=sid]").val(ui.item.value);
-                                return false;
-                            }
-                        }
-                    });
                 }
             });
         },

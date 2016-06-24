@@ -834,17 +834,15 @@
 <script type="text/html" id="personalEditTpl">
     <div id="personalEditTpl-dialog" class="dialog">
         <form class="jqtransform">
-            <div class="rowElem">
-                <label class="item-title" for="name">站点: </label>
-                <input class="input-w-1" type="text" id="stationSelector" key="site_name" />
-                <input type="hidden" key="sid" />
-                <input type="hidden" key="id" />
+            <div class="rowElem tree">
+                <label class="item-title"><i class="mast-fill">*</i>隶属区域: </label>
+                <div id="treesWrap" class="tree-selector ztree"></div>
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">登陆名: </label>
                 <input class="input-w-1" type="text" key="name" />
                 <label class="item-title" for="name">登陆密码: </label>
-                <input class="input-w-1" type="text" key="password" />
+                <input class="input-w-1" type="password" key="password" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">姓名: </label>
@@ -864,12 +862,10 @@
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">角色: </label>
-                <select key="roleid">
+                <select key="role">
                     <option value=1>超级管理员</option>
-                    <option value=2>高级管理员</option>
-                    <option value=3>地域管理员</option>
-                    <option value=4>高级观察员</option>
-                    <option value=5>区域观察员</option>
+                    <option value=2>管理员</option>
+                    <option value=3>观察员</option>
                 </select>
                 
             </div>
