@@ -90,25 +90,50 @@ class GerneralalarmController extends Controller
         $this->setPageCount();
         $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
         if ($isDownload == 1) {
-            $alarms = Yii::app()->bms->createCommand()
-            ->select('*')
-            ->from('{{general_alarm_history}}')
-            ->where($where)
-            ->limit(5000)
-            ->offset(0)
-            ->order('alarm_occur_time desc')
-            ->queryAll();
+            //xl
+            //通过sql直接选择地域进行过滤
+            $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
+            if(!empty($sns)){
+                $sql = "select b.* from tb_general_alarm_history as b, my_site a ";
+                $sql .= " where ".$where;
+                $sql .= " and FLOOR(b.alarm_sn/1000) = FLOOR(a.serial_number/1000)";
+                $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.alarm_occur_time desc limit 0, 5000 ";
+                $alarms = Yii::app()->bms->createCommand($sql)->queryAll();
+            }
+            else{
+                $alarms = Yii::app()->bms->createCommand()
+                ->select('*')
+                ->from('{{general_alarm_history}}')
+                ->where($where)
+                ->limit(5000)
+                ->offset(0)
+                ->order('alarm_occur_time desc')
+                ->queryAll();
+            }
+            
         }else{
-            $alarms = Yii::app()->bms->createCommand()
-            ->select('*')
-            ->from('{{general_alarm_history}}')
-            ->where($where)
-            ->limit($this->count)
-            ->offset(($this->page - 1) * $this->count)
-            ->order('alarm_occur_time desc')
-            ->queryAll();
+            //xl
+            //通过sql直接选择地域进行过滤
+            $alarms = array();
+            $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
+            if(!empty($sns)){
+                $sql = "select b.* from tb_general_alarm_history as b, my_site a ";
+                $sql .= " where ".$where;
+                $sql .= " and FLOOR(b.alarm_sn/1000) = FLOOR(a.serial_number/1000)";
+                $sql .= "and a.serial_number in (" . implode(",", $sns) .")  order by b.alarm_occur_time desc limit ".($this->page - 1) * $this->count. "," .$this->count;
+                $alarms = Yii::app()->bms->createCommand($sql)->queryAll();
+            }elseif($sns === false){
+                $alarms = Yii::app()->bms->createCommand()
+                ->select('*')
+                ->from('{{general_alarm_history}}')
+                ->where($where)
+                ->limit($this->count)
+                ->offset(($this->page - 1) * $this->count)
+                ->order('alarm_occur_time desc')
+                ->queryAll();
+            }
         }
-        
+       
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'

@@ -20,22 +20,39 @@ class QueryController extends Controller
             $where .= ' and record_time <= "'.$end.'"';
         }
 
-        $sql = "select * from tb_station_module_history";
-        $offset = ($this->page-1)*$this->count;
-        $sql .= " where ".$where;
-        $sql .= " order by record_time desc ";
-        if ($isDownload != 1){
-            $sql .= " limit $offset, $this->count ";
-        }else{
-            $sql .= " limit 0,5000";
-        }
-        
+        //xl
+        $sites = array();
+        $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
+        if(!empty($sns)){
+            $sql = "select b.* from tb_station_module_history as b, my_site a ";
+            $sql .= " where {$where}";
+            $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+            $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc ";
+            
+            if ($isDownload != 1){
+                $sql .= "limit " .($this->page - 1) * $this->count. "," . $this->count;
+            }else{
+                $sql .= " limit 0, 5000";
+            }
+            $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+        }elseif($sns === false){
+            $sql = "select * from tb_station_module_history";
+            $offset = ($this->page-1)*$this->count;
+            $sql .= " where ".$where;
+            $sql .= " order by record_time desc ";
+            if ($isDownload != 1){
+                $sql .= " limit $offset, $this->count ";
+            }else{
+                $sql .= " limit 0,5000";
+            }
+            
             $sites = Yii::app()->bms->createCommand($sql)
                 ->queryAll();
+        }
+
         //}
         //
         
-
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
@@ -51,6 +68,7 @@ class QueryController extends Controller
                 $sql = "select site_name from my_site where serial_number={$value['sn_key']}";
                 $joinData = Yii::app()->bms->createCommand($sql)->queryScalar();
                 $value['site_name'] = $joinData;
+
                 // 获取组数
                 $sql = "select count(*) from tb_group_module_history where floor(sn_key/10000)*10000={$value['sn_key']} and record_time='{$value['record_time']}'";
                 $joinData = Yii::app()->bms->createCommand($sql)->queryScalar();
@@ -178,6 +196,11 @@ class QueryController extends Controller
             }
 
         }
+        
+        //xl
+        $sites = array();
+        $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
+        
         if ($id) {
             //$arr = explode(',',$id);
             //$temp = array();
@@ -186,36 +209,59 @@ class QueryController extends Controller
             //}
             //$id =  implode(',',$temp);
             if (is_numeric($id)) {
-                $sites = Yii::app()->bms->createCommand()
-                    ->select($field . ',sid')
-                    ->from('{{station_module_history}}')
-                    ->where('sn_key in(' . $id . ')')
-                    ->limit($this->count)
-                    ->offset(($this->page - 1) * $this->count)
-                    ->order('record_time desc')
-                    ->queryAll();
+                if(!empty($sns)){
+                    $sql = "select b.{$field}, b.sid from tb_station_module_history as b, my_site a ";
+                    $sql .= " where b.sn_key in(" . $id . ')';
+                    $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+                    $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . $this->count;
+                    $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+                }elseif($sns === false){
+                    $sites = Yii::app()->bms->createCommand()
+                        ->select($field . ',sid')
+                        ->from('{{station_module_history}}')
+                        ->where('sn_key in(' . $id . ')')
+                        ->limit($this->count)
+                        ->offset(($this->page - 1) * $this->count)
+                        ->order('record_time desc')
+                        ->queryAll();
+                }
             }else{
                 $arr = explode(',',$id);
 
+                if(!empty($sns)){
+                    $sql = "select b.{$field}, b.sid from tb_station_module_history as b, my_site a ";
+                    $sql .= " where b.sn_key in(" . $id . ')';
+                    $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+                    $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . count($arr);
+                    $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+                }elseif($sns === false){
+                    $sites = Yii::app()->bms->createCommand()
+                        ->select('sid,'.$field)
+                        ->from('{{station_module_history}}')
+                        ->where('sn_key in('.$id.')')
+                        //->limit($this->count)
+                        ->limit(count($arr))
+                        ->offset(($this->page - 1) * $this->count)
+                        ->order('record_time desc')
+                        ->queryAll();
+                }
+            }
+        }else{
+            if(!empty($sns)){
+                $sql = "select b.{$field}, b.sid from tb_station_module_history as b, my_site a ";
+                $sql .= " where 1=1 ";
+                $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+                $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . $this->count;
+                $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+            }elseif($sns === false){
                 $sites = Yii::app()->bms->createCommand()
-                    ->select('sid,'.$field)
+                    ->select($field.',sid')
                     ->from('{{station_module_history}}')
-                    ->where('sn_key in('.$id.')')
-                    //->limit($this->count)
-                    ->limit(count($arr))
-                    ->offset(($this->page - 1) * $this->count)
+                    ->limit($this->count)
+                    ->offset(($this->page-1)*$this->count)
                     ->order('record_time desc')
                     ->queryAll();
             }
-
-        }else{
-            $sites = Yii::app()->bms->createCommand()
-                ->select($field.',sid')
-                ->from('{{station_module_history}}')
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
-                ->order('record_time desc')
-                ->queryAll();
         }
         $ret['response'] = array(
             'code' => 0,
@@ -253,6 +299,7 @@ class QueryController extends Controller
 
         echo json_encode($ret);
     }
+    
     //组实时数据
     public function actionGroupmodule()
     {
@@ -260,7 +307,7 @@ class QueryController extends Controller
         $id = Yii::app()->request->getParam('id',0);
         $start =Yii::app()->request->getParam('start');
         $end = Yii::app()->request->getParam('end');
-        $where = ' 1 =1 ';
+        $where = ' 1 = 1 ';
         if($start){
             $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
             $where .= ' and record_time >= "'.$start.'"';
@@ -285,7 +332,18 @@ class QueryController extends Controller
         //         ->order('record_time desc')
         //         ->queryAll();
         // }else{
-            $sites = Yii::app()->bms->createCommand()
+        //xl
+        //通过sql直接选择地域进行过滤
+           $sites = array();
+           $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
+           if(!empty($sns)){
+                $sql = "select b.* from tb_group_module_history as b, my_site a ";
+                $sql .= " where {$where}";
+                $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+                $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . $this->count;
+                $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+            }elseif($sns === false){
+                $sites = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('{{group_module_history}}')
                 ->where($where)
@@ -293,6 +351,7 @@ class QueryController extends Controller
                 ->offset(($this->page-1)*$this->count)
                 ->order('record_time desc')
                 ->queryAll();
+        }
         //}
 
         $ret['response'] = array(
@@ -321,9 +380,13 @@ class QueryController extends Controller
     //组实时数据折线图
     public function actionGroupchart()
     {
-        $field = Yii::app()->request->getParam('field','I');
+        $field = Yii::app()->request->getParam1('field','I');
         $this->setPageCount();
         $id = Yii::app()->request->getParam('id',0);
+        
+        //xl
+        $sites = array();
+        $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
         if ($id) {
             //$arr = explode(',',$id);
             //$temp = array();
@@ -332,35 +395,58 @@ class QueryController extends Controller
             //}
             //$id =  implode(',',$temp);
             if (is_numeric($id)) {
-                $sites = Yii::app()->bms->createCommand()
-                    ->select($field.',gid,sn_key')
-                    ->from('{{group_module_history}}')
-                    ->where('sn_key in('.$id.')')
-                    ->limit($this->count)
-                    ->offset(($this->page - 1) * $this->count)
-                    ->order('record_time desc')
-                    ->queryAll();
+                if(!empty($sns)){
+                    $sql = "select b.{$field}, b.sid from tb_group_module_history as b, my_site a ";
+                    $sql .= " where b.sn_key in(" . $id . ')';
+                    $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+                    $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . $this->count;
+                    $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+                }elseif($sns === false){
+                    $sites = Yii::app()->bms->createCommand()
+                        ->select($field.',gid,sn_key')
+                        ->from('{{group_module_history}}')
+                        ->where('sn_key in('.$id.')')
+                        ->limit($this->count)
+                        ->offset(($this->page - 1) * $this->count)
+                        ->order('record_time desc')
+                        ->queryAll();
+                }
             }else{
                 $arr = explode(',',$id);
-
-                $sites = Yii::app()->bms->createCommand()
-                    ->select($field.',gid,sn_key')
-                    ->from('{{group_module_history}}')
-                    ->where('sn_key in('.$id.')')
-                    ->limit(count($arr))
-                    ->offset(($this->page - 1) * $this->count)
-                    ->order('record_time desc')
-                    ->queryAll();
+                if(!empty($sns)){
+                    $sql = "select b.{$field}, b.sid from tb_group_module_history as b, my_site a ";
+                    $sql .= " where b.sn_key in(" . $id . ')';
+                    $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+                    $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . count($arr);
+                    $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+                }elseif($sns === false){
+                    $sites = Yii::app()->bms->createCommand()
+                        ->select($field.',gid,sn_key')
+                        ->from('{{group_module_history}}')
+                        ->where('sn_key in('.$id.')')
+                        ->limit(count($arr))
+                        ->offset(($this->page - 1) * $this->count)
+                        ->order('record_time desc')
+                        ->queryAll();
+                }
             }
 
         }else{
-            $sites = Yii::app()->bms->createCommand()
-                ->select($field.',gid,sn_key')
-                ->from('{{group_module_history}}')
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
-                ->order('record_time desc')
-                ->queryAll();
+            if(!empty($sns)){
+                $sql = "select b.{$field}, b.sid from tb_group_module_history as b, my_site a ";
+                $sql .= " where 1=1 ";
+                $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+                $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . $this->count;
+                $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+            }elseif($sns === false){
+                $sites = Yii::app()->bms->createCommand()
+                    ->select($field.',gid,sn_key')
+                    ->from('{{group_module_history}}')
+                    ->limit($this->count)
+                    ->offset(($this->page-1)*$this->count)
+                    ->order('record_time desc')
+                    ->queryAll();
+            }
         }
 
         $ret['response'] = array(
@@ -393,6 +479,7 @@ class QueryController extends Controller
 
         echo json_encode($ret);
     }
+    
     // 电池实时数据
     public function actionBatterymodule()
     {
@@ -423,8 +510,20 @@ class QueryController extends Controller
          $sql = "
             select b.* from tb_battery_module_history as b
         ";
+          
         $offset = ($this->page-1)*$this->count;
         $sql .= " where ".$where;
+        
+        //xl
+        //通过sql直接选择地域进行过滤
+        $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
+        if(!empty($sns)){
+            $sql = "select b.*,a.aid from tb_battery_module_history as b, my_site a ";
+            $sql .= " where ".$where;
+            $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+            $sql .= "and a.serial_number in (" . implode(",", $sns) .")";
+        }
+
         $sql .= " order by b.record_time desc ";
         if ($isDownload != 1){
             $sql .= " limit $offset, $this->count ";
@@ -436,6 +535,7 @@ class QueryController extends Controller
                 ->queryAll();
         //}
 
+            
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
@@ -654,37 +754,67 @@ class QueryController extends Controller
         $field = Yii::app()->request->getParam('field','U');
         $this->setPageCount();
         $id = Yii::app()->request->getParam('id',0);
+        
+        //xl
+        $sites = array();
+        $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
         if ($id) {
             if (is_numeric($id)) {
+                if(!empty($sns)){
+                    $sql = "select b.{$field}, b.mid, b.sn_key from tb_battery_module_history as b, my_site a ";
+                    $sql .= " where b.sn_key in(" . $id . ')';
+                    $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+                    $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . $this->count;
+
+                    $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+                }elseif($sns === false){
+                    $sites = Yii::app()->bms->createCommand()
+                        ->select($field.',mid,sn_key')
+                        ->from('{{battery_module_history}}')
+                        ->where('sn_key in('.$id.')')
+                        ->limit($this->count)
+                        ->offset(($this->page-1)*$this->count)
+                        ->order('record_time desc')
+                        ->queryAll();
+                }
+            }else{
+                $arr = explode(',',$id);
+                if(!empty($sns)){
+                    $sql = "select b.{$field}, b.mid, b.sn_key from tb_battery_module_history as b, my_site a ";
+                    $sql .= " where b.sn_key in(" . $id . ')';
+                    $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+                    $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . count($arr);
+
+                    $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+                }elseif($sns === false){
+                    $sites = Yii::app()->bms->createCommand()
+                        ->select($field.',mid,sn_key')
+                        ->from('{{battery_module_history}}')
+                        ->where('sn_key in('.$id.')')
+                        ->limit(count($arr))
+                        ->offset(($this->page-1)*$this->count)
+                        ->order('record_time desc')
+                        ->queryAll();
+                }
+            }
+
+        }else{
+            if(!empty($sns)){
+                $sql = "select b.{$field}, b.mid, b.sn_key from tb_battery_module_history as b, my_site a ";
+                $sql .= " where 1=1 ";
+                $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+                $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . $this->count;
+
+                $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+            }elseif($sns === false){
                 $sites = Yii::app()->bms->createCommand()
                     ->select($field.',mid,sn_key')
                     ->from('{{battery_module_history}}')
-                    ->where('sn_key in('.$id.')')
                     ->limit($this->count)
                     ->offset(($this->page-1)*$this->count)
                     ->order('record_time desc')
                     ->queryAll();
-            }else{
-                $arr = explode(',',$id);
-
-                $sites = Yii::app()->bms->createCommand()
-                    ->select($field.',mid,sn_key')
-                    ->from('{{battery_module_history}}')
-                    ->where('sn_key in('.$id.')')
-                    ->limit(count($arr))
-                    ->offset(($this->page-1)*$this->count)
-                    ->order('record_time desc')
-                    ->queryAll();
             }
-
-        }else{
-            $sites = Yii::app()->bms->createCommand()
-                ->select($field.',mid,sn_key')
-                ->from('{{battery_module_history}}')
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
-                ->order('record_time desc')
-                ->queryAll();
         }
 
         $ret['response'] = array(

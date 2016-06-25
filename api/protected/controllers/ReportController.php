@@ -74,30 +74,51 @@ class ReportController  extends Controller
             }
         }
 
-
-
+        //xl
+        $bets = array();
+        $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
         if ($id) {
             $sql = "select sid from my_site where serial_number in (".$id.")";
             $sids =  Yii::app()->db->createCommand($sql)->queryColumn();
 
-
-            $bets = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{battery_module_history}}')
-                ->where('sid in ('.implode(',',$sids).')')
-                ->limit($limit)
-                ->offset($offset)
-                ->order('record_time desc')
-                ->queryAll();
+            $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
+            if(!empty($sns)){
+                $sql = "select b.* from tb_battery_module_history as b, my_site a ";
+                $sql .= " where b.sid in (" .implode(',',$sids) . ')';
+                $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+                $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .$offset. "," . $limit;
+                $bets = Yii::app()->bms->createCommand($sql)->queryAll();
+            }elseif($sns === false){
+                $bets = Yii::app()->bms->createCommand()
+                    ->select('*')
+                    ->from('{{battery_module_history}}')
+                    ->where('sid in ('.implode(',',$sids).')')
+                    ->limit($limit)
+                    ->offset($offset)
+                    ->order('record_time desc')
+                    ->queryAll();
+            }
 
         }else{
-            $bets = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{battery_module_history}}')
-                ->limit($limit)
-                ->offset($offset)
-                ->order('record_time desc')
-                ->queryAll();
+            //xl
+            //通过sql直接选择地域进行过滤
+            $bets = array();
+            $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
+            if(!empty($sns)){
+                $sql = "select b.* from tb_battery_module_history as b, my_site a ";
+                $sql .= $where;
+                $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+                $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit {$offset}, {$limit}";
+                $bets = Yii::app()->bms->createCommand($sql)->queryAll();
+            }elseif($sns === false){
+                $bets = Yii::app()->bms->createCommand()
+                    ->select('*')
+                    ->from('{{battery_module_history}}')
+                    ->limit($limit)
+                    ->offset($offset)
+                    ->order('record_time desc')
+                    ->queryAll();
+            }
         }
         if ($bets) {
             $ret['data']['page'] = $this->page;
@@ -267,7 +288,17 @@ class ReportController  extends Controller
             $counts = $this->count;
         }
        
-        $sql = "select * from tb_station_module_history {$where} order by record_time desc limit {$offset},{$counts} ";
+        //xl
+        $result = array();
+        $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
+        if(!empty($sns)){
+            $sql = "select * from tb_station_module_history b, my_site a {$where} ";
+            $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+            $sql .= "and a.serial_number in (" . implode(",", $sns) .")  order by b.record_time desc limit ".$offset. "," .$counts;
+        }elseif($sns === false){
+            $sql = "select * from tb_station_module_history {$where} order by record_time desc limit {$offset},{$counts} ";
+        }
+        
         $result = Yii::app()->db->createCommand($sql)->queryAll();
 
         if (empty($result)) {
@@ -396,7 +427,7 @@ class ReportController  extends Controller
 
         $this->setPageCount();
 
-        $where = '';
+        $where = '1=1  ';
         $start =Yii::app()->request->getParam('start');
         $end = Yii::app()->request->getParam('end');
 
@@ -408,15 +439,27 @@ class ReportController  extends Controller
             $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
             $where .= ' and record_time <= "'.$end.'"';
         }
-
-        $result = Yii::app()->bms->createCommand()
-            ->select('sn_key, record_time, sid')
-            ->from('{{station_module_history}}')
-            ->where($where)
-            ->limit($this->count)
-            ->offset(($this->page - 1) * $this->count)
-            ->order('record_time, sid')
-            ->queryAll();
+        
+        //xl
+        //通过sql直接选择地域进行过滤
+        $result = array();
+        $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
+        if(!empty($sns)){
+            $sql = "select b.sn_key, b.record_time, b.sid from tb_station_module_history as b, my_site a ";
+            $sql .= " where ".$where;
+            $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+            $sql .= "and a.serial_number in (" . implode(",", $sns) .")  order by b.record_time, b.sid limit ".($this->page - 1) * $this->count. "," .$this->count;
+            $result = Yii::app()->bms->createCommand($sql)->queryAll();
+        }elseif($sns === false){
+            $result = Yii::app()->bms->createCommand()
+                ->select('sn_key, record_time, sid')
+                ->from('{{station_module_history}}')
+                ->where($where)
+                ->limit($this->count)
+                ->offset(($this->page - 1) * $this->count)
+                ->order('record_time, sid')
+                ->queryAll();
+        }
 
         if (empty($result)) {
             $this->ajaxReturn(-1, '暂无数据');

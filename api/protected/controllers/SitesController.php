@@ -504,13 +504,23 @@ class SitesController extends Controller
 	public function actionIndex()
 	{
         $this->setPageCount();
-        $sites = Yii::app()->db->createCommand()
-            ->select('*')
-            ->from('{{site}}')
-            //->limit($this->count)
-            //->offset(($this->page-1)*$this->count)
-            ->order('id desc')
-            ->queryAll();
+        //xl
+        //通过sql直接选择地域进行过滤
+        $sites = array();
+        $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
+        if(!empty($sns)){
+            $sql = "select * from my_site as a";
+            $sql .= " where  a.serial_number in (" . implode(",", $sns) .") order by id desc ";
+            $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+        }elseif($sns === false){
+            $sites = Yii::app()->db->createCommand()
+                ->select('*')
+                ->from('{{site}}')
+                //->limit($this->count)
+                //->offset(($this->page-1)*$this->count)
+                ->order('id desc')
+                ->queryAll();
+        }
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
