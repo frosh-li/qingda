@@ -10,8 +10,16 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             "autoWidth": true,
             "scrollCollapse":true,
             "language": {
+                "lengthMenu": "显示 _MENU_ 条",
+                "paginate":{
+                    "first":"首页",
+                    "last":"末页",
+                    "next":"下一页",
+                    "previous":"上一页"
+                },
                 "emptyTable": "暂无数据"
             },
+            "dom":"irtlp",
             "scroller": {
                 "rowHeight": 'auto'
             },
@@ -355,8 +363,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 }
                                 _this.listPlugin.push($('#auto table').DataTable( $.extend(true,{},dataTableDefaultOption,{
                                     "data": _this.data,
+                                "paging":true,
                                     "scrollX":ui.getListWidth(),
-                                    "scrollY":ui.getListHeight(),
+                                    //"scrollY":ui.getListHeight(),
                                     "columns": [
                                         { "data": "sid", "title":"序号",width:50},
                                         { "data": "site_name", "title":"名称",width:150},
@@ -541,17 +550,18 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         delete colums.data[colums.data.length-1].width;
                                     }catch(e){}
                                 }
-                                _this.listPlugin.push($('#auto table').DataTable( $.extend(true,{
+                            _this.listPlugin.push($('#auto table').DataTable( $.extend(true,{},dataTableDefaultOption,{
                                     "data": _this.data,
+                                    "paging":true,
                                     "scrollX":ui.getListWidth(),
-                                    "scrollY":ui.getListHeight(),
+                                    //"scrollY":ui.getListHeight(),
                                     "columns": [
                                         { "data": "sid",title:"序号",width:50 },
                                         { "data": "site_name",title:"站名",width:120 },
                                         { "data": "sid",title:"站号",width:50 },
                                         { "data": "gid",title:"组号",width:50 }
                                     ].concat(colums.data)
-                                },dataTableDefaultOption)));
+                            })));
                                 _this.checkAllRows();
                             })
 
@@ -582,27 +592,28 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     render:function(){
                         //this.destoryPlugin();
                         var _this = this;
-                        ui.resizeAutoListWidth();
+                        //ui.resizeAutoListWidth();
                         if(_this.listPlugin && _this.listPlugin[0]){
                             _this.updateList();
                         }else{
-                            this.listPlugin.push($('#auto table').DataTable( $.extend(true,{
+                            this.listPlugin.push($('#auto table').DataTable( $.extend(true,{},dataTableDefaultOption,{
                                 "data": this.data,
+                                "paging":true,
                                 "scrollX":ui.getListHeight(),
-                                "scrollY":ui.getListHeight(),
+                                //"scrollY":ui.getListHeight(),
                                 "columns": [
-                                    { "data": "alarm_sn",title:"序号" },
-                                    { "data": "alram_equipment",title:"站名" ,render:function(data,type,itemData){
+                                    { "data": "alarm_sn",title:"序号",width:50 },
+                                    { "data": "alram_equipment",title:"站名",width:150 ,render:function(data,type,itemData){
                                         var color = ['red', 'green', '#f90']
                                         return '<span style="color:white;background-color:'+color[itemData.alarm_emergency_level -1]+'">'+itemData.alram_equipment+'</span>';
                                     }},
-                                    { "data": "alarm_para1_name",title:"站号" },
-                                    { "data": "alarm_para2_name",title:"组号" },//组序列号
-                                    { "data": "alarm_para3_name",title:"电池号" },
-                                    { "data": "alarm_occur_time",title:"时间" },
-                                    { "data": "alarm_content",title:"警情内容" },
-                                    { "data": "alarm_para1_value",title:"数值" },
-                                    { "data": "alarm_suggestion",title:"建议处理方式" },
+                                    { "data": "alarm_para1_name",title:"站号",width:50 },
+                                    { "data": "alarm_para2_name",title:"组号",width:50  },//组序列号
+                                    { "data": "alarm_para3_name",title:"电池号",width:50  },
+                                    { "data": "alarm_occur_time",title:"时间" ,width:200},
+                                    { "data": "alarm_content",title:"警情内容",width:200 },
+                                    { "data": "alarm_para1_value",title:"数值",width:50  },
+                                    { "data": "alarm_suggestion",title:"建议处理方式",width:400 }
                                     // {
                                     //     "data": "alarm_sn",
                                     //     title:"处理连接",
@@ -615,8 +626,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     // },
                                     //{ "data": "alarm_process_and_memo",title:"处理过程、时间、管理员" }
                                 ]
-                            },dataTableDefaultOption)));
+                            })));
                         }
+
                         // _this.checkAllRows();
                         return this;
                     }
