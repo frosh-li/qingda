@@ -332,11 +332,23 @@ class TreesController extends Controller
     public function actionGetnav()
     {
         $keyword = Yii::app()->request->getParam('key','');
-        $trees = Yii::app()->db->createCommand()
-            ->select('id,pid,title')
-            ->from('{{trees}}')
-            ->order('id asc')
+        $areas = "select area from my_sysuser where id = ".$_SESSION["uid"];
+        $auths = Yii::app()->db->createCommand($areas)->queryScalar();
+        $where = "";
+        if($auths == "*"){
+            $sql = "select id,pid, title
+                from my_trees";
+        }else{
+            $areaids = implode(",",explode(",", $auths));
+            $sql = "select id,pid, title
+                from my_trees
+                where id in (".$areaids.")";
+            $where .= " and m.aid in (".$areaids.")";
+        }
+       // var_dump($sql);
+        $trees = Yii::app()->db->createCommand($sql)
             ->queryAll();
+
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
@@ -351,18 +363,22 @@ class TreesController extends Controller
             $sql = "";
             if ($keyword) {
                 $sql ="
-                    select m.*, a.* from tb_station_module as a
-                    left join (select * from my_site where is_checked = 1 and site_name like '%".$keyword."%') as m 
-                    on a.sn_key = m.serial_number
-                ";
+                    select m.*, a.* from tb_station_module as a,my_site as m
+                    where m.is_checked = 1 
+                    and 
+                    a.sn_key = m.serial_number
+                    and m.site_name like '%".$keyword."%'
+                ".$where;
 
             }else{
                 $sql ="
-                    select m.*, a.* from tb_station_module as a
-                    left join (select * from my_site where is_checked = 1) as m 
-                    on a.sn_key = m.serial_number
-                ";
+                    select m.*, a.* from tb_station_module as a,my_site as m
+                    where m.is_checked = 1 
+                    and 
+                    a.sn_key = m.serial_number
+                ".$where;
             }
+
             $site = Yii::app()->bms->createCommand($sql)->queryAll();
             $temp = $sids = array();
 
@@ -379,7 +395,7 @@ class TreesController extends Controller
                     if($value['site_name']){
                         $ret['data']['list'][] = $data;
 
-                        $sids[] = $value['sid'];
+                        $sids[] = $value['serial_number']/10000;
                     }
                 }
                 if ($i) {
@@ -387,7 +403,7 @@ class TreesController extends Controller
                     $group = Yii::app()->bms->createCommand()
                         ->selectDistinct('gid as id,sid as pid,sn_key as title')
                         ->from('{{group_module}}')
-                        ->where('sid in ('.implode(',',$sids).')')
+                        ->where('floor(sn_key/10000) in ('.implode(',',$sids).')')
                         ->order('sid asc')
                         ->queryAll();
                     if ($group) {
@@ -405,7 +421,7 @@ class TreesController extends Controller
                     $battery = Yii::app()->bms->createCommand()
                         ->selectDistinct('mid as id,gid as pid,sn_key as title')
                         ->from('{{battery_module}}')
-                        ->where('sid in ('.implode(',',$sids).')')
+                        ->where('floor(sn_key/10000) in ('.implode(',',$sids).')')
                         ->order('id asc')
                         ->queryAll();
                     if ($battery) {

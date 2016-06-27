@@ -113,7 +113,7 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
         getSites:function(){
             var ids={ids:[],map:{}, pids: []},selectedNode;
             if(navView.tree){
-                selectedNode = navView.tree.getCheckedNodes();
+                var selectedNode = navView.tree.getCheckedNodes();
                 $.each(selectedNode,function(i,node){
                     if(node.leveltype == "2"){
                         ids.ids.push(node.id);

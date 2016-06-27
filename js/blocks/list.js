@@ -50,7 +50,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     },
                     initialize:function(data){
                         var _this = this;
-                        console.log(_this);
                         //_this.destroy();
                         _this.listPlugin=[];
                         _this.captureEvt();
@@ -391,7 +390,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             },
             battery:{
                 extObj:{
-                    stations:null,
+
                     prevIds:[],
                     curStation:'',
                     //el:$('#dataItem'),
@@ -425,21 +424,24 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         }
                     },
                     getBatterys:function(){
+
                         var stations = this.stations,
                             curStation = this.curStation;
-                        if(!stations || (stations.ids.length == 0&&this.prevIds.length==0)){
-                            $("#page .cur").html('当前站点：全部');
-                            $("#page .next,#page .prev").hide();
-                            return '';
-                        }else{
+                        console.log(stations, curStation);
+                        // if(!stations || (stations.ids.length == 0&&this.prevIds.length==0)){
+                        //     $("#page .cur").html('当前站点：全部');
+                        //     $("#page .next,#page .prev").hide();
+                        //     return '';
+                        // }else{
                             var batteryId = nav.getBatterys(curStation);
                             $("#page .cur").html('当前站点：'+stations.map[curStation].title);
                             this.updatePageView();
                             return batteryId?batteryId.ids.join(','):'';
-                        }
+                        // }
                     },
                     updateStations:function(){
                         this.stations = nav.getSites();
+                        console.log(this.stations)
                         this.prevIds = [];
                         this.curStation = '';
                         return this;

@@ -500,7 +500,6 @@ define(function(require){
                     'qureyStation':'/api/index.php/realtime/stationchart',
                     'caution':'/api/index.php/realtime/galarmchart'
                 };
-                console.log('chart args', args, args.id.split(","));
                 // if(args.id.split(",").length <= 1){
                 //     return this;
                 // }
