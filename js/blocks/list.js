@@ -1171,7 +1171,12 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         "mouseout .dataTable tr":"inRow"
                     },
                     onEdit:function(e){
-                        ui.showStationOptionEditDialog($(e.currentTarget).attr('pid'));
+                        var roleid = JSON.parse(localStorage.getItem("userinfo")).role;
+                        if(roleid == 1){
+                            ui.showStationOptionEditDialog($(e.currentTarget).attr('pid'));
+                        }else{
+                            alert('您无编辑权限')
+                        }
                     },
                     fetchData:function(_param){
                         API.getSationOptionsData(_param);
@@ -1245,7 +1250,12 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         "mouseout .dataTable tr":"inRow"
                     },
                     onEdit:function(e){
-                        ui.showGroupOptionEditDialog($(e.currentTarget).attr('pid'));
+                        var roleid = JSON.parse(localStorage.getItem("userinfo")).role;
+                        if(roleid == 1){
+                            ui.showGroupOptionEditDialog($(e.currentTarget).attr('pid'));
+                        }else{
+                            alert('您无编辑权限')
+                        }
                     },
                     fetchData:function(_param){
                         API.getGroupOptionData(_param);
@@ -1304,7 +1314,12 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         "mouseout .dataTable tr":"inRow"
                     },
                     onEdit:function(e){
-                        ui.showBatteryOptionEditDialog($(e.currentTarget).attr('pid'));
+                        var roleid = JSON.parse(localStorage.getItem("userinfo")).role;
+                        if(roleid == 1){
+                            ui.showBatteryOptionEditDialog($(e.currentTarget).attr('pid'));
+                        }else{
+                            alert('您无编辑权限')
+                        }
                     },
                     fetchData:function(_param){
                         API.getBatteryOptionsData(_param);

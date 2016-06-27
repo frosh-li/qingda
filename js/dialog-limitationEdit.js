@@ -213,9 +213,14 @@ define(['require','api','context','common','table'],function(require,API,context
                                         data:"id",
                                         render: function (data) {
                                             var btnTpl = '<div style="width:150px;"><span class="limitation-btns open-limitation-btn" pid="<%= id %>">开启</span>|<span pid="<%= id %>" class="limitation-btns close-limitation-btn">关闭</span>|<span pid="<%= id %>" class="limitation-btns save-limitation-btn">保存</span></div>'
-                                            return _.template(btnTpl)({
-                                                id:data
-                                            });
+                                            var roleid = JSON.parse(localStorage.getItem("userinfo")).role;
+                                            if(roleid == 1){
+                                                return _.template(btnTpl)({
+                                                    id:data
+                                                });
+                                            }else{
+                                                return "";
+                                            }
                                         }
                                     }
                                 ]

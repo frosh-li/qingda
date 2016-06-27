@@ -4,7 +4,16 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         curLoadingTime = 0;
 
     function init(sys,pageType,sub,params){
-
+        var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+        if(roleid == 3){
+            $(".switch-btn.settings").hide();//
+        }
+        if(roleid == 2){
+            $("#addBMS").hide();
+            $("#addCompany").hide();
+            $("#addBattery").hide();
+            $("#addUps").hide();
+        }
         Backbone.listenTo(Backbone.Events,"stat",function(data){
             $("#stat_login_time").html(data.loginTime);
             $("#stat_sys_uptime").html(data.startTime);
