@@ -293,11 +293,24 @@ class TreesController extends Controller
 	 */
 	public function actionIndex()
 	{
+	    //xl
+	    $user_info = GeneralLogic::isWatcher($_SESSION['uid']);
+	    
         $trees = Yii::app()->db->createCommand()
             ->select('id,pid,title')
             ->from('{{trees}}')
             ->order('id asc')
             ->queryAll();
+        if(!empty($user_info['areas'])){
+            foreach($trees as $k => $tree){
+                if(!in_array($tree['id'], $user_info['areas'])){
+                   unset($trees[$k]);
+                }
+            }
+            
+            $trees = empty($trees) ? array() : array_values($trees);
+        }
+
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'

@@ -155,6 +155,33 @@ class StationpersonController extends Controller
             ->offset(($this->page-1)*$this->count)
             ->order('id desc')
             ->queryAll();
+        
+        //xl
+        $user_info = GeneralLogic::getUserInfo($_SESSION['uid']);
+        if(!empty($user_info)){
+            foreach($ups as $k => $up){
+                //小于权限不显示
+                if($up['role'] <= $user_info['role']){
+                    unset($ups[$k]);
+                }else{
+                    //不在地域内不显示
+                    $flag = false;
+                    $areas = explode(",",$up['area']);
+                    foreach($areas as $area){
+                        if(in_array($area, $user_info['areas'])){
+                            $flag = true;
+                        }
+                    }
+
+                    if($flag == false){
+                        unset($ups[$k]);
+                    }
+                }
+            }
+            
+            $ups = empty($ups) ? array() : array_values($ups);
+        }
+     
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
