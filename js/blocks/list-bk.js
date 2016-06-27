@@ -4,7 +4,8 @@ define(['require','api','stationsinfoDialog','context','ui','table'],function(re
             "paging": false,
             "searching": false,
             "order": [ 1, 'asc' ],
-            "info":false
+            "info":false,
+            "iDisplayLength":2
         },
         listConfig = {
             default:{
