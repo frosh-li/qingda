@@ -1,42 +1,10 @@
-配置文件
 
-偏离趋势接口 
-URI: /api/index.php/report/deviationTrend 
-method: GET 
-参数说明: 
-id 站点 
-begin 开始时间 
-end 结束时间
-返回值： 
-record_time 记录时间 
-sid 站点id 
-name 站点名称 
-U 电压均值 
-T 温度均值 
-R 电阻均值 
-EU 异常电压 
-ET 异常温度 
-ER 异常电阻 
-返回值范例 
-{"response":{"code":0,"msg":""},"data":[{"id":"1","sid":"20","gid":"1","sn_key":"11601090010101","U":"12.539","T":"27.491","R":"0.88818181","EU":"12.530","ET":"27.400","ER":"1.070","record_time":"2016-01-26 23:10:32","site_name":"\u4e0a\u5730\u7ad9\u70b9"}]}
+use mysql;
+CREATE USER 'qingda'@'%' IDENTIFIED BY '123456';
+GRANT ALL ON db_bms_english4.* TO 'qingda'@'%';
 
--- 
--- 偏离趋势 
-DROP TABLE IF EXISTS my_deviation_trend; 
-CREATE TABLE IF NOT EXISTS my_deviation_trend ( 
-id int(11) NOT NULL AUTO_INCREMENT, 
-sid int(11) NOT NULL COMMENT '站点id', 
-gid int(11) NOT NULL COMMENT '组id', 
-sn_key varchar(100) NOT NULL COMMENT '硬件序列号', 
-U float(10,3) NOT NULL DEFAULT '0' COMMENT '温度均值', 
-T float(10,3) NOT NULL DEFAULT '0' COMMENT '温度均值', 
-R char(10) NOT NULL DEFAULT '0' COMMENT '电阻均值', 
-EU float(10,3) NOT NULL DEFAULT '0' COMMENT '异常电池电压', 
-ET float(10,3) NOT NULL DEFAULT '0' COMMENT '异常电池温度', 
-ER char(10) NOT NULL DEFAULT '0' COMMENT '异常电池内阻', 
-record_time datetime NOT NULL, 
-PRIMARY KEY (id) 
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
 
 fastcgi_param DB_QINGDA_HOST 127.0.0.1; 
 fastcgi_param DB_QINGDA_DATABASE qingdalinghang; 

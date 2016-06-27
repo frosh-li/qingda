@@ -259,6 +259,7 @@ class SitesController extends Controller
         $humiture_type=Yii::app()->request->getParam('humiture_type','');
 
 		$model=$this->loadModel($id);
+        
         if ($model) {
             $oldvalue = $model->attributes;
             $sid                       !='' && $model->sid=$sid;
@@ -569,7 +570,7 @@ class SitesController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=Site::model()->findByPk($id);
+		$model=Site::model()->findByAttributes(array("id"=>$id));
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
