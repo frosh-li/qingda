@@ -62,6 +62,7 @@ class QueryController extends Controller
         if ($sites) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;
+            $ret['data']['totals'] = 1000;
 
             foreach($sites as $key=>$value){
                 // 获取site_name
