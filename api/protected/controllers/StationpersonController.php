@@ -161,14 +161,14 @@ class StationpersonController extends Controller
         if(!empty($user_info)){
             foreach($ups as $k => $up){
                 //小于权限不显示
-                if($up['role'] <= $user_info['role']){
+                if($up['role'] < $user_info['role']){
                     unset($ups[$k]);
                 }else{
                     //不在地域内不显示
                     $flag = false;
                     $areas = explode(",",$up['area']);
                     foreach($areas as $area){
-                        if(in_array($area, $user_info['areas'])){
+                        if($user_info['area'] == "*" || $area == "*" || in_array($area, $user_info['areas'])){
                             $flag = true;
                         }
                     }
@@ -178,7 +178,6 @@ class StationpersonController extends Controller
                     }
                 }
             }
-            
             $ups = empty($ups) ? array() : array_values($ups);
         }
      
