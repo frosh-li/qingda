@@ -102,7 +102,7 @@ class RealtimeController extends Controller
         $sitearr = array();
         if ($rows) {
             foreach ($rows as $key => $value) {
-                $sitearr[$value['sid']] = $value;
+                $sitearr[$value['serial_number']] = $value;
             }
 
         }
@@ -122,14 +122,14 @@ class RealtimeController extends Controller
                 //xl
                 //通过sql直接选择地域进行过滤
                 if(!empty($sns)){
-                    $sql = "select b.{$field}, b.sid from tb_station_module_history as b, my_site a ";
+                    $sql = "select b.{$field}, b.sn_key,b.sid from tb_station_module_history as b, my_site a ";
                     $sql .= " where b.sn_key in(" . $id . ')';
                     $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
                     $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . $this->count;
                     $sites = Yii::app()->bms->createCommand($sql)->queryAll();
                 }elseif($sns === false){
                     $sites = Yii::app()->bms->createCommand()
-                        ->select($field . ',sid')
+                        ->select($field . ',sid,sn_key')
                         ->from('{{station_module_history}}')
                         ->where('sn_key in(' . $id . ')')
                         ->limit($this->count)
@@ -143,14 +143,14 @@ class RealtimeController extends Controller
                 //xl
                 //通过sql直接选择地域进行过滤
                 if(!empty($sns)){
-                    $sql = "select distinct b.sid, b.{$field} from tb_station_module as b, my_site a ";
+                    $sql = "select distinct b.sid, b.{$field},b.sn_key from tb_station_module as b, my_site a ";
                     $sql .= " where b.sn_key in(" . $id . ')';
                     $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
                     $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . count($arr);
                     $sites = Yii::app()->bms->createCommand($sql)->queryAll();
                 }elseif($sns === false){
                     $sites = Yii::app()->bms->createCommand()
-                        ->selectDistinct('sid,'.$field)
+                        ->selectDistinct('sn_key,sid,'.$field)
                         ->from('{{station_module}}')
                         ->where('sn_key in('.$id.')')
                         //->limit($this->count)
@@ -165,14 +165,14 @@ class RealtimeController extends Controller
             //xl
             //通过sql直接选择地域进行过滤
             if(!empty($sns)){
-                $sql = "select distinct b.sid, b.{$field} from tb_station_module as b, my_site a ";
+                $sql = "select distinct b.sid, b.{$field},b.sn_key from tb_station_module as b, my_site a ";
                 $sql .= " where 1=1 ";
-                $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+                $sql .= " and FLOOR(b.sn_key/10000) = FLOOR(a.serial_number/10000)";
                 $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . $this->count;
                 $sites = Yii::app()->bms->createCommand($sql)->queryAll();
             }elseif($sns === false){
                 $sites = Yii::app()->bms->createCommand()
-                    ->select($field.',sid')
+                    ->select($field.',sid,sn_key')
                     ->from('{{station_module}}')
                     ->limit($this->count)
                     ->offset(($this->page-1)*$this->count)
@@ -194,15 +194,15 @@ class RealtimeController extends Controller
                 $row = array();
                 $row['value'] = $value[$field];
 
-                if (isset($sitearr[$value['sid']])) {
-                    $sitename = $sitearr[$value['sid']]['site_name'];
+                if (isset($sitearr[$value['sn_key']])) {
+                    $sitename = $sitearr[$value['sn_key']]['site_name'];
                 }else{
                     $sitename = '未知';
                 }
                 $row['name'] = $sitename;
                 // 这个待定
                 $row['status'] = 0;
-                $row['id'] = $value['sid'];
+                $row['id'] = $value['sn_key'];
 
                 $ret['data']['list'][] = $row;
             }
@@ -309,7 +309,8 @@ class RealtimeController extends Controller
                 ->order('record_time desc')
                 ->queryAll();
         }
-        
+        // var_dump($sites);
+        // Yii::app()->end();
         //观察员进行地域过滤 xl
         $sites = GeneralLogic::filterDataBySn($_SESSION['uid'], $sites);
 

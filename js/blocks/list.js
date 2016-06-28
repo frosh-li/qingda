@@ -11,13 +11,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             "scrollCollapse":true,
             "language": {
                 "lengthMenu": "显示 _MENU_ 条",
-                "paginate":{
-                    "first":"首页",
-                    "last":"末页",
-                    "next":"下一页",
-                    "previous":"上一页",
-                    'info': '第 _PAGE_ 页 / 总 _PAGES_ 页'
-                },
+                // "paginate":{
+                //     "first":"首页",
+                //     "last":"末页",
+                //     "next":"下一页",
+                //     "previous":"上一页",
+                //     'info': '第 _PAGE_ 页 / 总 _PAGES_ 页'
+                // },
                 "emptyTable": "暂无数据"
 
             },

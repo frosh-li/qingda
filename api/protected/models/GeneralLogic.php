@@ -80,6 +80,9 @@ class GeneralLogic
     
         //观察员进行地域过滤 xl
         $sns = self::getWatchSeriNumByAid($uid);
+        if($sns == false){
+            return $sites;
+        }
         foreach($sns as $sn){
             $sns_new[] = substr($sn, 0, 10);
         }

@@ -35,7 +35,7 @@ class QueryController extends Controller
                 $sql .= " limit 0, 5000";
             }
             $sites = Yii::app()->bms->createCommand($sql)->queryAll();
-        }elseif($sns === false){
+        }else{
             $sql = "select * from tb_station_module_history";
             $offset = ($this->page-1)*$this->count;
             $sql .= " where ".$where;
