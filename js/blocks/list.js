@@ -11,13 +11,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             "scrollCollapse":true,
             "language": {
                 "lengthMenu": "显示 _MENU_ 条",
-                // "paginate":{
-                //     "first":"首页",
-                //     "last":"末页",
-                //     "next":"下一页",
-                //     "previous":"上一页",
-                //     'info': '第 _PAGE_ 页 / 总 _PAGES_ 页'
-                // },
+                "paginate":{
+                    "first":"首页",
+                    "last":"末页",
+                    "next":"下一页",
+                    "previous":"上一页",
+                    'info': '第 _PAGE_ 页 / 总 _PAGES_ 页'
+                },
                 "emptyTable": "暂无数据"
 
             },
@@ -56,7 +56,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         //_this.destroy();
                         _this.listPlugin=[];
                         _this.captureEvt();
-
+                        _this.curPage = 1;
                     },
                     checkAllRows: function(){
                         var _this = this;
@@ -72,13 +72,34 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
                     },
                     captureEvt:function(){
+
                         var _this = this;
+                        $(".mnext").click(function(){
+                            _this.curPage++;
+                            console.log(_this.curPage)
+                            _this.refresh();
+                        });
+                        $(".mprev").click(function(){
+                            _this.curPage--;
+                            console.log(_this.curPage)
+                            _this.refresh();
+                        });
                         _this.listenTo(Backbone.Events,"listdata:update stationdata:get",function(data){
                             if(!$(_this.el).length || !$(_this.el).is(":visible")){
                                 return;
                             }
 
                             _this.data = data.list||data||_this.data;
+                            if(_this.curPage == 1){
+                                $(".mprev").hide();
+                            }else{
+                                $(".mprev").show();
+                            }
+                            if(_this.data.length < 10){
+                                $(".mnext").hide();
+                            }else{
+                                $(".mnext").show();
+                            }
                             _this.render();
                             overFlag = true;
                         });
@@ -288,6 +309,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
                     },
                     fetchData:function(_param){
+                        var _param = _param || {};
+                        _param.page=this.curPage;
                         API.getStationRealTimeData(_param);
                     },
                     getParam:function(){
@@ -365,7 +388,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 }
                                 _this.listPlugin.push($('#auto table').DataTable( $.extend(true,{},dataTableDefaultOption,{
                                     "data": _this.data,
-                                "paging":true,
                                     "scrollX":ui.getListWidth(),
                                     //"scrollY":ui.getListHeight(),
                                     "columns": [
@@ -557,7 +579,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 }
                             _this.listPlugin.push($('#auto table').DataTable( $.extend(true,{},dataTableDefaultOption,{
                                     "data": _this.data,
-                                    "paging":true,
                                     "scrollX":ui.getListWidth(),
                                     //"scrollY":ui.getListHeight(),
                                     "columns": [
@@ -1488,7 +1509,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 extObj:{
                     fetchData:function(){
                         var type = $("#cationCategory").val();
-                        var param = {start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
+                        var param = {page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
                         if(type > 0){
                             param.type = type;
                         }
@@ -1539,7 +1560,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 extObj:{
                     fetchData:function(_param){
 
-                        var param = {start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
+                        var param = {page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
                         API.getByearlog(param);
                     },
                     downloadUrl:"/api/index.php/report/byearlog",
@@ -1571,7 +1592,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             "deviationTrend":{
                 extObj:{
                     fetchData:function(_param){
-                        var param = {start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
+                        var param = {page:this.curPage, start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
                         
                         API.getDeviationTrend(param);
                     },
@@ -1636,7 +1657,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             "chargeOrDischarge":{
                 extObj:{
                     fetchData:function(_param){
-                        var param = {start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
+                        var param = {page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
                         API.getChargeOrDischarge(_param);
                     },
                     render:function() {
@@ -1669,14 +1690,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             "reportUilog_options":{
                 extObj:{
                     fetchData:function(_param){
-                        API.getUserlog({type:'2', start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""})
+                        API.getUserlog({page:this.curPage,type:'2', start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""})
                     },
                     render:function() {
                         var _this = this;
                         _this.destoryPlugin();
                         _this.listPlugin.push($('#auto table').DataTable($.extend(true, {
                             "data": _this.data,
-                            "paging":true,
                             "language": {
                                 "emptyTable": "UI日志数据为空"
                             },
@@ -1698,7 +1718,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.reportUilog_user = $.extend(true,{},listConfig.reportUilog_options,{
         extObj:{
             fetchData:function(_param){
-                API.getUserlog({type:'1', start:$('#startTime').val()?+new Date($('#startTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""})
+                API.getUserlog({page:this.curPage,type:'1', start:$('#startTime').val()?+new Date($('#startTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""})
             },
             downloadUrl:"/api/index.php/userlog?type=1"
         }
@@ -1707,7 +1727,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.reportUilog_other = $.extend(true,{},listConfig.reportUilog_options,{
         extObj:{
             fetchData:function(_param){
-                API.getUserlog({type:'3', start:$('#startTime').val()?+new Date($('#startTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""})
+                API.getUserlog({page:this.curPage,type:'3', start:$('#startTime').val()?+new Date($('#startTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""})
             },
             downloadUrl:"/api/index.php/userlog?type=3"
         }
@@ -1718,7 +1738,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.uilog_options = $.extend(true,{},listConfig.reportUilog_options,{
         extObj:{
             fetchData:function(_param){
-                API.getUserlog({type:'2', start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+                API.getUserlog({page:this.curPage,type:'2', start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
             },
             downloadUrl:"/api/index.php/userlog?type=2"
         }
@@ -1727,7 +1747,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.uilog_user = $.extend(true,{},listConfig.reportUilog_user,{
         extObj:{
             fetchData:function(_param){
-                API.getUserlog({type:'1', start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+                API.getUserlog({page:this.curPage,type:'1', start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
             },
             downloadUrl:"/api/index.php/userlog?type=1"
         }
@@ -1736,7 +1756,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.uilog_other = $.extend(true,{},listConfig.reportUilog_other,{
         extObj:{
             fetchData:function(_param){
-                API.getUserlog({type:'3', start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+                API.getUserlog({page:this.curPage,type:'3', start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
             },
             downloadUrl:"/api/index.php/userlog?type=3"
         }
@@ -1745,7 +1765,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.qureyStation = $.extend(true,{},listConfig.station,{
         extObj:{
             fetchData:function(_param){
-                API.getStationHistoryData({start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+                API.getStationHistoryData({page:this.curPage,start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
             },
             downloadUrl:"/api/index.php/query/",
         }
@@ -1754,7 +1774,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.qureyGroup = $.extend(true,{},listConfig.group,{
         extObj:{
             fetchData:function(_param){
-                API.getGroupHistoryData({start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+                API.getGroupHistoryData({page:this.curPage,start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
             },
             downloadUrl:"/api/index.php/query/groupmodule",
         }
@@ -1764,7 +1784,10 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
         extObj:{
             fetchData:function(_param){
-                API.getBatteryHistoryData({start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+                API.getBatteryHistoryData({page:this.curPage,start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+            },
+            refresh:function(){
+                this.fetchData();
             },
             downloadUrl:"/api/index.php/query/batterymodule",
         }

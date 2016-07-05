@@ -3468,7 +3468,7 @@
 		if ( ! modern ) {
 			plugin.fnInit( settings, node, redraw );
 		}
-	
+		console.log(settings,'setting');
 		/* Add a draw callback for the pagination on first instance, to update the paging display */
 		if ( ! features.p )
 		{
@@ -3520,7 +3520,7 @@
 			start     = settings._iDisplayStart,
 			len       = settings._iDisplayLength,
 			records   = settings.fnRecordsDisplay();
-	
+
 		if ( records === 0 || len === -1 )
 		{
 			start = 0;
@@ -13509,6 +13509,7 @@
 		 */
 		"fnRecordsTotal": function ()
 		{
+			return 100;
 			return _fnDataSource( this ) == 'ssp' ?
 				this._iRecordsTotal * 1 :
 				this.aiDisplayMaster.length;
@@ -13520,6 +13521,7 @@
 		 */
 		"fnRecordsDisplay": function ()
 		{
+			return 100;
 			return _fnDataSource( this ) == 'ssp' ?
 				this._iRecordsDisplay * 1 :
 				this.aiDisplay.length;

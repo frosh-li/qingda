@@ -96,7 +96,9 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             ui.downShow(true);
         	$collectWrap.show();
             if(pageType == 'battery'){
-                $(".list-bottom").show();
+                $(".list-bottom.undis").show();
+            }else{
+                $(".list-bottom.upage").show();
             }
             ui.switchChartBtns(pageType);
             require(["blocks/charts","blocks/list","blocks/nav","api"],function(chart,list,nav,API){
@@ -153,6 +155,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             ui.downShow(true);
             ui.switchChartBtns(pageType);
         	$durationWrap.show();
+            $(".list-bottom.upage").show();
             require(["blocks/charts","blocks/list","blocks/nav"],function(chart,list,nav){
                 refreshModules([nav,list,chart],_arg);
                 afterInit(sys,pageType,sub);
@@ -175,6 +178,9 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                 $(".report-caution-selector",$searchWrap).parents('.jqTransformSelectWrapper').show()
                 $(".reportCaution",$searchWrap).show()
             }
+
+            $(".list-bottom.upage").show();
+            
             require(["blocks/listSearch","blocks/list","blocks/nav"],function(listSearch,list,nav){
                 refreshModules([nav,listSearch,list],_arg);
                 afterInit(sys,pageType,sub);

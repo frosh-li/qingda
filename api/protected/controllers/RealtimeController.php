@@ -221,9 +221,11 @@ class RealtimeController extends Controller
     {
         $this->setPageCount();
         $id = Yii::app()->request->getParam('id',0);
+        $offset = ($this->page-1)*$this->count;
         $sql = "
         select my_site.site_name, my_site.aid, g.* from tb_group_module as g
         left join my_site on my_site.serial_number/10000 = floor(g.sn_key/10000)
+        
         ";
         if ($id) {
 
@@ -236,7 +238,7 @@ class RealtimeController extends Controller
 
             $sql .= ' where g.sn_key in ('.$id.')';
         }
-
+        $sql .= "limit $offset, $this->count ";
         $sites = Yii::app()->bms->createCommand($sql)->queryAll();
 
         //观察员进行地域过滤 xl

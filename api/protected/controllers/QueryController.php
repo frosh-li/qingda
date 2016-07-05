@@ -28,7 +28,8 @@ class QueryController extends Controller
             $sql .= " where {$where}";
             $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
             $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc ";
-            
+            $totalquery = "select count(*) as totals from (".$sql.") as c";
+            $totals = Yii::app()->bms->createCommand($totalquery)->queryScalar();
             if ($isDownload != 1){
                 $sql .= "limit " .($this->page - 1) * $this->count. "," . $this->count;
             }else{
@@ -40,6 +41,8 @@ class QueryController extends Controller
             $offset = ($this->page-1)*$this->count;
             $sql .= " where ".$where;
             $sql .= " order by record_time desc ";
+            $totalquery = "select count(*) as totals from (".$sql.") as c";
+            $totals = Yii::app()->bms->createCommand($totalquery)->queryScalar();
             if ($isDownload != 1){
                 $sql .= " limit $offset, $this->count ";
             }else{
@@ -62,8 +65,7 @@ class QueryController extends Controller
         if ($sites) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;
-            $ret['data']['totals'] = 1000;
-
+            $ret['data']['totals'] = $totals;
             foreach($sites as $key=>$value){
                 // 获取site_name
                 $sql = "select site_name from my_site where serial_number={$value['sn_key']}";
