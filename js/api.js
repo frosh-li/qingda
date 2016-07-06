@@ -34,6 +34,7 @@ define(function(require){
                     error: function (res) {
                         //Backbone.Events.trigger(event, $.evalJSON(res.responseText), context);
                         //TODO:正式联调时替换为下列
+                        console.log(res);
                         Backbone.Events.trigger("messager", {ret: 1, massage: url, data: []}, context || window);
                     }
                 });

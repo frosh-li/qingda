@@ -27,7 +27,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                 type:"get",
                 success:function(){
                     localStorage.clear();
-                    window.location = "#/login";        
+                    window.location.href = "/";        
                 }
             })
             
@@ -123,10 +123,12 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                 isOver();
             })
         }else if (/^(IRCollect)$/.test(pageType)) {
+            ui.downHide(true);
             $("#dataItem").html($("#listTpl").html());
         	$collectIRWrap.show();
-            require(["blocks/charts","blocks/list","blocks/nav","dialog-collectPswdDialog"],function(chart,list,nav){
-                refreshModules([nav,list,chart,collectPswdDialog],_arg);
+            require(["blocks/list","blocks/nav","js/dialog-collectPswdDialog"],function(list,nav,collectPswdDialog){
+                refreshModules([nav,list,collectPswdDialog],_arg);
+                collectPswdDialog.show();
                 afterInit(sys,pageType,sub);
                 if(!navTree){
                     nav.run();
