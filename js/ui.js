@@ -397,10 +397,10 @@ define(function(require){
                 bottomH=$("div.bottom").outerHeight();
 
             //布局--设置容器高度
-            // $("div.wrap").height(wH-topH-bottomH);
+            $("div.wrap").height(wH-topH-bottomH);
             var wrapH=$("div.wrap").height();
             //布局--设置右侧底部的容器高度
-            // $("div.down").height(wrapH-wrapH*0.65-10);
+            $("div.down").height(wrapH-wrapH*0.65-10);
 
             var statusH=$("div.status").is(":visible")?$("div.status").outerHeight():0,
                 kscjH=$("div.kscj").is(":visible")?$("div.kscj").outerHeight():0,
