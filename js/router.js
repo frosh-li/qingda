@@ -77,6 +77,13 @@ define(["require","api","backbone","context","ui"],function(require,API,Backbone
             function load(){
                 $.get("templates/map.html?_r="+Math.random(),function(ret){
                     $("#main").html(ret);
+                    try{
+                        delete navTree;
+                        navTree = null;
+                    }catch(e){
+                        console.log(e);
+                    }
+                    
                     require(["map","ui"],function(map,ui){
                         ui.resize();
                         map.init();

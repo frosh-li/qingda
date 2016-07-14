@@ -227,6 +227,10 @@ define(["require","backbone","api","stationsinfoDialog","common"],function(requi
 
     return {
         init:function(pageType){
+            if(map){
+                delete map;
+                map = null;
+            }
             map = new widgetMap();
             stationInfoDialog.init();
             API.getLinkingStationNum();

@@ -1,8 +1,8 @@
 define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'],function(require,Backbone,context,ui,common, stationsinfoDialog,API){
-    var curModules = [],navTree=null,
+    var curModules = [],
         maxLoadingTime = 1000,
         curLoadingTime = 0;
-
+    window.navTree = null;
     function init(sys,pageType,sub,params){
         var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
         if(roleid == 3){
@@ -83,7 +83,8 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
 
         if("map" == sys){
-            navTree=null;
+            
+            console.log('delete navTree', navTree);
             require(["map"],function(map){
                 ui.resize();
                 map.init();
@@ -106,7 +107,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             require(["blocks/charts","blocks/list","blocks/nav","api"],function(chart,list,nav,API){
                 
                 afterInit(sys,pageType,sub);
-
+                console.log(navTree);
                 if(!navTree){
                     refreshModules([nav],_arg);
                     nav.run(function(){
