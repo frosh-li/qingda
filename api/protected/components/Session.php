@@ -71,6 +71,7 @@ class Session
      * @return string
      */
     public function getLoginTime() {
+        date_default_timezone_set('Asia/Shanghai');
         return isset($_SESSION['loginTime']) ? $_SESSION['loginTime'] : '';
     }
 
@@ -80,6 +81,7 @@ class Session
      * @param string $role
      */
     public function register($id, $name, $role, $area) {
+        date_default_timezone_set('Asia/Shanghai');
         $_SESSION['uid'] = intval($id);
         $_SESSION['username'] = trim($name);
         $_SESSION['role'] = trim($role);
@@ -88,6 +90,7 @@ class Session
     }
 
     public function registerEnterTime() {
+        date_default_timezone_set('Asia/Shanghai');
         if (!isset($_SESSION['enterTime'])) {
             $_SESSION['enterTime'] = date('Y-m-d H:i:s');
         }
@@ -97,6 +100,7 @@ class Session
      * @return bool|string
      */
     public function getEnterTime() {
+        date_default_timezone_set('Asia/Shanghai');
         return isset($_SESSION['enterTime']) ? $_SESSION['enterTime'] : date('Y-m-d H:i:s');
     }
 
