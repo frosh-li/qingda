@@ -22,14 +22,16 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         
         API.stat();
         $("#logout").click(function(){
-            $.ajax({
-                url:"/api/index.php/login/loginOut",
-                type:"get",
-                success:function(){
-                    localStorage.clear();
-                    window.location.href = "/";        
-                }
-            })
+            if(confirm("确定要退出系统吗？")){
+                $.ajax({
+                    url:"/api/index.php/login/loginOut",
+                    type:"get",
+                    success:function(){
+                        localStorage.clear();
+                        window.location.href = "/";        
+                    }
+                })
+            }
             
         })
 
