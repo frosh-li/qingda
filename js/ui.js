@@ -34,7 +34,8 @@ define(function(require){
             "click .title-list .switch-btn i":"showItemsLayer",
             "click .cj-btn":"onSearch",
             "click .exportdata": "onExportCSV",
-            "click #searchBtn span span":"onSearch"
+            "click #searchBtn span span":"onSearch",
+            "click #switchUser": "switchUser"
         },
         initialize:function(){
             var _this = this;
@@ -101,6 +102,13 @@ define(function(require){
             _this.listenTo(Backbone.Events,"battery:next",function(data){
                 _this.showUPSEditDialog(false,data);
             });
+        },
+        switchUser: function(){
+            
+            require(["js/dialog-login"],function(dialog){
+                dialog && dialog.show();
+            })
+        
         },
         onSearch: function(){
             Backbone.Events.trigger('search:done');

@@ -21,15 +21,15 @@ class LoginController extends LController
             'msg'=>'ok'
         );
 
-        if ($this->session->isLogin()) {
-            $ret['data'] = array(
-                'uid'=>$this->session->getUid(),
-                'role'=>$this->session->getRole(),
-                'area'=>$this->session->getArea()
-            );
-            echo json_encode($ret);
-            Yii::app()->end();
-        }
+        // if ($this->session->isLogin()) {
+        //     $ret['data'] = array(
+        //         'uid'=>$this->session->getUid(),
+        //         'role'=>$this->session->getRole(),
+        //         'area'=>$this->session->getArea()
+        //     );
+        //     echo json_encode($ret);
+        //     Yii::app()->end();
+        // }
 
 		$username = Yii::app()->request->getParam('username','');
         $password = Yii::app()->request->getParam('password','');

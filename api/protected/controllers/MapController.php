@@ -10,7 +10,7 @@ class MapController extends Controller
                 s.site_name,s.serial_number ,
                 s.emergency_person,s.site_location,
                 ui.ups_factory,ui.ups_service_phone
-                from {{site}} as s left JOIN  {{ups_info}} as ui on s.sid=ui.sid ";
+                from {{site}} as s left JOIN  {{ups_info}} as ui on s.sid=ui.sid and s.is_checked = 1 ";
         if ($id) {
             $sql .= " where s.serial_number in (" . $id . ")";
         }

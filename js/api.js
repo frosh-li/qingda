@@ -48,7 +48,12 @@ define(function(require){
             /***************************************登陆***************************************/
             login: function (args) {
                 var url = '/api/index.php/login';
-                this.fetch(url, "login", args, "post");
+                if(args.refresh){
+                    this.fetch(url, "login:box", args, "post");
+                }else{
+                    this.fetch(url, "login", args, "post");    
+                }
+                
                 return this;
             },
             /***************************************地图***************************************/
