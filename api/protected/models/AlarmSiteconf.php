@@ -5,7 +5,6 @@
  *
  * The followings are the available columns in table '{{alarm_siteconf}}':
  * @property integer $id
- * @property integer $sid
  * @property integer $category
  * @property integer $type
  * @property string $content
@@ -17,9 +16,12 @@
  * @property string $operator
  * @property integer $judge_type
  * @property integer $can_ignore
+ * @property string $alarm
  * @property string $alarm_code
  * @property integer $create_time
  * @property integer $update_time
+ * @property integer $sn_key
+ * @property integer $status
  */
 class AlarmSiteconf extends CActiveRecord
 {
@@ -80,7 +82,6 @@ class AlarmSiteconf extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'sid' => 'Sid',
 			'category' => 'Category',
 			'type' => 'Type',
 			'content' => 'Content',
@@ -95,6 +96,8 @@ class AlarmSiteconf extends CActiveRecord
 			'alarm_code' => 'Alarm Code',
 			'create_time' => 'Create Time',
 			'update_time' => 'Update Time',
+			'sn_key' => 'Sn Key',
+			'status' => 'Status'
 		);
 	}
 
@@ -110,7 +113,6 @@ class AlarmSiteconf extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('sid',$this->sid);
 		$criteria->compare('category',$this->category);
 		$criteria->compare('type',$this->type);
 		$criteria->compare('content',$this->content,true);
@@ -125,6 +127,8 @@ class AlarmSiteconf extends CActiveRecord
 		$criteria->compare('alarm_code',$this->alarm_code,true);
 		$criteria->compare('create_time',$this->create_time);
 		$criteria->compare('update_time',$this->update_time);
+		$criteria->compare('sn_key',$this->sn_key);
+		$criteria->compare('status',$this->status);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

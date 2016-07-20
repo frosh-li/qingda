@@ -186,7 +186,7 @@ class SitesController extends Controller
             foreach ($rows  as $key => $value  ) {
                 $model = new AlarmSiteconf;
                 $model->isNewRecord = true;
-                $model->sid = $site->id;
+                $model->sn_key = $site->serial_number;
                 $model->category=$value['category'];
                 $model->type=$value['type'];
                 $model->content=$value['content'];
