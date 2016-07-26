@@ -15,14 +15,12 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "I",title:"总电流(A)",width:80 },
                     { "data": "U",title:"平均电压(V)",width:150 },
                     { "data": "T",title:"环境温度（℃）",width:100 },
-                    { "data": "TH",title:"环境温度上限（℃）",width:130 },
-                    { "data": "TL",title:"环境温度下限（℃）",width:130 },
                     { "data": "Humi",title:"环境湿度（%）",width:150 },
-                    { "data": "HumiH",title:"环境湿度上限（%）",width:130 },
-                    { "data": "HumiL",title:"环境湿度下限（%）",width:130 },
+                    
                     { "data": "total",title:"组数",width:50  },
                     { "data": "batteryCount",title:"电池数",width:80  },
                     { "data": "BatteryHealth",title:"电池状态",width:70 },
+                    { "data": "record_time",title:"时间",width:180 },
                     { "data": "charges",title:"UPS状态",width:70, render: function(data){
                         if(data == 2){
                             return "充电";
@@ -37,6 +35,10 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "ups_maintain_date",title:"预约维护日期",width:70},
                     { "data": "disChargeDate",title:"放电日期",width:70, render: function(data){return ""} },
                     { "data": "disChargeLast",title:"放电时长",width:70, render: function(data){return ""} },
+                    { "data": "TH",title:"环境温度上限（℃）",width:130 },
+                    { "data": "TL",title:"环境温度下限（℃）",width:130 },
+                    { "data": "HumiH",title:"环境湿度上限（%）",width:130 },
+                    { "data": "HumiL",title:"环境湿度下限（%）",width:130 },
                     { "data": "ups_max_discharge",title:"最大放电电流（A）",width:70 },
                     { "data": "ups_max_charge",title:"最大充电电流（A）",width:70 },
                     /*{ "data": "B0_TH",title:"站环境温度超上限",width:130,render:function(data){return createCautionStatusHtml(data);} },
@@ -51,7 +53,7 @@ define(["require","backbone"],function(require,Backbone){
                      { "data": "B9_NoData_but_Connected",title:"站有链接无数据",width:130,render:function(data){return createCautionStatusHtml(data);} },
                      { "data": "BA_Data_Error",title:"站数据格式错误",width:130,render:function(data){return createCautionStatusHtml(data);} },
                      { "data": "BB_Offline_Often",title:"站掉线频繁",width:130,render:function(data){return createCautionStatusHtml(data);} },*/
-                    { "data": "memo",title:"备注",width:330}
+                    //{ "data": "memo",title:"备注",width:330}
                 ],
                 group:[
                     
@@ -62,8 +64,8 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "I",title:"电池电压均衡度",width:100 },
                     { "data": "I",title:"电池温度均衡度",width:100 },
                     { "data": "I",title:"电池内阻均衡度",width:100 },
-                    { "data": "T",title:"温度（℃）",width:100 },
-                    { "data": "Humi",title:"湿度",width:50 },
+                    { "data": "T",title:"组温度",width:100 },
+                    { "data": "Humi",title:"组湿度",width:50 },
                     { "data": "batteryCount",title:"电池数",width:80  },
                     { "data": "record_time",title:"时间",width:150 },
                     { "data": "IoutMax",title:"最大放电电流（A）",width:150 },
@@ -101,7 +103,7 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "FloatingbytegeStatus_U_lower",title:"浮充态电压下限",width:80 },
                     { "data": "bytegeStatus_U_lower",title:"充电态电压下限",width:80 },// 错误
                     { "data": "DisbytegeStatus_U_lower",title:"放电态电压下限",width:80 },
-                    { "data": "BatteryU_H",title:"温度上限（A）",width:150 },
+                    { "data": "BatteryU_H",title:"温度上限",width:150 },
                     { "data": "BaterryU_L",title:"温度下限",width:150 },
                     { "data": "Rin_High_Limit",title:"内阻上限",width:150 },
                     /*

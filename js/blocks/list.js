@@ -31,11 +31,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             },
             "fnDrawCallback": function ( oSettings ) {
                 /* Need to redo the counters if filtered or sorted */
-                if ( oSettings.bSorted || oSettings.bFiltered ) {
-                    for ( var i=0, iLen=oSettings.aiDisplay.length ; i<iLen ; i++ ) {
-                        $('td:eq(0)', oSettings.aoData[ oSettings.aiDisplay[i] ].nTr ).html('<label class="index">'+ (i+1)+'</label>' );
-                    }
-                }
+                // if ( oSettings.bSorted || oSettings.bFiltered ) {
+                //     for ( var i=0, iLen=oSettings.aiDisplay.length ; i<iLen ; i++ ) {
+                //         $('td:eq(0)', oSettings.aoData[ oSettings.aiDisplay[i] ].nTr ).html('<label class="index">'+ (i+1)+'</label>' );
+                //     }
+                // }
             },
             "info":false
         },
@@ -380,7 +380,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         }else{
                             require(["fixedColumn"],function(){
                                 if(colums.width+580>$("#list").width()){
-                                    dataTableDefaultOption.fixedColumns = {leftColumns:3};
+                                    dataTableDefaultOption.fixedColumns = {leftColumns:10};
                                 }else{
                                     try{
                                         delete colums.data[colums.data.length-1].width;
@@ -391,10 +391,10 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     "scrollX":ui.getListWidth(),
                                     //"scrollY":ui.getListHeight(),
                                     "columns": [
-                                        { "data": "sid", "title":"序号",width:50},
+                                        // { "data": "sid", "title":"序号",width:0},
                                         { "data": "site_name", "title":"名称",width:150},
                                         { "data": "sid","title":"站号",width:50 },
-                                        { "data": "record_time",title:"时间",width:180 },
+                                        
                                         //{ "data": "battery_status",title:"电池码放状态",width:180 },
                                         //{ "data": "inductor_type",title:"互感器型号",width:180 },
 
@@ -531,7 +531,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     "scrollY":ui.getListHeight(),
                                     "scrollX":true,
                                     "columns": [
-                                        { "data": "bid",title:"序号",width:50 },
                                         { "data": "site_name",title:"站名",width:120 },
                                         { "data": "sid",title:"站号",width:50 },
                                         { "data": "gid",title:"组号",width:50 },
@@ -582,7 +581,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     "scrollX":ui.getListWidth(),
                                     //"scrollY":ui.getListHeight(),
                                     "columns": [
-                                        { "data": "sid",title:"序号",width:50 },
                                         { "data": "site_name",title:"站名",width:120 },
                                         { "data": "sid",title:"站号",width:50 },
                                         { "data": "gid",title:"组号",width:50 }

@@ -91,6 +91,22 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             })
             return;
         }
+        setTimeout(function(){
+            var refreshpage = ['#/manage/station', '#/manage/group', '#/manage/battery', '#/manage/caution'];
+            var time = parseInt($("#collectDuration").val());
+            // 判断是否在实时页面
+            var hash = window.location.hash;
+            console.log('time', time)
+            if(time && localStorage.getItem("collecting") == 'true'){
+                if(refreshpage.indexOf(hash) > -1){
+                    $("body").addClass('collecting').everyTime(time+"s",'collect',API.collect);
+                    $("#startCollectBtn").hide();
+                    $(".tzcj").css('display','block');
+                }
+                
+            }
+        },1000);
+        
 
         common.loadTips.show("系统加载中，请稍后...");
 
