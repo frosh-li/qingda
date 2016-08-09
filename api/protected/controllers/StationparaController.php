@@ -12,7 +12,7 @@ class StationparaController extends Controller
         $data = array();
         if ($site) {
             foreach ($site as $key => $value) {
-                $data[$value['sid']] = $value;
+                $data[$value['serial_number']] = $value;
             }
         }
 
@@ -33,8 +33,8 @@ class StationparaController extends Controller
             $ret['data']['pageSize'] = $this->count;
 
             foreach($batteryparm as $key=>$value){
-                if (isset($data[$value['sid']])) {
-                    $value['site_name'] = $data[$value['sid']]['site_name'];
+                if (isset($data[$value['MAC_address']])) {
+                    $value['site_name'] = $data[$value['MAC_address']]['site_name'];
                 }else{
                     $value['site_name'] = '未添加站点';
                 }

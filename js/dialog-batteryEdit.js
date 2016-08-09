@@ -33,10 +33,15 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     var data = data || this.data;
                     if(data){
                         common.setFormValue(this.el,data);
+                        
+                        $("[key=sid]",this.el).val(data.serial_number);
+                        console.log('now data', data);
                     }
                 },
                 getParam:function(){
-                    return common.getFormValue(this.el,true);
+                    var obj = common.getFormValue(this.el,true);
+                    obj.serial_number = $("[key=serial_number]").val();
+                    return obj;
                 },
                 showErrTips:function(tips){
                     alert(tips);
@@ -123,6 +128,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
 
                     if(data){
                         view.setValue(data);
+
                     }
 
                     stationList = stationSlector.init({

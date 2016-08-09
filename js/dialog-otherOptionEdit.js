@@ -10,6 +10,7 @@ define(['require','api','context','common','table'],function(require,API,context
                     "click .cancel-btn":"oncancel"
                 },
                 initialize:function(data){
+                    console.log(data);
                     var _this = this;
                     _this.listenTo(Backbone.Events,"stationinfo:foredit:update",function(data){
                         _this.data = data;
@@ -65,6 +66,7 @@ define(['require','api','context','common','table'],function(require,API,context
                     $(this).dialog( "destroy" );
                 },
                 open:function(){
+                    console.log('if id', id);
                     $("form.jqtransform").jqTransform();
                     view = new (Backbone.View.extend(config.extobj))();
                     view.dialogObj = $(this);

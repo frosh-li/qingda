@@ -18,6 +18,8 @@ class StatController extends Controller
         $ret['data'] = array(
             'online'=>$online,
             'offline'=>$total,
+            'refresh'=>Yii::app()->config->get("refresh"),
+            'dismap'=>Yii::app()->config->get("dismap"),
             'status'=>$statusSql[0]
         );
         echo json_encode($ret);
@@ -27,6 +29,8 @@ class StatController extends Controller
         $session = $this->getSession();
         $session->registerEnterTime();
         $data = array(
+                    'dismap'=>Yii::app()->config->get("dismap"),
+                    'refresh'=>Yii::app()->config->get("refresh"),
                     'startTime' => $session->getEnterTime(),
                     'name' => $session->getUserName(),
                     'loginTime' => $session->getLoginTime(),

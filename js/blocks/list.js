@@ -662,6 +662,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 extObj:{
                     events:{
                         "click .list-edit-btn":"onEdit",
+                        "click .list-edit-text":"onEdit", 
                         "click .list-del-btn":"onDel",
                         "click .list-validate-btn":"onValidate",
                         "mouseover .dataTable tr":"inRow",
@@ -722,11 +723,32 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "sid",title:"序号",width:50},
                                     { "data": "sid",title:"站号",width:100  },
                                     { "data": "serial_number",title:"物理地址",width:50  },
-                                    { "data": "site_name",title:"站点简称",width:100  },
-                                    { "data": "StationFullChineseName",title:"站点全称",width:100  },
+                                    { 
+                                        "data": "site_name",
+                                        title:"站点简称",
+                                        width:100 ,
+                                        render: function (data,type,itemData) {
+                                            var tpl='';
+                                            tpl = '<div class="list-edit-text" pid="'+itemData.id+'">'+itemData.site_name+'</div>';
+                                           
+                                            return tpl;
+                                        }
+                                    },
+                                    { 
+                                        "data": "site_name",
+                                        title:"站点全称",
+                                        width:100 ,
+                                        render: function (data,type,itemData) {
+                                            var tpl='';
+                                            tpl = '<div class="list-edit-text" pid="'+itemData.id+'">'+itemData.StationFullChineseName+'</div>';
+                                           
+                                            return tpl;
+                                        }
+                                    },
+                          
                                     { "data": "site_location",title:"站点地址",width:100  },
                                     { "data": "site_property",title:"站点性质",width:150  },
-                                    { "data": "aid",title:"隶属区域",width:150  },
+                                    { "data": "areaname",title:"隶属区域",width:150  },
                                     { "data": "emergency_person",title:"紧急联系人姓名",width:150  },
                                     { "data": "emergency_phone",title:"紧急联系人手机",width:250  },
                                     { "data": "groups",title:"电池组数",width:100  },

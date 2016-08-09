@@ -533,6 +533,9 @@ class SitesController extends Controller
             $ret['data']['pageSize'] = $this->count;
 
             foreach($sites as $key=>$value){
+                $sql = "select title from my_trees where id=".$value["aid"];
+                $areaName = Yii::app()->bms->createCommand($sql)->queryScalar();
+                $value['areaname'] = $areaName;
                 $ret['data']['list'][] = $value;
             }
             

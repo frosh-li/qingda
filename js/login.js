@@ -8,6 +8,7 @@ define(["require","backbone","api","router","common"],function(require,Backbone,
             },
             initialize: function(options) {
                 var _this = this;
+                $("input[key=password]").val("");
                 _this.listenTo(Backbone.Events,"login",function(data){
                     console.log(data);
                     localStorage.setItem('userinfo', JSON.stringify(data));

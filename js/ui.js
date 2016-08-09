@@ -49,8 +49,15 @@ define(function(require){
                 $("#collectDuration").val(data.refresh)
             });
             _this.listenTo(Backbone.Events,"linknum:get",function(data){
+            
                 $("#linkingNum").html(data.online)
                 $("#unlinkNum").html(data.offline)
+                $("#collectDuration").val(data.refresh);
+                if(data.dismap == 0){
+                    $("#map-switch").hide();
+                }else{
+                    $("#map-switch").show();
+                }
                 // 更新灯的状态
 
                 if(data.status.sound_alarm_is_ON == "1"){
@@ -88,8 +95,14 @@ define(function(require){
                 })
             });
             _this.listenTo(Backbone.Events,"param:update",function(data){
+                if(data.dismap == 0){
+                    $("#map-switch").hide();
+                }else{
+                    $("#map-switch").show();
+                }
                 alert("修改成功")
             });
+       
             _this.listenTo(Backbone.Events,"monitoring:start",function(data){
                 $(".baojing .bg").html(data.total||0);
             });
@@ -355,8 +368,10 @@ define(function(require){
                 var param = common.getFormValue($("#otherOptionEdit"));
 
                 param.dismap = "0";
+                $("#map-switch").hide();
                 if($("#otherOptionEdit [key=dismap]").siblings(".jqTransformChecked").length){
                     param.dismap = "1";
+                    $("#map-switch").show();
                 }
 
                 API.updateParam(param);

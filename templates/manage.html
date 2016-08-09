@@ -16,7 +16,7 @@
                 <dl class="set-btn">
                 <dd><span class="ggsj">更改时间</span></dd>
                 <dd><span class="kscj" id="startCollectBtn">开始刷新</span></dd>
-                <dd><span class="tzcj undis">停止采集</span></dd>
+                <dd><span class="tzcj undis">停止刷新</span></dd>
             </dl>
         </div><!--set-wrap-->
         <div class="clear"></div>
@@ -48,7 +48,7 @@
                         <dd><a class="btn1" href="#/manage/caution">查看警情</a></dd>
                         <dd class="mleft"><a class="btn2 stationPop">站情况(弹窗)</a></dd>
                         <dd><a class="btn1 exportdata">数据导出</a></dd>
-                        <dd><a class="map-switch" href="#/map"><img src="images/switch-map.png" title="切换为地图模式"></a></dd>
+                        <dd ><a class="map-switch" href="#/map" id="map-switch" style="display:none"><img src="images/switch-map.png" title="切换为地图模式"></a></dd>
                     </dl>
                 </div>
             </div><!--show-bar-->
@@ -64,8 +64,8 @@
                     <li class="active switch-btn undis settings stationInfo"><span><a href="#/settings/stationInfo/stationSituation">基本信息</a></span></li>
                     <li class="switch-btn undis settings manager"><span><a href="#/settings/manager/personal">管理人员</a></span></li>
                     <li class="switch-btn undis settings message"><span><a href="#/settings/message">短信/邮箱</a></span></li>
-                    <li class="switch-btn undis settings optionSetting"><span><a href="#/settings/optionSetting/stationOption">参数</a></span></li>
-                    <li class="switch-btn undis settings limitationSetting"><span><a href="#/settings/limitationSetting">报警门限</a></span></li>
+                    <li class="switch-btn undis settings optionSetting"><span><a href="#/settings/optionSetting/stationOption">报警参数</a></span></li>
+                    <li class="switch-btn undis settings limitationSetting"><span><a href="#/settings/limitationSetting">报警级别</a></span></li>
                     <li class="switch-btn undis settings cautionEquipmentSetting"><span><a href="#/settings/cautionEquipmentSetting/upperMonitor">报警设备</a></span></li>
                     <li class="switch-btn undis settings update"><span><a href="#/settings/update">远程升级</a></span></li>
                     <li class="switch-btn undis settings equipmentSetting"><span><a href="#/settings/equipmentSetting">外控设备</a></span></li>
@@ -132,8 +132,8 @@
                 </form>
                 <!--列表二级导航-->
                 <ul class="sub-list-tab" id="subListTab">
-                    <li class="active undis switch-btn stationInfo stationSituation"><span><a href="#/settings/stationInfo/stationSituation">站点情况</a></span><i></i></li>
                     <li class="active undis switch-btn stationInfo tree"><span><a href="#/settings/stationInfo/tree">树形结构图</a></span><i></i></li>
+                    <li class="active undis switch-btn stationInfo stationSituation"><span><a href="#/settings/stationInfo/stationSituation">站点情况</a></span><i></i></li>
                     <li class="active undis switch-btn stationInfo batterys"><span><a href="#/settings/stationInfo/batterys">电池信息表</a></span><i></i></li>
                     <li class="active undis switch-btn stationInfo institutions"><span><a href="#/settings/stationInfo/institutions">用户单位信息表</a></span><i></i></li>
                     <li class="active undis switch-btn stationInfo monitorSeller"><span><a href="#/settings/stationInfo/monitorSeller">BMS厂家信息</a></span><i></i></li>
@@ -413,7 +413,7 @@
             <div class="rowElem">
                 <label class="item-title"><i class="mast-fill" for="serial_number">*</i>物理地址: </label>
                 <input class="input-w-1" type="text" key="serial_number"/>
-                <label class="item-title"><i class="mast-fill" for="password">*</i>物理地址修改密码: </label>
+                <label class="item-title"><i class="mast-fill" for="password">*</i>修改或编辑密码: </label>
                 <input class="input-w-1" type="password" key="password" />
             </div>
             <div class="rowElem">

@@ -21,7 +21,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         })
         
         API.stat();
-        $("#logout").click(function(){
+        $("#logout").off("click").bind("click",function(){
             if(confirm("确定要退出系统吗？")){
                 $.ajax({
                     url:"/api/index.php/login/loginOut",

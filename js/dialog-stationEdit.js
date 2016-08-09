@@ -31,6 +31,7 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                         common.loadTips.close();
                         _this.oncancel();
                         Backbone.Events.trigger("listdata:refresh", "station");
+                        data.serial_number = $("[key=serial_number]",this.el).val();
                         Backbone.Events.trigger("station:next", data);
                     });
                     _this.listenTo(Backbone.Events,"station:create:next:fail",function(data){
@@ -44,7 +45,10 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                     }
                 },
                 getParam:function(){
-                    return common.getFormValue(this.el,true);
+                    var obj = common.getFormValue(this.el,true);
+                    obj.serial_number = $("[key=serial_number]",this.el).val();
+                    console.log('getParam', obj);
+                    return obj;
                 },
                 showErrTips:function(tips){
                     alert(tips);

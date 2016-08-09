@@ -27,6 +27,8 @@ a:hover{text-decoration:none}
 }
 .hide{display: none;}
 
+.list-edit-text{cursor: pointer;}
+
 /*页面头部导航*/
 .top{width:100%;overflow:hidden;background:url("../images/topbg.jpg") no-repeat top;position: relative;}
 .top img.logo{width:305px;height:38px;position: absolute;top:18px;left: 38px;}
