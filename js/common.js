@@ -87,6 +87,13 @@ define(function(require){
 
                 })
             }
+            // 加入select的值
+            if($("select", $wrap) && $("select", $wrap).length){
+                $("select", $wrap).each(function(i, el){
+                    var $el = $(el);
+                    _ret[$el.attr('key')] = $el.val();
+                });
+            }
             if($innerHtmls && $innerHtmls.length){
                 $innerHtmls.each(function(j,_el){
                     var $el = $(_el),
@@ -138,7 +145,30 @@ define(function(require){
                         $els.filter("[value=" + r + "]:visible").attr("checked", "checked");
                     })
                 }
+                // 如果当前元素是select，做特殊处理
+                var tagName = $els[0] && $els[0].tagName;
+                if(tagName && tagName.toUpperCase() == "SELECT"){
+                    console.log(v);
+                    var options = $els.find("option");
+                    options.each(function(i, el){
+                        console.log(el, $(el).attr("value"));
+                        if($(el).attr("value") == v){
+                            $(el).attr("selected","selected");
+                        }else{
+                            $(el).removeAttr("selected");
+                        }
+                    })
+                    $els.trigger("change", true);
+                    fix_select($els);
+                }
+                // console.log($els[0]&& $els[0].tagName);
             })
+            function fix_select(selector) {
+                var i=$(selector).parent().find('div,ul').remove().css('zIndex');
+                $(selector).unwrap().removeClass('jqTransformHidden').jqTransSelect();
+                $(selector).parent().css('zIndex', i);
+            }
+            fix_select('select#my_updated_select_box');
         },
         //过滤器
         filter:function(data,option){

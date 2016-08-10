@@ -18,10 +18,10 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "previous":"上一页",
                     'info': '第 _PAGE_ 页 / 总 _PAGES_ 页'
                 },
-                "emptyTable": "暂无数据"
+                "zeroRecords": "暂无数据"
 
             },
-
+            "zeroRecords": "暂无数据",
             "dom":"irtlp",
             "scroller": {
                 "rowHeight": 'auto'
@@ -626,7 +626,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollX":ui.getListHeight(),
                                 //"scrollY":ui.getListHeight(),
                                 "columns": [
-                                    { "data": "alarm_sn",title:"序号",width:50 },
+                                    
                                     { "data": "alram_equipment",title:"站名",width:150 ,render:function(data,type,itemData){
                                         var color = ['red', 'green', '#f90']
                                         return '<span style="color:white;background-color:'+color[itemData.alarm_emergency_level -1]+'">'+itemData.alram_equipment+'</span>';
@@ -720,7 +720,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    { "data": "sid",title:"序号",width:50},
+                                    
                                     { "data": "sid",title:"站号",width:100  },
                                     { "data": "serial_number",title:"物理地址",width:50  },
                                     { 
@@ -824,7 +824,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    { "data": "sid",title:"序号",width:50 },
+                                    
                                     { "data": "sid",title:"站号",width:100  },
                                     { "data": "site_name",title:"站点简称",width:100  },
                                     { "data": "battery_factory",title:"生产厂家",width:150  },
@@ -895,7 +895,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    { "data": "id",title:"序号",width:50 },
+                                    
                                     { "data": "site_name",title:"站点",width:250 },
                                     { "data": "ups_factory",title:"生产厂家",width:250 },
                                     { "data": "ups_type",title:"型号",width:100 },
@@ -965,7 +965,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY":ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    { "data": "id",title:"序号",width:50 },
+                                    
                                     {data:'bms_company',title:'BMS设备生产厂家名称',width:200},
                                     {data:'bms_device_addr',title:'BMS设备生产厂家地址',width:200},
                                     {data:'bms_postcode',title:'BMS设备生产厂家邮编',width:200},
@@ -1027,7 +1027,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY":ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    { "data": "id",title:"序号",width:50 },
+                                    
                                     {data:'company_name',title:'用户单位总部名称',width:150},
                                     {data:'company_address',title:'用户单位总部地址',width:300},
                                     {data:'supervisor_phone',title:'主管领导电话',width:150},
@@ -1237,9 +1237,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "data": _this.data,
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {rightColumns: 1},
+                                "fixedColumns": {leftColumns: 1},
                                 "columns": [
-                                    {"data": "station_sn_key", title: "序号",width:50},
                                     {"data": "site_name", title: "站名称",width:100},
                                     {"data": "station_sn_key", title: "站序列号",width:100},
                                     {"data": "MAC_address", title: "物理地址",width:100},
@@ -1318,7 +1317,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    {"data": "group_sn_key", title: "序号",width:50},
+                                    
                                     {"data": "site_name", title: "站名称",width:100},
                                     {"data": "group_sn_key", title: "组序列号",width:100},
                                     {"data": "sid", title: "站号",width:50},
@@ -1379,9 +1378,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "data": _this.data,
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {rightColumns: 1},
+                                "fixedColumns": {leftColumns: 2},
                                 "columns": [
-                                    {"data": "sid", title: "序号",width:50},
+                                    
                                     {"data": "site_name", title: "站名称",width:100},
                                     {"data": "battery_sn_key", title: "电池序列号",width:100},
                                     {"data": "sid", title: "站号",width:50},
@@ -1445,7 +1444,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    {"data": "sid", title: "序号",width:50},
+                                    
                                     {"data": "sid", title: "站号", width: 100},
                                     {"data": "site_name", title: "站点简称", width: 200},
                                     {"data": "serial_number", title: "物理地址", width: 250},
@@ -1499,7 +1498,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    {"data": "sid", title: "序号",width:50},
+                                    
                                     {"data": "sid", title: "站号", width: 100},
                                     {"data": "Device_name", title: "名称", width: 100},
                                     {"data": "Device_fun", title: "功能", width: 100},
@@ -1595,7 +1594,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             "scrollX": ui.getListHeight(),
                             "scrollY": ui.getListHeight(),
                             "columns": [
-                                {"data": "brand", title: "序号",width:50},
+                                
                                 {"data": "brand", title: "品牌", width: 100},
                                 {"data": "battery_date", title: "生产日期", width: 100},
                                 {"data": "battery_install_date", title: "电池安装日期", width: 100},
@@ -1628,7 +1627,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             "scrollX": ui.getListHeight(),
                             "scrollY": ui.getListHeight(),
                             "columns": [
-                                {"data": "sn_key", title: "序号",width:50},
+                                
                                 {"data": "site_name", title: "名称", width: 100},
                                 {"data": "sid", title: "站号", width: 100},
                                 {"data": "record_time", title: "时间", width: 100},
@@ -1723,7 +1722,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             "scrollX": ui.getListHeight(),
                             "scrollY": ui.getListHeight(),
                             "columns": [
-                                {"data": "type", title: "序号",width:50},
+                                
                                 {"data": "username", title: "用户", width: 100},
                                 {"data": "content", title: "操作内容"},
                                 {"data": "modify_time", title: "操作时间", width: 150}
@@ -1827,7 +1826,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollY": ui.getListHeight(),
                     "fixedColumns": {rightColumns: 1},
                     "columns": [
-                        {"data": "sid", title: "序号",width:50},
+                        
                         {"data": "sid", title: "站号", width: 100},
                         {"data": "site_name", title: "站点简称", width: 200},
                         {"data": "serial_number", title: "物理地址"}
@@ -1852,7 +1851,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollX": ui.getListHeight(),
                     "scrollY": ui.getListHeight(),
                     "columns": [
-                        { "data": "sid",title:"序号",width:50},
+                        
                         { "data": "sid",title:"站号",width:100  },
                         { "data": "serial_number",title:"物理地址",width:50  },
                         { "data": "site_name",title:"站点简称",width:100  },
@@ -1901,7 +1900,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollY": ui.getListHeight(),
                     "fixedColumns": {rightColumns: 1},
                     "columns": [
-                        { "data": "sid",title:"序号",width:50 },
                         { "data": "sid",title:"站号",width:100  },
                         { "data": "site_name",title:"站点简称",width:100  },
                         { "data": "battery_factory",title:"生产厂家",width:150  },
@@ -1920,14 +1918,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         { "data": "battery_humidity",title:"湿度要求（%）",width:150  },
                         { "data": "battery_type",title:"电池种类",width:150  },
                         { "data": "battery_factory_phone",title:"电池厂家联系电话",width:150  },
-                        {
-                            data:"id",
-                            render: function (data) {
-                                return _.template('<div style="width:160px">'+$("#editBtn").html()+$("#delBtn").html()+'</div>')({
-                                    id:data
-                                });
-                            }
-                        }
+                        
                     ]
                 },dataTableDefaultOption)));
 
@@ -1948,7 +1939,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollY":ui.getListHeight(),
                     "fixedColumns": {rightColumns: 1},
                     "columns": [
-                        { "data": "id",title:"序号",width:50 },
+                        
                         {data:'company_name',title:'用户单位总部名称',width:150},
                         {data:'company_address',title:'用户单位总部地址',width:300},
                         {data:'supervisor_phone',title:'主管领导电话',width:150},
@@ -1997,7 +1988,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollY":ui.getListHeight(),
                     "fixedColumns": {rightColumns: 1},
                     "columns": [
-                        { "data": "id",title:"序号",width:50 },
+                        
                         {data:'bms_company',title:'BMS设备生产厂家名称',width:200},
                         {data:'bms_device_addr',title:'BMS设备生产厂家地址',width:200},
                         {data:'bms_postcode',title:'BMS设备生产厂家邮编',width:200},
@@ -2030,7 +2021,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollY": ui.getListHeight(),
                     "fixedColumns": {rightColumns: 1},
                     "columns": [
-                        {"data": "group_sn_key", title: "序号",width:50},
+                        
                         {"data": "site_name", title: "站名称",width:100},
                         {"data": "group_sn_key", title: "组序列号",width:100},
                         {"data": "sid", title: "站号",width:50},
@@ -2066,9 +2057,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "data": _this.data,
                     "scrollX": ui.getListHeight(),
                     "scrollY": ui.getListHeight(),
-                    "fixedColumns": {rightColumns: 1},
+                    "fixedColumns": {leftColumns: 1},
                     "columns": [
-                        {"data": "station_sn_key", title: "序号",width:50},
+                        
                         {"data": "site_name", title: "站名称",width:100},
                         {"data": "station_sn_key", title: "站序列号",width:100},
                         {"data": "MAC_address", title: "物理地址",width:100},
@@ -2119,9 +2110,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "data": _this.data,
                     "scrollX": ui.getListHeight(),
                     "scrollY": ui.getListHeight(),
-                    "fixedColumns": {rightColumns: 1},
+                    "fixedColumns": {leftColumns: 2},
                     "columns": [
-                        {"data": "sid", title: "序号",width:50},
+                        
                         {"data": "site_name", title: "站名称",width:100},
                         {"data": "battery_sn_key", title: "电池序列号",width:100},
                         {"data": "sid", title: "站号",width:50},
@@ -2163,7 +2154,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollX": ui.getListHeight(),
                     "scrollY": ui.getListHeight(),
                     "columns": [
-                        {"data": "sid", title: "序号",width:50},
+                        
                         {"data": "sid", title: "站号", width: 100},
                         {"data": "Device_name", title: "名称", width: 100},
                         {"data": "Device_fun", title: "功能", width: 100},
