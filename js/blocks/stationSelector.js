@@ -16,7 +16,7 @@ define(['require','api','backbone'],function(require,API,Backbone){
                     response(stations);
                 });
             },
-            minLength:2
+            minLength:1
         },
         _autocomplete;
 
