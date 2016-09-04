@@ -48,7 +48,7 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                 },
                 getParam:function(){
                     var obj = common.getFormValue(this.el,true);
-                    obj.serial_number = $("[key=serial_number]",this.el).val();
+                    obj.serial_number = $("[key=serial_number]",this.el).val()+"0000";
                     console.log('getParam', obj);
                     return obj;
                 },
