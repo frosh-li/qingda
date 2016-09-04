@@ -380,16 +380,17 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         }else{
                             require(["fixedColumn"],function(){
                                 if(colums.width+580>$("#list").width()){
-                                    dataTableDefaultOption.fixedColumns = {leftColumns:10};
+                                    dataTableDefaultOption.fixedColumns = {leftColumns:2};
                                 }else{
                                     try{
                                         delete colums.data[colums.data.length-1].width;
                                     }catch(e){}
                                 }
-                                _this.listPlugin.push($('#auto table').DataTable( $.extend(true,{},dataTableDefaultOption,{
+                                _this.listPlugin.push($('#auto table').DataTable( $.extend(true,{
                                     "data": _this.data,
                                     "scrollX":ui.getListWidth(),
-                                    //"scrollY":ui.getListHeight(),
+                                    "scrollY":ui.getListHeight(),
+                                    "scrollX":true,
                                     "columns": [
                                         // { "data": "sid", "title":"序号",width:0},
                                         { "data": "site_name", "title":"名称",width:150},
@@ -399,7 +400,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         //{ "data": "inductor_type",title:"互感器型号",width:180 },
 
                                     ].concat(colums.data)
-                                })));
+                                },dataTableDefaultOption)));
                                 _this.checkAllRows();
 
                                 //_this.resetScrollBar();
