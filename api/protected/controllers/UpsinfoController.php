@@ -289,8 +289,8 @@ class UpsinfoController extends Controller
             ->select('ui.*,s.site_name,s.sid as truesid')
             ->from('{{ups_info}} ui')
             ->leftJoin('{{site}} s','ui.sid = s.serial_number')
-            ->limit($this->count)
-            ->offset(($this->page-1)*$this->count)
+            //->limit($this->count)
+            //->offset(($this->page-1)*$this->count)
             ->order('ui.id desc')
             ->queryAll();
         $ret['response'] = array(
