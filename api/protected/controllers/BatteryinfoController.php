@@ -55,7 +55,7 @@ class BatteryinfoController extends Controller
             'msg'=>'ok'
         );
         $ret['data'] = array();
-        $sid=Yii::app()->request->getParam('sid','');
+        $sid=Yii::app()->request->getParam('sid','')."0000";
         $battery_factory=Yii::app()->request->getParam('battery_factory','');
         $battery_num=Yii::app()->request->getParam('battery_num','');
         $battery_date=Yii::app()->request->getParam('battery_date','');

@@ -56,7 +56,7 @@ class UpsinfoController extends Controller
         );
         $ret['data'] = array();
 
-        $sid=Yii::app()->request->getParam('sid',0);
+        $sid=Yii::app()->request->getParam('sid',0)."0000";
         $ups_factory=Yii::app()->request->getParam('ups_factory','');
         $ups_type=Yii::app()->request->getParam('ups_type','');
         $ups_create_date=Yii::app()->request->getParam('ups_create_date','');

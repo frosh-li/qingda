@@ -77,7 +77,7 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                     })
                     if(!isvalidate){return false;}
 
-                    if(!/^\d{10}$/.test(param.serial_number)){
+                    if(!/^\d{14}$/.test(param.serial_number)){
                         return this.showErrTips('物理地址必须为10位数字');
                     }
 
