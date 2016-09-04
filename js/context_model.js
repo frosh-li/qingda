@@ -19,7 +19,7 @@ define(["require","backbone"],function(require,Backbone){
                     
                     { "data": "total",title:"组数",width:50  },
                     { "data": "batteryCount",title:"电池数",width:80  },
-                    { "data": "BatteryHealth",title:"电池状态",width:70 },
+                    { "data": "BatteryHealth",title:"电池性能",width:70 },
                     { "data": "record_time",title:"时间",width:180 },
                     { "data": "charges",title:"UPS状态",width:70, render: function(data){
                         if(data == 2){
