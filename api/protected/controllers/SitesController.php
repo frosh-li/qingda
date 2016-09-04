@@ -72,9 +72,21 @@ class SitesController extends Controller
         }
 
         $sid=Yii::app()->request->getParam('sid',0);
+        $serial_number=Yii::app()->request->getParam('serial_number','')."0000";
+
+        $trows = Yii::app()->db->createCommand('select sid from my_site where serial_number='.$serial_number)->queryAll();
+        if($trows){
+            $ret['response'] = array(
+                'code'=>-1,
+                'msg'=>'站MAC地址重复'
+            );
+            echo json_encode($ret);
+            Yii::app()->end();
+        }
+
         $site_name=Yii::app()->request->getParam('site_name','');
         $StationFullChineseName=Yii::app()->request->getParam('StationFullChineseName','');
-        $serial_number=Yii::app()->request->getParam('serial_number','');
+        
         $site_property=Yii::app()->request->getParam('site_property','');
         $site_location=Yii::app()->request->getParam('site_location','');
         $site_chname=Yii::app()->request->getParam('site_chname','');
@@ -231,7 +243,19 @@ class SitesController extends Controller
         $sid=Yii::app()->request->getParam('sid','');
         $site_name=Yii::app()->request->getParam('site_name','');
         $StationFullChineseName=Yii::app()->request->getParam('StationFullChineseName','');
-        $serial_number=Yii::app()->request->getParam('serial_number','');
+        $serial_number=Yii::app()->request->getParam('serial_number','')."0000";
+
+        $trows = Yii::app()->db->createCommand('select sid from my_site where serial_number='.$serial_number)->queryAll();
+        if($trows){
+            $ret['response'] = array(
+                'code'=>-1,
+                'msg'=>'站MAC地址重复'
+            );
+            echo json_encode($ret);
+            Yii::app()->end();
+        }
+
+        
         $site_property=Yii::app()->request->getParam('site_property','');
         $site_location=Yii::app()->request->getParam('site_location','');
         $site_chname=Yii::app()->request->getParam('site_chname','');

@@ -710,6 +710,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     render:function(){
                         var _this = this;
                         _this.destoryPlugin();
+            
                         require(["fixedColumn"],function() {
                             _this.listPlugin.push($('#auto table').DataTable( $.extend(true,{
                                 "data": _this.data,
@@ -722,7 +723,10 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "columns": [
                                     
                                     { "data": "sid",title:"站号",width:100  },
-                                    { "data": "serial_number",title:"物理地址",width:50  },
+                                    { "data": "serial_number",title:"物理地址",width:50,render:function(data,type,itemData){
+                           
+                                        return "<div>"+itemData.serial_number.substring(0,10)+"</div>";
+                                    }  },
                                     { 
                                         "data": "site_name",
                                         title:"站点简称",

@@ -12,8 +12,10 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                 },
                 initialize:function(data){
                     var _this = this;
+
                     _this.listenTo(Backbone.Events,"stationinfo:foredit:update",function(data){
                         _this.data = data;
+                        _this.data.serial_number = _this.data.serial_number.substring(0,10);
                         level = level||levelSelector.init({value:data.aid});
                         _this.setValue();
                     });
@@ -75,8 +77,8 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                     })
                     if(!isvalidate){return false;}
 
-                    if(!/^\d{14}$/.test(param.serial_number)){
-                        return this.showErrTips('物理地址必须为14位数字');
+                    if(!/^\d{10}$/.test(param.serial_number)){
+                        return this.showErrTips('物理地址必须为10位数字');
                     }
 
                     if(!/^\d+\.?\d+$/.test(param.site_latitude)){
