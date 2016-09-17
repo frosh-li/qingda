@@ -23,9 +23,9 @@ class StationparaController extends Controller
         $ret['data'] = array();
         $batteryparm = Yii::app()->bms->createCommand()
             ->select('*')
-            ->from('{{station_parameter}}')
-            ->limit($this->count)
-            ->offset(($this->page-1)*$this->count)
+            ->from('{{station_param}}')
+            //->limit($this->count)
+            //->offset(($this->page-1)*$this->count)
             ->order('sid desc')
             ->queryAll();
         if ($batteryparm) {
@@ -33,8 +33,8 @@ class StationparaController extends Controller
             $ret['data']['pageSize'] = $this->count;
 
             foreach($batteryparm as $key=>$value){
-                if (isset($data[$value['MAC_address']])) {
-                    $value['site_name'] = $data[$value['MAC_address']]['site_name'];
+                if (isset($data[$value['sn_key']])) {
+                    $value['site_name'] = $data[$value['sn_key']]['site_name'];
                 }else{
                     $value['site_name'] = '未添加站点';
                 }
@@ -64,8 +64,8 @@ class StationparaController extends Controller
         $ret['data'] = array();
 
         if ($id) {
-            $sql = "select * from {{station_parameter}}
-                    where sid=" . $id;
+            $sql = "select * from {{station_param}}
+                    where sn_key=" . $id;
             $row = Yii::app()->bms->createCommand($sql)->queryRow();
             if ($row) {
                 $ret['data'] = $row;
@@ -186,80 +186,85 @@ class StationparaController extends Controller
         );
         $ret['data'] = array();
 
-        $station_sn_key=Yii::app()->request->getParam('station_sn_key','');
-        $MAC_address=Yii::app()->request->getParam('MAC_address','');
-        $N_Groups_Incide=Yii::app()->request->getParam('N_Groups_Incide','');
-        $Time_interval_Rin=Yii::app()->request->getParam('Time_interval_Rin','');
-        $Time_interval_U=Yii::app()->request->getParam('Time_interval_U','');
-        $U_abnormal_limit=Yii::app()->request->getParam('U_abnormal_limit','');
-        $T_abnormal_limit=Yii::app()->request->getParam('T_abnormal_limit','');
-        $Rin_abnormal_limit=Yii::app()->request->getParam('Rin_abnormal_limit','');
-        $T_upper_limit=Yii::app()->request->getParam('T_upper_limit','');
-        $T_lower_limit=Yii::app()->request->getParam('T_lower_limit','');
-        $Humi_upper_limit=Yii::app()->request->getParam('Humi_upper_limit','');
-        $Humi_lower_limit=Yii::app()->request->getParam('Humi_lower_limit','');
-        $Group_I_criterion=Yii::app()->request->getParam('Group_I_criterion','');
-        $bytegeStatus_U_upper=Yii::app()->request->getParam('bytegeStatus_U_upper','');
-        $bytegeStatus_U_lower=Yii::app()->request->getParam('bytegeStatus_U_lower','');
-        $FloatingbytegeStatus_U_upper=Yii::app()->request->getParam('FloatingbytegeStatus_U_upper','');
-        $FloatingbytegeStatus_U_lower=Yii::app()->request->getParam('FloatingbytegeStatus_U_lower','');
-        $DisbytegeStatus_U_upper=Yii::app()->request->getParam('DisbytegeStatus_U_upper','');
-        $DisbytegeStatus_U_lower=Yii::app()->request->getParam('DisbytegeStatus_U_lower','');
-        $N_Groups_Incide_Station=Yii::app()->request->getParam('N_Groups_Incide_Station','');
-        $HaveCurrentSensor=Yii::app()->request->getParam('HaveCurrentSensor','');
-        $StationCurrentSensorSpan=Yii::app()->request->getParam('StationCurrentSensorSpan','');
-        $StationCurrentSensorZeroADCode=Yii::app()->request->getParam('StationCurrentSensorZeroADCode','');
-        $OSC=Yii::app()->request->getParam('OSC','');
-        $DisbytegeCurrentLimit=Yii::app()->request->getParam('DisbytegeCurrentLimit','');
-        $bytegeCurrentLimit=Yii::app()->request->getParam('bytegeCurrentLimit','');
-        $TemperatureHighLimit=Yii::app()->request->getParam('TemperatureHighLimit','');
-        $TemperatureLowLimit=Yii::app()->request->getParam('TemperatureLowLimit','');
-        $HumiH=Yii::app()->request->getParam('HumiH','');
-        $HumiL=Yii::app()->request->getParam('HumiL','');
-        $TemperatureAdjust=Yii::app()->request->getParam('TemperatureAdjust','');
-        $HumiAdjust=Yii::app()->request->getParam('HumiAdjust','');
-        if ($station_sn_key) {
+        $sn_key=Yii::app()->request->getParam('sn_key','');
+
+        $Groups=Yii::app()->request->getParam('Groups','');
+        $GroBats=Yii::app()->request->getParam('GroBats','');
+        $Time_MR=Yii::app()->request->getParam('Time_MR','');
+        $Time_MV=Yii::app()->request->getParam('Time_MV','');
+        $MaxTem_R=Yii::app()->request->getParam('MaxTem_R','');
+        $MaxTem_O=Yii::app()->request->getParam('MaxTem_O','');
+        $MaxTem_Y=Yii::app()->request->getParam('MaxTem_Y','');
+        $MinTem_R=Yii::app()->request->getParam('MinTem_R','');
+        $MinTem_O=Yii::app()->request->getParam('MinTem_O','');
+        $MinTem_Y=Yii::app()->request->getParam('MinTem_Y','');
+        $MaxHum_R=Yii::app()->request->getParam('MaxHum_R','');
+        $MaxHum_O=Yii::app()->request->getParam('MaxHum_O','');
+        $MaxHum_Y=Yii::app()->request->getParam('MaxHum_Y','');
+        $MinHum_R=Yii::app()->request->getParam('MinHum_R','');
+        $MinHum_O=Yii::app()->request->getParam('MinHum_O','');
+        $MinHum_Y=Yii::app()->request->getParam('MinHum_Y','');
+        $CurRange=Yii::app()->request->getParam('CurRange','');
+        $KI=Yii::app()->request->getParam('KI','');
+        $ZeroCurADC=Yii::app()->request->getParam('ZeroCurADC','');
+        $DisChaLim_R=Yii::app()->request->getParam('DisChaLim_R','');
+        $DisChaLim_O=Yii::app()->request->getParam('DisChaLim_O','');
+        $DisChaLim_Y=Yii::app()->request->getParam('DisChaLim_Y','');
+        $ChaLim_R=Yii::app()->request->getParam('ChaLim_R','');
+        $ChaLim_O=Yii::app()->request->getParam('ChaLim_O','');
+        $ChaLim_Y=Yii::app()->request->getParam('ChaLim_Y','');
+        $HiVolLim_R=Yii::app()->request->getParam('HiVolLim_R','');
+        $HiVolLim_O=Yii::app()->request->getParam('HiVolLim_O','');
+        $HiVolLim_Y=Yii::app()->request->getParam('HiVolLim_Y','');
+        $LoVolLim_R=Yii::app()->request->getParam('LoVolLim_R','');
+        $LoVolLim_O=Yii::app()->request->getParam('LoVolLim_O','');
+        $LoVolLim_Y=Yii::app()->request->getParam('LoVolLim_Y','');
+        $ChaCriterion=Yii::app()->request->getParam('ChaCriterion','');
+
+
+        if ($sn_key) {
             $row = array();
-            $station_sn_key !='' && $row['station_sn_key']=$station_sn_key;
-            $MAC_address !='' && $row['MAC_address']=$MAC_address;
-            $sid !='' && $row['sid']=$sid;
-            $N_Groups_Incide !='' && $row['N_Groups_Incide']=$N_Groups_Incide;
-            $Time_interval_Rin !='' && $row['Time_interval_Rin']=$Time_interval_Rin;
-            $Time_interval_U !='' && $row['Time_interval_U']=$Time_interval_U;
-            $U_abnormal_limit !='' && $row['U_abnormal_limit']=$U_abnormal_limit;
-            $T_abnormal_limit !='' && $row['T_abnormal_limit']=$T_abnormal_limit;
-            $Rin_abnormal_limit !='' && $row['Rin_abnormal_limit']=$Rin_abnormal_limit;
-            $T_upper_limit !='' && $row['T_upper_limit']=$T_upper_limit;
-            $T_lower_limit !='' && $row['T_lower_limit']=$T_lower_limit;
-            $Humi_upper_limit !='' && $row['Humi_upper_limit']=$Humi_upper_limit;
-            $Humi_lower_limit !='' && $row['Humi_lower_limit']=$Humi_lower_limit;
-            $Group_I_criterion !='' && $row['Group_I_criterion']=$Group_I_criterion;
-            $bytegeStatus_U_upper !='' && $row['bytegeStatus_U_upper']=$bytegeStatus_U_upper;
-            $bytegeStatus_U_lower !='' && $row['bytegeStatus_U_lower']=$bytegeStatus_U_lower;
-            $FloatingbytegeStatus_U_upper !='' && $row['FloatingbytegeStatus_U_upper']=$FloatingbytegeStatus_U_upper;
-            $FloatingbytegeStatus_U_lower !='' && $row['FloatingbytegeStatus_U_lower']=$FloatingbytegeStatus_U_lower;
-            $DisbytegeStatus_U_upper !='' && $row['DisbytegeStatus_U_upper']=$DisbytegeStatus_U_upper;
-            $DisbytegeStatus_U_lower !='' && $row['DisbytegeStatus_U_lower']=$DisbytegeStatus_U_lower;
-            $N_Groups_Incide_Station !='' && $row['N_Groups_Incide_Station']=$N_Groups_Incide_Station;
-            $HaveCurrentSensor !='' && $row['HaveCurrentSensor']=$HaveCurrentSensor;
-            $StationCurrentSensorSpan !='' && $row['StationCurrentSensorSpan']=$StationCurrentSensorSpan;
-            $StationCurrentSensorZeroADCode !='' && $row['StationCurrentSensorZeroADCode']=$StationCurrentSensorZeroADCode;
-            $OSC !='' && $row['OSC']=$OSC;
-            $DisbytegeCurrentLimit !='' && $row['DisbytegeCurrentLimit']=$DisbytegeCurrentLimit;
-            $bytegeCurrentLimit !='' && $row['bytegeCurrentLimit']=$bytegeCurrentLimit;
-            $TemperatureHighLimit !='' && $row['TemperatureHighLimit']=$TemperatureHighLimit;
-            $TemperatureLowLimit !='' && $row['TemperatureLowLimit']=$TemperatureLowLimit;
-            $HumiH !='' && $row['HumiH']=$HumiH;
-            $HumiL !='' && $row['HumiL']=$HumiL;
-            $TemperatureAdjust !='' && $row['TemperatureAdjust']=$TemperatureAdjust;
-            $HumiAdjust !='' && $row['HumiAdjust']=$HumiAdjust;
+            $sn_key !='' && $row['sn_key']=$sn_key;
+            $Groups !='' && $row['Groups']=$Groups;
+            $GroBats !='' && $row['GroBats']=$GroBats;
+            $Time_MR !='' && $row['Time_MR']=$Time_MR;
+            $Time_MV !='' && $row['Time_MV']=$Time_MV;
+            $MaxTem_R !='' && $row['MaxTem_R']=$MaxTem_R;
+            $MaxTem_O !='' && $row['MaxTem_O']=$MaxTem_O;
+            $MaxTem_Y !='' && $row['MaxTem_Y']=$MaxTem_Y;
+            $MinTem_R !='' && $row['MinTem_R']=$MinTem_R;
+            $MinTem_O !='' && $row['MinTem_O']=$MinTem_O;
+            $MinTem_Y !='' && $row['MinTem_Y']=$MinTem_Y;
+            $MaxHum_R !='' && $row['MaxHum_R']=$MaxHum_R;
+            $MaxHum_O !='' && $row['MaxHum_O']=$MaxHum_O;
+            $MaxHum_Y !='' && $row['MaxHum_Y']=$MaxHum_Y;
+            $MinHum_R !='' && $row['MinHum_R']=$MinHum_R;
+            $MinHum_O !='' && $row['MinHum_O']=$MinHum_O;
+            $MinHum_Y !='' && $row['MinHum_Y']=$MinHum_Y;
+            $CurRange !='' && $row['CurRange']=$CurRange;
+            $KI !='' && $row['KI']=$KI;
+            $ZeroCurADC !='' && $row['ZeroCurADC']=$ZeroCurADC;
+            $DisChaLim_R !='' && $row['DisChaLim_R']=$DisChaLim_R;
+            $DisChaLim_O !='' && $row['DisChaLim_O']=$DisChaLim_O;
+            $DisChaLim_Y !='' && $row['DisChaLim_Y']=$DisChaLim_Y;
+            $ChaLim_R !='' && $row['ChaLim_R']=$ChaLim_R;
+            $ChaLim_O !='' && $row['ChaLim_O']=$ChaLim_O;
+            $ChaLim_Y !='' && $row['ChaLim_Y']=$ChaLim_Y;
+            $HiVolLim_R !='' && $row['HiVolLim_R']=$HiVolLim_R;
+            $HiVolLim_O !='' && $row['HiVolLim_O']=$HiVolLim_O;
+            $HiVolLim_Y !='' && $row['HiVolLim_Y']=$HiVolLim_Y;
+            $LoVolLim_R !='' && $row['LoVolLim_R']=$LoVolLim_R;
+            $LoVolLim_O !='' && $row['LoVolLim_O']=$LoVolLim_O;
+            $LoVolLim_Y !='' && $row['LoVolLim_Y']=$LoVolLim_Y;
+            $ChaCriterion !='' && $row['ChaCriterion']=$ChaCriterion;
+
 
             $upsql = Utils::buildUpdateSQL($row);
-            $sql = "update {{station_parameter}} set ".$upsql." where station_sn_key=".$station_sn_key;
+            $sql = "update {{station_param}} set ".$upsql." where sn_key=".$sn_key;
             $exec = Yii::app()->bms->createCommand($sql)->execute();
             if ($exec) {
                 $ret['data'] = array(
-                    'station_sn_key'=>$station_sn_key,
+                    'sn_key'=>$sn_key,
                     'sid' =>$sid,
                 );
             }

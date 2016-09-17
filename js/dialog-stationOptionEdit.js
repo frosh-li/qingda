@@ -16,8 +16,13 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                         _this.setValue();
                     });
                     _this.listenTo(Backbone.Events,"stationoption:update",function(){
+                        _this.showErrTips('修改完成，请等待5到10秒后刷新查看');
                         _this.oncancel();
                         Backbone.Events.trigger("listdata:refresh", "batteryInfo");
+
+                    });
+                     _this.listenTo(Backbone.Events,"stationoption:update:fail",function(msg){
+                        _this.showErrTips(msg);
                     });
                 },
                 setValue:function(){
@@ -33,12 +38,16 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     return false;
                 },
                 validate:function(param){
-                    /* if(!param.site_name){
-                     return this.showErrTips('站点为必填项');
-                     }
-                     if(!param.sid){
-                     return this.showErrTips('站点不存在');
-                     } */
+                     // if(!param.site_name){
+                     // return this.showErrTips('站点为必填项');
+                     // }
+                     // if(!param.sid){
+                     // return this.showErrTips('站点不存在');
+                     // } 
+                    if(param.password != 'bms'){
+                        alert('请输入密码');
+                        return false;
+                    }
                     return true;
                 },
                 onsubmit:function(){
@@ -46,7 +55,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                         _param = _this.getParam();
 
                     if(_this.validate(_param)){
-                        if(_param.sid){
+                        if(_param.sn_key){
                             API.updateStationOption(_param);
                         }else{
                             API.createBMS(_param);

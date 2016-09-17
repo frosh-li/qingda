@@ -88,7 +88,7 @@ define(["require","backbone"],function(require,Backbone){
                     // 放电态高压限（V）   DisChargeStatus_U_upper
                     // 放电态低压限（V）   DisChargeStatus_U_lower
                     { "data": "U",title:"电池电压（V）",width:150 },
-                    { "data": "T",title:"电极温度（℃）",width:150 },
+                    { "data": "T",title:"电池温度（℃）",width:150 },
                     { "data": "R",title:"电池内阻（MΩ）",width:150 },
                     //{ "data": "AmpRange",title:"量程",width:80 },
                     { "data": "cau",title:"电压偏离（组均值）度%",width:150, render: function(data){return Math.abs(data*100).toFixed(2)} },

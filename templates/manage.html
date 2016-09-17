@@ -943,88 +943,102 @@
                 <input class="input-w-1" type="password" key="password" />
             </div>
             <div class="rowElem">
-                <input type="hidden" key="sid" />
+                <input type="hidden" key="sn_key" />
                 <input type="hidden" key="id" />
+                <label class="item-title" for="name">站内组数: </label>
+                <input class="input-w-1" type="text" key="Groups" />
+                <label class="item-title" for="name">每组电池数: </label>
+                <input class="input-w-1" type="text" key="GroBats" />
+            </div>
+            <div class="rowElem">
                 <label class="item-title" for="name">内阻测量间隔(s): </label>
-                <input class="input-w-1" type="text" key="Time_interval_Rin" />
-                <label class="item-title" for="name">电流测量间隔(s): </label>
-                <input class="input-w-1" type="text" key="Time_interval_U" />
+                <input class="input-w-1" type="text" key="Time_MR" />
+                <label class="item-title" for="name">电压测量间隔(s): </label>
+                <input class="input-w-1" type="text" key="Time_MV" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">站电压异常限(v): </label>
-                <input class="input-w-1" type="text" key="U_abnormal_limit" />
-                <label class="item-title" for="name">站温度异常限（℃）: </label>
-                <input class="input-w-1" type="text" key="T_abnormal_limit" />
+                <label class="item-title" for="name">高温报警_红: </label>
+                <input class="input-w-1" type="text" key="MaxTem_R" />
+                <label class="item-title" for="name">高温报警_橙: </label>
+                <input class="input-w-1" type="text" key="MaxTem_O" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">站内阻异常限（mΩ）: </label>
-                <input class="input-w-1" type="text" key="Rin_abnormal_limit" />
-                <label class="item-title" for="name">站温度上限（℃）: </label>
-                <input class="input-w-1" type="text" key="T_upper_limit" />
+                <label class="item-title" for="name">高温报警_黄: </label>
+                <input class="input-w-1" type="text" key="MaxTem_Y" />
+                <label class="item-title" for="name">低温报警_红: </label>
+                <input class="input-w-1" type="text" key="MinTem_R" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">站温度下限（℃）: </label>
-                <input class="input-w-1" type="text" key="T_lower_limit" />
-                <label class="item-title" for="name">站湿度上限（%）: </label>
-                <input class="input-w-1" type="text" key="Humi_upper_limit" />
+                <label class="item-title" for="name">低温报警_橙: </label>
+                <input class="input-w-1" type="text" key="MinTem_O" />
+                <label class="item-title" for="name">低温报警_黄: </label>
+                <input class="input-w-1" type="text" key="MinTem_Y" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">站湿度下限（%）: </label>
-                <input class="input-w-1" type="text" key="Humi_lower_limit" />
-                <label class="item-title" for="name">站电流状态判据（A）: </label>
-                <input class="input-w-1" type="text" key="Group_I_criterion" />
+                <label class="item-title" for="name">高湿报警_红: </label>
+                <input class="input-w-1" type="text" key="MaxHum_R" />
+                <label class="item-title" for="name">高湿报警_橙: </label>
+                <input class="input-w-1" type="text" key="MaxHum_O" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">充电态高压限（V）: </label>
-                <input class="input-w-1" type="text" key="bytegeStatus_U_upper" />
-                <label class="item-title" for="name">充电态低压限（V）: </label>
-                <input class="input-w-1" type="text" key="bytegeStatus_U_lower" />
+                <label class="item-title" for="name">高湿报警_黄: </label>
+                <input class="input-w-1" type="text" key="MaxHum_Y" />
+                <label class="item-title" for="name">低湿报警_红: </label>
+                <input class="input-w-1" type="text" key="MinHum_R" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">浮充态高压限（V）: </label>
-                <input class="input-w-1" type="text" key="FloatingbytegeStatus_U_upper" />
-                <label class="item-title" for="name">浮充态低压限（V）: </label>
-                <input class="input-w-1" type="text" key="FloatingbytegeStatus_U_lower" />
+                <label class="item-title" for="name">低湿报警_橙: </label>
+                <input class="input-w-1" type="text" key="MinHum_O" />
+                <label class="item-title" for="name">低湿报警_黄: </label>
+                <input class="input-w-1" type="text" key="MinHum_Y" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">放电态高压限（V）: </label>
-                <input class="input-w-1" type="text" key="DisbytegeStatus_U_upper" />
-                <label class="item-title" for="name">放电态低压限（V）: </label>
-                <input class="input-w-1" type="text" key="DisbytegeStatus_U_lower" />
+                <label class="item-title" for="name">站电流量程: </label>
+                <input class="input-w-1" type="text" key="CurRange" />
+                <label class="item-title" for="name">站电流系数: </label>
+                <input class="input-w-1" type="text" key="KI" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">电流传感器量程（A）: </label>
-                <input class="input-w-1" type="text" key="StationCurrentSensorSpan" />
-                <label class="item-title" for="name">电流传感器零位AD码: </label>
-                <input class="input-w-1" type="text" key="StationCurrentSensorZeroADCode" />
+                <label class="item-title" for="name">站电流零位: </label>
+                <input class="input-w-1" type="text" key="ZeroCurADC" />
+                <label class="item-title" for="name">放电报警_红: </label>
+                <input class="input-w-1" type="text" key="DisChaLim_R" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">OSC: </label>
-                <input class="input-w-1" type="text" key="OSC" />
-                <label class="item-title" for="name">放电电流限（A）: </label>
-                <input class="input-w-1" type="text" key="DisbytegeCurrentLimit" />
+                <label class="item-title" for="name">放电报警_橙: </label>
+                <input class="input-w-1" type="text" key="DisChaLim_O" />
+                <label class="item-title" for="name">放电报警_黄: </label>
+                <input class="input-w-1" type="text" key="DisChaLim_Y" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">充电电流限（A）: </label>
-                <input class="input-w-1" type="text" key="bytegeCurrentLimit" />
-                <label class="item-title" for="name">温度上限（℃）: </label>
-                <input class="input-w-1" type="text" key="TemperatureHighLimit" />
+                <label class="item-title" for="name">充电报警_红: </label>
+                <input class="input-w-1" type="text" key="ChaLim_R" />
+                <label class="item-title" for="name">充电报警_橙: </label>
+                <input class="input-w-1" type="text" key="ChaLim_O" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">温度下限（℃）: </label>
-                <input class="input-w-1" type="text" key="TemperatureLowLimit" />
-                <label class="item-title" for="name">湿度上限（%）: </label>
-                <input class="input-w-1" type="text" key="HumiH" />
+                <label class="item-title" for="name">充电报警_黄: </label>
+                <input class="input-w-1" type="text" key="ChaLim_Y" />
+                <label class="item-title" for="name">高压报警_红: </label>
+                <input class="input-w-1" type="text" key="HiVolLim_R" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">湿度下限（%）: </label>
-                <input class="input-w-1" type="text" key="HumiL" />
-                <label class="item-title" for="name">温度传感温度偏移修正（℃）: </label>
-                <input class="input-w-1" type="text" key="TemperatureAdjust" />
+                <label class="item-title" for="name">高压报警_橙: </label>
+                <input class="input-w-1" type="text" key="HiVolLim_O" />
+                <label class="item-title" for="name">高压报警_黄: </label>
+                <input class="input-w-1" type="text" key="HiVolLim_Y" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">湿度传感温度偏移修正（%）: </label>
-                <input class="input-w-1" type="text" key="HumiAdjust" />
+                <label class="item-title" for="name">低压报警_红: </label>
+                <input class="input-w-1" type="text" key="LoVolLim_R" />
+                <label class="item-title" for="name">低压报警_橙: </label>
+                <input class="input-w-1" type="text" key="LoVolLim_O" />
+            </div>
+            <div class="rowElem">
+                <label class="item-title" for="name">低压报警_黄: </label>
+                <input class="input-w-1" type="text" key="LoVolLim_Y" />
+                <label class="item-title" for="name">站充放电判据: </label>
+                <input class="input-w-1" type="text" key="ChaCriterion" />
             </div>
         </form>
         <div class="form-btns">

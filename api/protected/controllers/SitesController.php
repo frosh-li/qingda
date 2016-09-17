@@ -454,23 +454,23 @@ class SitesController extends Controller
     //生成站 组电池的默认参数
     public function createPara($row,$site)
     {
-        $sql = "select * from {{station_parameter}} order by id desc limit 1";
-        $para = Yii::app()->db->createCommand($sql)->queryRow();
-        unset($para['id']);
-        $para['station_sn_key'] = $row['sn_key'];
-        $para['MAC_address'] = $row['sn_key'];
-        $para['sid'] = $row['sid'];
-        $para['N_Groups_Incide'] = $site->groups;
-        $para['N_Groups_Incide_Station'] = $site->groups;
-        $sql = "select * from {{station_parameter}} where station_sn_key='".$para['station_sn_key']."'";
-        $ret = Yii::app()->bms->createCommand($sql)->queryRow();
+        
+        $sn_key = $row['sn_key'];
+        $sid = $row['sid'];
+        $ret = Yii::app()->bms->createCommand('select * from tb_station_param where sn_key='.$sn_key)->queryRow();
 
         if (!$ret) {
             $insql = Utils::buildInsertSQL($para);
-            $sql = "insert into  {{station_parameter}} ".$insql;
+            $sql = "insert into  tb_station_param ".$insql;
             Yii::app()->bms->createCommand($sql)->execute();
         }else{
-            //echo 'have';
+            $sql = "update tb_station_param set ";
+            $para = array();
+            $para['sn_key'] = $sn_key;
+            $para['sid'] = $sid;
+            $updateSql = Utils::buildUpdateSQL($para);
+            $sql = "update tb_station_param set ".$updateSql." where sn_key=".$sn_key;
+            Yii::app()->bms->createCommand($sql)->execute();
         }
     }
 
