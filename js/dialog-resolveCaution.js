@@ -6,18 +6,27 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                 listPlugin:[],
                 el:'#ResolveCautionTpl-dialog',
                 events:{
-                    "click .submit-btn":"onsubmit",
+                    "click .submit-btn.sdone":"onsubmit",
+                    "click .submit-btn.ignore":"onignore",
                     "click .cancel-btn":"oncancel"
                 },
                 initialize:function(data){
                     var _this = this;
-                    _this.listenTo(Backbone.Events,"bmsInfo:get",function(data){
-                        _this.data = data;
-                        _this.setValue();
-                    });
-                    _this.listenTo(Backbone.Events,"bms:create bms:update",function(){
+                    // _this.listenTo(Backbone.Events,"bmsInfo:get",function(data){
+                    //     _this.data = data;
+                    //     _this.setValue();
+                    // });
+                    _this.listenTo(Backbone.Events,"caution:resolved",function(){
+                        _this.showErrTips('处理完成');
+                        Backbone.Events.trigger("listdata:refresh", "caution");
                         _this.oncancel();
-                        Backbone.Events.trigger("listdata:refresh", "batteryInfo");
+                        // Backbone.Events.trigger("listdata:refresh", "batteryInfo");
+                    });
+                    _this.listenTo(Backbone.Events,"caution:resolved:fail",function(){
+                        _this.showErrTips('未知错误，请刷新后重试');
+                        // Backbone.Events.trigger("listdata:refresh", "caution");
+                        // _this.oncancel();
+                        // Backbone.Events.trigger("listdata:refresh", "batteryInfo");
                     });
                 },
                 setValue:function(){
@@ -35,6 +44,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                 validate:function(param){
                     var isvalidate = true;
                     $mastFills = $(".mast-fill",this.el);
+
                     $mastFills.each(function(i,mf){
                         var key = $(mf).attr("for"),title;
                         if(typeof param[key] == "undefined" || !param[key]){
@@ -53,9 +63,25 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
 
                     if(_this.validate(_param)){
                         API.resolveCaution({
-                            "alarm_sn":""
+                            "id":_param.id,
+                            "markup":_param.markup,
+                            "contact":_param.contact,
+                            "stauts":1
                         });
                     }
+                },
+                onignore:function(){
+                    var _this = this,
+                        _param = _this.getParam();
+
+                    // if(_this.validate(_param)){
+                        API.resolveCaution({
+                            "id":_param.id,
+                            "markup":"",
+                            "contact":"",
+                            "status":2
+                        });
+                    // }
                 },
                 oncancel:function(){
                     this.stopListening();
@@ -82,10 +108,10 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     $("form.jqtransform").jqTransform();
                     view = new (Backbone.View.extend(config.extobj))();
                     view.dialogObj = $(this);
-
+                    console.log(data);
                     if(data){
-                        $("[key=alarm_sn]",$dialogWrap).val(data.id);
-                        $("#suggestion",$dialogWrap).val(data.alarm_suggestion);
+                        $("[key=id]",$dialogWrap).val(data.id);
+                        $("#suggestion",$dialogWrap).html(data.suggestion);
                     }
                 }
             });

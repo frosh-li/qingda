@@ -51,9 +51,9 @@ define(function(require){
                 if(args.refresh){
                     this.fetch(url, "login:box", args, "post");
                 }else{
-                    this.fetch(url, "login", args, "post");    
+                    this.fetch(url, "login", args, "post");
                 }
-                
+
                 return this;
             },
             /***************************************地图***************************************/
@@ -406,7 +406,7 @@ define(function(require){
             },
             resolveCaution:function(args){
                 var url = '/api/index.php/gerneralalarm/update';
-                this.fetch(url, "caution:resolved", args, "get");
+                this.fetch(url, "caution:resolved", args, "post");
                 return this;
             },
             /***************************************门限***************************************/
@@ -477,7 +477,7 @@ define(function(require){
                 this.fetch(url, "listdata:update", args, "post");
                 return this;
             },
-            
+
             //充放电
             getChargeOrDischarge: function(args){
                 var url = '/api/index.php/report/chargeOrDischarge';

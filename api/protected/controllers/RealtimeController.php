@@ -15,31 +15,31 @@ class RealtimeController extends Controller
                 $temp[] = $value."0000";
             }
             $id =  implode(',',$temp);
-            $sql = "select 
+            $sql = "select
             tb_station_module.*,
             groupmodule.total,
             batterymodule.batteryCount,
             my_site.aid,
-            my_site.battery_status, 
+            my_site.battery_status,
             my_site.inductor_type,my_site.site_name,
             my_ups_info.ups_max_charge,
             my_ups_info.ups_max_discharge,
             my_ups_info.ups_maintain_date,
             bb.BBbCharge+bb.BCbDisCharge as charges
-            from tb_station_module  
-            left join my_site 
-                on my_site.serial_number=tb_station_module.sn_key 
-            left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, 
-                COUNT(FLOOR(sn_key/1000)) as total 
-                FROM tb_group_module GROUP BY FLOOR(sn_key/1000)) as groupmodule 
-                on groupmodule.sn_key=tb_station_module.sn_key 
-            left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as batteryCount 
-                FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)) as batterymodule 
-                on batterymodule.sn_key = tb_station_module.sn_key 
-            left join my_ups_info 
+            from tb_station_module
+            left join my_site
+                on my_site.serial_number=tb_station_module.sn_key
+            left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key,
+                COUNT(FLOOR(sn_key/1000)) as total
+                FROM tb_group_module GROUP BY FLOOR(sn_key/1000)) as groupmodule
+                on groupmodule.sn_key=tb_station_module.sn_key
+            left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as batteryCount
+                FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)) as batterymodule
+                on batterymodule.sn_key = tb_station_module.sn_key
+            left join my_ups_info
                 on my_ups_info.sid = tb_station_module.sn_key
-            LEFT JOIN (SELECT BBbCharge,BCbDisCharge,FLOOR(sn_key/1000)*1000 AS b_key 
-                FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)*1000) AS bb 
+            LEFT JOIN (SELECT BBbCharge,BCbDisCharge,FLOOR(sn_key/1000)*1000 AS b_key
+                FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)*1000) AS bb
                 ON bb.b_key = tb_station_module.sn_key
             where tb_station_module.sn_key in (".$id.")";
 
@@ -106,7 +106,7 @@ class RealtimeController extends Controller
             }
 
         }
-        
+
         $sites = array();
         //xl
         //通过sql直接选择地域进行过滤
@@ -139,7 +139,7 @@ class RealtimeController extends Controller
                 }
             }else{
                 $arr = explode(',',$id);
-                
+
                 //xl
                 //通过sql直接选择地域进行过滤
                 if(!empty($sns)){
@@ -225,7 +225,7 @@ class RealtimeController extends Controller
         $sql = "
         select my_site.site_name, my_site.aid, g.* from tb_group_module as g
         left join my_site on my_site.serial_number/10000 = floor(g.sn_key/10000)
-        
+
         ";
         if ($id) {
 
@@ -352,7 +352,7 @@ class RealtimeController extends Controller
         $this->setPageCount();
         $id = Yii::app()->request->getParam('id',0);
         $sql = "
-            select 
+            select
             my_site.site_name,
             my_site.aid,
             tb_battery_parameter.*,
@@ -389,16 +389,16 @@ class RealtimeController extends Controller
             //     //->order('record_time desc')
             //     ->queryAll();
             $sites = Yii::app()->bms->createCommand($sql)->queryAll();
-            
+
             //观察员进行地域过滤 xl
             $sites = GeneralLogic::filterDataByAid($_SESSION['uid'], $sites);
-            
+
             $ret['response'] = array(
                 'code' => 0,
                 'msg' => 'ok'
             );
             $ret['data'] = array();
-    
+
             if ($sites) {
                 $ret['data']['page'] = $this->page;
                 $ret['data']['pageSize'] = $this->count;
@@ -422,7 +422,7 @@ class RealtimeController extends Controller
             );
             echo json_encode($ret);
         }
-        
+
     }
     // 电池实时数据折线图
     public function actionBatterychart()
@@ -461,7 +461,7 @@ class RealtimeController extends Controller
                 ->order('record_time desc')
                 ->queryAll();
         }
-     
+
         //观察员进行地域过滤 xl
         $sites = GeneralLogic::filterDataBySn($_SESSION['uid'], $sites);
 
@@ -507,26 +507,28 @@ class RealtimeController extends Controller
         if ($id != 0) {
             $sites = Yii::app()->bms->createCommand()
                 ->select('*')
-                ->from('{{general_alarm}}')
-                ->where('equipment_sn in ('.$id.')')
+                ->from('my_alerts')
+                ->where('status = 0')
                 // ->limit($this->count)
                 // ->offset(($this->page - 1) * $this->count)
-                ->order('alarm_occur_time desc')
+                ->order('time desc')
                 ->queryAll();
 
         }else{
             $sites = Yii::app()->bms->createCommand()
                 ->select('*')
-                ->from('{{general_alarm}}')
+                ->from('my_alerts')
+                ->where('status = 0')
                 // ->limit($this->count)
                 // ->offset(($this->page-1)*$this->count)
-                ->order('alarm_occur_time desc')
+                ->order('time desc')
                 ->queryAll();
-           
+
         }
         $total = Yii::app()->bms->createCommand()
                 ->select("count(*) as total")
-                ->from('{{general_alarm}}')
+                ->from('my_alerts')
+                ->where('status = 0')
                 ->queryAll();
         // var_dump($total[0]['total']);
         $ret['response'] = array(
@@ -540,7 +542,18 @@ class RealtimeController extends Controller
             $ret['data']['pageSize'] = $this->count;
             $ret['data']['total'] = $total[0]['total'];
             foreach($sites as $key=>$value){
-                $ret['data']['list'][] = $value;
+                $addinfo = Yii::app()->bms
+                    ->createCommand('select `desc`,en,`limit`,suggest,send_msg,send_email,tips,`type` from my_station_alert_desc where en="'.$value['code'].'" and type="'.$value['type'].'"')
+                    ->queryAll();
+                // $value = $addinfo[0];
+                $sql = "select site_name,sid from my_site where serial_number=".(FLOOR($value['sn_key']/10000)*10000);
+                //var_dump($sql);
+                // Yii::app()->end();
+
+                $siteName = Yii::app()->bms
+                    ->createCommand($sql)->queryAll();
+                //var_dump($siteName);
+                $ret['data']['list'][] = array_merge($value,$addinfo[0],$siteName[0]);
             }
 
         }else{

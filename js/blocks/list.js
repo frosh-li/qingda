@@ -127,7 +127,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 }else{
                                     var durl = _this.downloadUrl + "?isdownload=1&start="+startTime+"&end="+endTime;
                                 }
-                                
+
 
                                 window.location = durl;
                                 //query页面
@@ -145,7 +145,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 }else{
                                     var durl = _this.downloadUrl + "?isdownload=1&start="+startTime+"&end="+endTime;
                                 }
-                                
+
 
                                 window.location = durl;
                             }
@@ -395,7 +395,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         // { "data": "sid", "title":"序号",width:0},
                                         { "data": "site_name", "title":"名称",width:150},
                                         { "data": "sid","title":"站号",width:50 },
-                                        
+
                                         //{ "data": "battery_status",title:"电池码放状态",width:180 },
                                         //{ "data": "inductor_type",title:"互感器型号",width:180 },
 
@@ -627,28 +627,44 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollX":ui.getListHeight(),
                                 //"scrollY":ui.getListHeight(),
                                 "columns": [
-                                    
-                                    { "data": "alram_equipment",title:"站名",width:150 ,render:function(data,type,itemData){
-                                        var color = ['red', 'green', '#f90']
-                                        return '<span style="color:white;background-color:'+color[itemData.alarm_emergency_level -1]+'">'+itemData.alram_equipment+'</span>';
+
+                                    { "data": "site_name",title:"站名",width:150 ,render:function(data,type,itemData){
+                                        return itemData.site_name;
+                                        // var color = ['red', 'green', '#f90']
+                                        //return '<span style="color:white;background-color:'+color[itemData.alarm_emergency_level -1]+'">'+itemData.alram_equipment+'</span>';
                                     }},
-                                    { "data": "alarm_para1_name",title:"站号",width:50 },
-                                    { "data": "alarm_para2_name",title:"组号",width:50  },//组序列号
-                                    { "data": "alarm_para3_name",title:"电池号",width:50  },
-                                    { "data": "alarm_occur_time",title:"时间" ,width:200},
-                                    { "data": "alarm_content",title:"警情内容",width:200 },
-                                    { "data": "alarm_para1_value",title:"数值",width:50  },
-                                    { "data": "alarm_suggestion",title:"建议处理方式",width:400 }
-                                    // {
-                                    //     "data": "alarm_sn",
-                                    //     title:"处理连接",
-                                    //     render: function (data,type,itemData) {
-                                    //         return _.template('<a class="resolveBtn" pid="<%=id%>" suggestion="<%=suggestion%}">未处理</a>')({
-                                    //             id:data,
-                                    //             suggestion:itemData.alarm_suggestion
-                                    //         });
-                                    //     }
-                                    // },
+                                    { "data": "sn_key",title:"站号",width:50, render:function(data, type,itemData){
+                                        return itemData.sn_key.substring(0,10)+"0000";
+                                    }},
+                                    { "data": "sn_key",title:"组号",width:50, render:function(data, type,itemData){
+                                        if(itemData.type == "battery" || itemData.type == "group"){
+                                            return itemData.sn_key.substring(0,12)+"00";
+                                        }else{
+                                            return "";
+                                        }
+
+                                    }  },//组序列号
+                                    { "data": "sn_key",title:"电池号",width:50, render:function(data, type,itemData){
+                                        if(itemData.type == "battery")
+                                            return itemData.sn_key;
+                                        else{
+                                            return "";
+                                        }
+                                    }},
+                                    { "data": "time",title:"时间" ,width:200},
+                                    { "data": "desc",title:"警情内容",width:200 },
+                                    { "data": "current",title:"数值",width:50  },
+                                    { "data": "suggest",title:"建议处理方式",width:400 },
+                                    {
+                                        "data": "id",
+                                        title:"处理连接",
+                                        render: function (data,type,itemData) {
+                                            return _.template('<a class="resolveBtn" pid="<%=id%>" suggestion="<%=suggest%>">未处理</a>')({
+                                                id:data,
+                                                suggest:itemData.suggest
+                                            });
+                                        }
+                                    },
                                     //{ "data": "alarm_process_and_memo",title:"处理过程、时间、管理员" }
                                 ]
                             })));
@@ -663,7 +679,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 extObj:{
                     events:{
                         "click .list-edit-btn":"onEdit",
-                        "click .list-edit-text":"onEdit", 
+                        "click .list-edit-text":"onEdit",
                         "click .list-del-btn":"onDel",
                         "click .list-validate-btn":"onValidate",
                         "mouseover .dataTable tr":"inRow",
@@ -711,7 +727,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     render:function(){
                         var _this = this;
                         _this.destoryPlugin();
-            
+
                         require(["fixedColumn"],function() {
                             _this.listPlugin.push($('#auto table').DataTable( $.extend(true,{
                                 "data": _this.data,
@@ -722,35 +738,35 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    
+
                                     { "data": "sid",title:"站号",width:100  },
                                     { "data": "serial_number",title:"物理地址",width:50,render:function(data,type,itemData){
-                           
+
                                         return "<div>"+itemData.serial_number.substring(0,10)+"</div>";
                                     }  },
-                                    { 
+                                    {
                                         "data": "site_name",
                                         title:"站点简称",
                                         width:100 ,
                                         render: function (data,type,itemData) {
                                             var tpl='';
                                             tpl = '<div class="list-edit-text" pid="'+itemData.id+'">'+itemData.site_name+'</div>';
-                                           
+
                                             return tpl;
                                         }
                                     },
-                                    { 
+                                    {
                                         "data": "site_name",
                                         title:"站点全称",
                                         width:100 ,
                                         render: function (data,type,itemData) {
                                             var tpl='';
                                             tpl = '<div class="list-edit-text" pid="'+itemData.id+'">'+itemData.StationFullChineseName+'</div>';
-                                           
+
                                             return tpl;
                                         }
                                     },
-                          
+
                                     { "data": "site_location",title:"站点地址",width:100  },
                                     { "data": "site_property",title:"站点性质",width:150  },
                                     { "data": "areaname",title:"隶属区域",width:150  },
@@ -829,7 +845,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    
+
                                     { "data": "sid",title:"站号",width:100  },
                                     { "data": "site_name",title:"站点简称",width:100  },
                                     { "data": "battery_factory",title:"生产厂家",width:150  },
@@ -900,7 +916,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    
+
                                     { "data": "site_name",title:"站点",width:250 },
                                     { "data": "ups_factory",title:"生产厂家",width:250 },
                                     { "data": "ups_type",title:"型号",width:100 },
@@ -970,7 +986,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY":ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    
+
                                     {data:'bms_company',title:'BMS设备生产厂家名称',width:200},
                                     {data:'bms_device_addr',title:'BMS设备生产厂家地址',width:200},
                                     {data:'bms_postcode',title:'BMS设备生产厂家邮编',width:200},
@@ -1032,7 +1048,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY":ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    
+
                                     {data:'company_name',title:'用户单位总部名称',width:150},
                                     {data:'company_address',title:'用户单位总部地址',width:300},
                                     {data:'supervisor_phone',title:'主管领导电话',width:150},
@@ -1327,7 +1343,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    
+
                                     {"data": "site_name", title: "站名称",width:100},
                                     {"data": "group_sn_key", title: "组序列号",width:100},
                                     {"data": "sid", title: "站号",width:50},
@@ -1390,7 +1406,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {leftColumns: 2},
                                 "columns": [
-                                    
+
                                     {"data": "site_name", title: "站名称",width:100},
                                     {"data": "battery_sn_key", title: "电池序列号",width:100},
                                     {"data": "sid", title: "站号",width:50},
@@ -1454,7 +1470,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    
+
                                     {"data": "sid", title: "站号", width: 100},
                                     {"data": "site_name", title: "站点简称", width: 200},
                                     {"data": "serial_number", title: "物理地址", width: 250},
@@ -1508,7 +1524,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {rightColumns: 1},
                                 "columns": [
-                                    
+
                                     {"data": "sid", title: "站号", width: 100},
                                     {"data": "Device_name", title: "名称", width: 100},
                                     {"data": "Device_fun", title: "功能", width: 100},
@@ -1604,7 +1620,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             "scrollX": ui.getListHeight(),
                             "scrollY": ui.getListHeight(),
                             "columns": [
-                                
+
                                 {"data": "brand", title: "品牌", width: 100},
                                 {"data": "battery_date", title: "生产日期", width: 100},
                                 {"data": "battery_install_date", title: "电池安装日期", width: 100},
@@ -1622,7 +1638,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 extObj:{
                     fetchData:function(_param){
                         var param = {page:this.curPage, start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
-                        
+
                         API.getDeviationTrend(param);
                     },
                     downloadUrl:"/api/index.php/report/deviationTrend",
@@ -1637,7 +1653,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             "scrollX": ui.getListHeight(),
                             "scrollY": ui.getListHeight(),
                             "columns": [
-                                
+
                                 {"data": "site_name", title: "名称", width: 100},
                                 {"data": "sid", title: "站号", width: 100},
                                 {"data": "record_time", title: "时间", width: 100},
@@ -1732,7 +1748,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             "scrollX": ui.getListHeight(),
                             "scrollY": ui.getListHeight(),
                             "columns": [
-                                
+
                                 {"data": "username", title: "用户", width: 100},
                                 {"data": "content", title: "操作内容"},
                                 {"data": "modify_time", title: "操作时间", width: 150}
@@ -1836,7 +1852,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollY": ui.getListHeight(),
                     "fixedColumns": {rightColumns: 1},
                     "columns": [
-                        
+
                         {"data": "sid", title: "站号", width: 100},
                         {"data": "site_name", title: "站点简称", width: 200},
                         {"data": "serial_number", title: "物理地址"}
@@ -1861,7 +1877,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollX": ui.getListHeight(),
                     "scrollY": ui.getListHeight(),
                     "columns": [
-                        
+
                         { "data": "sid",title:"站号",width:100  },
                         { "data": "serial_number",title:"物理地址",width:50  },
                         { "data": "site_name",title:"站点简称",width:100  },
@@ -1928,7 +1944,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         { "data": "battery_humidity",title:"湿度要求（%）",width:150  },
                         { "data": "battery_type",title:"电池种类",width:150  },
                         { "data": "battery_factory_phone",title:"电池厂家联系电话",width:150  },
-                        
+
                     ]
                 },dataTableDefaultOption)));
 
@@ -1949,7 +1965,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollY":ui.getListHeight(),
                     "fixedColumns": {rightColumns: 1},
                     "columns": [
-                        
+
                         {data:'company_name',title:'用户单位总部名称',width:150},
                         {data:'company_address',title:'用户单位总部地址',width:300},
                         {data:'supervisor_phone',title:'主管领导电话',width:150},
@@ -1998,7 +2014,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollY":ui.getListHeight(),
                     "fixedColumns": {rightColumns: 1},
                     "columns": [
-                        
+
                         {data:'bms_company',title:'BMS设备生产厂家名称',width:200},
                         {data:'bms_device_addr',title:'BMS设备生产厂家地址',width:200},
                         {data:'bms_postcode',title:'BMS设备生产厂家邮编',width:200},
@@ -2031,7 +2047,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollY": ui.getListHeight(),
                     "fixedColumns": {rightColumns: 1},
                     "columns": [
-                        
+
                         {"data": "site_name", title: "站名称",width:100},
                         {"data": "group_sn_key", title: "组序列号",width:100},
                         {"data": "sid", title: "站号",width:50},
@@ -2069,7 +2085,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollY": ui.getListHeight(),
                     "fixedColumns": {leftColumns: 1},
                     "columns": [
-                        
+
                         {"data": "site_name", title: "站名称",width:100},
                         {"data": "station_sn_key", title: "站序列号",width:100},
                         {"data": "MAC_address", title: "物理地址",width:100},
@@ -2122,7 +2138,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollY": ui.getListHeight(),
                     "fixedColumns": {leftColumns: 2},
                     "columns": [
-                        
+
                         {"data": "site_name", title: "站名称",width:100},
                         {"data": "battery_sn_key", title: "电池序列号",width:100},
                         {"data": "sid", title: "站号",width:50},
@@ -2164,7 +2180,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollX": ui.getListHeight(),
                     "scrollY": ui.getListHeight(),
                     "columns": [
-                        
+
                         {"data": "sid", title: "站号", width: 100},
                         {"data": "Device_name", title: "名称", width: 100},
                         {"data": "Device_fun", title: "功能", width: 100},

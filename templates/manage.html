@@ -204,7 +204,7 @@
 
             <span class="shift-btn">柱线切换</span>
 
-            
+
 
 
             <p>
@@ -347,21 +347,23 @@
     <div id="ResolveCautionTpl-dialog" class="dialog">
         <form class="jqtransform">
             <div class="rowElem">
-                <label class="item-title" for="name"><i class="mast-fill">*</i>处理方法:<span id="suggestion"></span> </label>
-                <label class="item-title manager" for="name">当前管理员: <span class="text-green">fweafweaf</span></label>
-                <input type="hidden" key="alarm_sn" />
+                <label class="item-title" for="name"><i class="mast-fill">*</i>处理方法:</label>
+                <span id="suggestion" key="suggestion"></span>
+                <!--label class="item-title manager" for="name">当前管理员: <span class="text-green" id="username" key="username"></span></label-->
+                <input type="hidden" key="id" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name"><i class="mast-fill" for="battery_factory">*</i>处理过程: </label>
-                <textarea name="" id="" cols="65" rows="6"></textarea>
+                <label class="item-title" for="markup"><i class="mast-fill" for="markup">*</i>处理过程: </label>
+                <textarea name="markup" id="markup" cols="65" rows="6" key="markup"></textarea>
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name"><i class="mast-fill" for="battery_factory">*</i>联系方式: </label>
-                <textarea name="" id="" cols="65" rows="6"></textarea>
+                <label class="item-title" for="name"><i class="mast-fill" for="contact">*</i>联系方式: </label>
+                <input name="contact" id="contact" type="text" key="contact" />
             </div>
         </form>
         <div class="form-btns">
-            <input type="button" class="submit-btn btn" value="确定"/>
+            <input type="button" class="submit-btn btn ignore" value="忽略警情"/>
+            <input type="button" class="submit-btn btn sdone" value="处理完成"/>
         </div>
     </div>
 </script>
@@ -892,7 +894,7 @@
                     <option value=2>管理员</option>
                     <option value=3>观察员</option>
                 </select>
-                
+
             </div>
         </form>
         <div class="form-btns">

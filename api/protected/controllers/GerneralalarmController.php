@@ -40,28 +40,41 @@ class GerneralalarmController extends Controller
 
     public function actionUpdate()
     {
-        $alarm_sn = Yii::app()->request->getParam('alarm_sn',0);
+        $id = Yii::app()->request->getParam('id',0);
+        $markup = Yii::app()->request->getParam('markup','');
+        $contact = Yii::app()->request->getParam('contact','');
+        $status = Yii::app()->request->getParam('status', 1);
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
         );
+
         $ret['data'] = array();
-        if ($alarm_sn) {
+        if ($id) {
             $row = array();
-            $row['alarm_process_and_memo'] = Yii::app()->request->getParam('alarm_memo','');
-            $row['alarm_update_time'] = date("Y-m-d H:i:s");
+            $row['markup'] = $markup;
+            $row['contact'] = $contact;
+            $row['markuptime'] = date('Y-m-d H:i:s');
+            $row['status'] = $status;
             $upsql = Utils::buildUpdateSQL($row);
-            $sql = "update {{general_alarm}} set ".$upsql." where alarm_sn=".$alarm_sn;
+            $sql = "update my_alerts set ".$upsql." where id=".$id;
+            // var_dump($sql);
             $exec = Yii::app()->bms->createCommand($sql)->execute();
             if ($exec) {
-                $ret['data'] = array('alarm_sn'=>$alarm_sn);
+                $ret['data'] = array('id'=>$id);
             }else{
                 $ret['response'] = array(
                     'code'=>-1,
                     'msg'=>'更新报警失败！'
                 );
             }
+        }else{
+            $ret['response'] = array(
+                    'code'=>-1,
+                    'msg'=>'更新报警失败！'
+            );
         }
+        echo json_encode($ret);
     }
     public function actionIndex()
     {
@@ -69,7 +82,7 @@ class GerneralalarmController extends Controller
         $begin = Yii::app()->request->getParam('begin',0);
         $end = Yii::app()->request->getParam('end',0);
         $id = Yii::app()->request->getParam('id',0);
-        
+
         $where = '1=1 ';
         if ($type != 0) {
             $where .= ' and alarm_emergency_level='.$type;
@@ -110,7 +123,7 @@ class GerneralalarmController extends Controller
                 ->order('alarm_occur_time desc')
                 ->queryAll();
             }
-            
+
         }else{
             //xl
             //通过sql直接选择地域进行过滤
@@ -133,7 +146,7 @@ class GerneralalarmController extends Controller
                 ->queryAll();
             }
         }
-       
+
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
