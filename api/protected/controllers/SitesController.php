@@ -460,6 +460,9 @@ class SitesController extends Controller
         $ret = Yii::app()->bms->createCommand('select * from tb_station_param where sn_key='.$sn_key)->queryRow();
 
         if (!$ret) {
+            $para = array();
+            $para['sn_key'] = $sn_key;
+            $para['sid'] = $sid;
             $insql = Utils::buildInsertSQL($para);
             $sql = "insert into  tb_station_param ".$insql;
             Yii::app()->bms->createCommand($sql)->execute();
@@ -476,51 +479,51 @@ class SitesController extends Controller
 
     public function createGroupPara($row,$site)
     {
-        $sql = "select * from {{group_parameter}} order by id desc limit 1";
-        $para = Yii::app()->db->createCommand($sql)->queryRow();
-        unset($para['id']);
-        $sql = "select * from {{group_module}} where sid='".$row['sid']."'";
-        $rows =  Yii::app()->bms->createCommand($sql)->queryAll();
-        if ($rows) {
-            foreach ($rows as $key => $value) {
-                $para['group_sn_key'] = $value['sn_key'];
-                $para['sid'] = $value['sid'];
-                $para['gid'] = $value['gid'];
-                $para['K_Battery_Incide'] = $site->batteries;
-                $sql = "select * from {{group_parameter}} where group_sn_key='".$para['group_sn_key']."'";
-                $group = Yii::app()->bms->createCommand($sql)->queryRow();
-                if (!$group) {
-                    $insql = Utils::buildInsertSQL($para);
-                    $sql = "insert into  {{group_parameter}} ".$insql;
-                    Yii::app()->bms->createCommand($sql)->execute();
-                }
-            }
+        $sn_key = $row['sn_key'];
+        $sid = $row['sid'];
+        $ret = Yii::app()->bms->createCommand('select * from tb_group_param where sn_key='.$sn_key)->queryRow();
 
+        if (!$ret) {
+            $para = array();
+            $para['sn_key'] = $sn_key;
+            //$para['sid'] = $sid;
+            $insql = Utils::buildInsertSQL($para);
+
+            $sql = "insert into  tb_group_param ".$insql;
+            Yii::app()->bms->createCommand($sql)->execute();
+        }else{
+            $sql = "update tb_group_param set ";
+            $para = array();
+            $para['sn_key'] = $sn_key;
+            //$para['sid'] = $sid;
+            $updateSql = Utils::buildUpdateSQL($para);
+            $sql = "update tb_group_param set ".$updateSql." where sn_key=".$sn_key;
+            Yii::app()->bms->createCommand($sql)->execute();
         }
     }
 
     public function crateBatteryPara($row,$site)
     {
-        $sql = "select * from {{battery_parameter}} order by id desc limit 1";
-        $para = Yii::app()->db->createCommand($sql)->queryRow();
-        unset($para['id']);
-        $sql = "select * from {{battery_module}} where sid='".$row['sid']."'";
-        $rows =  Yii::app()->bms->createCommand($sql)->queryAll();
-        if ($rows) {
-            foreach ($rows as $key => $value) {
-                $para['battery_sn_key'] = $value['sn_key'];
-                $para['sid'] = $value['sid'];
-                $para['gid'] = $value['gid'];
-                $para['bid'] = $value['mid'];
-                $sql = "select * from {{battery_parameter}} where battery_sn_key='".$para['battery_sn_key']."'";
-                $battery = Yii::app()->bms->createCommand($sql)->queryRow();
-                if (!$battery) {
-                    $insql = Utils::buildInsertSQL($para);
-                    $sql = "insert into  {{battery_parameter}} ".$insql;
-                    Yii::app()->bms->createCommand($sql)->execute();
-                }
-            }
+        $sn_key = $row['sn_key'];
+        $sid = $row['sid'];
+        $ret = Yii::app()->bms->createCommand('select * from tb_battery_param where sn_key='.$sn_key)->queryRow();
 
+        if (!$ret) {
+            $para = array();
+            $para['sn_key'] = $sn_key;
+            //$para['sid'] = $sid;
+            $insql = Utils::buildInsertSQL($para);
+
+            $sql = "insert into  tb_battery_param ".$insql;
+            Yii::app()->bms->createCommand($sql)->execute();
+        }else{
+            $sql = "update tb_battery_param set ";
+            $para = array();
+            $para['sn_key'] = $sn_key;
+            //$para['sid'] = $sid;
+            $updateSql = Utils::buildUpdateSQL($para);
+            $sql = "update tb_battery_param set ".$updateSql." where sn_key=".$sn_key;
+            Yii::app()->bms->createCommand($sql)->execute();
         }
     }
 	/**

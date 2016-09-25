@@ -15,10 +15,18 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                         _this.data = data;
                         _this.setValue();
                     });
+
                     _this.listenTo(Backbone.Events,"groupoption:update",function(){
+                        _this.showErrTips('修改完成，请等待5到10秒后刷新查看');
                         _this.oncancel();
                         Backbone.Events.trigger("listdata:refresh", "groupOption");
+
                     });
+                     _this.listenTo(Backbone.Events,"groupoption:update:fail",function(msg){
+                        _this.showErrTips(msg);
+                    });
+
+
                 },
                 setValue:function(){
                     if(this.data){
@@ -46,9 +54,10 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                         _param = _this.getParam();
 
                     if(_this.validate(_param)){
-                        if(_param.sid){
+                        if(_param.sn_key){
                             API.updateGroupOption(_param);
                         }else{
+                            _this.showErrTips('no sn_key');
                             //API.createBMS(_param);
                         }
                     }
@@ -60,8 +69,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     stationList.autocomplete('destroy');
                 }
             }
-        },
-        stationList;
+        };
     return {
         show:function(id){
             var $dialogWrap = $("#groupOptionEditTpl-dialog").length?$("#groupOptionEditTpl-dialog").replaceWith($($("#groupOptionEditTpl").html())):$($("#groupOptionEditTpl").html());
@@ -81,23 +89,8 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     view.dialogObj = $(this);
 
                     if(id){
-                        API.getGroupOption({gid:id});
+                        API.getGroupOption({sn_key:id});
                     }
-
-                    stationList = stationSelector.init({
-                        extOption:{
-                            select:function(event, ui){
-                                $(this).val(ui.item.label);
-                                $("[key=sid]").val(ui.item.value);
-                                return false;
-                            }
-                        }
-                    });
-
-                    //日期选择器
-                    $( "form.jqtransform [ipttype=date]" ).datepicker({
-                        dateFormat: "yy-mm-dd"
-                    });
                 }
             });
         },

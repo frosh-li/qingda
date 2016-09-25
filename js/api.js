@@ -219,7 +219,7 @@ define(function(require){
             },
             updateGroupOption:function (args) {
                 var url = '/api/index.php/grouppara/update';
-                this.fetch(url, "groupoption:update", args, "get");
+                this.fetch(url, "groupoption:update", args, "post");
                 return this;
             },
             /***************************************短信邮箱***************************************/
@@ -276,7 +276,7 @@ define(function(require){
             },
             updateBatteryOption:function(args){
                 var url = '/api/index.php/batterypara/update';
-                this.fetch(url, "batteryInfo:update", args, "POST");
+                this.fetch(url, "batteryoption:update", args, "POST");
                 return this;
             },
             createBattery:function(args,event){

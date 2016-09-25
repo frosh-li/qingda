@@ -1058,53 +1058,59 @@
                 <input class="input-w-1" type="password" key="password" />
             </div>-->
             <div class="rowElem">
-                <label class="item-title" for="name">组序列号: </label>
-                <input class="input-w-1" type="text" key="group_sn_key" />
-                <label class="item-title" for="name">站号: </label>
-                <input class="input-w-1" type="text" key="sid" />
+                <label class="item-title" for="GroBatNum">每组电池数: </label>
+                <input class="input-w-1" type="text" key="GroBatNum" />
+                <label class="item-title" for="CurRange">组电流量程: </label>
+                <input class="input-w-1" type="text" key="CurRange" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">组号: </label>
-                <input class="input-w-1" type="text" key="gid" />
-                <label class="item-title" for="name">本组电池数: </label>
-                <input class="input-w-1" type="text" key="K_Battery_Incide" />
+                <label class="item-title" for="KI">组电流系数: </label>
+                <input class="input-w-1" type="text" key="KI" />
+                <label class="item-title" for="ZeroCurADC">组电流零位: </label>
+                <input class="input-w-1" type="text" key="ZeroCurADC" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">有无电流传感器: </label>
-                <input class="input-w-1" type="text" key="HaveCurrentSensor" />
-                <label class="item-title" for="name">电流传感器量程（A）: </label>
-                <input class="input-w-1" type="text" key="StationCurrentSensorSpan" />
+                <label class="item-title" for="DisChaLim_R">组放电电流超上限_红: </label>
+                <input class="input-w-1" type="text" key="DisChaLim_R" />
+                <label class="item-title" for="DisChaLim_O">组放电电流将达上限_橙: </label>
+                <input class="input-w-1" type="text" key="DisChaLim_O" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">电流传感器零位AD码: </label>
-                <input class="input-w-1" type="text" key="StationCurrentSensorZeroADCode" />
-                <label class="item-title" for="name">OSC: </label>
-                <input class="input-w-1" type="text" key="OSC" />
+                <label class="item-title" for="DisChaLim_Y">组放电电流偏高_黄: </label>
+                <input class="input-w-1" type="text" key="DisChaLim_Y" />
+                <label class="item-title" for="ChaLim_R">组充电电流超上限_红: </label>
+                <input class="input-w-1" type="text" key="ChaLim_R" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">放电电流限（A）: </label>
-                <input class="input-w-1" type="text" key="DisChargeCurrentLimit" />
-                <label class="item-title" for="name">充电电流限（A）: </label>
-                <input class="input-w-1" type="text" key="ChargeCurrentLimit" />
+                <label class="item-title" for="ChaLim_O">组充电电流将达上限_橙: </label>
+                <input class="input-w-1" type="text" key="ChaLim_O" />
+                <label class="item-title" for="ChaLim_Y">组充电电流偏高_黄: </label>
+                <input class="input-w-1" type="text" key="ChaLim_Y" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">温度上限（℃）: </label>
-                <input class="input-w-1" type="text" key="TemperatureHighLimit" />
-                <label class="item-title" for="name">温度下限（℃）: </label>
-                <input class="input-w-1" type="text" key="TemperatureLowLimit" />
+                <label class="item-title" for="MaxTem_R">组温度超上限_红: </label>
+                <input class="input-w-1" type="text" key="MaxTem_R" />
+                <label class="item-title" for="MaxTem_O">组温度将达上限_橙: </label>
+                <input class="input-w-1" type="text" key="MaxTem_O" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">湿度上限（%）: </label>
-                <input class="input-w-1" type="text" key="HumiH" />
-                <label class="item-title" for="name">湿度下限（%）: </label>
-                <input class="input-w-1" type="text" key="HumiL" />
+                <label class="item-title" for="MaxTem_Y">组温度偏高_黄: </label>
+                <input class="input-w-1" type="text" key="MaxTem_Y" />
+                <label class="item-title" for="MinTem_R">组温度超下限_红: </label>
+                <input class="input-w-1" type="text" key="MinTem_R" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">温度传感温度偏移修正（℃）: </label>
-                <input class="input-w-1" type="text" key="TemperatureAdjust" />
-                <label class="item-title" for="name">湿度传感温度偏移修正（%）: </label>
-                <input class="input-w-1" type="text" key="HumiAdjust" />
+                <label class="item-title" for="MinTem_O">组温度将达下限_橙: </label>
+                <input class="input-w-1" type="text" key="MinTem_O" />
+                <label class="item-title" for="MinTem_Y">组温度偏低_黄: </label>
+                <input class="input-w-1" type="text" key="MinTem_Y" />
             </div>
+            <div class="rowElem">
+                <label class="item-title" for="ChaCriterion">组充放电判据: </label>
+                <input class="input-w-1" type="text" key="ChaCriterion" />
+                <input type="hidden" key="sn_key" />
+            </div>
+            
         </form>
         <div class="form-btns">
             <input type="button" class="submit-btn btn" value="确定"/>
@@ -1116,65 +1122,101 @@
 <script type="text/html" id="baterryOptionEditTpl">
     <div id="baterryOptionEditTpl-dialog" class="dialog">
         <form class="jqtransform">
+            <input type="hidden" key="sn_key" />
             <div class="rowElem">
-                <label class="item-title" for="name">电池序列号: </label>
-                <input class="input-w-1" type="text" key="battery_sn_key" />
-                <label class="item-title" for="name">站号: </label>
-                <input class="input-w-1" type="text" key="sid" />
+                <label class="item-title" for="KV">电压系数: </label>
+                <input class="input-w-1" type="text" key="KV" />
+                <label class="item-title" for="KT">温度系数: </label>
+                <input class="input-w-1" type="text" key="KT" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">组号: </label>
-                <input class="input-w-1" type="text" key="gid" />
-                <label class="item-title" for="name">电池号: </label>
-                <input class="input-w-1" type="text" key="bid" />
+                <label class="item-title" for="KI">激励电流系数: </label>
+                <input class="input-w-1" type="text" key="KI" />
+                <label class="item-title" for="T0">T0校准温度: </label>
+                <input class="input-w-1" type="text" key="T0" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">电压测量修正系数KV: </label>
-                <input class="input-w-1" type="text" key="CurrentAdjust_KV" />
-                <label class="item-title" for="name">温度测量修正系数KI: </label>
-                <input class="input-w-1" type="text" key="TemperatureAdjust_KT" />
+                <label class="item-title" for="ADC_T0">T0温度码: </label>
+                <input class="input-w-1" type="text" key="ADC_T0" />
+                <label class="item-title" for="T1">T1校准温度: </label>
+                <input class="input-w-1" type="text" key="T1" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">T0校准点ADC码: </label>
-                <input class="input-w-1" type="text" key="T0_ADC" />
-                <label class="item-title" for="name">T0校准点温度值（℃）: </label>
-                <input class="input-w-1" type="text" key="T0_Temperature" />
+                <label class="item-title" for="ADC_T1">T1温度码: </label>
+                <input class="input-w-1" type="text" key="ADC_T1" />
+                <label class="item-title" for="MaxU_R">电池电压超上限_红: </label>
+                <input class="input-w-1" type="text" key="MaxU_R" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">T1校准点ADC码: </label>
-                <input class="input-w-1" type="text" key="T1_ADC" />
-                <label class="item-title" for="name">T1校准点温度值（℃）: </label>
-                <input class="input-w-1" type="text" key="T1_Temperature" />
+                <label class="item-title" for="MaxU_O">电池电压将达上限_橙: </label>
+                <input class="input-w-1" type="text" key="MaxU_O" />
+                <label class="item-title" for="MaxU_Y">电池电压偏高_黄: </label>
+                <input class="input-w-1" type="text" key="MaxU_Y" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">内阻测量量程: </label>
-                <input class="input-w-1" type="text" key="Rin_Span" />
-                <label class="item-title" for="name">OSC_Voltage: </label>
-                <input class="input-w-1" type="text" key="OSC" />
+                <label class="item-title" for="MinU_R">电池电压超下限_红: </label>
+                <input class="input-w-1" type="text" key="MinU_R" />
+                <label class="item-title" for="MinU_O">电池电压将达下限_橙: </label>
+                <input class="input-w-1" type="text" key="MinU_O" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">电池电压高压限（V）: </label>
-                <input class="input-w-1" type="text" key="BatteryU_H" />
-                <label class="item-title" for="name">电池电压低压限（V）: </label>
-                <input class="input-w-1" type="text" key="BaterryU_L" />
+                <label class="item-title" for="MinU_Y">电池电压偏低_黄: </label>
+                <input class="input-w-1" type="text" key="MinU_Y" />
+                <label class="item-title" for="MaxT_R">电池温度超上限_红: </label>
+                <input class="input-w-1" type="text" key="MaxT_R" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">电极温度高温限（℃）: </label>
-                <input class="input-w-1" type="text" key="Electrode_T_H_Limit" />
-                <label class="item-title" for="name">电极温度低温限（℃）: </label>
-                <input class="input-w-1" type="text" key="Electrode_T_L_Limit" />
+                <label class="item-title" for="MaxT_O">电池温度将达上限_橙: </label>
+                <input class="input-w-1" type="text" key="MaxT_O" />
+                <label class="item-title" for="MaxT_Y">电池温度偏高_黄: </label>
+                <input class="input-w-1" type="text" key="MaxT_Y" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">电池内阻高限（mΩ）: </label>
-                <input class="input-w-1" type="text" key="Rin_High_Limit" />
-                <label class="item-title" for="name">内阻测量修正系数KR: </label>
-                <input class="input-w-1" type="text" key="Rin_Adjust_KR" />
+                <label class="item-title" for="MinT_R">电池温度超下限_红: </label>
+                <input class="input-w-1" type="text" key="MinT_R" />
+                <label class="item-title" for="MinT_O">电池温度将达下限_橙: </label>
+                <input class="input-w-1" type="text" key="MinT_O" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">前置放大器修正系数KA: </label>
-                <input class="input-w-1" type="text" key="PreAmp_KA" />
-                <label class="item-title" for="name">内阻测量激励电流修正系数KI: </label>
-                <input class="input-w-1" type="text" key="Rin_ExciteI_KI" />
+                <label class="item-title" for="MinT_Y">电池温度偏低_黄: </label>
+                <input class="input-w-1" type="text" key="MinT_Y" />
+                <label class="item-title" for="MaxR_R">电池内阻超上限_红: </label>
+                <input class="input-w-1" type="text" key="MaxR_R" />
+            </div>
+            <div class="rowElem">
+                <label class="item-title" for="MaxR_O">电池内阻将达上限_橙: </label>
+                <input class="input-w-1" type="text" key="MaxR_O" />
+                <label class="item-title" for="MaxR_Y">电池内阻偏高_黄: </label>
+                <input class="input-w-1" type="text" key="MaxR_Y" />
+            </div>
+            <div class="rowElem">
+                <label class="item-title" for="MaxDevU_R">电池电压偏差_红: </label>
+                <input class="input-w-1" type="text" key="MaxDevU_R" />
+                <label class="item-title" for="MaxDevU_O">电池电压偏差_橙: </label>
+                <input class="input-w-1" type="text" key="MaxDevU_O" />
+            </div>
+            <div class="rowElem">
+                <label class="item-title" for="MaxDevU_Y">电池电压偏差_黄: </label>
+                <input class="input-w-1" type="text" key="MaxDevU_Y" />
+                <label class="item-title" for="MaxDevT_R">电池温度偏差_红: </label>
+                <input class="input-w-1" type="text" key="MaxDevT_R" />
+            </div>
+            <div class="rowElem">
+                <label class="item-title" for="MaxDevT_O">电池温度偏差_橙: </label>
+                <input class="input-w-1" type="text" key="MaxDevT_O" />
+                <label class="item-title" for="MaxDevT_Y">电池温度偏差_黄: </label>
+                <input class="input-w-1" type="text" key="MaxDevT_Y" />
+            </div>
+            <div class="rowElem">
+                <label class="item-title" for="MaxDevR_R">电池内阻偏差_红: </label>
+                <input class="input-w-1" type="text" key="MaxDevR_R" />
+                <label class="item-title" for="MaxDevR_O">电池内阻偏差_橙: </label>
+                <input class="input-w-1" type="text" key="MaxDevR_O" />
+            </div>
+            <div class="rowElem">
+                <label class="item-title" for="MaxDevR_Y">电池内阻偏差_黄: </label>
+                <input class="input-w-1" type="text" key="MaxDevR_Y" />
+
             </div>
         </form>
         <div class="form-btns">
