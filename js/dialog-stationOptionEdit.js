@@ -57,6 +57,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     if(_this.validate(_param)){
                         if(_param.sn_key){
                             API.updateStationOption(_param);
+							API.syncHard(_param,"StationPar");
                         }else{
                             API.createBMS(_param);
                         }

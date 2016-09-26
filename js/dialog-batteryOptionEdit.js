@@ -54,6 +54,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     if(_this.validate(_param)){
                         if(_param.sn_key){
                             API.updateBatteryOption(_param);
+							API.syncHard(_param,"BatteryPar");
                         }else{
                             //API.createBMS(_param);
                         }

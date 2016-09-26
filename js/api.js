@@ -511,7 +511,10 @@ define(function(require){
                 // }
                 this.fetch(url[type], evttype||"chart:update", args, "get");
                 return this;
-            }
+            },
+			syncHard: function(args, ctype){
+				this.fetch("http://127.0.0.1:3000/setparam?type="+ctype, null, args, "post");
+			}
         }
 
     return API;
