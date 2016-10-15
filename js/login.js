@@ -9,9 +9,12 @@ define(["require","backbone","api","router","common"],function(require,Backbone,
             initialize: function(options) {
                 var _this = this;
                 $("input[key=password]").val("");
+                $("input[key=username]").val(localStorage.getItem("username") || "");
                 _this.listenTo(Backbone.Events,"login",function(data){
                     console.log(data);
                     localStorage.setItem('userinfo', JSON.stringify(data));
+                    localStorage.setItem("collecting",'true');
+                    localStorage.setItem('username',data.username);
                     router.to("manage/station");
                 })
                 _this.listenTo(Backbone.Events,"login:fail",function(data){

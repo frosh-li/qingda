@@ -48,7 +48,7 @@
                         <dd><a class="btn1" href="#/manage/caution">查看警情</a></dd>
                         <dd class="mleft"><a class="btn2 stationPop">站情况</a></dd>
                         <dd><a class="btn1 exportdata">数据导出</a></dd>
-                        <dd ><a class="map-switch" href="#/map" id="map-switch" style="display:none"><img src="images/switch-map.png" title="切换为地图模式"></a></dd>
+                        <dd ><a class="map-switch" href="#/map" id="map-switch" style="display:none"><img src="images/switch-map.png?v1" title="切换为地图模式" style="width:30px;height:30px;"></a></dd>
                     </dl>
                 </div>
             </div><!--show-bar-->
@@ -59,6 +59,7 @@
                     <li class="switch-btn undis manage group"><span><a href="#/manage/group">组数据</a></span><i for="group"></i></li>
                     <li class="switch-btn undis manage battery"><span><a href="#/manage/battery">电池数据</a></span><i for="battery"></i></li>
                     <li class="switch-btn undis manage caution"><span><a href="#/manage/caution">报警数据</a></span><i for="caution"></i></li>
+                    <li class="switch-btn undis manage newstations"><span><a href="#/manage/newstations">待添加站</a></span><i for="newstations"></i></li>
 
                     <!-- 设置 -->
                     <li class="active switch-btn undis settings stationInfo"><span><a href="#/settings/stationInfo/stationSituation">基本信息</a></span></li>
@@ -425,7 +426,7 @@
             </div>
             <div class="rowElem">
                 <label class="item-title"><i class="mast-fill" for="serial_number">*</i>物理地址: </label>
-                <input class="input-w-1" type="text" key="serial_number"/>
+                <input class="input-w-1" placeholder="10位MAC地址" type="text" key="serial_number"/>
                 <label class="item-title"><i class="mast-fill" for="password">*</i>修改或编辑密码: </label>
                 <input class="input-w-1" type="password" key="password" />
             </div>

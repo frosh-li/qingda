@@ -22,6 +22,16 @@ class SitesController extends Controller
             }
         }
     }
+    public function actionNewstations(){
+        $ret['response'] = array(
+            'code'=>0,
+            'msg'=>'ok'
+        );
+        $sql = "select * from tb_station_module where sn_key not in (select serial_number from my_site)";
+        $stations = Yii::app()->db->createCommand($sql)->queryAll();
+        $ret['data']['list']=$stations;
+        echo json_encode($ret);
+    }
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed

@@ -126,7 +126,7 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
         },
         level;
     return {
-        show:function(id){
+        show:function(id, bringdata){
             var $dialogWrap = $("#stationEditTpl-dialog").length?$("#stationEditTpl-dialog").replaceWith($($("#stationEditTpl").html())):$($("#stationEditTpl").html());
 
             $dialogWrap.dialog({
@@ -150,6 +150,13 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                         $(".next-btn",view.el).show();
                         //层级选择器
                         level = levelSelector.init();
+                    }
+                    if(bringdata){
+                        console.log('bringdata',bringdata)
+                        $("[key=serial_number]").val(bringdata.sn_key.substring(0,10));
+                        $("[key=sid]").val(bringdata.sid);
+                        $("[key=groups]").val(bringdata.Groups);
+                        $("[key=batteries]").val(bringdata.GroBats);
                     }
                     //日期选择器
                     $( "form.jqtransform [key=bms_install_date]" ).datepicker({

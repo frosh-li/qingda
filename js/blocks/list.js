@@ -395,7 +395,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     "scrollY":ui.getListHeight(),
                                     "columns": [
                                         // { "data": "sid", "title":"序号",width:0},
-                                        { "data": "site_name", "title":"站名",width:150},
+                                        { "data": "site_name", "title":"站名",width:150,"sClass":"site_name_left"},
                                         { "data": "sid","title":"站号",width:50 },
 
                                         //{ "data": "battery_status",title:"电池码放状态",width:180 },
@@ -536,7 +536,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     "scrollY":ui.getListHeight(),
                                     "leftColumns":4,
                                     "columns": [
-                                        { "data": "site_name",title:"站名",width:120 },
+                                        { "data": "site_name",title:"站名",width:120,"sClass":"site_name_left" },
                                         { "data": "sid",title:"站号",width:50 },
                                         { "data": "gid",title:"组号",width:50 },
                                         { "data": "bid",title:"电池号",width:50  }
@@ -586,7 +586,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     "scrollX":ui.getListWidth(),
                                     "scrollY":ui.getListHeight(),
                                     "columns": [
-                                        { "data": "site_name",title:"站名",width:120 },
+                                        { "data": "site_name",title:"站名",width:120 ,"sClass":"site_name_left"},
                                         { "data": "sid",title:"站号",width:50 },
                                         { "data": "gid",title:"组号",width:50 }
                                     ].concat(colums.data)
@@ -647,7 +647,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 //"scrollY":ui.getListHeight(),
                                 "columns": [
 
-                                    { "data": "site_name",title:"站名",width:150 ,render:function(data,type,itemData){
+                                    { "data": "site_name",title:"站名",width:150 ,"sClass":"site_name_left",render:function(data,type,itemData){
                                         return itemData.site_name;
                                         // var color = ['red', 'green', '#f90']
                                         //return '<span style="color:white;background-color:'+color[itemData.alarm_emergency_level -1]+'">'+itemData.alram_equipment+'</span>';
@@ -707,6 +707,89 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                                 id:data,
                                                 suggest:itemData.suggest
                                             });
+                                        }
+                                    },
+                                    //{ "data": "alarm_process_and_memo",title:"处理过程、时间、管理员" }
+                                ]
+                            })));
+                        }
+
+                        // _this.checkAllRows();
+                        return this;
+                    }
+                }
+            },
+            newstations:{
+                extObj:{
+                    getNavData:function(){
+                        return nav.getSites();
+                    },
+                    fetchData:function(_param){
+                        var _param = {page:this.curPage};
+
+                        API.getNewStationData(_param);
+                    },
+                    events:{
+                        "click .resolveBtn":"resove"
+                    },
+                    showStationOptionEditDialog:function(data){
+                        require(["js/dialog-stationEdit"],function(dialog){
+                            dialog && dialog.show(null,data);
+                        })
+                    },
+                    resove:function(e){
+                        var target=$(e.currentTarget); 
+                        this.showStationOptionEditDialog({
+                            sid:target.attr('sid'),
+                            sn_key:target.attr('sn_key'),
+                            Groups:target.attr('Groups'),
+                            GroBats:target.attr("GroBats")
+                        });
+                        
+
+                        // ui.showUnsolveDialog({id:$(e.currentTarget).attr('pid'),suggestion:$(e.currentTarget).attr('suggestion')});
+                    },
+                    updateAtype: function(){
+                        console.log('atypes',this.types);
+                        for(var i = 0 ; i < this.types.length; i++){
+                            var obj = this.types[i];
+                            if(obj.atype == "R"){
+                                $("#ared").html(obj.count+"条");
+                            }else if(obj.atype == "O"){
+                                $("#aoo").html(obj.count+"条");
+                            }else if(obj.atype == "Y"){
+                                $("#ayellow").html(obj.count+"条");
+                            }
+                        }
+                    },
+                    render:function(){
+                        //this.destoryPlugin();
+                        var _this = this;
+                        //ui.resizeAutoListWidth();
+                        if(_this.listPlugin && _this.listPlugin[0]){
+                            _this.updateList();
+                       
+                        }else{
+                        
+                            this.listPlugin.push($('#auto table').DataTable( $.extend(true,{},dataTableDefaultOption,{
+                                "data": this.data,
+                                "paging":false,
+                                "scrollX":ui.getListHeight(),
+                                //"scrollY":ui.getListHeight(),
+                                "columns": [
+
+                                    { "data": "sn_key",title:"物理地址"},
+                                    { "data": "sid",title:"站号"},
+                                    { "data": "Groups",title:"组数"},
+                                    { "data": "GroBats",title:"电池数"},
+                                    { "data": "record_time",title:"时间"},//组序列号
+                                    
+                                    {
+                                        "data": "id",
+                                        title:"操作",
+                                        width:150,
+                                        render: function (data,type,itemData) {
+                                            return _.template('<a class="resolveBtn" sn_key="<%=sn_key%>" GroBats="<%=GroBats%>" sid="<%=sid%>" Groups="<%=Groups%>" >添加</a>')(itemData);
                                         }
                                     },
                                     //{ "data": "alarm_process_and_memo",title:"处理过程、时间、管理员" }

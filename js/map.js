@@ -47,7 +47,7 @@ define(["require","backbone","api","stationsinfoDialog","common"],function(requi
             })
             _this.listenTo(Backbone.Events,"mapdata:update",function(data){
                 _this.data = data.list;
-                console.log('map data update', data);
+                //console.log('map data update', data);
                 _this.addMarks();
                 _this.buildCityList();
                 _this.centerAndZoom({
@@ -85,13 +85,16 @@ define(["require","backbone","api","stationsinfoDialog","common"],function(requi
                 _this.addCityList()
             }
         },
+        unload: function(){
+            this.map = null;
+        },
         addMarks:function(){
             var _this = this,
                 _data = _this.data,
                 _map = _this.map,
                 _alarmNum = 0;
             if(_data && _data.length){
-                console.log('mask data', _data)
+                
                 $.each(_data,function(i,d){
                     var pt = new BMap.Point(d["site_longitude"], d["site_latitude"]);
                     var icon = new BMap.Icon(MARK.icon[d.status||'0'], new BMap.Size(MARK.w,MARK.h));
@@ -137,7 +140,7 @@ define(["require","backbone","api","stationsinfoDialog","common"],function(requi
                 var pt = new BMap.Point(d["site_longitude"],d["site_latitude"]);
                 myGeo.getLocation(pt, function(rs){
                     var addComp = rs.addressComponents;
-                    console.log(addComp);
+                    
                     if(!common.inArray(addComp.city,adds)){
                         adds.push(addComp.city);
                         var currentCity = localStorage.getItem('currentCity') || '全国';

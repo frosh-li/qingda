@@ -46,6 +46,7 @@ class LoginController extends LController
             if ($row) {
                 if ($password == $row['password']) {
                     $ret['data'] = array(
+                        'username'=>$username,
                         'uid'=>$row['id'],
                         'role'=>$row['role'],
                         'area'=>$row['area']

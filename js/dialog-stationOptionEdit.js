@@ -73,7 +73,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
         },
         stationList;
     return {
-        show:function(id){
+        show:function(id, bringdata){
             var $dialogWrap = $("#stationOptionEditTpl-dialog").length?$("#stationOptionEditTpl-dialog").replaceWith($($("#stationOptionEditTpl").html())):$($("#stationOptionEditTpl").html());
 
             $dialogWrap.dialog({
@@ -93,7 +93,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     if(id){
                         API.getStationOptionEditInfo({sid:id});
                     }
-
+                    
                     stationList = stationSelector.init({
                         extOption:{
                             select:function(event, ui){

@@ -19,6 +19,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         stationsinfoDialog.show(id.join(","));
     });
     function init(sys,pageType,sub,params){
+        console.log('init', sys,pageType,sub,params);
         var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
         if(roleid == 3){
             $(".switch-btn.settings").hide();//
@@ -42,7 +43,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     url:"/api/index.php/login/loginOut",
                     type:"get",
                     success:function(){
-                        localStorage.clear();
+                        localStorage.removeItem('userinfo');
                         window.location.href = "/";        
                     }
                 })
@@ -98,14 +99,16 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             })
             return;
         }
+        var hash = window.location.hash;
         setTimeout(function(){
             var refreshpage = ['#/manage/station', '#/manage/group', '#/manage/battery', '#/manage/caution'];
             var time = parseInt($("#collectDuration").val());
             // 判断是否在实时页面
-            var hash = window.location.hash;
-            console.log('time', time)
+            
+            console.log('time', time, hash, localStorage.getItem("collecting"),hash==("#/manage/station"))
             if(time && localStorage.getItem("collecting") == 'true'){
-                if(refreshpage.indexOf(hash) > -1){
+                if(refreshpage.indexOf(hash) > -1 || hash == "#/manage/station" ){
+                    console.log('need refresh')
                     $("body").addClass('collecting').everyTime(time+"s",'collect',API.collect);
                     $("#startCollectBtn").hide();
                     $(".tzcj").css('display','block');
@@ -151,6 +154,43 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                 isOver();
             })
         }
+
+        if(/^newstations$/.test(pageType)){
+            
+            $("#dataItem").html($("#listTpl").html());
+            ui.downHide(true);
+            $collectWrap.show();
+            if(pageType == 'battery'){
+                $(".list-bottom.undis").show();
+            }else{
+                $(".list-bottom.upage").show();
+            }
+            
+            ui.switchChartBtns(pageType);
+            require(["blocks/list","blocks/nav","api"],function(list,nav,API){
+                
+                afterInit(sys,pageType,sub);
+
+                if(!navTree){
+                    refreshModules([nav],_arg);
+                    nav.run(function(){
+                        navTree=nav;
+
+                        refreshModules([list],_arg);        
+                    });
+                    
+                }else{
+
+                    refreshModules([list],_arg);    
+                }
+                
+                API.getLinkingStationNum().getParam({},'refresh:get');
+
+                isOver();
+            })
+        }
+
+
         if (/^(station|group|battery)$/.test(pageType)) {
             $("#dataItem").html($("#listTpl").html());
             ui.downShow(true);
@@ -165,7 +205,6 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             require(["blocks/charts","blocks/list","blocks/nav","api"],function(chart,list,nav,API){
                 
                 afterInit(sys,pageType,sub);
-                console.log(navTree);
                 if(!navTree){
                     refreshModules([nav],_arg);
                     nav.run(function(){

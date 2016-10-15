@@ -161,6 +161,11 @@ define(function(require){
                 this.fetch(url, "stationdata:delete", args, "POST");
                 return this;
             },
+            getNewStationData: function(args){
+                var url = '/api/index.php/sites/newstations';
+                this.fetch(url, "listdata:update", args, "get");
+                return this;
+            },
             checkStation:function(args){
                 var url = '/api/index.php/sites/check';
                 this.fetch(url, "station:check", args, "get");

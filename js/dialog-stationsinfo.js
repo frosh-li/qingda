@@ -30,7 +30,7 @@ define(['require','api','context','table'],function(require,API,context){
                     getParam:function(){
                         var curstation = context.getCurStations(),
                             listType = context.getListType();
-
+                        console.log('listType', listType);
                         return {
                             listType:listType
                         };

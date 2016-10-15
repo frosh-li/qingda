@@ -29,7 +29,6 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
         tree:null,
         navPlugin:null,
         initialize:function(data){
-            console.log('init')
             var _this = this;
             _this.listenTo(Backbone.Events,"nav:update",function(data){
                 _this.data = data.list;
@@ -65,8 +64,10 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
             $.fn.zTree.init($("#nav"), setting, this.data);
             this.tree = $.fn.zTree.getZTreeObj('nav');
             this.tree.expandAll(true);
+            var _this = this;
             if(this.ids){
                 if(this.ids.sid){
+                  
                     var nodes = this.tree.getNodes();
                     for (var i=0, l=nodes.length; i < l; i++) {
                         if(nodes[i].leveltype === 1){
@@ -76,9 +77,19 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
                                 if(!subChildren){
                                     continue;
                                 }
+
                                 for(var k = 0 ; k < subChildren.length ; k++){
-                                    if(subChildren[k].id === this.ids.sid)
-                                        this.tree.checkNode(subChildren[i], true, true);
+                                    subChildren[k].children.forEach(function(node){
+                                      
+                                        if(node.leveltype === 2){
+                                            if(node.id === _this.ids.sid){
+                                           
+                                                _this.tree.checkNode(node, true, true);
+                                            }
+                                            //this.tree.checkNode(node, true, true);
+                                        }
+                                    });
+                                    
                                 }
                             }
 
@@ -97,7 +108,11 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
         init:function(sys,listType,sub,ids){
             if(!navView){
                 navView = new (Backbone.View.extend($.extend(true,{},nav_extobj,{ids:ids})))();
+            }else{
+                // delete navView;
             }
+            
+
             return this;
         },
         run:function(cb){
