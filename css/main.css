@@ -66,11 +66,45 @@ span.exit{display:inline-block;width:32px;height:32px;margin:18px 30px 0 0;backg
     width: 100%;
     height: 30px;
 }
+.atype{
+    margin-right: 100px;
+    position: relative;
+    top: -30px;
+    left: 300px;
+    width:400px;
+    display: none;
+}
+.atype span{
+    float:left;
+    height:25px;
+    line-height: 25px;
+    margin-left:10px;
+    font-size: 16px;
+}
 .upage {
     display: none;
 }
+#mpage{
+    margin-top:10px;
+}
+a.resolveBtn{
+    text-decoration: underline;
+    cursor: pointer;
+    color:blue;
+}
 .mpage span{
     cursor: pointer;
+    border:1px solid #f90;
+    padding:5px 18px;
+    margin:5px 5px;
+    border-radius: 5px;
+    height: 26px;
+    line-height: 26px;
+    border:1px solid #999;
+    text-align: center;
+    color: #555;
+    font-size: 14px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAAAcCAMAAACgTerKAAAAA3NCSVQICAjb4U/gAAAASFBMVEX+/v79/f38/Pz7+/v6+vr4+Pj39/f29vb19fX09PTz8/Px8fHw8PDv7+/u7u7t7e3s7Ozr6+vp6eno6Ojn5+fm5ubl5eX///8jGyilAAAAGHRSTlP//////////////////////////////wDNEy7qAAAACXBIWXMAAArwAAAK8AFCrDSYAAAAFnRFWHRDcmVhdGlvbiBUaW1lADA0LzEyLzEyiu5yJQAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNAay06AAAABNSURBVEiJ3c/XFYAgAMDAWFBUitj2H9Ut8sEtkBfoxiBgFDAJnMgsIAhYBKwCooBNwC7gEJAEZAFFQBVwCmgCLgG3wIk8Al4Bn6Cfkx/Rg3w59D7HjwAAAABJRU5ErkJggg==) repeat-x
 }
 .list-bottom .page{
     display: inline-block;

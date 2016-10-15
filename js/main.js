@@ -3,6 +3,21 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         maxLoadingTime = 1000,
         curLoadingTime = 0;
     window.navTree = null;
+    var $stationPop = $(".stationPop");
+    $stationPop.on('click',function(e){
+        console.log('station pop clicked');
+        var id = navTree.getSites().ids;
+        console.log('id',id)
+        if(id < 0){
+            alert('请选择站点');
+            return;
+        }
+        for(var i = 0 ; i < id.length ; i++){
+            id[i] = id[i]+"0000";
+        }
+        
+        stationsinfoDialog.show(id.join(","));
+    });
     function init(sys,pageType,sub,params){
         var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
         if(roleid == 3){
@@ -63,20 +78,12 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             }
         });
 
-
-        $stationPop.click(function(e){
-            var id = navTree.getSites().ids;
-            if(id < 0){
-                alert('请选择站点');
-                return;
-            }
-            for(var i = 0 ; i < id.length ; i++){
-                id[i] = id[i]+"0000";
-            }
-            //return function(){
-                stationsinfoDialog.show(id.join(","));
-            //}
-        });
+        $stationPopDialog = null;
+        require(["js/dialog-stationsinfo"],function(dialog){
+            $stationPopDialog = dialog.init();
+            // dialog && dialog.show(id.join(","));
+        })
+        
         $("#dataItem").html('');
 
         ui.collectAuto();
@@ -109,8 +116,42 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         
 
         common.loadTips.show("系统加载中，请稍后...");
+        if(/^caution$/.test(pageType)){
+            
+            $("#dataItem").html($("#listTpl").html());
+            ui.downHide(true);
+            $(".atype").show();
+            $collectWrap.show();
+            if(pageType == 'battery'){
+                $(".list-bottom.undis").show();
+            }else{
+                $(".list-bottom.upage").show();
+            }
+            
+            ui.switchChartBtns(pageType);
+            require(["blocks/list","blocks/nav","api"],function(list,nav,API){
+                
+                afterInit(sys,pageType,sub);
+                console.log(navTree);
+                if(!navTree){
+                    refreshModules([nav],_arg);
+                    nav.run(function(){
+                        navTree=nav;
 
-        if (/^(station|group|battery|caution)$/.test(pageType)) {
+                        refreshModules([list],_arg);        
+                    });
+                    
+                }else{
+
+                    refreshModules([list],_arg);    
+                }
+                
+                API.getLinkingStationNum().getParam({},'refresh:get');
+
+                isOver();
+            })
+        }
+        if (/^(station|group|battery)$/.test(pageType)) {
             $("#dataItem").html($("#listTpl").html());
             ui.downShow(true);
         	$collectWrap.show();
@@ -119,6 +160,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             }else{
                 $(".list-bottom.upage").show();
             }
+            
             ui.switchChartBtns(pageType);
             require(["blocks/charts","blocks/list","blocks/nav","api"],function(chart,list,nav,API){
                 

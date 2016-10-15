@@ -35,7 +35,8 @@ define(function(require){
             "click .cj-btn":"onSearch",
             "click .exportdata": "onExportCSV",
             "click #searchBtn span span":"onSearch",
-            "click #switchUser": "switchUser"
+            "click #switchUser": "switchUser",
+            //"click .stationPop": "stationPop"
         },
         initialize:function(){
             var _this = this;
@@ -123,6 +124,7 @@ define(function(require){
             })
         
         },
+
         onSearch: function(){
             Backbone.Events.trigger('search:done');
         },

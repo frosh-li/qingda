@@ -4,7 +4,7 @@ define(function(require){
             fetch: function (url, event, data, type, context,unalert, cb) {
                 $.ajax({
                     type: type || 'GET',
-                    data: $.extend(true,{_r:Math.random()},data),
+                    data: $.extend(true,{},data),
                     //jsonp: 'callback',
                     url: url,
                     success: function (res) {

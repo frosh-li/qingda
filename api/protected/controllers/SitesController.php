@@ -246,10 +246,10 @@ class SitesController extends Controller
         $serial_number=Yii::app()->request->getParam('serial_number','');
 
         $trows = Yii::app()->db->createCommand('select sid from my_site where serial_number='.$serial_number)->queryAll();
-        if($trows){
+        if(!$trows){
             $ret['response'] = array(
                 'code'=>-1,
-                'msg'=>'站MAC地址重复'
+                'msg'=>'不存在该站点'
             );
             echo json_encode($ret);
             Yii::app()->end();

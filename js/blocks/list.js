@@ -85,6 +85,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             _this.refresh();
                         });
                         _this.listenTo(Backbone.Events,"listdata:update stationdata:get",function(data){
+                            if(data.types){
+                                _this.types = data.types;
+                            }
                             if(!$(_this.el).length || !$(_this.el).is(":visible")){
                                 return;
                             }
@@ -390,10 +393,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     "data": _this.data,
                                     "scrollX":ui.getListWidth(),
                                     "scrollY":ui.getListHeight(),
-                                    "scrollX":true,
                                     "columns": [
                                         // { "data": "sid", "title":"序号",width:0},
-                                        { "data": "site_name", "title":"名称",width:150},
+                                        { "data": "site_name", "title":"站名",width:150},
                                         { "data": "sid","title":"站号",width:50 },
 
                                         //{ "data": "battery_status",title:"电池码放状态",width:180 },
@@ -517,10 +519,12 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         if(_this.listPlugin && _this.listPlugin[0]){
                             _this.updateList();
                         }else{
-
+                            console.log('colums.width', colums.width);
+                            console.log('list.width',$('#list').width());
                             require(["fixedColumn"],function(){
-                                if(colums.width+780>$("#list").width()){
-                                    dataTableDefaultOption.fixedColumns = {leftColumns:5};
+                                if(colums.width + 450>$("#list").width()){
+                                    console.log('width >')
+                                    dataTableDefaultOption.fixedColumns = {leftColumns:4};
                                 }else{
                                     try{
                                         delete colums.data[colums.data.length-1].width;
@@ -530,12 +534,12 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     "data": _this.data,
                                     "scrollX":ui.getListWidth(),
                                     "scrollY":ui.getListHeight(),
-                                    "scrollX":true,
+                                    "leftColumns":4,
                                     "columns": [
                                         { "data": "site_name",title:"站名",width:120 },
                                         { "data": "sid",title:"站号",width:50 },
                                         { "data": "gid",title:"组号",width:50 },
-                                        { "data": "bid",title:"电池号",width:80  }
+                                        { "data": "bid",title:"电池号",width:50  }
                                     ].concat(colums.data)
                                 },dataTableDefaultOption)));
                                 _this.checkAllRows();
@@ -580,7 +584,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             _this.listPlugin.push($('#auto table').DataTable( $.extend(true,{},dataTableDefaultOption,{
                                     "data": _this.data,
                                     "scrollX":ui.getListWidth(),
-                                    //"scrollY":ui.getListHeight(),
+                                    "scrollY":ui.getListHeight(),
                                     "columns": [
                                         { "data": "site_name",title:"站名",width:120 },
                                         { "data": "sid",title:"站号",width:50 },
@@ -602,7 +606,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         return nav.getSites();
                     },
                     fetchData:function(_param){
-                        var _param = {};
+                        var _param = {page:this.curPage};
                         var navData = nav.getSites();
 
                         $.extend(_param,{id:navData.ids.join(",")});
@@ -614,16 +618,31 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     resove:function(e){
                         ui.showUnsolveDialog({id:$(e.currentTarget).attr('pid'),suggestion:$(e.currentTarget).attr('suggestion')});
                     },
+                    updateAtype: function(){
+                        console.log('atypes',this.types);
+                        for(var i = 0 ; i < this.types.length; i++){
+                            var obj = this.types[i];
+                            if(obj.atype == "R"){
+                                $("#ared").html(obj.count+"条");
+                            }else if(obj.atype == "O"){
+                                $("#aoo").html(obj.count+"条");
+                            }else if(obj.atype == "Y"){
+                                $("#ayellow").html(obj.count+"条");
+                            }
+                        }
+                    },
                     render:function(){
                         //this.destoryPlugin();
                         var _this = this;
                         //ui.resizeAutoListWidth();
                         if(_this.listPlugin && _this.listPlugin[0]){
                             _this.updateList();
+                            _this.updateAtype()
                         }else{
+                            _this.updateAtype()
                             this.listPlugin.push($('#auto table').DataTable( $.extend(true,{},dataTableDefaultOption,{
                                 "data": this.data,
-                                "paging":true,
+                                "paging":false,
                                 "scrollX":ui.getListHeight(),
                                 //"scrollY":ui.getListHeight(),
                                 "columns": [
@@ -633,33 +652,58 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         // var color = ['red', 'green', '#f90']
                                         //return '<span style="color:white;background-color:'+color[itemData.alarm_emergency_level -1]+'">'+itemData.alram_equipment+'</span>';
                                     }},
-                                    { "data": "sn_key",title:"站号",width:50, render:function(data, type,itemData){
-                                        return itemData.sn_key.substring(0,10)+"0000";
+                                    { "data": "sn_key",title:"站号",width:100, render:function(data, type,itemData){
+                                        return itemData.sid;
                                     }},
-                                    { "data": "sn_key",title:"组号",width:50, render:function(data, type,itemData){
+                                    { "data": "sn_key",title:"组号",width:100, render:function(data, type,itemData){
                                         if(itemData.type == "battery" || itemData.type == "group"){
-                                            return itemData.sn_key.substring(0,12)+"00";
+                                            return itemData.sn_key.substring(10,12);
                                         }else{
                                             return "";
                                         }
 
                                     }  },//组序列号
-                                    { "data": "sn_key",title:"电池号",width:50, render:function(data, type,itemData){
+                                    { "data": "sn_key",title:"电池号",width:100, render:function(data, type,itemData){
                                         if(itemData.type == "battery")
-                                            return itemData.sn_key;
+                                            return itemData.sn_key.substring(12,14);
                                         else{
                                             return "";
                                         }
                                     }},
                                     { "data": "time",title:"时间" ,width:200},
-                                    { "data": "desc",title:"警情内容",width:200 },
-                                    { "data": "current",title:"数值",width:50  },
-                                    { "data": "suggest",title:"建议处理方式",width:400 },
+                                    { "data": "desc",title:"警情内容",width:200,render:function(data, type, itemData){
+                                        var desc = itemData.desc;
+                                        var color="";
+                                        if(desc.indexOf("橙") > -1){
+                                            color="#e7691d"
+                                        }else if(desc.indexOf("黄") > -1){
+                                            color="#fabd05"
+                                        }else{
+                                            color="#f20f0f"
+                                        }
+                                        return "<div style='color:"+color+"'>"+data+"</div>";
+                                    }},
+                                    { "data": "current",title:"数值",width:80,render:function(data, type, itemData){
+                                        var desc = itemData.desc;
+                                        var color="";
+                                        if(desc.indexOf("橙") > -1){
+                                            color="#e7691d"
+                                        }else if(desc.indexOf("黄") > -1){
+                                            color="#fabd05"
+                                        }else{
+                                            color="#f20f0f"
+                                        }
+                                        return "<div style='font-weight:bold;color:"+color+"'>"+data+"</div>";
+                                    }},
+                                    { "data": "suggest",title:"建议处理方式",width:400,render:function(data){
+                                        return '<div style="text-align:left;">'+data+'</div>';
+                                    }},
                                     {
                                         "data": "id",
-                                        title:"处理连接",
+                                        title:"操作",
+                                        width:100,
                                         render: function (data,type,itemData) {
-                                            return _.template('<a class="resolveBtn" pid="<%=id%>" suggestion="<%=suggest%>">未处理</a>')({
+                                            return _.template('<a class="resolveBtn" pid="<%=id%>" suggestion="<%=suggest%>">处理</a>')({
                                                 id:data,
                                                 suggest:itemData.suggest
                                             });
@@ -1665,7 +1709,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             "scrollY": ui.getListHeight(),
                             "columns": [
 
-                                {"data": "site_name", title: "名称", width: 100},
+                                {"data": "site_name", title: "站名", width: 100},
                                 {"data": "sid", title: "站号", width: 100},
                                 {"data": "record_time", title: "时间", width: 100},
                                 {"data": "avgU", title: "电压均值", width: 100,render:function(data){

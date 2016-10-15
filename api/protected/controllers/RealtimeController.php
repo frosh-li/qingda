@@ -25,6 +25,7 @@ class RealtimeController extends Controller
             my_ups_info.ups_max_charge,
             my_ups_info.ups_max_discharge,
             my_ups_info.ups_maintain_date,
+            my_ups_info.ups_power,
             bb.BBbCharge+bb.BCbDisCharge as charges
             from tb_station_module
             left join my_site
@@ -80,6 +81,15 @@ class RealtimeController extends Controller
             $ret['data']['pageSize'] = $this->count;
 
             foreach($sites as $key=>$value){
+                $sql = "select * from tb_station_param where sn_key=".$value['sn_key'];
+                    $data = Yii::app()->bms->createCommand($sql)->queryRow();
+                    $value = array_merge($value, $data);
+                $sql = "select record_time as end_time from tb_station_module_history where charge_state=2 and  sn_key=".$value['sn_key']." order by record_time desc limit 0,1";
+                $end_time = Yii::app()->bms->createCommand($sql)->queryScalar();
+                $sql = "select record_time as start_time from tb_station_module_history where charge_state!=2  and sn_key=".$value['sn_key']." and record_time < '".$end_time."' order by record_time desc limit 0,1";
+                $start_time = Yii::app()->bms->createCommand($sql)->queryScalar();
+                $value['end_time'] = $end_time;
+                $value['start_time'] = $start_time;
                 $ret['data']['list'][] = $value;
             }
 
@@ -255,6 +265,13 @@ class RealtimeController extends Controller
             $ret['data']['pageSize'] = $this->count;
 
             foreach($sites as $key=>$value){
+                
+                $sql = "select * from tb_group_param where floor(sn_key/10000)=".floor($value['sn_key']/10000);
+                $data = Yii::app()->bms->createCommand($sql)->queryRow();
+                if(empty($data)){
+                    $data = array();
+                }
+                $value = array_merge($value, $data);
                 $ret['data']['list'][] = $value;
             }
 
@@ -355,27 +372,19 @@ class RealtimeController extends Controller
             select
             my_site.site_name,
             my_site.aid,
-            tb_battery_parameter.*,
+            
             my_battery_info.*,
             my_ups_info.*,
-            b.*,
-            a.*,
-            tb_station_parameter.bytegeStatus_U_upper,
-            tb_station_parameter.bytegeStatus_U_lower,
-            tb_station_parameter.FloatingbytegeStatus_U_upper,
-            tb_station_parameter.FloatingbytegeStatus_U_lower,
-            tb_station_parameter.DisbytegeStatus_U_upper,
-            tb_station_parameter.DisbytegeStatus_U_lower,
-            (b.U-a.au)/a.au as cau,
-            (b.T-a.at)/a.at as cat,
-            (b.R-a.ar)/a.ar as car
+            b.*
+            
             from tb_battery_module as b
+            
             left join my_site on my_site.serial_number/10000 = FLOOR(b.sn_key/10000)
             left join my_ups_info on my_ups_info.sid/10000 = FLOOR(b.sn_key/10000)
             left join my_battery_info on my_battery_info.sid/10000 = FLOOR(b.sn_key/10000)
-            left join tb_battery_parameter on tb_battery_parameter.battery_sn_key=b.sn_key
-            left join (SELECT AVG(U) as au, avg(T) as at, avg(R) as ar,FLOOR(sn_key/10000) as a_sn FROM tb_battery_module GROUP BY FLOOR(sn_key/10000)) as a on a.a_sn = FLOOR(b.sn_key/10000)
-            left join tb_station_parameter on tb_station_parameter.station_sn_key/10000 = FLOOR(b.sn_key/10000)
+            
+           
+
         ";
         if ($id) {
             $sql .= " where sn_key in (".$id.")";
@@ -404,6 +413,28 @@ class RealtimeController extends Controller
                 $ret['data']['pageSize'] = $this->count;
 
                 foreach($sites as $key=>$value){
+                    
+                    $sql = "select * from tb_battery_param where floor(sn_key/10000)=".floor($value['sn_key']/10000);
+                    $data = Yii::app()->bms->createCommand($sql)->queryRow();
+                    if(empty($data)){
+                        $data = array();
+                    }
+                    $value = array_merge($value, $data);
+
+                    $sql = "select * from tb_station_param where floor(sn_key/10000)=".floor($value['sn_key']/10000);
+                    $data = Yii::app()->bms->createCommand($sql)->queryRow();
+                    if(empty($data)){
+                        $data = array();
+                    }
+                    $value = array_merge($value, $data);
+
+                    $sql = "select * from tb_battery_param where floor(sn_key/10000)=".floor($value['sn_key']/10000);
+                    $data = Yii::app()->bms->createCommand($sql)->queryRow();
+                    if(empty($data)){
+                        $data = array();
+                    }
+                    $value = array_merge($value, $data);
+                   
                     $ret['data']['list'][] = $value;
                 }
 
@@ -502,15 +533,16 @@ class RealtimeController extends Controller
         // 具体流程见 警情判断流程判断逻辑.docx 文档
         // 数据直接出，通过command来处理数据
         $id = Yii::app()->request->getParam('id',0);
-        $this->setPageCount();
+        $page = Yii::app()->request->getParam('page',1);
+        $this->setPageCount(15);
         $total = 0;
         if ($id != 0) {
             $sites = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('my_alerts')
                 ->where('status = 0')
-                // ->limit($this->count)
-                // ->offset(($this->page - 1) * $this->count)
+                ->limit(15)
+                ->offset(($page - 1) * 15)
                 ->order('time desc')
                 ->queryAll();
 
@@ -519,8 +551,8 @@ class RealtimeController extends Controller
                 ->select('*')
                 ->from('my_alerts')
                 ->where('status = 0')
-                // ->limit($this->count)
-                // ->offset(($this->page-1)*$this->count)
+                ->limit(15)
+                ->offset(($page-1)*15)
                 ->order('time desc')
                 ->queryAll();
 
@@ -539,7 +571,7 @@ class RealtimeController extends Controller
 
         if ($sites) {
             $ret['data']['page'] = $this->page;
-            $ret['data']['pageSize'] = $this->count;
+            $ret['data']['pageSize'] = 15;
             $ret['data']['total'] = $total[0]['total'];
             foreach($sites as $key=>$value){
                 $addinfo = Yii::app()->bms
@@ -555,7 +587,9 @@ class RealtimeController extends Controller
                 //var_dump($siteName);
                 $ret['data']['list'][] = array_merge($value,$addinfo[0],$siteName[0]);
             }
-
+            $psql = "select count(*) as count,right(code,1) as atype from my_alerts group by right(code,1)";
+            $alertType = Yii::app()->bms->createCommand($psql)->queryAll();
+            $ret['data']['types'] = $alertType;
         }else{
             $ret['response'] = array(
                 'code' => -1,

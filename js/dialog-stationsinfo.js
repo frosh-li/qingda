@@ -46,13 +46,15 @@ define(['require','api','context','table'],function(require,API,context){
                             title:"站信息",
                             close:function(evt,ui){
                                 $(this).dialog( "destroy" );
+                                _this.table.destroy();
                             },
                             open:function(){
-                                $('#stationinfoTpl-dialog table').DataTable( {
+                                _this.table =  $('#stationinfoTpl-dialog table').DataTable( {
                                     "data": _this.data,
                                     "paging": false,
                                     "searching": false,
                                     "info":false,
+                                    "retrieve":true,
                                     "scrollX":true,
                                     "scrollY":true,
                                     "columns": [
@@ -71,6 +73,7 @@ define(['require','api','context','table'],function(require,API,context){
                                 $("#stationinfoTpl-dialog").off("click").on("click",".submit-btn",function(){
                                     _this.jumpToRealTime();
                                     $dialog.dialog( "destroy" );
+                                     _this.table.destroy();
                                     $(".ui-dialog,.ui-widget-overlay").remove();
                                 })
                             }
@@ -87,6 +90,7 @@ define(['require','api','context','table'],function(require,API,context){
             return this;
         },
         show:function(id){
+            console.log('station id', id);
             stationId = id;
             API.getStationInfo({id:id});
         }
