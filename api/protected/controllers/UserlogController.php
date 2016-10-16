@@ -7,7 +7,7 @@ class UserlogController extends Controller
 	{
 		$type = Yii::app()->request->getParam('type' ,0);
         $start =Yii::app()->request->getParam('start');
-        $end = Yii::app()->request->getParam('end');
+        $end = substr(Yii::app()->request->getParam('end'),0,10);
         $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
         
 
@@ -20,7 +20,7 @@ class UserlogController extends Controller
             $where .= ' and modify_time >= "'.$start.'"';
         }
         if($end){
-            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $end = date('Y-m-d H:i:s', substr(Yii::app()->request->getParam('end'),0,10));
             $where .= ' and modify_time <= "'.$end.'"';
         }
 

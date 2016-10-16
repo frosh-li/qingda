@@ -44,9 +44,9 @@
                         <dd><i class="icon graylight" id="alarm_sound"></i><a>声音报警</a></dd>
                         <dd><i class="icon graylight" id="alarm_sms"></i><a>短信</a></dd>
                         <dd><i class="icon graylight" id="alarm_mail"></i><a>邮件</a></dd>
-                        <dd class="baojing"><img src="/css/img/alarm.gif" /><em>数据报警</em><span class="bg">0</span><em>条</em></dd>
+                        <dd class="baojing"><img src="/css/img/alarm.gif?v1" /><em>数据报警</em><span class="bg">0</span><em>条</em></dd>
                         <dd><a class="btn1" href="#/manage/caution">查看警情</a></dd>
-                        <dd class="mleft"><a class="btn2 stationPop">站情况</a></dd>
+                        <dd class="mleft"><a class="btn2 stationPop">站信息</a></dd>
                         <dd><a class="btn1 exportdata">数据导出</a></dd>
                         <dd ><a class="map-switch" href="#/map" id="map-switch" style="display:none"><img src="images/switch-map.png?v1" title="切换为地图模式" style="width:30px;height:30px;"></a></dd>
                     </dl>
@@ -192,13 +192,13 @@
         <h4></span>环境温度</h4>
         <div class="show-data" id="chart"></div>
         <div class="btn-wrap">
-            <div class="btn-bg undis btns station qureyStation"><a class="switch-btn l-radius active" field="T">环境温度<span class="hide">（°C）</span></a><a class="switch-btn" field="Humi">环境湿度<span class="hide">（%）</span></a><a class="switch-btn" field="BatteryHealth">电池状态</a><a class="r-radius switch-btn" field="BackupTime">预估后备时间<span class="hide">（H）</span></a></div>
+            <div class="btn-bg undis btns station qureyStation"><a class="switch-btn l-radius active" field="T">环境温度<span class="hide">（°C）</span></a><a class="switch-btn" field="Humi">环境湿度<span class="hide">（%）</span></a><a class="switch-btn" field="Lifetime">预估寿命</a><a class="r-radius switch-btn" field="Capacity">预估容量<span class="hide">（H）</span></a></div>
 
 
             <div class="btn-bg undis btns group qureyGroup"><a class="l-radius switch-btn active" field="I">组电流<span class="hide">（A）</span></a><a class="switch-btn disabled" field="BatteryHealth">氢气浓度</a><a class="switch-btn disabled" field="BatteryHealth">氧气浓度</a><a class="switch-btn" field="T">组温度<span class="hide">（°C）</span></a><a class="r-radius switch-btn" field="Humi">组湿度<span class="hide">（%）</a></div>
 
 
-            <div class="btn-bg undis btns battery qureyBattery"><a class="l-radius switch-btn active" field="U">电压状态<span class="hide">（V）</span></a><a class="switch-btn" field="T">温度状态<span class="hide">（°C）</span></a><a class="switch-btn" field="R">内阻状态<span class="hide">（mΩ）</span></a><a class="r-radius switch-btn" field="R">电池寿命</a></div>
+            <div class="btn-bg undis btns battery qureyBattery"><a class="l-radius switch-btn active" field="U">电压状态<span class="hide">（V）</span></a><a class="switch-btn" field="T">温度状态<span class="hide">（°C）</span></a><a class="switch-btn" field="R">内阻状态<span class="hide">（mΩ）</span></a><a class=" switch-btn" field="R">预估容量<span class="hide">（%）</span></a><a class="r-radius switch-btn" field="R">电池寿命<span class="hide">（%）</span></a></div>
 
             <div class="btn-bg undis btns caution qureyCation"><a class="l-radius switch-btn active hide" field="U">警情统计</a></div>
 
@@ -386,7 +386,7 @@
         <form class="jqtransform">
             <div class="rowElem">
                 <label class="item-title" for="username"><i class="mast-fill" for="username">*</i>用户名: </label>
-                <input class="input-w-1" type="text" key="username" />
+                <input name="username" class="input-w-1" type="text" key="username" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="username"><i class="mast-fill" for="password">*</i>密码: </label>

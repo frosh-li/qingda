@@ -12,6 +12,7 @@ require.config({
     paths:{
         'jquery': 'libs/jquery.min',
         'jqueryUI':'libs/jqueryui/jquery-ui.min',
+        'jqueryTime':'libs/jqueryui/jquery-ui-timepicker-addon.min',
         'jJson': 'libs/jquery.json',
         'jForm': 'libs/jquery.jqtransform',
         'jtimer': 'libs/jQuery.timers',
@@ -44,6 +45,7 @@ require.config({
         bootstrap:['jquery'],
         table:['jquery'],
         jtimer:['jquery'],
+        
         fixedColumn:['jquery','table'],
         common:['jquery'],
         zTreeCore:['jquery'],
@@ -51,12 +53,13 @@ require.config({
         jJson:['jquery'],
         jForm:['jquery'],
         jqueryUI:['jquery'],
+        jqueryTime:['jquery','jqueryUI'],
         backbone:['_'],
 	    respond:['']
     }
 })
 
-require(["jquery","router","api","table","jJson","jtimer","charts",],function($,router,API){
+require(["jquery","router","api","table","jJson","jtimer","charts"],function($,router,API){
     /**
      * 对Date的扩展，将 Date 转化为指定格式的String
      * 月(M)、日(d)、12小时(h)、24小时(H)、分(m)、秒(s)、周(E)、季度(q) 可以用 1-2 个占位符
@@ -110,10 +113,11 @@ require(["jquery","router","api","table","jJson","jtimer","charts",],function($,
         // API.stat();
     },1000)
 
-    require(["jJson","bootstrap","jqueryUI","ui","jForm"],function(){
-        $.datepicker.setDefaults( $.datepicker.regional[ "zh-TW" ] );
+    require(["jJson","bootstrap","jqueryUI","ui","jForm","jqueryTime"],function(){
+      $.timepicker.setDefaults( $.timepicker.regional[ "zh-CN" ] );
   
-      $.datepicker.regional['zh-TW'] = {
+      $.timepicker.regional['zh-CN'] = {
+        
         closeText: '关闭',
         prevText: '<上月',
         nextText: '下月>',
@@ -130,9 +134,25 @@ require(["jquery","router","api","table","jJson","jtimer","charts",],function($,
         firstDay: 1,
         isRTL: false,
         showMonthAfterYear: true,
-        yearSuffix: '年'};
-      $.datepicker.setDefaults($.datepicker.regional['zh-TW']);
+        yearSuffix: '年',
+    timeOnlyTitle: '选择时间',
+        timeText: '时间',
+        hourText: '小时',
+        minuteText: '分钟',
+        secondText: '秒钟',
+        millisecText: '毫秒',
+        microsecText: '微秒',
+        timezoneText: '时区',
+        currentText: '现在时间',
+        closeText: '关闭',
+        timeFormat: 'HH:mm',
+        timeSuffix: '',
+        amNames: ['AM', 'A'],
+        pmNames: ['PM', 'P'],
+        isRTL: false,};
+      $.timepicker.setDefaults($.timepicker.regional['zh-CN']);
         $(document).tooltip();
         router.start();
     });
+
 })

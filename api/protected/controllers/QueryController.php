@@ -9,14 +9,14 @@ class QueryController extends Controller
         $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
         $id = Yii::app()->request->getParam('id',0);
         $start =Yii::app()->request->getParam('start');
-        $end = Yii::app()->request->getParam('end');
+        $end = substr(Yii::app()->request->getParam('end'),0,10);
         $where = ' 1 =1 ';
         if($start){
             $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
             $where .= ' and record_time >= "'.$start.'"';
         }
         if($end){
-            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $end = date('Y-m-d H:i:s', substr(Yii::app()->request->getParam('end'),0,10));
             $where .= ' and record_time <= "'.$end.'"';
         }
 
@@ -309,14 +309,14 @@ class QueryController extends Controller
         $this->setPageCount();
         $id = Yii::app()->request->getParam('id',0);
         $start =Yii::app()->request->getParam('start');
-        $end = Yii::app()->request->getParam('end');
+        $end = substr(Yii::app()->request->getParam('end'),0,10);
         $where = ' 1 = 1 ';
         if($start){
             $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
             $where .= ' and record_time >= "'.$start.'"';
         }
         if($end){
-            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $end = date('Y-m-d H:i:s', substr(Yii::app()->request->getParam('end'),0,10));
             $where .= ' and record_time <= "'.$end.'"';
         }
         // if ($id) {
@@ -489,7 +489,7 @@ class QueryController extends Controller
         $this->setPageCount();
         $id = Yii::app()->request->getParam('id',0);
         $start =Yii::app()->request->getParam('start');
-        $end = Yii::app()->request->getParam('end');
+        $end = substr(Yii::app()->request->getParam('end'),0,10);
         $isDownload = Yii::app()->request->getParam('isdownload',0);
         $where = ' 1 =1 ';
         if($start){
@@ -497,7 +497,7 @@ class QueryController extends Controller
             $where .= ' and b.record_time >= "'.$start.'"';
         }
         if($end){
-            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $end = date('Y-m-d H:i:s', substr(Yii::app()->request->getParam('end'),0,10));
             $where .= ' and b.record_time <= "'.$end.'"';
         }
         // if ($id) {
@@ -859,14 +859,14 @@ class QueryController extends Controller
         $id = Yii::app()->request->getParam('id',0);
         $this->setPageCount();
         $start =Yii::app()->request->getParam('start');
-        $end = Yii::app()->request->getParam('end');
+        $end = substr(Yii::app()->request->getParam('end'),0,10);
         $where = ' 1 =1 ';
         if($start){
             $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
             $where .= ' and alarm_occur_time >= "'.$start.'"';
         }
         if($end){
-            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $end = date('Y-m-d H:i:s', substr(Yii::app()->request->getParam('end'),0,10));
             $where .= ' and alarm_occur_time <= "'.$end.'"';
         }
         // if ($id != 0) {

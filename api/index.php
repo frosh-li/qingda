@@ -1,5 +1,6 @@
 <?php
 header("Content-type: text/html; charset=utf-8");
+date_default_timezone_set("Asia/Shanghai");
 session_start();
 // change the following paths if necessary
 define('ROOT_PATH', dirname(__FILE__));

@@ -53,15 +53,15 @@ class ReportController  extends Controller
 
         $sql = "select * from {{battery_info}} ";
 
-        $start =Yii::app()->request->getParam('start');
-        $end = Yii::app()->request->getParam('end');
+        $start =substr(Yii::app()->request->getParam('start'),0,10);
+        $end = substr(Yii::app()->request->getParam('end'),0,10);
         $where = 'where 1=1 ';
         if($start){
-            $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
+            $start = date('Y-m-d H:i:s', substr(Yii::app()->request->getParam('start'),0,10));
             $where .= ' and battery_date >= "'.$start.'"';
         }
         if($end){
-            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $end = date('Y-m-d H:i:s', substr(Yii::app()->request->getParam('end'),0,10));
             $where .= ' and battery_date <= "'.$end.'"';
         }
 
@@ -252,16 +252,16 @@ class ReportController  extends Controller
 
         $this->setPageCount();
 
-        $start =Yii::app()->request->getParam('start');
-        $end = Yii::app()->request->getParam('end');
+        $start =substr(Yii::app()->request->getParam('start'),0,10);
+        $end = substr(Yii::app()->request->getParam('end'),0,10);
 
         $where = 'where 1=1 ';
         if($start){
-            $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
+            $start = date('Y-m-d H:i:s', substr(Yii::app()->request->getParam('start'),0,10));
             $where .= ' and record_time >= "'.$start.'"';
         }
         if($end){
-            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $end = date('Y-m-d H:i:s', substr(Yii::app()->request->getParam('end'),0,10));
             $where .= ' and record_time <= "'.$end.'"';
         }
 
@@ -428,15 +428,15 @@ class ReportController  extends Controller
         $this->setPageCount();
 
         $where = '1=1  ';
-        $start =Yii::app()->request->getParam('start');
-        $end = Yii::app()->request->getParam('end');
+        $start =substr(Yii::app()->request->getParam('start'),0,10);
+        $end = substr(Yii::app()->request->getParam('end'),0,10);
 
         if($start){
-            $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
+            $start = date('Y-m-d H:i:s', substr(Yii::app()->request->getParam('start'),0,10));
             $where .= ' and record_time >= "'.$start.'"';
         }
         if($end){
-            $end = date('Y-m-d H:i:s', Yii::app()->request->getParam('end'));
+            $end = date('Y-m-d H:i:s', substr(Yii::app()->request->getParam('end'),0,10));
             $where .= ' and record_time <= "'.$end.'"';
         }
         

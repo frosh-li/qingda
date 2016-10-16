@@ -18,10 +18,10 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "previous":"上一页",
                     'info': '第 _PAGE_ 页 / 总 _PAGES_ 页'
                 },
-                "zeroRecords": "暂无数据"
+                "zeroRecords": "暂无数据，请查看左侧数形结构是否已勾选或检查网络连接"
 
             },
-            "zeroRecords": "暂无数据",
+            "zeroRecords": "暂无数据，请查看左侧数形结构是否已勾选或检查网络连接",
             "dom":"irtlp",
             "scroller": {
                 "rowHeight": 'auto'
@@ -59,6 +59,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         _this.curPage = 1;
                     },
                     checkAllRows: function(){
+                        return;
                         var _this = this;
                         setTimeout(function(){
                             var allRows = $('.dataTable tr', _this.el);
@@ -104,6 +105,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 $(".mnext").show();
                             }
                             _this.render();
+                            _this.renderChart();
                             overFlag = true;
                         });
 
@@ -119,11 +121,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             console.log(_this.downloadUrl, window.location.hash);
 
                             if(window.location.hash.indexOf("/qurey/") > -1){
-                                var startTime = $("#dbeginTime").val();
-                                var endTime = $("#dendTime").val();
+                                var startTime = $("#beginTime").val();
+                                var endTime = $("#endTime").val();
                                 if(startTime && endTime){
-                                    startTime = new Date(startTime) / 1000;
-                                    endTime = new Date(endTime) / 1000;
+                                    startTime = new Date(startTime);
+                                    endTime = new Date(endTime);
                                 }
                                 if(this.downloadUrl.indexOf("?") > -1){
                                     var durl = _this.downloadUrl + "&isdownload=1&start="+startTime+"&end="+endTime;
@@ -139,8 +141,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 var startTime = $("#beginTime").val();
                                 var endTime = $("#endTime").val();
                                 if(startTime && endTime){
-                                    startTime = new Date(startTime) / 1000;
-                                    endTime = new Date(endTime) / 1000;
+                                    startTime = new Date(startTime);
+                                    endTime = new Date(endTime);
                                 }
                                 var type = $("#cationCategory").val();
                                 if(this.downloadUrl.indexOf("?") > -1){
@@ -260,7 +262,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     triggerSelectEvent:function(){
                         //整理数据发送选择行
                         var _this = this,
-                            selectedData = _this.listPlugin[0].rows('.selected').data(),
+                            selectedData = _this.listPlugin[0]?_this.listPlugin[0].rows('.selected').data():[],
                             ids = [];
                         $.each(selectedData,function(i,d){
                             ids.push(d.sn_key);
@@ -352,6 +354,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         }catch(e){}
                     },
                     render:function(){},
+                    renderChart:function(){},
                     onAddStation:function(){}
                 }
             },
@@ -359,6 +362,24 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 extObj:{
                     getNavData:function(){
                         return nav.getSites();
+                    },
+                    events:{
+                        "click .show_station_detail":"show_station_detail"
+                    },
+                    show_station_detail:function(e){
+                        var id = [$(e.currentTarget).attr('id')];
+                        console.log('station pop clicked');
+                    
+                        console.log('id',id)
+                        if(id < 0){
+                            alert('请选择站点');
+                            return;
+                        }
+                        for(var i = 0 ; i < id.length ; i++){
+                            id[i] = id[i];
+                        }
+                        
+                        stationInfoDialog.show(id.join(","));
                     },
                     fetchData:function(){
                         var _param = {};
@@ -373,6 +394,19 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
                         $.extend(_param,{id:ids});
                         API.getStationRealTimeData(_param);
+                    },
+                    renderChart:function(){
+                        console.log('chart data', this.data);
+                        var wraps = $("#down .btn-wrap .btn-bg");
+                        var ele = null;
+                        for(var i = 0 ; i < wraps.length ; i++){
+                            if($(wraps[i]).css('display') == "block"){
+                                console.log('yes block');
+                                ele = $(wraps[i]).find('.active').attr('field');
+                                break;
+                            }
+                        }
+                        console.log(ele);
                     },
                     render:function(){
                         var _this = this,colums = _this.getCols('station');
@@ -395,7 +429,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     "scrollY":ui.getListHeight(),
                                     "columns": [
                                         // { "data": "sid", "title":"序号",width:0},
-                                        { "data": "site_name", "title":"站名",width:150,"sClass":"site_name_left"},
+                                        { "data": "site_name", "title":"站名",width:150,"sClass":"site_name_left",render:function(data,type,itemData){
+                                            return "<div class='show_station_detail' style='color:blue;cursor:pointer;' id='"+itemData.sn_key+"'>"+data+"</div>"
+                                        }},
                                         { "data": "sid","title":"站号",width:50 },
 
                                         //{ "data": "battery_status",title:"电池码放状态",width:180 },
@@ -421,6 +457,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
                     prevIds:[],
                     curStation:'',
+                    
                     //el:$('#dataItem'),
                     onNext:function(){
                         this.nextStation();
@@ -451,6 +488,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             $("#page .next").show();
                         }
                     },
+                    
                     getBatterys:function(){
 
                         var stations = this.stations,
@@ -462,12 +500,15 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         //     return '';
                         // }else{
                             var batteryId = nav.getBatterys(curStation);
-                            $("#page .cur").html('当前站点：'+stations.map[curStation].title);
-                            this.updatePageView();
+                            if(curStation){
+                                $("#page .cur").html('当前站点：'+stations.map[curStation].title);
+                                this.updatePageView();
+                            }
                             return batteryId?batteryId.ids.join(','):'';
                         // }
                     },
                     updateStations:function(){
+
                         this.stations = nav.getSites();
                         console.log(this.stations)
                         this.prevIds = [];
@@ -515,6 +556,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     },
                     render:function(){
                         var _this = this,colums = _this.getCols('battery');
+                        if(this.data.length == 0){
+                            $("#page").hide();   
+                        }
                         //this.destoryPlugin();
                         if(_this.listPlugin && _this.listPlugin[0]){
                             _this.updateList();
@@ -536,7 +580,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     "scrollY":ui.getListHeight(),
                                     "leftColumns":4,
                                     "columns": [
-                                        { "data": "site_name",title:"站名",width:120,"sClass":"site_name_left" },
+                                        { "data": "site_name",title:"站名",width:120,"sClass":"site_name_left"},
                                         { "data": "sid",title:"站号",width:50 },
                                         { "data": "gid",title:"组号",width:50 },
                                         { "data": "bid",title:"电池号",width:50  }
@@ -863,7 +907,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 },
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {rightColumns: 1},
+                                "fixedColumns": {leftColumns: 1},
                                 "columns": [
 
                                     { "data": "sid",title:"站号",width:100  },
@@ -970,7 +1014,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 },
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {rightColumns: 1},
+                                "fixedColumns": {leftColumns: 1},
                                 "columns": [
 
                                     { "data": "sid",title:"站号",width:100  },
@@ -1041,7 +1085,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 },
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {rightColumns: 1},
+                                "fixedColumns": {leftColumns: 1},
                                 "columns": [
 
                                     { "data": "site_name",title:"站点",width:250 },
@@ -1111,7 +1155,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "data": _this.data,
                                 "scrollX":ui.getListHeight(),
                                 "scrollY":ui.getListHeight(),
-                                "fixedColumns": {rightColumns: 1},
+                                "fixedColumns": {leftColumns: 1},
                                 "columns": [
 
                                     {data:'bms_company',title:'BMS设备生产厂家名称',width:200},
@@ -1173,7 +1217,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "data": _this.data,
                                 "scrollX":ui.getListHeight(),
                                 "scrollY":ui.getListHeight(),
-                                "fixedColumns": {rightColumns: 1},
+                                "fixedColumns": {leftColumns: 1},
                                 "columns": [
 
                                     {data:'company_name',title:'用户单位总部名称',width:150},
@@ -1275,7 +1319,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "data": _this.data,
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {rightColumns: 1},
+                                "fixedColumns": {leftColumns: 1},
                                 "columns": [
                                     {"data": "username", title: "序号"},
                                     {"data": "username", title: "姓名"},
@@ -1333,7 +1377,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "data": _this.data,
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {rightColumns: 1},
+                                "fixedColumns": {leftColumns: 1},
                                 "columns": [
                                     {"data": "username", title: "序号"},
                                     {"data": "username", title: "接收人名称"},
@@ -1606,7 +1650,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 },
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {rightColumns: 1},
+                                "fixedColumns": {leftColumns: 1},
                                 "columns": [
 
                                     {"data": "sid", title: "站号", width: 100},
@@ -1660,7 +1704,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 },
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {rightColumns: 1},
+                                "fixedColumns": {leftColumns: 1},
                                 "columns": [
 
                                     {"data": "sid", title: "站号", width: 100},
@@ -1692,7 +1736,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 extObj:{
                     fetchData:function(){
                         var type = $("#cationCategory").val();
-                        var param = {page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
+                        var param = {page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""};
                         if(type > 0){
                             param.type = type;
                         }
@@ -1743,7 +1787,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 extObj:{
                     fetchData:function(_param){
 
-                        var param = {page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
+                        var param = {page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""};
                         API.getByearlog(param);
                     },
                     downloadUrl:"/api/index.php/report/byearlog",
@@ -1775,7 +1819,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             "deviationTrend":{
                 extObj:{
                     fetchData:function(_param){
-                        var param = {page:this.curPage, start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
+                        var param = {page:this.curPage, start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""};
 
                         API.getDeviationTrend(param);
                     },
@@ -1840,7 +1884,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             "chargeOrDischarge":{
                 extObj:{
                     fetchData:function(_param){
-                        var param = {page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""};
+                        var param = {page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""};
                         API.getChargeOrDischarge(_param);
                     },
                     render:function() {
@@ -1873,7 +1917,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             "reportUilog_options":{
                 extObj:{
                     fetchData:function(_param){
-                        API.getUserlog({page:this.curPage,type:'2', start:$('#beginTime').val()?+new Date($('#beginTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""})
+                        API.getUserlog({page:this.curPage,type:'2', start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
                     },
                     render:function() {
                         var _this = this;
@@ -1901,7 +1945,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.reportUilog_user = $.extend(true,{},listConfig.reportUilog_options,{
         extObj:{
             fetchData:function(_param){
-                API.getUserlog({page:this.curPage,type:'1', start:$('#startTime').val()?+new Date($('#startTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""})
+                API.getUserlog({page:this.curPage,type:'1', start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             downloadUrl:"/api/index.php/userlog?type=1"
         }
@@ -1910,7 +1954,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.reportUilog_other = $.extend(true,{},listConfig.reportUilog_options,{
         extObj:{
             fetchData:function(_param){
-                API.getUserlog({page:this.curPage,type:'3', start:$('#startTime').val()?+new Date($('#startTime').val())/1000:"", end: $('#endTime').val()?+new Date($('#endTime').val())/1000:""})
+                API.getUserlog({page:this.curPage,type:'3', start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             downloadUrl:"/api/index.php/userlog?type=3"
         }
@@ -1921,7 +1965,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.uilog_options = $.extend(true,{},listConfig.reportUilog_options,{
         extObj:{
             fetchData:function(_param){
-                API.getUserlog({page:this.curPage,type:'2', start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+                API.getUserlog({page:this.curPage,type:'2', start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             downloadUrl:"/api/index.php/userlog?type=2"
         }
@@ -1930,7 +1974,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.uilog_user = $.extend(true,{},listConfig.reportUilog_user,{
         extObj:{
             fetchData:function(_param){
-                API.getUserlog({page:this.curPage,type:'1', start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+                API.getUserlog({page:this.curPage,type:'1', start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             downloadUrl:"/api/index.php/userlog?type=1"
         }
@@ -1939,7 +1983,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.uilog_other = $.extend(true,{},listConfig.reportUilog_other,{
         extObj:{
             fetchData:function(_param){
-                API.getUserlog({page:this.curPage,type:'3', start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+                API.getUserlog({page:this.curPage,type:'3', start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             downloadUrl:"/api/index.php/userlog?type=3"
         }
@@ -1948,7 +1992,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.qureyStation = $.extend(true,{},listConfig.station,{
         extObj:{
             fetchData:function(_param){
-                API.getStationHistoryData({page:this.curPage,start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+                API.getStationHistoryData({page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             downloadUrl:"/api/index.php/query/",
         }
@@ -1957,7 +2001,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.qureyGroup = $.extend(true,{},listConfig.group,{
         extObj:{
             fetchData:function(_param){
-                API.getGroupHistoryData({page:this.curPage,start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+                API.getGroupHistoryData({page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             downloadUrl:"/api/index.php/query/groupmodule",
         }
@@ -1967,7 +2011,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
         extObj:{
             fetchData:function(_param){
-                API.getBatteryHistoryData({page:this.curPage,start:$('#dstartTime').val()?+new Date($('#dstartTime').val())/1000:"", end: $('#dendTime').val()?+new Date($('#dendTime').val())/1000:""})
+                API.getBatteryHistoryData({page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             refresh:function(){
                 this.fetchData();
@@ -1988,7 +2032,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     },
                     "scrollX": ui.getListHeight(),
                     "scrollY": ui.getListHeight(),
-                    "fixedColumns": {rightColumns: 1},
+                    "fixedColumns": {leftColumns: 1},
                     "columns": [
 
                         {"data": "sid", title: "站号", width: 100},
@@ -2062,7 +2106,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     },
                     "scrollX": ui.getListHeight(),
                     "scrollY": ui.getListHeight(),
-                    "fixedColumns": {rightColumns: 1},
+                    "fixedColumns": {leftColumns: 1},
                     "columns": [
                         { "data": "sid",title:"站号",width:100  },
                         { "data": "site_name",title:"站点简称",width:100  },
@@ -2101,7 +2145,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "data": _this.data,
                     "scrollX":ui.getListHeight(),
                     "scrollY":ui.getListHeight(),
-                    "fixedColumns": {rightColumns: 1},
+                    "fixedColumns": {leftColumns: 1},
                     "columns": [
 
                         {data:'company_name',title:'用户单位总部名称',width:150},
@@ -2150,7 +2194,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "data": _this.data,
                     "scrollX":ui.getListHeight(),
                     "scrollY":ui.getListHeight(),
-                    "fixedColumns": {rightColumns: 1},
+                    "fixedColumns": {leftColumns: 1},
                     "columns": [
 
                         {data:'bms_company',title:'BMS设备生产厂家名称',width:200},
@@ -2183,7 +2227,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "data": _this.data,
                     "scrollX": ui.getListHeight(),
                     "scrollY": ui.getListHeight(),
-                    "fixedColumns": {rightColumns: 1},
+                    "fixedColumns": {leftColumns: 1},
                     "columns": [
 
                         {"data": "site_name", title: "站名称",width:100},

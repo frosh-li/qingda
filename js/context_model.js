@@ -18,8 +18,8 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "Humi",title:"湿度%",width:80 },
                     
                     
-                    { "data": "BatteryHealth",title:"寿命%",width:80 },
-                    { "data": "BackupTime",title:"预估容量%",width:80 },
+                    { "data": "Lifetime",title:"寿命%",width:80 },
+                    { "data": "Capacity",title:"预估容量%",width:80 },
                     
                     { "data": "charge_state",title:"UPS状态",width:70, render: function(data){
                         if(data == 1){
@@ -66,9 +66,9 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "T",title:"平均温度℃",width:100 },
                     { "data": "Humi",title:"湿度%",width:50 },
                     
-                    { "data": "Dev_U",title:"电压均衡度%",width:100 },
-                    { "data": "Dev_T",title:"温度均衡度%",width:100 },
-                    { "data": "Dev_R",title:"内阻均衡度%",width:100 },
+                    { "data": "Avg_U",title:"电压均值",width:100 },
+                    { "data": "Avg_T",title:"温度均值",width:100 },
+                    { "data": "Avg_R",title:"内阻均值",width:100 },
                     { "data": "",title:"氢气浓度%",width:100 },
                     { "data": "",title:"氧气浓度%",width:100 },
                     { "data": "GroBatNum",title:"电池数",width:80  },
@@ -96,9 +96,9 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "T",title:"温度℃",width:80 },
                     { "data": "R",title:"内阻MΩ",width:100 },
                     //{ "data": "AmpRange",title:"量程",width:80 },
-                    { "data": "Dev_U",title:"电压偏离度%",width:100, render: function(data){return Math.abs(data*100).toFixed(2)} },
-                    { "data": "Dev_T",title:"温度偏离度%",width:100, render: function(data){return Math.abs(data*100).toFixed(2)} },
-                    { "data": "Dev_R",title:"内阻偏离度%",width:100, render: function(data){return Math.abs(data*100).toFixed(2)} },
+                    { "data": "Dev_U",title:"电压偏离",width:100, render: function(data){return Math.abs(data*100).toFixed(2)} },
+                    { "data": "Dev_T",title:"温度偏离",width:100, render: function(data){return Math.abs(data*100).toFixed(2)} },
+                    { "data": "Dev_R",title:"内阻偏离",width:100, render: function(data){return Math.abs(data*100).toFixed(2)} },
                     { "data": "R",title:"电池寿命%",width:100, render:function(data, type,itemData){
                         var r0 = parseFloat(itemData.battery_oum);
                         var r = parseFloat(itemData.R);

@@ -505,16 +505,16 @@ define(function(require){
                 var url = {
                     'battery':'/api/index.php/realtime/batterychart',
                     'qureyBattery':'/api/index.php/realtime/batterychart',
-                    'group':'/api/index.php/realtime/groupchart',
+                    'group':'/api/index.php/realtime/group',
                     'qureyGroup':'/api/index.php/realtime/groupchart',
-                    'station':'/api/index.php/realtime/stationchart',
+                    'station':'/api/index.php/realtime',
                     'qureyStation':'/api/index.php/realtime/stationchart',
                     'caution':'/api/index.php/realtime/galarmchart'
                 };
                 // if(args.id.split(",").length <= 1){
                 //     return this;
                 // }
-                this.fetch(url[type], evttype||"chart:update", args, "get");
+                //this.fetch(url[type], evttype||"chart:update", args, "get");
                 return this;
             },
 			syncHard: function(args, ctype){

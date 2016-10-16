@@ -18,7 +18,15 @@ a:hover{text-decoration:none}
 .pull-right{float: right}
 .text-green{color:#17bd13}
 /*初始代码*/
-
+.baojing{
+    display: none;
+}
+ .tzcj{ animation: change 1s  ease-in  infinite ; color:green; }
+@keyframes change {
+    0%{ color:green;}
+    50%{ color:blue;}
+    100%{ color:#000;}
+}
 /* 公共 */
 .input-w-1{ width: 250px}
 .btn-bg .disabled,.btn-bg .disabled:hover{
@@ -44,7 +52,7 @@ div.user{float:left;margin:13px 70px 0 0;cursor: pointer;}
 div.user img{width:43px;height:43px;margin-right:10px;}
 div.user span{font-size:20px;color:#fff;position:relative;}
 div.user span:after{content:"";position:absolute;top: 10px;right: -24px;height:0;border-top:10px solid #fff;border-right:10px solid transparent;border-left:10px solid transparent;}
-span.exit{display:inline-block;width:32px;height:32px;margin:18px 30px 0 0;background:url("../images/btn-list2.png") no-repeat -91px 0px;cursor: pointer;}
+span.exit{display:inline-block;width:125px;height:32px;margin:18px 30px 0 0;background:url("../images/btn-list2.png") no-repeat -91px 0px;cursor: pointer;}
 
 
 #map{height:100%}
@@ -55,7 +63,12 @@ span.exit{display:inline-block;width:32px;height:32px;margin:18px 30px 0 0;backg
 #chart{width: 100%; height: 100%}
 #auto{width:100%; overflow: hidden; position: relative}
 #stationinfoTpl-dialog{height: 100%}
-
+#logout span{
+    padding-left:44px;
+    font-size: 20px;
+    color: #fff;
+    position: relative;
+}
 /* 列表按钮 */
 .dataTable .list-edit-btn{width:77px; height:28px; font-size:14px; line-height:2px; text-indent:1.8em; border:1px solid #3aa7e8; color:#0079be; background:url("../images/edit-icon.png") no-repeat 10px 5px #ffffff; cursor: pointer}
 .dataTable .list-validate-btn{width:77px; height:28px; font-size:14px; line-height:2px; text-indent:1.8em; border:1px solid #3aa7e8; color:#0079be; background:url("../images/edit-validate.png") no-repeat 10px 5px #ffffff; cursor: pointer}
@@ -126,6 +139,7 @@ a.resolveBtn{
     padding: 5px 7px;
     color: #0079be;
     cursor: pointer;
+    font-weight: bold;
 }
 .list-bottom .prev:hover,
 .list-bottom .next:hover{
@@ -357,7 +371,7 @@ ul.login-layout li a.forget{font-size:18px;color:#042439;text-decoration: underl
 .small .user img{width:25px;height:25px;}
 .small div.user span{font-size:12px;}
 .small div.user span:after{content:"";position:absolute;top: 5px;right: -16px;height:0;border-top:6px solid #fff;border-right:6px solid transparent;border-left:6px solid transparent;}
-.small span.exit{width:22px;height:22px;margin:22px 30px 0 0;background:url("../images/btn-list-small.png") no-repeat -78px -28px;}
+.small span.exit{width:125px;height:22px;margin:22px 30px 0 0;background:url("../images/btn-list-small.png") no-repeat -78px -28px;}
 .small .show-bar{font-size:16px;}
 .small .show-bar div.show-list{font-size:12px;}
 .small i.icon{background: url("../images/btn-list-small.png") no-repeat;}

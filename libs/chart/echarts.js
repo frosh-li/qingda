@@ -19,7 +19,7 @@ define(function (require) {
     var ecConfig = require('./config');
     var zrUtil = require('zrender/tool/util');
     var zrEvent = require('zrender/tool/event');
-
+    console.log('init echart');
     var self = {};
 
     var _canvasSupported = require('zrender/tool/env').canvasSupported;

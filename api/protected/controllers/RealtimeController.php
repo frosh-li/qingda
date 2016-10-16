@@ -57,14 +57,20 @@ class RealtimeController extends Controller
                 //->queryAll();
         }else{
             //$sql = "select tb_station_module.*,groupmodule.total,my_site.battery_status, my_site.inductor_type,my_site.site_name from tb_station_module  left join my_site on my_site.serial_number=tb_station_module.sn_key left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as total FROM tb_group_module GROUP BY FLOOR(sn_key/1000)) as groupmodule on groupmodule.sn_key=tb_station_module.sn_key";
-            $sql = "select tb_station_module.*,groupmodule.total,batterymodule.batteryCount,my_site.battery_status, my_site.inductor_type,my_site.site_name,my_site.aid from tb_station_module  left join my_site on my_site.serial_number=tb_station_module.sn_key left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as total FROM tb_group_module GROUP BY FLOOR(sn_key/1000)) as groupmodule on groupmodule.sn_key=tb_station_module.sn_key left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as batteryCount FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)) as batterymodule on batterymodule.sn_key = tb_station_module.sn_key";
-            $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+            // $sql = "select tb_station_module.*,groupmodule.total,batterymodule.batteryCount,my_site.battery_status, my_site.inductor_type,my_site.site_name,my_site.aid from tb_station_module  left join my_site on my_site.serial_number=tb_station_module.sn_key left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as total FROM tb_group_module GROUP BY FLOOR(sn_key/1000)) as groupmodule on groupmodule.sn_key=tb_station_module.sn_key left join (SELECT FLOOR(sn_key/1000)*1000 as sn_key, COUNT(FLOOR(sn_key/1000)) as batteryCount FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)) as batterymodule on batterymodule.sn_key = tb_station_module.sn_key";
+            // $sites = Yii::app()->bms->createCommand($sql)->queryAll();
                 //->select('*')
                 //->from('{{station_module}}')
                 //->limit($this->count)
                 //->offset(($this->page-1)*$this->count)
                 //->order('record_time desc')
                 //->queryAll();
+            $ret['response'] = array(
+                'code' => -1,
+                'msg' => '暂无站点数据！'
+            );
+            echo json_encode($ret);
+            Yii::app()->end();
         }
 
         //观察员进行地域过滤 xl
@@ -172,23 +178,27 @@ class RealtimeController extends Controller
             }
 
         }else{
+            $ret['response'] = array(
+                'code' => -1,
+                'msg' => '暂无站点数据！'
+            );
             //xl
             //通过sql直接选择地域进行过滤
-            if(!empty($sns)){
-                $sql = "select distinct b.sid, b.{$field},b.sn_key from tb_station_module as b, my_site a ";
-                $sql .= " where 1=1 ";
-                $sql .= " and FLOOR(b.sn_key/10000) = FLOOR(a.serial_number/10000)";
-                $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . $this->count;
-                $sites = Yii::app()->bms->createCommand($sql)->queryAll();
-            }elseif($sns === false){
-                $sites = Yii::app()->bms->createCommand()
-                    ->select($field.',sid,sn_key')
-                    ->from('{{station_module}}')
-                    ->limit($this->count)
-                    ->offset(($this->page-1)*$this->count)
-                    ->order('record_time desc')
-                    ->queryAll();
-            }
+            // if(!empty($sns)){
+            //     $sql = "select distinct b.sid, b.{$field},b.sn_key from tb_station_module as b, my_site a ";
+            //     $sql .= " where 1=1 ";
+            //     $sql .= " and FLOOR(b.sn_key/10000) = FLOOR(a.serial_number/10000)";
+            //     $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . $this->count;
+            //     $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+            // }elseif($sns === false){
+            //     $sites = Yii::app()->bms->createCommand()
+            //         ->select($field.',sid,sn_key')
+            //         ->from('{{station_module}}')
+            //         ->limit($this->count)
+            //         ->offset(($this->page-1)*$this->count)
+            //         ->order('record_time desc')
+            //         ->queryAll();
+            // }
         }
         $ret['response'] = array(
             'code' => 0,
@@ -237,7 +247,7 @@ class RealtimeController extends Controller
         left join my_site on my_site.serial_number/10000 = floor(g.sn_key/10000)
 
         ";
-        if ($id) {
+        //if ($id) {
 
             $arr = explode(',',$id);
             $temp = array();
@@ -247,7 +257,7 @@ class RealtimeController extends Controller
             $id =  implode(',',$temp);
 
             $sql .= ' where g.sn_key in ('.$id.')';
-        }
+        //}
         $sql .= "limit $offset, $this->count ";
         $sites = Yii::app()->bms->createCommand($sql)->queryAll();
 

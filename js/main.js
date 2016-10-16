@@ -20,6 +20,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
     });
     function init(sys,pageType,sub,params){
         console.log('init', sys,pageType,sub,params);
+        $(".exportdata").hide();
         var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
         if(roleid == 3){
             $(".switch-btn.settings").hide();//
@@ -64,20 +65,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             
         })
 
-        $( "#dbeginTime" ).datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            onClose: function( selectedDate ) {
-                $( "#dendTime" ).datepicker( "option", "minDate", selectedDate );
-            }
-        });
-        $( "#dendTime" ).datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            onClose: function( selectedDate ) {
-                $( "#dbeginTime" ).datepicker( "option", "maxDate", selectedDate );
-            }
-        });
+
 
         $stationPopDialog = null;
         require(["js/dialog-stationsinfo"],function(dialog){
@@ -256,10 +244,15 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             $("#dataItem").html($("#listTpl").html());
             ui.downShow(true);
             ui.switchChartBtns(pageType);
-        	$durationWrap.show();
+            $searchWrap.show();
+            $searchWrap.jqTransform();
+            $(".exportdata").show();
+        	//$durationWrap.show();
             $(".list-bottom.upage").show();
-            require(["blocks/charts","blocks/list","blocks/nav"],function(chart,list,nav){
-                refreshModules([nav,list,chart],_arg);
+            $(".report-caution-selector",$searchWrap).parents('.jqTransformSelectWrapper').hide()
+                $(".reportCaution",$searchWrap).hide()
+            require(["blocks/listSearch","blocks/charts","blocks/list","blocks/nav"],function(listSearch,chart,list,nav){
+                refreshModules([nav,listSearch,list,chart],_arg);
                 afterInit(sys,pageType,sub);
                 if(!navTree){
                     nav.run();
@@ -270,6 +263,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             })
         }else if (/^(reportUilog|chargeOrDischarge|deviationTrend|batteryLife|reportCaution)$/.test(pageType)) {
             ui.downHide(true);
+            $(".exportdata").show();
             $("#dataItem").html($("#listTpl").html());
             $searchWrap.show();
             $searchWrap.jqTransform();

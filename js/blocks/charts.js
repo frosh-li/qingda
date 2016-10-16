@@ -4,7 +4,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
         overFlag = false,
         echart,
         sys,listType,sub,curids="",curEvtType,
-        charType="line",
+        charType="bar",
         ALARM_COLOR = {
             "0":"#13bd12",
             "1":"#ffee2c",
@@ -25,6 +25,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
         chart:null,
         chartOption:{},
         chartType:'line',
+        origindata:null,
         initialize:function(data){
             var _this = this;
             //列表更新
@@ -46,16 +47,9 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                     API.getChart({id:curids,field:_this.getFieldValue()},curEvtType,listType);
                 }
             });
-            _this.listenTo(Backbone.Events,"chart:update",function(data){
 
-                if(data){
-
-                    require(['charts'],function(chart){
-                        echart = chart;
-                        _this.createOption(data).render();
-                        overFlag = true;
-                    })
-                }
+            _this.listenTo(Backbone.Events,"listdata:update stationdata:get",function(data){
+                _this.updateChart(data);
             });
             _this.listenTo(Backbone.Events,"allids:get",function(data){
 
@@ -159,9 +153,55 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
         getLevel:function(value,range){
 
         },
+        updateChart:function(data){
+            var _this = this;
+            _this.origindata = data||_this.origindata;
+                
+                var col = _this.getFieldValue();
+                console.log('current filed', col);
+                var ctype = "station"; 
+                //window.location.hash.indexOf("station") > -1 ? "station":(window.location.hash.indexOf("station")>-1)
+                var hash = window.location.hash;
+                
+                var values = [];
+                var xAixs = [];
+
+                for(var i = 0 ; i < _this.origindata.list.length; i++){
+                    var cdata =  _this.origindata.list[i];
+                        if(hash.indexOf('station') > -1){
+                            xAixs.push(cdata.site_name+"-"+cdata.sid);
+                        }else if(hash.indexOf("group") > -1){
+                            xAixs.push(cdata.site_name+"-"+cdata.sid+"\n"+"组"+cdata.gid);
+                        }else if(hash.indexOf("battery") > -1){
+                            xAixs.push(cdata.site_name+"-"+cdata.sid+"\n"+"组"+cdata.gid+"-"+cdata.bid);
+                        }
+                        
+                        values.push({
+                            value:cdata[col],
+                            symbol:ALARM_SYMBOL[cdata.status],
+                            symbolSize:14,
+                            itemStyle:{
+                                color:ALARM_COLOR[cdata.status],
+                                normal:{
+                                    color:ALARM_COLOR[cdata.status]
+                                }
+                            }
+                        });
+                    //}
+                }
+                if(values){
+                    console.log(values, xAixs);
+                    require(['charts'],function(chart){
+                        echart = chart;
+                        _this.createOption(charType,values,xAixs).render();
+                        overFlag = true;
+                    })
+                }
+        },
         onChageField:function($el){
             overFlag=false;
-            API.getChart({id:curids,field:this.getFieldValue($el)},curEvtType,listType);
+            this.updateChart();
+            // API.getChart({id:curids,field:this.getFieldValue($el)},curEvtType,listType);
         },
         getFieldValue:function($el){
             var el = $el || $(".chart-wrap .switch-btn.active:visible");
@@ -177,26 +217,14 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 legendData = [],
                 xAxis = [{
                     type : 'category',
-                    boundaryGap : true,
-                    axisLine:false,
-                    axisTick:false,
-                    splitLine:false,
+
                     data:xAixs?xAixs:["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"]
                 }],
                 yAxis = [{
                     type : 'value',
-                    splitNumber:3,
-                    axisLine:false,
-                    axisTick:false,
-                    splitLine:{
-                        lineStyle:{
-                            color:['#efefef'],
-                            type:"dashed"
-                        }
-                    }
                 }],
                 grid = {
-                    x:50,y:20,x2:50,y2:40,borderWidth:0
+                    //x:50,y:20,x2:50,y2:40,borderWidth:0
                 },
                 barColor = {
                     normal:'#17bd13',
@@ -230,14 +258,19 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 _this.chartOption = {
                     lineStyle:{
                         normal:{
-                            color:'#858e8d'
+                            color:'red'
                         }
                     },
                     series:series,
                     xAxis:xAxis,
                     yAxis:yAxis,
                     grid:grid,
-                    legendData:legendData
+                    tooltip : {
+                        trigger: 'axis'
+                    },
+                    toolbox: {
+                        show : true
+                    }
                 }
             }
 
@@ -252,6 +285,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
             if(!this.chart){
                 this.chart = echart.init($('#chart')[0])
             }
+            console.log(this.chartOption);
             this.chart.setOption(this.chartOption);
         }
     }
@@ -264,7 +298,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
 
     return {
         init:function(_sys,_listType,_sub){
-
+            console.log('chart init', _sys, _listType, _sub)
             sys = _sys;
             listType = _listType;
             sub = sub;
