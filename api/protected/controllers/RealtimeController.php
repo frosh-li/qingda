@@ -25,8 +25,8 @@ class RealtimeController extends Controller
             my_ups_info.ups_max_charge,
             my_ups_info.ups_max_discharge,
             my_ups_info.ups_maintain_date,
-            my_ups_info.ups_power,
-            bb.BBbCharge+bb.BCbDisCharge as charges
+            my_ups_info.ups_power
+
             from tb_station_module
             left join my_site
                 on my_site.serial_number=tb_station_module.sn_key
@@ -39,9 +39,6 @@ class RealtimeController extends Controller
                 on batterymodule.sn_key = tb_station_module.sn_key
             left join my_ups_info
                 on my_ups_info.sid = tb_station_module.sn_key
-            LEFT JOIN (SELECT BBbCharge,BCbDisCharge,FLOOR(sn_key/1000)*1000 AS b_key
-                FROM tb_battery_module GROUP BY FLOOR(sn_key/1000)*1000) AS bb
-                ON bb.b_key = tb_station_module.sn_key
             where tb_station_module.sn_key in (".$id.")";
 
             $sites = Yii::app()->bms->createCommand($sql)->queryAll();
@@ -108,134 +105,7 @@ class RealtimeController extends Controller
 
         echo json_encode($ret);
 	}
-    //站点数据折线图
-    public function actionStationchart()
-    {
-        $field = Yii::app()->request->getParam('field','T');
-        $id = Yii::app()->request->getParam('id',0);
-        $sql = "select * from {{site}} ";
-        $rows = Yii::app()->db->createCommand($sql)->queryAll();
-        $sitearr = array();
-        if ($rows) {
-            foreach ($rows as $key => $value) {
-                $sitearr[$value['serial_number']] = $value;
-            }
 
-        }
-
-        $sites = array();
-        //xl
-        //通过sql直接选择地域进行过滤
-        $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
-        if ($id) {
-            //$arr = explode(',',$id);
-            //$temp = array();
-            //foreach ($arr as $key => $value) {
-            //    $temp[] = $value.'0000';
-            //}
-            //$id =  implode(',',$temp);
-            if (is_numeric($id)) {
-                //xl
-                //通过sql直接选择地域进行过滤
-                if(!empty($sns)){
-                    $sql = "select b.{$field}, b.sn_key,b.sid from tb_station_module_history as b, my_site a ";
-                    $sql .= " where b.sn_key in(" . $id . ')';
-                    $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
-                    $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . $this->count;
-                    $sites = Yii::app()->bms->createCommand($sql)->queryAll();
-                }elseif($sns === false){
-                    $sites = Yii::app()->bms->createCommand()
-                        ->select($field . ',sid,sn_key')
-                        ->from('{{station_module_history}}')
-                        ->where('sn_key in(' . $id . ')')
-                        ->limit($this->count)
-                        ->offset(($this->page - 1) * $this->count)
-                        ->order('record_time desc')
-                        ->queryAll();
-                }
-            }else{
-                $arr = explode(',',$id);
-
-                //xl
-                //通过sql直接选择地域进行过滤
-                if(!empty($sns)){
-                    $sql = "select distinct b.sid, b.{$field},b.sn_key from tb_station_module as b, my_site a ";
-                    $sql .= " where b.sn_key in(" . $id . ')';
-                    $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
-                    $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . count($arr);
-                    $sites = Yii::app()->bms->createCommand($sql)->queryAll();
-                }elseif($sns === false){
-                    $sites = Yii::app()->bms->createCommand()
-                        ->selectDistinct('sn_key,sid,'.$field)
-                        ->from('{{station_module}}')
-                        ->where('sn_key in('.$id.')')
-                        //->limit($this->count)
-                        ->limit(count($arr))
-                        ->offset(($this->page - 1) * $this->count)
-                        ->order('record_time desc')
-                        ->queryAll();
-                }
-            }
-
-        }else{
-            $ret['response'] = array(
-                'code' => -1,
-                'msg' => '暂无站点数据！'
-            );
-            //xl
-            //通过sql直接选择地域进行过滤
-            // if(!empty($sns)){
-            //     $sql = "select distinct b.sid, b.{$field},b.sn_key from tb_station_module as b, my_site a ";
-            //     $sql .= " where 1=1 ";
-            //     $sql .= " and FLOOR(b.sn_key/10000) = FLOOR(a.serial_number/10000)";
-            //     $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . $this->count;
-            //     $sites = Yii::app()->bms->createCommand($sql)->queryAll();
-            // }elseif($sns === false){
-            //     $sites = Yii::app()->bms->createCommand()
-            //         ->select($field.',sid,sn_key')
-            //         ->from('{{station_module}}')
-            //         ->limit($this->count)
-            //         ->offset(($this->page-1)*$this->count)
-            //         ->order('record_time desc')
-            //         ->queryAll();
-            // }
-        }
-        $ret['response'] = array(
-            'code' => 0,
-            'msg' => '字段'.$field
-        );
-        $ret['data'] = array();
-
-        if ($sites) {
-            $ret['data']['page'] = $this->page;
-            $ret['data']['pageSize'] = $this->count;
-
-            foreach($sites as $key=>$value){
-                $row = array();
-                $row['value'] = $value[$field];
-
-                if (isset($sitearr[$value['sn_key']])) {
-                    $sitename = $sitearr[$value['sn_key']]['site_name'];
-                }else{
-                    $sitename = '未知';
-                }
-                $row['name'] = $sitename;
-                // 这个待定
-                $row['status'] = 0;
-                $row['id'] = $value['sn_key'];
-
-                $ret['data']['list'][] = $row;
-            }
-
-        }else{
-            $ret['response'] = array(
-                'code' => -1,
-                'msg' => '暂无站点数据！'
-            );
-        }
-
-        echo json_encode($ret);
-    }
     //组实时数据
     public function actionGroupmodule()
     {
@@ -275,7 +145,7 @@ class RealtimeController extends Controller
             $ret['data']['pageSize'] = $this->count;
 
             foreach($sites as $key=>$value){
-                
+
                 $sql = "select * from tb_group_param where floor(sn_key/10000)=".floor($value['sn_key']/10000);
                 $data = Yii::app()->bms->createCommand($sql)->queryRow();
                 if(empty($data)){
@@ -382,18 +252,18 @@ class RealtimeController extends Controller
             select
             my_site.site_name,
             my_site.aid,
-            
+
             my_battery_info.*,
             my_ups_info.*,
             b.*
-            
+
             from tb_battery_module as b
-            
+
             left join my_site on my_site.serial_number/10000 = FLOOR(b.sn_key/10000)
             left join my_ups_info on my_ups_info.sid/10000 = FLOOR(b.sn_key/10000)
             left join my_battery_info on my_battery_info.sid/10000 = FLOOR(b.sn_key/10000)
-            
-           
+
+
 
         ";
         if ($id) {
@@ -423,7 +293,7 @@ class RealtimeController extends Controller
                 $ret['data']['pageSize'] = $this->count;
 
                 foreach($sites as $key=>$value){
-                    
+
                     $sql = "select * from tb_battery_param where floor(sn_key/10000)=".floor($value['sn_key']/10000);
                     $data = Yii::app()->bms->createCommand($sql)->queryRow();
                     if(empty($data)){
@@ -444,7 +314,7 @@ class RealtimeController extends Controller
                         $data = array();
                     }
                     $value = array_merge($value, $data);
-                   
+
                     $ret['data']['list'][] = $value;
                 }
 

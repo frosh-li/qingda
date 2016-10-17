@@ -67,7 +67,7 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
             var _this = this;
             if(this.ids){
                 if(this.ids.sid){
-                  
+
                     var nodes = this.tree.getNodes();
                     for (var i=0, l=nodes.length; i < l; i++) {
                         if(nodes[i].leveltype === 1){
@@ -80,16 +80,16 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
 
                                 for(var k = 0 ; k < subChildren.length ; k++){
                                     subChildren[k].children.forEach(function(node){
-                                      
+
                                         if(node.leveltype === 2){
                                             if(node.id === _this.ids.sid){
-                                           
+
                                                 _this.tree.checkNode(node, true, true);
                                             }
                                             //this.tree.checkNode(node, true, true);
                                         }
                                     });
-                                    
+
                                 }
                             }
 
@@ -111,7 +111,7 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
             }else{
                 // delete navView;
             }
-            
+
 
             return this;
         },
@@ -193,7 +193,7 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
                         if(groupids && groupids.length && !common.inArray(node.pid,groupids)){
                             return;
                         }
-                        console.log(siteid, node.id)
+                        // console.log(siteid, node.id)
                         if(node.id.substring(0,10) == siteid){
                             ids.ids.push(node.id);
                             ids.map[node.id] = node;

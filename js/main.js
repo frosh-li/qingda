@@ -15,7 +15,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         for(var i = 0 ; i < id.length ; i++){
             id[i] = id[i]+"0000";
         }
-        
+
         stationsinfoDialog.show(id.join(","));
     });
     function init(sys,pageType,sub,params){
@@ -36,7 +36,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             $("#stat_sys_uptime").html(data.startTime);
             $("#stat_manager").html(data.name);
         })
-        
+
         API.stat();
         $("#logout").off("click").bind("click",function(){
             if(confirm("确定要退出系统吗？")){
@@ -45,11 +45,11 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     type:"get",
                     success:function(){
                         localStorage.removeItem('userinfo');
-                        window.location.href = "/";        
+                        window.location.href = "/";
                     }
                 })
             }
-            
+
         })
 
         var _arg = arguments,
@@ -62,7 +62,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
         $('.cj-btn').click(function(){
             // 查询
-            
+
         })
 
 
@@ -72,14 +72,14 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             $stationPopDialog = dialog.init();
             // dialog && dialog.show(id.join(","));
         })
-        
+
         $("#dataItem").html('');
 
         ui.collectAuto();
 
 
         if("map" == sys){
-            
+
             console.log('delete navTree', navTree);
             require(["map"],function(map){
                 ui.resize();
@@ -92,7 +92,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             var refreshpage = ['#/manage/station', '#/manage/group', '#/manage/battery', '#/manage/caution'];
             var time = parseInt($("#collectDuration").val());
             // 判断是否在实时页面
-            
+
             console.log('time', time, hash, localStorage.getItem("collecting"),hash==("#/manage/station"))
             if(time && localStorage.getItem("collecting") == 'true'){
                 if(refreshpage.indexOf(hash) > -1 || hash == "#/manage/station" ){
@@ -101,14 +101,14 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     $("#startCollectBtn").hide();
                     $(".tzcj").css('display','block');
                 }
-                
+
             }
         },1000);
-        
+
 
         common.loadTips.show("系统加载中，请稍后...");
         if(/^caution$/.test(pageType)){
-            
+
             $("#dataItem").html($("#listTpl").html());
             ui.downHide(true);
             $(".atype").show();
@@ -118,10 +118,10 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             }else{
                 $(".list-bottom.upage").show();
             }
-            
+
             ui.switchChartBtns(pageType);
             require(["blocks/list","blocks/nav","api"],function(list,nav,API){
-                
+
                 afterInit(sys,pageType,sub);
                 console.log(navTree);
                 if(!navTree){
@@ -129,14 +129,14 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     nav.run(function(){
                         navTree=nav;
 
-                        refreshModules([list],_arg);        
+                        refreshModules([list],_arg);
                     });
-                    
+
                 }else{
 
-                    refreshModules([list],_arg);    
+                    refreshModules([list],_arg);
                 }
-                
+
                 API.getLinkingStationNum().getParam({},'refresh:get');
 
                 isOver();
@@ -144,7 +144,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         }
 
         if(/^newstations$/.test(pageType)){
-            
+
             $("#dataItem").html($("#listTpl").html());
             ui.downHide(true);
             $collectWrap.show();
@@ -153,10 +153,10 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             }else{
                 $(".list-bottom.upage").show();
             }
-            
+
             ui.switchChartBtns(pageType);
             require(["blocks/list","blocks/nav","api"],function(list,nav,API){
-                
+
                 afterInit(sys,pageType,sub);
 
                 if(!navTree){
@@ -164,14 +164,14 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     nav.run(function(){
                         navTree=nav;
 
-                        refreshModules([list],_arg);        
+                        refreshModules([list],_arg);
                     });
-                    
+
                 }else{
 
-                    refreshModules([list],_arg);    
+                    refreshModules([list],_arg);
                 }
-                
+
                 API.getLinkingStationNum().getParam({},'refresh:get');
 
                 isOver();
@@ -188,24 +188,24 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             }else{
                 $(".list-bottom.upage").show();
             }
-            
+
             ui.switchChartBtns(pageType);
             require(["blocks/charts","blocks/list","blocks/nav","api"],function(chart,list,nav,API){
-                
+
                 afterInit(sys,pageType,sub);
                 if(!navTree){
                     refreshModules([nav],_arg);
                     nav.run(function(){
                         navTree=nav;
 
-                        refreshModules([list,chart],_arg);        
+                        refreshModules([list,chart],_arg);
                     });
-                    
+
                 }else{
 
-                    refreshModules([list,chart],_arg);    
+                    refreshModules([list,chart],_arg);
                 }
-                
+
                 API.getLinkingStationNum().getParam({},'refresh:get');
 
                 isOver();
@@ -225,13 +225,34 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
                 isOver();
             })
-        }else if (/^(limitation|uilog|baseinfo|equipment|option|runlog|adminConfig)$/.test(pageType)) {
+        }else if (/^(limitation|baseinfo|equipment|option|runlog|adminConfig)$/.test(pageType)) {
             ui.downHide(true);
             $("#dataItem").html($("#listTpl").html());
         	$durationWrap.show();
 
             require(["blocks/list","blocks/nav"],function(list,nav){
                 refreshModules([nav,list],_arg);
+                afterInit(sys,pageType,sub);
+                if(!navTree){
+                    nav.run();
+                    navTree=nav;
+                }
+
+                isOver();
+            })
+        }else if(/^(uilog)$/.test(pageType)){
+            $("#dataItem").html($("#listTpl").html());
+            ui.downHide(true);
+
+            $searchWrap.show();
+            $searchWrap.jqTransform();
+            $(".exportdata").show();
+            //$durationWrap.show();
+            $(".list-bottom.upage").show();
+            $(".report-caution-selector",$searchWrap).parents('.jqTransformSelectWrapper').hide()
+            $(".reportCaution",$searchWrap).hide()
+            require(["blocks/listSearch","blocks/list","blocks/nav"],function(listSearch,list,nav){
+                refreshModules([nav,listSearch,list],_arg);
                 afterInit(sys,pageType,sub);
                 if(!navTree){
                     nav.run();
@@ -276,7 +297,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             }
 
             $(".list-bottom.upage").show();
-            
+
             require(["blocks/listSearch","blocks/list","blocks/nav"],function(listSearch,list,nav){
                 refreshModules([nav,listSearch,list],_arg);
                 afterInit(sys,pageType,sub);
@@ -422,7 +443,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         if(c&&c.init){
             c.init.apply(c,arg);
             curModules.push(c);
-            addModules(modules,arg);    
+            addModules(modules,arg);
         }
         // $.each(modules,function(i,m){
         //     if( m && m.init ){

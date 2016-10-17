@@ -78,12 +78,12 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         $(".mnext").click(function(){
                             _this.curPage++;
                             console.log(_this.curPage)
-                            _this.refresh();
+                            _this.fetchData();
                         });
                         $(".mprev").click(function(){
                             _this.curPage--;
                             console.log(_this.curPage)
-                            _this.refresh();
+                            _this.fetchData();
                         });
                         _this.listenTo(Backbone.Events,"listdata:update stationdata:get",function(data){
                             if(data.types){
@@ -110,7 +110,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         });
 
                         _this.listenTo(Backbone.Events,"search:done",function(){
-
                             _this.refresh();
                         });
                         _this.listenTo(Backbone.Events,"export:done",function(){
@@ -188,14 +187,10 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 _this.data = [];
                                 _this.render();
                             }else{
-                                _this.refresh();
+                                _this.fetchData();
                             }
                         });
 
-                        _this.listenTo(Backbone.Events,"colsChange",function(data){
-                            //initPage(_listType,_sub);
-                            _this.refresh();
-                        });
 
                         _this.extEvent && _this.extEvent();
                     },
@@ -283,6 +278,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     resetScrollBar:function(){},
                     refresh:function(){
                         //this.destoryPlugin();
+                        this.curPage = 1;
                         this.fetchData();
                     },
                     updateList:function(){
@@ -1991,8 +1987,27 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     //查询：站
     listConfig.qureyStation = $.extend(true,{},listConfig.station,{
         extObj:{
-            fetchData:function(_param){
-                API.getStationHistoryData({page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
+            fetchData:function(){
+                var _param = {};
+                var navData = nav.getSites();
+                var ids;
+
+                if(this.ids && this.ids.sid){
+                    ids = this.ids.sid;
+                }else{
+                    ids = navData.ids.join(",");
+                }
+
+                $.extend(_param,{id:ids});
+                if($('#beginTime').val() == ""){
+                    alert('请选择时间');
+                    return;
+                }
+                if($('#startTime').val() == ""){
+                    alert('请选择时间');
+                    return;
+                }
+                API.getStationHistoryData({id:ids,page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             downloadUrl:"/api/index.php/query/",
         }
@@ -2001,7 +2016,21 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.qureyGroup = $.extend(true,{},listConfig.group,{
         extObj:{
             fetchData:function(_param){
-                API.getGroupHistoryData({page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
+                var _param = {};
+                // var navData = nav.getSites();
+                var ids;
+
+                var navData = nav.getGroups();
+
+                if($('#beginTime').val() == ""){
+                    alert('请选择时间');
+                    return;
+                }
+                if($('#startTime').val() == ""){
+                    alert('请选择时间');
+                    return;
+                }
+                API.getGroupHistoryData({id:navData.ids.join(","),page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             downloadUrl:"/api/index.php/query/groupmodule",
         }
@@ -2011,7 +2040,25 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
         extObj:{
             fetchData:function(_param){
-                API.getBatteryHistoryData({page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
+                var _param = {};
+                var navData = nav.getBatteryIds();
+                var ids;
+
+                if(this.ids && this.ids.sid){
+                    ids = this.ids.sid;
+                }else{
+                    ids = navData.ids.join(",");
+                }
+
+                if($('#beginTime').val() == ""){
+                    alert('请选择时间');
+                    return;
+                }
+                if($('#startTime').val() == ""){
+                    alert('请选择时间');
+                    return;
+                }
+                API.getBatteryHistoryData({id:ids,page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             refresh:function(){
                 this.fetchData();
@@ -2383,6 +2430,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         if(listView){
             listView.destroy();
             listView = null;
+            // $('#beginTime').val('');
+            // $('#endTime').val('');
             //$("#list").html('');
         }
         var _listType = listType?listType+(sub?"_"+sub:""):'defaultConfig';
@@ -2392,7 +2441,34 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         $("#list").html($("#"+_listTpl).html());
         listView = new (Backbone.View.extend($.extend({},{el:$("#list"),ids:ids},_extObj)))();
         overFlag = false;
-        listView.fetchData();
+        var queryAndReport = [
+            'qureyGroup',
+            'qureyStation',
+            'qureyBattery',
+            'reportCaution',
+            'deviationTrend',
+            'chargeOrDischarge',
+            'batteryLife',
+            'reportUilog',
+            'uilog'
+        ];
+        console.log('listType', listType);
+        if(queryAndReport.indexOf(listType) > -1){
+            if(checkSelectDate()){
+                listView.fetchData();
+            }
+        }else{
+            listView.fetchData();
+        }
+    }
+
+    function checkSelectDate(){
+        var startTime = $('#beginTime').val();
+        var endTime = $("#endTime").val();
+        if(startTime == "" || endTime == ""){
+            return false;
+        }
+        return true;
     }
 
     $(window).resize(function(){
