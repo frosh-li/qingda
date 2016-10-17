@@ -87,21 +87,32 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             })
             return;
         }
-        var hash = window.location.hash;
+        
         setTimeout(function(){
             var refreshpage = ['#/manage/station', '#/manage/group', '#/manage/battery', '#/manage/caution'];
             var time = parseInt($("#collectDuration").val());
             // 判断是否在实时页面
+            var hash = window.location.hash;
+            console.log('time', time, hash, localStorage.getItem("collecting"),hash.indexOf("manage/station"))
+            if(time 
+                && localStorage.getItem("collecting") == 'true'){
 
-            console.log('time', time, hash, localStorage.getItem("collecting"),hash==("#/manage/station"))
-            if(time && localStorage.getItem("collecting") == 'true'){
-                if(refreshpage.indexOf(hash) > -1 || hash.indexOf("#/manage/station")>-1 ){
+                if(refreshpage.indexOf(hash) > -1 
+                    || hash.indexOf("manage/station")>-1 ){
                     console.log('need refresh')
                     $("body").addClass('collecting').everyTime(time+"s",'collect',API.collect);
                     $("#startCollectBtn").hide();
                     $(".tzcj").css('display','block');
+                }else{
+                    $("body").removeClass('collecting').stopTime('collect',API.collect);
+                    $("#startCollectBtn").css('display','block');
+                    $(".tzcj").hide();
                 }
 
+            }else{
+                $("body").removeClass('collecting').stopTime('collect',API.collect);
+                $("#startCollectBtn").css('display','block');
+                $(".tzcj").hide();
             }
         },1000);
 

@@ -13,6 +13,15 @@ class BatteryinfoController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+    public function checkPassword($password)
+    {
+        $sql = "select * from {{program_gerneral_parameters}} where id=1";
+        $row = Yii::app()->db->createCommand($sql)->queryRow();
+        if ($row['password'] == $password) {
+            return true;
+        }
+        return false;
+    }
 	public function actionView()
 	{
         $id = Yii::app()->request->getParam('id',0);
@@ -49,6 +58,15 @@ class BatteryinfoController extends Controller
 	 */
 	public function actionCreate()
 	{
+        $password = Yii::app()->request->getParam('password' ,'');
+        if (!$this->checkPassword($password)) {
+            $ret['response'] = array(
+                'code'=>-1,
+                'msg'=>'密码错误！'
+            );
+            echo json_encode($ret);
+            Yii::app()->end();
+        }
 		$model=new BatteryInfo;
         $ret['response'] = array(
             'code'=>0,
@@ -93,6 +111,16 @@ class BatteryinfoController extends Controller
         $battery_life == '' && $battery_life=0.00 ;
         $battery_humidity == '' && $battery_humidity=0.00 ;
         $battery_temperature == '' && $battery_temperature=0.00 ;
+        /**
+         * 检查是否是否重复，如果重复直接更新
+         */
+        $toUpdateSql = "select count(*) from my_battery_info where sid=".$sid;
+        $hasCount = Yii::app()->db->createCommand($toUpdateSql)->queryScalar();
+        if($hasCount > 0){
+            // 存在重复元素 直接调用更新命令
+            $this->actionUpdate();
+            Yii::app()->end();
+        }
         if ($sid != 0) {
             $model->sid                   =$sid                   ;
             $model->battery_factory       =$battery_factory       ;
@@ -150,15 +178,32 @@ class BatteryinfoController extends Controller
 	 */
 	public function actionUpdate()
 	{
+        $password = Yii::app()->request->getParam('password' ,'');
+        if (!$this->checkPassword($password)) {
+            $ret['response'] = array(
+                'code'=>-1,
+                'msg'=>'密码错误！'
+            );
+            echo json_encode($ret);
+            Yii::app()->end();
+        }
         $id = Yii::app()->request->getParam('id' ,0);
-        $model=$this->loadModel($id);
+        $sid=Yii::app()->request->getParam('sid','')."0000";
+        // var_dump($id);
+        // return;
+        if(!$id || $id == '0'){
+            $id = Yii::app()->db->createCommand('select id from my_battery_info where sid='.$sid)->queryScalar();
+        }
+        //var_dump($id);
+        //return;
+        $model=$this->loadModel(intval($id));
 
         $ret['response'] = array(
             'code'=>0,
             'msg'=>'ok'
         );
         $ret['data'] = array();
-        $sid=Yii::app()->request->getParam('sid','');
+        
         $battery_factory=Yii::app()->request->getParam('battery_factory','');
         $battery_num=Yii::app()->request->getParam('battery_num','');
         $battery_date=Yii::app()->request->getParam('battery_date','');

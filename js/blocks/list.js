@@ -7,7 +7,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             "paging": false,
             "searching": false,
             "order": [ 1, 'asc' ],
-            "autoWidth": false,
+            "autoWidth": true,
             "scrollCollapse":true,
             "language": {
                 "lengthMenu": "显示 _MENU_ 条",
@@ -421,7 +421,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 }
                                 _this.listPlugin.push($('#auto table').DataTable( $.extend(true,{
                                     "data": _this.data,
-                                    "scrollX":true,
+                                    "scrollX":ui.getListWidth(),
                                     "scrollY":ui.getListHeight(),
                                     "columns": [
                                         // { "data": "sid", "title":"序号",width:0},
@@ -1274,7 +1274,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         $('#auto').width('100%');
                         this.listPlugin.push($('#auto table').DataTable( $.extend(true,{
                          "data": this.data,
-                         "scrollX":true,
+                         "scrollX":ui.getListWidth(),
                          "columns": [
                             {"data": "", title: "序号"},
                             {"data": "id", title: "编号"},

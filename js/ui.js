@@ -436,7 +436,7 @@ define(function(require){
             var wrapH=$("div.wrap").height();
             //布局--设置右侧底部的容器高度
             $("div.down").height(wrapH-wrapH*0.65-10);
-
+            //$("div.up").height(wrapH*0.65-10);
             var statusH=$("div.status").is(":visible")?$("div.status").outerHeight():0,
                 kscjH=$("div.kscj").is(":visible")?$("div.kscj").outerHeight():0,
                 cxH=$("div.cx").is(":visible")?$("div.cx").outerHeight():0,
@@ -444,7 +444,7 @@ define(function(require){
             //布局--设置左侧导航树容器高度
             $("div.nav-tree").height(wrapH-statusH-dlH-kscjH-cxH-95);
             //布局--设置右侧上部分显示数据容器高度
-            // this.setH();
+            //this.setH();
             return this;
         },
         leftHide:function (){

@@ -12,6 +12,15 @@ class UpsinfoController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+    public function checkPassword($password)
+    {
+        $sql = "select * from {{program_gerneral_parameters}} where id=1";
+        $row = Yii::app()->db->createCommand($sql)->queryRow();
+        if ($row['password'] == $password) {
+            return true;
+        }
+        return false;
+    }
 	public function actionView()
 	{
         $id = Yii::app()->request->getParam('id',0);
@@ -54,9 +63,30 @@ class UpsinfoController extends Controller
             'code'=>0,
             'msg'=>'ok'
         );
+        $password = Yii::app()->request->getParam('password' ,'');
+        if (!$this->checkPassword($password)) {
+            $ret['response'] = array(
+                'code'=>-1,
+                'msg'=>'密码错误！'
+            );
+            echo json_encode($ret);
+            Yii::app()->end();
+        }
         $ret['data'] = array();
 
         $sid=Yii::app()->request->getParam('sid',0)."0000";
+        /**
+         * 检查是否是否重复，如果重复直接更新
+         */
+        $toUpdateSql = "select count(*) from my_ups_info where sid=".$sid;
+        $hasCount = Yii::app()->db->createCommand($toUpdateSql)->queryScalar();
+        if($hasCount > 0){
+            // 存在重复元素 直接调用更新命令
+            $this->actionUpdate();
+            Yii::app()->end();
+        }
+
+
         $ups_factory=Yii::app()->request->getParam('ups_factory','');
         $ups_type=Yii::app()->request->getParam('ups_type','');
         $ups_create_date=Yii::app()->request->getParam('ups_create_date','');
@@ -151,7 +181,20 @@ class UpsinfoController extends Controller
 	 */
 	public function actionUpdate()
 	{
+        $password = Yii::app()->request->getParam('password' ,'');
+        if (!$this->checkPassword($password)) {
+            $ret['response'] = array(
+                'code'=>-1,
+                'msg'=>'密码错误！'
+            );
+            echo json_encode($ret);
+            Yii::app()->end();
+        }
         $id = Yii::app()->request->getParam('id' ,0);
+        $sid = Yii::app()->request->getParam('sid', 0)."0000";
+        if(!$id || $id==0){
+            $id = Yii::app()->db->createCommand('select id from my_ups_info where sid='.$sid)->queryScalar();
+        }
         $model=$this->loadModel($id);
         
         $ret['response'] = array(
