@@ -61,10 +61,17 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
             return checkedData;
         },
         render:function(){
+            console.log('render tree now',this.ids);
             $.fn.zTree.init($("#nav"), setting, this.data);
             this.tree = $.fn.zTree.getZTreeObj('nav');
             this.tree.expandAll(true);
             var _this = this;
+            var hash = window.location.hash;
+            if(/^#\/manage\/station\/[0-9]+$/.test(hash)){
+                this.ids = {
+                    sid: hash.match(/([0-9]+)/)[1]
+                }
+            }
             if(this.ids){
                 if(this.ids.sid){
 

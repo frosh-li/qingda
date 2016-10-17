@@ -50,7 +50,7 @@ define(function(require){
                 $("#collectDuration").val(data.refresh)
             });
             _this.listenTo(Backbone.Events,"linknum:get",function(data){
-            
+
                 $("#linkingNum").html(data.online)
                 $("#unlinkNum").html(data.offline)
                 $("#collectDuration").val(data.refresh);
@@ -86,7 +86,7 @@ define(function(require){
                 }else{
                     $("#alarm_collecting").removeClass("grelight").addClass("graylight");
                 }
-                
+
                 //$("#alarm_sound").removeClass("graylight").removeClass("")
             });
             _this.listenTo(Backbone.Events,"otherOption:get",function(data){
@@ -103,7 +103,7 @@ define(function(require){
                 }
                 alert("修改成功")
             });
-       
+
             _this.listenTo(Backbone.Events,"monitoring:start",function(data){
                 if(data.total && data.total > 0){
                     $(".baojing").css('display','block')
@@ -128,11 +128,11 @@ define(function(require){
             });
         },
         switchUser: function(){
-            
+
             require(["js/dialog-login"],function(dialog){
                 dialog && dialog.show();
             })
-        
+
         },
 
         onSearch: function(){
@@ -621,7 +621,7 @@ define(function(require){
 
     var _ui = new ui();
     _ui.startGetCaution();
-    _ui.collectAuto();
+    // _ui.collectAuto();
     $(window).resize(function(){
         changeStyle();
         _ui.resize();

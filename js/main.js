@@ -75,7 +75,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
         $("#dataItem").html('');
 
-        ui.collectAuto();
+        //ui.collectAuto();
 
 
         if("map" == sys){
@@ -95,7 +95,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
             console.log('time', time, hash, localStorage.getItem("collecting"),hash==("#/manage/station"))
             if(time && localStorage.getItem("collecting") == 'true'){
-                if(refreshpage.indexOf(hash) > -1 || hash == "#/manage/station" ){
+                if(refreshpage.indexOf(hash) > -1 || hash.indexOf("#/manage/station")>-1 ){
                     console.log('need refresh')
                     $("body").addClass('collecting').everyTime(time+"s",'collect',API.collect);
                     $("#startCollectBtn").hide();
