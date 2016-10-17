@@ -7,7 +7,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             "paging": false,
             "searching": false,
             "order": [ 1, 'asc' ],
-            "autoWidth": true,
+            "autoWidth": false,
             "scrollCollapse":true,
             "language": {
                 "lengthMenu": "显示 _MENU_ 条",
@@ -369,7 +369,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     show_station_detail:function(e){
                         var id = [$(e.currentTarget).attr('id')];
                         console.log('station pop clicked');
-                    
+
                         console.log('id',id)
                         if(id < 0){
                             alert('请选择站点');
@@ -378,7 +378,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         for(var i = 0 ; i < id.length ; i++){
                             id[i] = id[i];
                         }
-                        
+
                         stationInfoDialog.show(id.join(","));
                     },
                     fetchData:function(){
@@ -425,7 +425,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 }
                                 _this.listPlugin.push($('#auto table').DataTable( $.extend(true,{
                                     "data": _this.data,
-                                    "scrollX":ui.getListWidth(),
+                                    "scrollX":true,
                                     "scrollY":ui.getListHeight(),
                                     "columns": [
                                         // { "data": "sid", "title":"序号",width:0},
@@ -457,7 +457,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
                     prevIds:[],
                     curStation:'',
-                    
+
                     //el:$('#dataItem'),
                     onNext:function(){
                         this.nextStation();
@@ -488,7 +488,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             $("#page .next").show();
                         }
                     },
-                    
+
                     getBatterys:function(){
 
                         var stations = this.stations,
@@ -557,7 +557,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     render:function(){
                         var _this = this,colums = _this.getCols('battery');
                         if(this.data.length == 0){
-                            $("#page").hide();   
+                            $("#page").hide();
                         }
                         //this.destoryPlugin();
                         if(_this.listPlugin && _this.listPlugin[0]){
@@ -782,14 +782,14 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         })
                     },
                     resove:function(e){
-                        var target=$(e.currentTarget); 
+                        var target=$(e.currentTarget);
                         this.showStationOptionEditDialog({
                             sid:target.attr('sid'),
                             sn_key:target.attr('sn_key'),
                             Groups:target.attr('Groups'),
                             GroBats:target.attr("GroBats")
                         });
-                        
+
 
                         // ui.showUnsolveDialog({id:$(e.currentTarget).attr('pid'),suggestion:$(e.currentTarget).attr('suggestion')});
                     },
@@ -812,9 +812,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         //ui.resizeAutoListWidth();
                         if(_this.listPlugin && _this.listPlugin[0]){
                             _this.updateList();
-                       
+
                         }else{
-                        
+
                             this.listPlugin.push($('#auto table').DataTable( $.extend(true,{},dataTableDefaultOption,{
                                 "data": this.data,
                                 "paging":false,
@@ -827,7 +827,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "Groups",title:"组数"},
                                     { "data": "GroBats",title:"电池数"},
                                     { "data": "record_time",title:"时间"},//组序列号
-                                    
+
                                     {
                                         "data": "id",
                                         title:"操作",

@@ -20,8 +20,7 @@ require.config({
         'backbone':'libs/backbone-min',
         '_':'libs/underscore-min',
         'bootstrap':'libs/bootstrap',
-        "charts":"libs/echarts",
-        "echarts":"libs/chart/echarts.amd",
+        "charts":"js/echarts.min",
         'zTreeCore':'libs/jquery.ztree.core-3.5',
         'zTreeExcheck':'libs/jquery.ztree.excheck-3.5',
         'scrollbar':'libs/scrollbar/min/perfect-scrollbar.jquery.min',
@@ -45,7 +44,7 @@ require.config({
         bootstrap:['jquery'],
         table:['jquery'],
         jtimer:['jquery'],
-        
+
         fixedColumn:['jquery','table'],
         common:['jquery'],
         zTreeCore:['jquery'],
@@ -106,7 +105,7 @@ require(["jquery","router","api","table","jJson","jtimer","charts"],function($,r
         return fmt;
     }
 
-    
+
 
     setInterval(function(){
         $("#realtime").html((new Date()).pattern("yyyy-MM-dd EEE hh:mm:ss"));
@@ -115,9 +114,9 @@ require(["jquery","router","api","table","jJson","jtimer","charts"],function($,r
 
     require(["jJson","bootstrap","jqueryUI","ui","jForm","jqueryTime"],function(){
       $.timepicker.setDefaults( $.timepicker.regional[ "zh-CN" ] );
-  
+
       $.timepicker.regional['zh-CN'] = {
-        
+
         closeText: '关闭',
         prevText: '<上月',
         nextText: '下月>',

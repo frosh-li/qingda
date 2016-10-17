@@ -26,27 +26,28 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
         chartOption:{},
         chartType:'line',
         origindata:null,
+        chartName:"",
         initialize:function(data){
             var _this = this;
             //列表更新
-            _this.listenTo(Backbone.Events,"listdata:update stationdata:get",function(data){
-                curEvtType = "allids:get";
-                overFlag=false;
+            // _this.listenTo(Backbone.Events,"listdata:update stationdata:get",function(data){
+            //     curEvtType = "allids:get";
+            //     overFlag=false;
 
-                API.getChart({id:curids,field:_this.getFieldValue()},curEvtType,listType);
-            });
-            //选择行变更
-            _this.listenTo(Backbone.Events,"row:select",function(data){
-                curids = data.join(',');
+            //     // API.getChart({id:curids,field:_this.getFieldValue()},curEvtType,listType);
+            // });
+            // //选择行变更
+            // _this.listenTo(Backbone.Events,"row:select",function(data){
+            //     curids = data.join(',');
 
-                if(data.length>1){
-                    curEvtType = "allids:get";
-                    API.getChart({id:curids,field:_this.getFieldValue()},curEvtType,listType);
-                }else{
-                    curEvtType = "id:get";
-                    API.getChart({id:curids,field:_this.getFieldValue()},curEvtType,listType);
-                }
-            });
+            //     if(data.length>1){
+            //         curEvtType = "allids:get";
+            //         API.getChart({id:curids,field:_this.getFieldValue()},curEvtType,listType);
+            //     }else{
+            //         curEvtType = "id:get";
+            //         API.getChart({id:curids,field:_this.getFieldValue()},curEvtType,listType);
+            //     }
+            // });
 
             _this.listenTo(Backbone.Events,"listdata:update stationdata:get",function(data){
                 _this.updateChart(data);
@@ -116,36 +117,36 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                     })
                 }
             });
-            _this.listenTo(Backbone.Events,"id:get",function(data){
+            // _this.listenTo(Backbone.Events,"id:get",function(data){
 
-                if(data && data.list){
+            //     if(data && data.list){
 
-                    require(['charts'],function(chart){
-                        var xAixs = [],values = [],dataLen = data.list.length;
-                        for(var i=0;i<dataLen;i++){
-                            xAixs.push(i+1);
-                        }
+            //         require(['charts'],function(chart){
+            //             var xAixs = [],values = [],dataLen = data.list.length;
+            //             for(var i=0;i<dataLen;i++){
+            //                 xAixs.push(i+1);
+            //             }
 
-                        echart = chart;
+            //             echart = chart;
 
-                        $.each(data.list,function(i,d){
-                            values.push({
-                                value:d.value,
-                                symbol:ALARM_SYMBOL[d.status],
-                                symbolSize:14,
-                                itemStyle:{
-                                    color:ALARM_COLOR[d.status],
-                                    normal:{
-                                        color:ALARM_COLOR[d.status]
-                                    }
-                                }
-                            });
-                        })
-                        _this.createOption(charType,values,xAixs).render();
-                        overFlag = true;
-                    })
-                }
-            });
+            //             $.each(data.list,function(i,d){
+            //                 values.push({
+            //                     value:d.value,
+            //                     symbol:ALARM_SYMBOL[d.status],
+            //                     symbolSize:14,
+            //                     itemStyle:{
+            //                         color:ALARM_COLOR[d.status],
+            //                         normal:{
+            //                             color:ALARM_COLOR[d.status]
+            //                         }
+            //                     }
+            //                 });
+            //             })
+            //             _this.createOption(charType,values,xAixs).render();
+            //             overFlag = true;
+            //         })
+            //     }
+            // });
         },
         clear:function(){
 
@@ -156,13 +157,13 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
         updateChart:function(data){
             var _this = this;
             _this.origindata = data||_this.origindata;
-                
+
                 var col = _this.getFieldValue();
-                console.log('current filed', col);
-                var ctype = "station"; 
+                // console.log('current filed', col);
+                var ctype = "station";
                 //window.location.hash.indexOf("station") > -1 ? "station":(window.location.hash.indexOf("station")>-1)
                 var hash = window.location.hash;
-                
+
                 var values = [];
                 var xAixs = [];
 
@@ -175,7 +176,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                         }else if(hash.indexOf("battery") > -1){
                             xAixs.push(cdata.site_name+"-"+cdata.sid+"\n"+"组"+cdata.gid+"-"+cdata.bid);
                         }
-                        
+
                         values.push({
                             value:cdata[col],
                             symbol:ALARM_SYMBOL[cdata.status],
@@ -199,25 +200,34 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 }
         },
         onChageField:function($el){
+            console.log('change field', $el);
             overFlag=false;
+            if($el){
+                this.currentFieldElement = $el;
+            }
+
             this.updateChart();
             // API.getChart({id:curids,field:this.getFieldValue($el)},curEvtType,listType);
         },
         getFieldValue:function($el){
-            var el = $el || $(".chart-wrap .switch-btn.active:visible");
-            
-            if(el.length == 1){
-                $(".chart-wrap h4").text(el.text());    
+            // var el = $el;
+            if(!this.currentFieldElement){
+                this.currentFieldElement = $($(".chart-wrap .switch-btn.active:visible")[0]);
             }
-            
-            return $el?$el.attr('field'):$(".chart-wrap .switch-btn.active:visible").attr('field');
+            if($el){
+                this.currentFieldElement = $el;
+            }
+            //if($el && $el.length == 1){
+                $(".chart-wrap h4").text(this.currentFieldElement.text());
+            //}
+            this.chartName = this.currentFieldElement.text();
+            return this.currentFieldElement.attr('field');
         },
         createOption:function(type,data,xAixs){
             var _this = this,
                 legendData = [],
                 xAxis = [{
                     type : 'category',
-
                     data:xAixs?xAixs:["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"]
                 }],
                 yAxis = [{
@@ -227,7 +237,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                     //x:50,y:20,x2:50,y2:40,borderWidth:0
                 },
                 barColor = {
-                    normal:'#17bd13',
+                    normal:'green',
                     notice:'#ffee2c',
                     alert:'#ff975e',
                     caution:'#f86464'
@@ -244,29 +254,43 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                     }
                 },
                 seriesBarCommonOption = {
-                    symbolSize:8
+                    symbolSize:8,
+                    color:'green'
                 },
                 series = [];
 
             if(data){
-                series[0] = $.extend(true,seriesBarCommonOption,{
+                series.push($.extend(true,seriesBarCommonOption,{
                     type:type,
                     data:data,
                     barMaxWidth:40
-                })
+                }));
 
                 _this.chartOption = {
+                    color:['green'],
                     lineStyle:{
                         normal:{
-                            color:'red'
+                            color:'green'
                         }
                     },
-                    series:series,
+                    series:[
+                        {
+                            name:_this.chartName,
+                            type:type,
+                            data:data,
+                            barMaxWidth:30,
+                            symbolSize:8
+                        }
+                    ],
                     xAxis:xAxis,
                     yAxis:yAxis,
                     grid:grid,
                     tooltip : {
-                        trigger: 'axis'
+                        trigger: 'axis',
+                        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        },
+                        formatter:"{b}<br/>当前值:{c}"
                     },
                     toolbox: {
                         show : true
@@ -285,7 +309,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
             if(!this.chart){
                 this.chart = echart.init($('#chart')[0])
             }
-            console.log(this.chartOption);
+
             this.chart.setOption(this.chartOption);
         }
     }
@@ -310,6 +334,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
 
             $(".chart-wrap").off("click");
             $(".chart-wrap").on("click",".switch-btn",function(e){
+                console.log('click on switch-btn');
                 if($(this).hasClass('disabled')){
                     e.preventDefault();
                     return;
@@ -317,8 +342,9 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 navView.onChageField($(this));
             })
             $(".chart-wrap").on("click",".shift-btn",function(){
+
                 navView.switchChartType($(this));
-                navView.onChageField($(".switch-btn.active"),$(".chart-wrap"));
+                navView.onChageField();
             })
 
             return this;
