@@ -12,16 +12,16 @@ define(["require","backbone"],function(require,Backbone){
         getListCols:function(type){
             return {
                 station:[
-                    { "data": "I",title:"电流A",width:80 },
-                    { "data": "U",title:"电压V",width:80 },
-                    { "data": "T",title:"温度℃",width:80 },
-                    { "data": "Humi",title:"湿度%",width:80 },
-                    
-                    
+                    { "data": "Current",title:"电流A",width:80 },
+                    { "data": "Voltage",title:"电压V",width:80 },
+                    { "data": "Temperature",title:"温度℃",width:80 },
+                    { "data": "Humidity",title:"湿度%",width:80 },
+
+
                     { "data": "Lifetime",title:"寿命%",width:80 },
                     { "data": "Capacity",title:"预估容量%",width:80 },
-                    
-                    { "data": "charge_state",title:"UPS状态",width:70, render: function(data){
+
+                    { "data": "ChaState",title:"UPS状态",width:70, render: function(data){
                         if(data == 1){
                             return "充电";
                         }else if(data == 2){
@@ -31,8 +31,8 @@ define(["require","backbone"],function(require,Backbone){
                         }
                     } },
                     { "data": "record_time",title:"时间",width:150 },
-                    { "data": "total",title:"组数",width:50  },
-                    { "data": "batteryCount",title:"电池数",width:80  },
+                    { "data": "Groups",title:"组数",width:50  },
+                    { "data": "GroBats",title:"电池数",width:80  },
                     { "data": "ups_power",title:"功率W/h",width:70 },
                     { "data": "ups_maintain_date",title:"维护日期",width:100},
                     { "data": "start_time",title:"放电开始",width:150, render: function(data){
@@ -60,23 +60,23 @@ define(["require","backbone"],function(require,Backbone){
                     //{ "data": "memo",title:"备注",width:330}
                 ],
                 group:[
-                    
-                    { "data": "GroupU",title:"电压V",width:100 },
-                    { "data": "I",title:"电流A",width:100 },
-                    { "data": "T",title:"平均温度℃",width:100 },
-                    { "data": "Humi",title:"湿度%",width:50 },
-                    
+
+                    { "data": "Voltage",title:"电压V",width:100 },
+                    { "data": "Current",title:"电流A",width:100 },
+                    { "data": "Temperature",title:"平均温度℃",width:100 },
+                    { "data": "Humidity",title:"湿度%",width:50 },
+
                     { "data": "Avg_U",title:"电压均值",width:100 },
                     { "data": "Avg_T",title:"温度均值",width:100 },
                     { "data": "Avg_R",title:"内阻均值",width:100 },
                     { "data": "",title:"氢气浓度%",width:100 },
                     { "data": "",title:"氧气浓度%",width:100 },
-                    { "data": "GroBatNum",title:"电池数",width:80  },
+                    { "data": "GroBats",title:"电池数",width:80  },
                     { "data": "record_time",title:"时间",width:150 },
                     { "data": "DisChaLim_R",title:"最大放电电流A",width:150 },
                     { "data": "ChaLim_R",title:"最大充电电流A",width:150 },
-                    { "data": "I",title:"氢气上限%",width:100 },
-                    { "data": "I",title:"氧气上限%",width:100 },
+                    { "data": "",title:"氢气上限%",width:100 },
+                    { "data": "",title:"氧气上限%",width:100 },
                     //{ "data": "BatteryHealth",title:"电池状态",width:100 },
                     { "data": "MaxTem_R",title:"温度上限℃",width:100 },
                     { "data": "MinTem_R",title:"温度下限℃",width:100 },
@@ -92,119 +92,121 @@ define(["require","backbone"],function(require,Backbone){
                     // 浮充态低压限（V）   FloatingChargeStatus_U_lower
                     // 放电态高压限（V）   DisChargeStatus_U_upper
                     // 放电态低压限（V）   DisChargeStatus_U_lower
-                    { "data": "U",title:"电压V",width:80 },
-                    { "data": "T",title:"温度℃",width:80 },
-                    { "data": "R",title:"内阻MΩ",width:100 },
+                    { "data": "Voltage",title:"电压V",width:80 },
+                    { "data": "Temperature",title:"温度℃",width:80 },
+                    { "data": "Resistor",title:"内阻MΩ",width:100 },
                     //{ "data": "AmpRange",title:"量程",width:80 },
                     { "data": "Dev_U",title:"电压偏离",width:100, render: function(data){return Math.abs(data*100).toFixed(2)} },
                     { "data": "Dev_T",title:"温度偏离",width:100, render: function(data){return Math.abs(data*100).toFixed(2)} },
                     { "data": "Dev_R",title:"内阻偏离",width:100, render: function(data){return Math.abs(data*100).toFixed(2)} },
-                    { "data": "R",title:"电池寿命%",width:100, render:function(data, type,itemData){
-                        var r0 = parseFloat(itemData.battery_oum);
-                        var r = parseFloat(itemData.R);
-                        var rho = parseFloat(itemData.MaxR_R);
-                        var rhu = parseFloat(itemData.MaxR_Y);
-                        var shu = 70;
-                        var sho = 30;
-                        var rj=30;
-                        var ret = 100;
+                    { "data": "Lifetime",title:"电池寿命%",width:100 },
+                    { "data": "Capacity",title:"容量%",width:100 },
+                    // { "data": "R",title:"电池寿命%",width:100, render:function(data, type,itemData){
+                    //     var r0 = parseFloat(itemData.battery_oum);
+                    //     var r = parseFloat(itemData.R);
+                    //     var rho = parseFloat(itemData.MaxR_R);
+                    //     var rhu = parseFloat(itemData.MaxR_Y);
+                    //     var shu = 70;
+                    //     var sho = 30;
+                    //     var rj=30;
+                    //     var ret = 100;
 
-                        if(r <= r0){
-                            ret = 100;
-                        }else if(r < rhu){
-                            console.log('yellow');
-                            ret = 100 - (100 - shu) * (r-r0)/(rhu-r0)
-                        }else if(r < rho){
-                            console.log('red');
-                            ret = shu - (shu-sho)*(r-rhu)/(rho-rhu)
-                        }else if(r < rj){
-                            ret = sho - sho * (r-rho)/(rj-rho)
-                        }else{
-                            ret = 0
-                        }
-                        return ret.toFixed(2)+"%";
-                    } },// 错误
-                    { "data": "R",title:"预估容量%",width:100, render:function(data, type,itemData){
-                        var r0 = parseFloat(itemData.battery_oum);
-                        var r = parseFloat(itemData.R);
-                        var rho = parseFloat(itemData.MaxR_R);
-                        var rhu = parseFloat(itemData.MaxR_Y);
-                        var shu = 70;
-                        var fz = 0;
-                        var sho = 30;
-                        var rj=30;
-                        var ret = 100;
-               
-                        if(r <= r0){
-                            fz = 1;
-                            ret = 100;
-                        }else if(r < rhu){
+                    //     if(r <= r0){
+                    //         ret = 100;
+                    //     }else if(r < rhu){
+                    //         console.log('yellow');
+                    //         ret = 100 - (100 - shu) * (r-r0)/(rhu-r0)
+                    //     }else if(r < rho){
+                    //         console.log('red');
+                    //         ret = shu - (shu-sho)*(r-rhu)/(rho-rhu)
+                    //     }else if(r < rj){
+                    //         ret = sho - sho * (r-rho)/(rj-rho)
+                    //     }else{
+                    //         ret = 0
+                    //     }
+                    //     return ret.toFixed(2)+"%";
+                    // } },// 错误
+                    // { "data": "R",title:"预估容量%",width:100, render:function(data, type,itemData){
+                    //     var r0 = parseFloat(itemData.battery_oum);
+                    //     var r = parseFloat(itemData.R);
+                    //     var rho = parseFloat(itemData.MaxR_R);
+                    //     var rhu = parseFloat(itemData.MaxR_Y);
+                    //     var shu = 70;
+                    //     var fz = 0;
+                    //     var sho = 30;
+                    //     var rj=30;
+                    //     var ret = 100;
 
-                            ret = 100 - (100 - shu) * (r-r0)/(rhu-r0)
-                        }else if(r < rho){
-   
-                            ret = shu - (shu-sho)*(r-rhu)/(rho-rhu)
-                        }else if(r < rj){
-                            ret = sho - sho * (r-rho)/(rj-rho)
-                        }else{
-                            ret = 0
-                        }
-                        var i = 0.2;
-                        var v0 = parseFloat(itemData.battery_voltage);//标准电压
-                        var v = parseFloat(itemData.U);//当前电压
-                        var sx = v0 + i;
-                        var xx = v0 - i;
-                        
-                        var fl = 0,vhu,vho,hur,hor,vj;
-                        if(v-sx > 0){
-                            fl = 1;
-                            vhu = parseFloat(itemData.MaxU_Y);
-                            vho = parseFloat(itemData.MaxU_R);
-                            hur = 95;
-                            hor = 85;
-                            vj = 15.8;
+                    //     if(r <= r0){
+                    //         fz = 1;
+                    //         ret = 100;
+                    //     }else if(r < rhu){
 
-                        }else if(v-xx < 0){
-                            fl = 2;
-                            vhu = parseFloat(itemData.MinU_Y);
-                            vho = parseFloat(itemData.MinU_R);
-                            hur = 40;
-                            hor = 20;
-                            vj = 8;
-                        }
-                        var rl;
-                        switch(fl){
-                            case 1:
-                            if(v < vhu){
-                                rl = 100 - (100-hur) * (v-v0-i)/(vhu-v0-i)
-                            }else if(v < vho){
-                                rl = hur-(hur-hor)*(v-vhu)/(vho-vhu)
-                            }else if(v < vj){
-                                rl = hor - hor * (v - vho)/(vj-vho)
-                            }else{
-                                rl = 0
-                            }
-                            break;
-                            case 2:
-                            if(v-vhu > 0){
-                                rl = 100 - (100 - hur)*(v - v0 + i) / (vhu - v0 +i)
-                            }else if(v - vho > 0){
-                                rl = hur - (hur - hor) * (v - vhu )/(vho - vhu)
-                            }else if( v - vj > 0){
-                                rl = hor - hor* (v-vho)/(vj - vho)
-                            }else{
-                                rl = 0
-                            }
-                            break;
-                            case 0:
-                            rl = 100
-                            break;
-                        }
-                        if(fz == 0 ){
-                            rl = rl * 0.5 * (1+ret / 100) * (ret/(ret+0.0001))
-                        }
-                        return rl.toFixed(2)+"%"
-                    }},// 错误
+                    //         ret = 100 - (100 - shu) * (r-r0)/(rhu-r0)
+                    //     }else if(r < rho){
+
+                    //         ret = shu - (shu-sho)*(r-rhu)/(rho-rhu)
+                    //     }else if(r < rj){
+                    //         ret = sho - sho * (r-rho)/(rj-rho)
+                    //     }else{
+                    //         ret = 0
+                    //     }
+                    //     var i = 0.2;
+                    //     var v0 = parseFloat(itemData.battery_voltage);//标准电压
+                    //     var v = parseFloat(itemData.U);//当前电压
+                    //     var sx = v0 + i;
+                    //     var xx = v0 - i;
+
+                    //     var fl = 0,vhu,vho,hur,hor,vj;
+                    //     if(v-sx > 0){
+                    //         fl = 1;
+                    //         vhu = parseFloat(itemData.MaxU_Y);
+                    //         vho = parseFloat(itemData.MaxU_R);
+                    //         hur = 95;
+                    //         hor = 85;
+                    //         vj = 15.8;
+
+                    //     }else if(v-xx < 0){
+                    //         fl = 2;
+                    //         vhu = parseFloat(itemData.MinU_Y);
+                    //         vho = parseFloat(itemData.MinU_R);
+                    //         hur = 40;
+                    //         hor = 20;
+                    //         vj = 8;
+                    //     }
+                    //     var rl;
+                    //     switch(fl){
+                    //         case 1:
+                    //         if(v < vhu){
+                    //             rl = 100 - (100-hur) * (v-v0-i)/(vhu-v0-i)
+                    //         }else if(v < vho){
+                    //             rl = hur-(hur-hor)*(v-vhu)/(vho-vhu)
+                    //         }else if(v < vj){
+                    //             rl = hor - hor * (v - vho)/(vj-vho)
+                    //         }else{
+                    //             rl = 0
+                    //         }
+                    //         break;
+                    //         case 2:
+                    //         if(v-vhu > 0){
+                    //             rl = 100 - (100 - hur)*(v - v0 + i) / (vhu - v0 +i)
+                    //         }else if(v - vho > 0){
+                    //             rl = hur - (hur - hor) * (v - vhu )/(vho - vhu)
+                    //         }else if( v - vj > 0){
+                    //             rl = hor - hor* (v-vho)/(vj - vho)
+                    //         }else{
+                    //             rl = 0
+                    //         }
+                    //         break;
+                    //         case 0:
+                    //         rl = 100
+                    //         break;
+                    //     }
+                    //     if(fz == 0 ){
+                    //         rl = rl * 0.5 * (1+ret / 100) * (ret/(ret+0.0001))
+                    //     }
+                    //     return rl.toFixed(2)+"%"
+                    // }},// 错误
                     { "data": "record_time",title:"时间",width:150 },
                     { "data": "battery_float_up",title:"浮充上限V",width:80 },
                     //{ "data": "bytegeStatus_U_upper",title:"充电状态电压上限",width:80 },// 错误
