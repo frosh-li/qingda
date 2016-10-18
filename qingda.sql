@@ -29,7 +29,7 @@ CREATE TABLE `my_about` (
   `update_time` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `ordernum` (`ordernum`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_about`
@@ -53,7 +53,7 @@ CREATE TABLE `my_action_log` (
   `modify_time` datetime NOT NULL COMMENT '操作时间',
   PRIMARY KEY (`id`),
   KEY `querylog` (`type`,`modify_time`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=327 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=327 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_action_log`
@@ -76,7 +76,7 @@ CREATE TABLE `my_admintype` (
   `create_time` int(11) unsigned NOT NULL,
   `update_time` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_admintype`
@@ -109,7 +109,7 @@ CREATE TABLE `my_adminuser` (
   `update_time` datetime NOT NULL,
   `update_user_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_adminuser`
@@ -141,7 +141,7 @@ CREATE TABLE `my_alarm_conf` (
   `update_time` int(11) NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY `type` (`type`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=3200 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3200 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_alarm_conf`
@@ -175,7 +175,7 @@ CREATE TABLE `my_alarm_siteconf` (
   `status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '1 开，2是关',
   PRIMARY KEY (`id`),
   KEY `type` (`type`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4110 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4110 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_alarm_siteconf`
@@ -209,7 +209,7 @@ CREATE TABLE `my_alarmset` (
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `my_alerts`
@@ -268,7 +268,7 @@ CREATE TABLE `my_articles` (
   KEY `type` (`type`) USING BTREE,
   KEY `type_2` (`type`) USING BTREE,
   FULLTEXT KEY `content` (`content`)
-) ENGINE=MyISAM AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_articles`
@@ -305,7 +305,7 @@ CREATE TABLE `my_battery_info` (
   `create_time` int(11) NOT NULL COMMENT '创建时间',
   `update_time` int(11) NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=105 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_battery_info`
@@ -366,7 +366,7 @@ CREATE TABLE `my_bms_info` (
   `bms_mark` text NOT NULL,
   `modify_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_bms_info`
@@ -401,7 +401,7 @@ CREATE TABLE `my_channels` (
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`) USING BTREE,
   KEY `alias` (`alias`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=278 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=278 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_channels`
@@ -447,7 +447,7 @@ CREATE TABLE `my_company_info` (
   `monitor_tel2` varchar(20) NOT NULL,
   `modify_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_company_info`
@@ -464,7 +464,7 @@ CREATE TABLE `my_config` (
   `key` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `value` mediumtext CHARACTER SET utf8 COLLATE utf8_bin,
   PRIMARY KEY (`key`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_config`
@@ -535,7 +535,7 @@ CREATE TABLE `my_links` (
   `update_time` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `ordernum` (`ordernum`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_links`
@@ -580,7 +580,7 @@ CREATE TABLE `my_roles` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `rolename` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_roles`
@@ -629,7 +629,7 @@ CREATE TABLE `my_site` (
   `update_time` datetime NOT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`,`serial_number`),
   UNIQUE KEY `serial_number` (`serial_number`)
-) ENGINE=MyISAM AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_site`
@@ -651,7 +651,7 @@ CREATE TABLE `my_slideshow` (
   `sortnum` int(11) NOT NULL DEFAULT '0',
   `created` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_slideshow`
@@ -802,7 +802,7 @@ CREATE TABLE `my_sysuser` (
   `update_time` datetime DEFAULT NULL,
   `area` varchar(255) NOT NULL COMMENT '管理区域ID',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_sysuser`
@@ -825,7 +825,7 @@ CREATE TABLE `my_trees` (
   `update_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `my_trees`
@@ -863,7 +863,7 @@ CREATE TABLE `my_ups_info` (
   `create_time` int(11) NOT NULL COMMENT '创建时间',
   `update_time` int(11) NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='ups信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='ups信息表';
 
 -- ----------------------------
 --  Records of `my_ups_info`
@@ -957,16 +957,7 @@ CREATE TABLE `tb_battery_module_history` (
   `HumCol` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=45035 DEFAULT CHARSET=utf8;
-delimiter ;;
-CREATE TRIGGER `be` AFTER INSERT ON `tb_battery_module_history` FOR EACH ROW begin
-set @sn_key = (select sn_key from tb_battery_module where sn_key = new.sn_key);
-if @sn_key > 0 then
-	delete from tb_battery_module where sn_key=@sn_key;
-end if;
-insert into tb_battery_module(record_time,sn_key,bid,gid,mid,sid,Humidity,HumCol,DrvCurrent,DrvCol,Voltage,VolCol,Resistor,ResCol,Temperature,TemCol,Capacity,LifeTime,Dev_R,Dev_U,Dev_T,DevRCol,DevUCol,DevTCol) VALUES(new.record_time,new.sn_key,new.bid,new.gid,new.mid,new.sid,new.Humidity,new.HumCol,new.DrvCurrent,new.DrvCol,new.Voltage,new.VolCol,new.Resistor,new.ResCol,new.Temperature,new.TemCol,new.Capacity,new.LifeTime,new.Dev_R,new.Dev_U,new.Dev_T,new.DevRCol,new.DevUCol,new.DevTCol);
-end;
- ;;
-delimiter ;
+
 
 -- ----------------------------
 --  Records of `tb_battery_module_history`
@@ -1313,19 +1304,7 @@ CREATE TABLE `tb_group_module_history` (
   `HumCol` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15002 DEFAULT CHARSET=utf8;
-delimiter ;;
-CREATE TRIGGER `aa` AFTER INSERT ON `tb_group_module_history` FOR EACH ROW begin
-set @sn_key = (select sn_key from tb_group_module where sn_key = new.sn_key);
-if @sn_key > 0 then
-	delete from tb_group_module where sn_key=@sn_key;
-end if;
-insert 
-into 
-tb_group_module(record_time,sn_key,gid,sid,Humidity,HumCol,Voltage,VolCol,Current,CurCol,Temperature,TemCol,ChaState,Avg_U,Avg_T,Avg_R) 
-VALUES(new.record_time,new.sn_key,new.gid,new.sid,new.Humidity,new.HumCol,new.Voltage,new.VolCol,new.Current,new.CurCol,new.Temperature,new.TemCol,new.ChaState,new.Avg_U,new.Avg_T,new.Avg_R);
-end;
- ;;
-delimiter ;
+
 
 -- ----------------------------
 --  Records of `tb_group_module_history`
@@ -1612,19 +1591,6 @@ CREATE TABLE `tb_station_module_history` (
   `memo` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7581 DEFAULT CHARSET=utf8;
-delimiter ;;
-CREATE TRIGGER `his` AFTER INSERT ON `tb_station_module_history` FOR EACH ROW begin
-set @sn_key = (select sn_key from tb_station_module where sn_key = new.sn_key);
-if @sn_key > 0 then
-	delete from tb_station_module where sn_key=@sn_key;
-end if;
-insert 
-into 
-tb_station_module(record_time,sn_key,GroBats,Groups,sid,Temperature,TemCol,Humidity,HumCol,Voltage,VolCol,Current,CurCol,ChaState,Capacity,Lifetime) 
-VALUES(new.record_time,new.sn_key,new.GroBats,new.Groups,new.sid,new.Temperature,new.TemCol,new.Humidity,new.HumCol,new.Voltage,new.VolCol,new.Current,new.CurCol,new.ChaState,new.Capacity,new.Lifetime);
-end;
- ;;
-delimiter ;
 
 -- ----------------------------
 --  Records of `tb_station_module_history`
@@ -1802,59 +1768,5 @@ CREATE TABLE `tb_ui_event_record` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
---  Procedure structure for `clearhistory`
--- ----------------------------
-DROP PROCEDURE IF EXISTS `clearhistory`;
-delimiter ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `clearhistory`()
-begin
-declare totals bigint;
-declare maxid int;
-declare lastid bigint;
-declare nowtotals bigint;
-
-set @lastid = (select id from tb_battery_module_history order by id desc limit 500,1);
-IF @lastid > 0
-THEN
-		delete from tb_battery_module_history where id < @lastid;
-		set @nowtotals = (select count(*) from tb_battery_module_history);
-		#select @lastid,@nowtotals;
-
-END IF;
-
-set @lastid = (select id from tb_group_module_history order by id desc limit 200,1);
-IF @lastid > 0
-THEN
-		delete from tb_group_module_history where id < @lastid;
-		
-		set @nowtotals = (select count(*) from tb_group_module_history);
-		#select @lastid,@nowtotals;
-
-#select "no need clear for battery";
-END IF;
-
-set @lastid = (select id from tb_station_module_history order by id desc limit 50,1);
-IF @lastid > 0
-THEN
-		delete from tb_station_module_history where id < @lastid;
-		set @nowtotals = (select count(*) from tb_station_module_history);
-	#	select @lastid,@nowtotals;
-
-#print "no need clear for battery";
-END IF;
-
-END
- ;;
-delimiter ;
-
--- ----------------------------
---  Event structure for `clear`
--- ----------------------------
-DROP EVENT IF EXISTS `clear`;
-delimiter ;;
-CREATE DEFINER=`root`@`localhost` EVENT `clear` ON SCHEDULE EVERY 30 SECOND STARTS '2016-10-17 13:30:41' ON COMPLETION NOT PRESERVE ENABLE DO call clearhistory()
- ;;
-delimiter ;
 
 SET FOREIGN_KEY_CHECKS = 1;
