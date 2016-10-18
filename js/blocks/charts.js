@@ -166,7 +166,9 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
 
                 var values = [];
                 var xAixs = [];
-
+                if(!_this.origindata.list){
+                    _this.origindata.list = [];
+                }
                 for(var i = 0 ; i < _this.origindata.list.length; i++){
                     var cdata =  _this.origindata.list[i];
                         if(hash.indexOf('station') > -1){

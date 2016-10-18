@@ -313,10 +313,10 @@ class QueryController extends Controller
             $where .= ' and b.record_time >= "'.$start.'"';
         }
         if($end){
-            $end = date('Y-m-d H:i:s', substr(end,0,10));
+            $end = date('Y-m-d H:i:s', substr($end,0,10));
             $where .= ' and b.record_time <= "'.$end.'"';
         }
-        $temp = self::getStationIds();
+        $temp = self::getStationIds("");
          $sql = "
             select b.* from tb_battery_module_history as b
         ";
@@ -338,7 +338,7 @@ class QueryController extends Controller
             $sql .= " order by b.record_time desc ";
         }
 
-
+        //var_dump($sql);
         if ($isDownload != 1){
             $sql .= " limit $offset, $this->count ";
         }else{
