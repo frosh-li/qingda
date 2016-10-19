@@ -81,11 +81,12 @@ define(function(require){
                 }else{
                     $("#alarm_mail").removeClass("grelight").addClass("graylight");
                 }
-                if(data.status.DataSamplingStarted == "1"){
+                if(data.upiao == "1"){
                     $("#alarm_collecting").removeClass("graylight").addClass("grelight")
                 }else{
                     $("#alarm_collecting").removeClass("grelight").addClass("graylight");
                 }
+
 
                 //$("#alarm_sound").removeClass("graylight").removeClass("")
             });
