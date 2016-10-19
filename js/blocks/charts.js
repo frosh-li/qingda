@@ -29,124 +29,9 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
         chartName:"",
         initialize:function(data){
             var _this = this;
-            //列表更新
-            // _this.listenTo(Backbone.Events,"listdata:update stationdata:get",function(data){
-            //     curEvtType = "allids:get";
-            //     overFlag=false;
-
-            //     // API.getChart({id:curids,field:_this.getFieldValue()},curEvtType,listType);
-            // });
-            // //选择行变更
-            // _this.listenTo(Backbone.Events,"row:select",function(data){
-            //     curids = data.join(',');
-
-            //     if(data.length>1){
-            //         curEvtType = "allids:get";
-            //         API.getChart({id:curids,field:_this.getFieldValue()},curEvtType,listType);
-            //     }else{
-            //         curEvtType = "id:get";
-            //         API.getChart({id:curids,field:_this.getFieldValue()},curEvtType,listType);
-            //     }
-            // });
-
             _this.listenTo(Backbone.Events,"listdata:update stationdata:get",function(data){
                 _this.updateChart(data);
             });
-            _this.listenTo(Backbone.Events,"allids:get",function(data){
-
-                if(data){
-                    require(['charts'],function(chart){
-                        var xAixs = [],values = [];
-                        echart = chart;
-                        if(listType == "caution"){
-                            xAixs = ['红色','橙色','黄色'];
-                            values = [
-                                {
-                                    value:data.red,
-                                    symbol:ALARM_SYMBOL[3],
-                                    symbolSize:14,
-                                    itemStyle:{
-                                        color:ALARM_COLOR[3],
-                                        normal:{
-                                            color:ALARM_COLOR[3]
-                                        }
-                                    }
-                                },
-                                {
-                                    value:data.blue,
-                                    symbol:ALARM_SYMBOL[2],
-                                    symbolSize:14,
-                                    itemStyle:{
-                                        color:ALARM_COLOR[2],
-                                        normal:{
-                                            color:ALARM_COLOR[2]
-                                        }
-                                    }
-                                },
-                                {
-                                    value:data.yellow,
-                                    symbol:ALARM_SYMBOL[1],
-                                    symbolSize:14,
-                                    itemStyle:{
-                                        color:ALARM_COLOR[1],
-                                        normal:{
-                                            color:ALARM_COLOR[1]
-                                        }
-                                    }
-                                }
-
-                            ]
-                        }else{
-                            $.each(data.list,function(i,d){
-                                xAixs.push(d.sn_key||d.name);
-                                values.push({
-                                    value:d.value,
-                                    symbol:ALARM_SYMBOL[d.status],
-                                    symbolSize:14,
-                                    itemStyle:{
-                                        color:ALARM_COLOR[d.status],
-                                        normal:{
-                                            color:ALARM_COLOR[d.status]
-                                        }
-                                    }
-                                });
-                            })
-                        }
-                        _this.createOption(charType,values,xAixs).render();
-                        overFlag = true;
-                    })
-                }
-            });
-            // _this.listenTo(Backbone.Events,"id:get",function(data){
-
-            //     if(data && data.list){
-
-            //         require(['charts'],function(chart){
-            //             var xAixs = [],values = [],dataLen = data.list.length;
-            //             for(var i=0;i<dataLen;i++){
-            //                 xAixs.push(i+1);
-            //             }
-
-            //             echart = chart;
-
-            //             $.each(data.list,function(i,d){
-            //                 values.push({
-            //                     value:d.value,
-            //                     symbol:ALARM_SYMBOL[d.status],
-            //                     symbolSize:14,
-            //                     itemStyle:{
-            //                         color:ALARM_COLOR[d.status],
-            //                         normal:{
-            //                             color:ALARM_COLOR[d.status]
-            //                         }
-            //                     }
-            //                 });
-            //             })
-            //             _this.createOption(charType,values,xAixs).render();
-            //             overFlag = true;
-            //         })
-            //     }
-            // });
         },
         clear:function(){
 
@@ -178,15 +63,19 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                         }else if(hash.indexOf("battery") > -1){
                             xAixs.push(cdata.site_name+"-"+cdata.sid+"\n"+"组"+cdata.gid+"-"+cdata.bid);
                         }
-
+                        var status = cdata[col.substring(0,3)+"Col"];
+                        if(col == "Dev_R" || col=="Dev_T" || col=="Dev_U"){
+                            status = cdata[col.replace("_","")+"Col"];
+                        }
+                        console.log(col.substring(0,3),status);
                         values.push({
                             value:cdata[col],
-                            symbol:ALARM_SYMBOL[cdata.status],
+                            symbol:ALARM_SYMBOL[0],
                             symbolSize:14,
                             itemStyle:{
-                                color:ALARM_COLOR[cdata.status],
+                                color:ALARM_COLOR[status],
                                 normal:{
-                                    color:ALARM_COLOR[cdata.status]
+                                    color:ALARM_COLOR[status]
                                 }
                             }
                         });
@@ -246,14 +135,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 },
                 seriesLineCommonOption = {
                     symbolSize:8,
-                    itemStyle:{
-                        normal:{
-                            lineStyle:{
-                                color:"#889190",
-                                width:1
-                            }
-                        }
-                    }
+                    color:"green"
                 },
                 seriesBarCommonOption = {
                     symbolSize:8,
@@ -269,12 +151,6 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 }));
 
                 _this.chartOption = {
-                    color:['green'],
-                    lineStyle:{
-                        normal:{
-                            color:'green'
-                        }
-                    },
                     series:[
                         {
                             name:_this.chartName,

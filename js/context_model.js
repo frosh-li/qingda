@@ -14,10 +14,8 @@ define(["require","backbone"],function(require,Backbone){
                 station:[
                     { "data": "Current",title:"电流A",width:80 },
                     { "data": "Voltage",title:"电压V",width:80 },
-                    { "data": "Temperature",title:"温度℃",width:80 },
+                    { "data": "Temperature",title:"温度℃",width:80},
                     { "data": "Humidity",title:"湿度%",width:80 },
-
-
                     { "data": "Lifetime",title:"寿命%",width:80 },
                     { "data": "Capacity",title:"预估容量%",width:80 },
 
