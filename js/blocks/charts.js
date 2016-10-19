@@ -6,7 +6,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
         sys,listType,sub,curids="",curEvtType,
         charType="bar",
         ALARM_COLOR = {
-            "0":"#13bd12",
+            "0":"green",
             "1":"#ffee2c",
             "2":"#ff975e",
             "3":"#f76363"
@@ -63,17 +63,24 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                         }else if(hash.indexOf("battery") > -1){
                             xAixs.push(cdata.site_name+"-"+cdata.sid+"\n"+"组"+cdata.gid+"-"+cdata.bid);
                         }
-                        var status = cdata[col.substring(0,3)+"Col"];
+                        var status = cdata[col.substring(0,3)+"Col"] || 0;
                         if(col == "Dev_R" || col=="Dev_T" || col=="Dev_U"){
                             status = cdata[col.replace("_","")+"Col"];
                         }
-                        console.log(col.substring(0,3),status);
+
                         values.push({
                             value:cdata[col],
-                            symbol:ALARM_SYMBOL[0],
+                            symbol:ALARM_SYMBOL[status],
                             symbolSize:14,
+                            lineStyle:{
+                                normal:{
+                                    color: 'yellow',
+                                    width:2
+                                }
+                            },
+                            smooth:true,
                             itemStyle:{
-                                color:ALARM_COLOR[status],
+                                // color:ALARM_COLOR[status],
                                 normal:{
                                     color:ALARM_COLOR[status]
                                 }
@@ -138,8 +145,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                     color:"green"
                 },
                 seriesBarCommonOption = {
-                    symbolSize:8,
-                    color:'green'
+                    symbolSize:8
                 },
                 series = [];
 
@@ -157,7 +163,13 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                             type:type,
                             data:data,
                             barMaxWidth:30,
-                            symbolSize:8
+                            symbolSize:8,
+                            lineStyle:{
+                                normal:{
+                                    color:"#000"
+                                }
+                            },
+                            smooth:true
                         }
                     ],
                     xAxis:xAxis,
