@@ -118,18 +118,39 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 return;
                             }
                             console.log(_this.downloadUrl, window.location.hash);
+                            var navData = nav.getSites();
+                            var ids;
 
+                            if(this.ids && this.ids.sid){
+                                ids = this.ids.sid;
+                            }else{
+                                ids = navData.ids.join(",");
+                            }
+                            var hash = window.location.hash;
                             if(window.location.hash.indexOf("/qurey/") > -1){
                                 var startTime = $("#beginTime").val();
                                 var endTime = $("#endTime").val();
                                 if(startTime && endTime){
-                                    startTime = new Date(startTime);
-                                    endTime = new Date(endTime);
+                                    startTime = +new Date(startTime);
+                                    endTime = +new Date(endTime);
                                 }
+
+
+
+
+                                if(hash.indexOf("Group") > -1){
+                                    navData = nav.getGroups();
+                                    ids = navData.ids.join(",");
+                                }else if(hash.indexOf("Battery") > -1){
+
+                                        var batteryId = nav.getBatterys();
+                                        ids = batteryId?batteryId.ids.join(','):'';
+                                }
+
                                 if(this.downloadUrl.indexOf("?") > -1){
-                                    var durl = _this.downloadUrl + "&isdownload=1&start="+startTime+"&end="+endTime;
+                                    var durl = _this.downloadUrl + "&isdownload=1&start="+startTime+"&end="+endTime+"&id="+ids;
                                 }else{
-                                    var durl = _this.downloadUrl + "?isdownload=1&start="+startTime+"&end="+endTime;
+                                    var durl = _this.downloadUrl + "?isdownload=1&start="+startTime+"&end="+endTime+"&id="+ids;
                                 }
 
 
@@ -140,14 +161,14 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 var startTime = $("#beginTime").val();
                                 var endTime = $("#endTime").val();
                                 if(startTime && endTime){
-                                    startTime = new Date(startTime);
-                                    endTime = new Date(endTime);
+                                    startTime = +new Date(startTime);
+                                    endTime = +new Date(endTime);
                                 }
                                 var type = $("#cationCategory").val();
                                 if(this.downloadUrl.indexOf("?") > -1){
-                                    var durl = _this.downloadUrl + "&isdownload=1&start="+startTime+"&end="+endTime;
+                                    var durl = _this.downloadUrl + "&isdownload=1&start="+startTime+"&end="+endTime+"&id="+ids;
                                 }else{
-                                    var durl = _this.downloadUrl + "?isdownload=1&start="+startTime+"&end="+endTime;
+                                    var durl = _this.downloadUrl + "?isdownload=1&start="+startTime+"&end="+endTime+"&id="+ids;
                                 }
 
 
@@ -359,6 +380,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     getNavData:function(){
                         return nav.getSites();
                     },
+                    selectedIds:null,
                     events:{
                         "click .show_station_detail":"show_station_detail"
                     },
@@ -389,6 +411,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         }
 
                         $.extend(_param,{id:ids});
+                        this.selectedIds = ids;
                         API.getStationRealTimeData(_param);
                     },
                     renderChart:function(){

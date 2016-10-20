@@ -121,9 +121,9 @@ class QueryController extends Controller
                 $sql = "select * from tb_station_param where sn_key=".$value['sn_key'];
                     $data = Yii::app()->bms->createCommand($sql)->queryRow();
                     $value = array_merge($value, $data);
-                $sql = "select record_time as end_time from tb_station_module_history where charge_state=2 and  sn_key=".$value['sn_key']." order by record_time desc limit 0,1";
+                $sql = "select record_time as end_time from tb_station_module_history where ChaState=2 and  sn_key=".$value['sn_key']." order by record_time desc limit 0,1";
                 $end_time = Yii::app()->bms->createCommand($sql)->queryScalar();
-                $sql = "select record_time as start_time from tb_station_module_history where charge_state!=2  and sn_key=".$value['sn_key']." and record_time < '".$end_time."' order by record_time desc limit 0,1";
+                $sql = "select record_time as start_time from tb_station_module_history where ChaState!=2  and sn_key=".$value['sn_key']." and record_time < '".$end_time."' order by record_time desc limit 0,1";
                 $start_time = Yii::app()->bms->createCommand($sql)->queryScalar();
                 $value['end_time'] = $end_time;
                 $value['start_time'] = $start_time;
@@ -142,51 +142,50 @@ class QueryController extends Controller
             $objPHPExcel = new PHPExcel();
             $workSheet = $objPHPExcel->setActiveSheetIndex(0);
             // Add some data
-            $workSheet->setCellValue('A1', '名称')
-                ->setCellValue('B1', '站号')
-                ->setCellValue('C1', '时间')
-                ->setCellValue('D1', '总电流(A)')
-                ->setCellValue('E1', '平均电压(V)')
-                ->setCellValue('F1', '环境温度（℃）')
-                ->setCellValue('G1', '环境温度上限（℃）')
-                ->setCellValue('H1', '环境温度下限（℃）')
-                ->setCellValue('I1', '环境湿度（%）')
-                ->setCellValue('J1', '环境湿度上限（%）')
-                ->setCellValue('K1', '环境湿度下限（%）')
-                ->setCellValue('L1', '组数')
-                ->setCellValue('M1', '电池数')
-                ->setCellValue('N1', '电池状态')
-                ->setCellValue('O1', 'UPS状态')
-                ->setCellValue('P1', '预估候备时间（H）')
-                ->setCellValue('Q1', '候备功率W/h')
-                ->setCellValue('R1', '预约维护日期')
-                ->setCellValue('S1', '放电日期')
-                ->setCellValue('T1', '放电时长')
-                ->setCellValue('U1', '最大放电电流（A）')
-                ->setCellValue('V1', '最大充电电流（A）');
+            $workSheet->setCellValue('A1', '站名')
+                ->setCellValue('C1', '电流A')
+                ->setCellValue('D1', '电压V')
+                ->setCellValue('E1', '温度℃')
+                ->setCellValue('F1', '湿度%')
+                ->setCellValue('G1', '寿命%')
+                ->setCellValue('H1', '预估容量%')
+                ->setCellValue('I1', 'UPS状态')
+                ->setCellValue('J1', '时间')
+                ->setCellValue('K1', '组数')
+                ->setCellValue('L1', '电池数')
+                ->setCellValue('M1', '功率W/h')
+                ->setCellValue('N1', '维护日期')
+                ->setCellValue('O1', '放电开始')
+                ->setCellValue('P1', '放电结束')
+                ->setCellValue('Q1', '温度上限℃')
+                ->setCellValue('R1', '温度下限℃')
+                ->setCellValue('S1', '湿度上限%')
+                ->setCellValue('T1', '湿度下限%')
+                ->setCellValue('U1', '最大放电电流A')
+                ->setCellValue('V1', '最大充电电流A');
             $index = 1;
             foreach ($ret['data']['list'] as $v) {
                 $index ++;
                 $workSheet->setCellValue('A'.$index, isset($v['site_name']) ? $v['site_name']:"")
                     ->setCellValue('B'.$index, isset($v['sid']) ? $v['sid']:"")
-                    ->setCellValue('C'.$index, isset($v['record_time']) ? $v['record_time']:"")
-                    ->setCellValue('D'.$index, isset($v['I']) ? $v['I']:"")
-                    ->setCellValue('E'.$index, isset($v['U']) ? $v['U']:"")
-                    ->setCellValue('F'.$index, isset($v['T']) ? $v['T']:"")
-                    ->setCellValue('G'.$index, isset($v['TH']) ? $v['TH']:"")
-                    ->setCellValue('H'.$index, isset($v['TL']) ? $v['TL']:"")
-                    ->setCellValue('I'.$index, isset($v['Humi']) ? $v['Humi']:"")
-                    ->setCellValue('J'.$index, isset($v['HumiH']) ? $v['HumiH']:"")
-                    ->setCellValue('K'.$index, isset($v['HumiL']) ? $v['HumiL']:"")
-                    ->setCellValue('L'.$index, isset($v['total']) ? $v['total']:"")
-                    ->setCellValue('M'.$index, isset($v['batteryCount']) ? $v['batteryCount']:"")
-                    ->setCellValue('N'.$index, isset($v['BatteryHealth']) ? $v['BatteryHealth']:"")
-                    ->setCellValue('O'.$index, isset($v['charges']) ? ($v['charges'] == 2 ? "充电":$v['charges'] == 1? "放电":"浮充"):"")
-                    ->setCellValue('P'.$index, isset($v['BackupTime']) ? $v['BackupTime']:"")
-                    ->setCellValue('Q'.$index, isset($v['BackupW']) ? $v['BackupW']:"")
-                    ->setCellValue('R'.$index, isset($v['ups_maintain_date']) ? $v['ups_maintain_date']:"")
-                    ->setCellValue('S'.$index, isset($v['disChargeDate']) ? $v['disChargeDate']:"")
-                    ->setCellValue('T'.$index, isset($v['disChargeLast']) ? $v['disChargeLast']:"")
+                    ->setCellValue('C'.$index, isset($v['Current']) ? $v['Current']:"")
+                    ->setCellValue('D'.$index, isset($v['Voltage']) ? $v['Voltage']:"")
+                    ->setCellValue('E'.$index, isset($v['Temperature']) ? $v['Temperature']:"")
+                    ->setCellValue('F'.$index, isset($v['Humidity']) ? $v['Humidity']:"")
+                    ->setCellValue('G'.$index, isset($v['Lifetime']) ? $v['Lifetime']:"")
+                    ->setCellValue('H'.$index, isset($v['Capacity']) ? $v['Capacity']:"")
+                    ->setCellValue('I'.$index, $v['ChaState'] == 1 ? "充电":($v['ChaState']==2?"放电":"浮冲"))
+                    ->setCellValue('J'.$index, isset($v['record_time']) ? $v['record_time']:"")
+                    ->setCellValue('K'.$index, isset($v['Groups']) ? $v['Groups']:"")
+                    ->setCellValue('L'.$index, isset($v['GroBats']) ? $v['GroBats']:"")
+                    ->setCellValue('M'.$index, isset($v['ups_power']) ? $v['ups_power']:"")
+                    ->setCellValue('N'.$index, isset($v['ups_maintain_date']) ? $v['ups_maintain_date']:"")
+                    ->setCellValue('O'.$index, isset($v['start_time']) ? $v['start_time']:"")
+                    ->setCellValue('P'.$index, isset($v['end_time']) ? $v['end_time']:"")
+                    ->setCellValue('Q'.$index, isset($v['MaxTem_R']) ? $v['MaxTem_R']:"")
+                    ->setCellValue('R'.$index, isset($v['MinTem_R']) ? $v['MinTem_R']:"")
+                    ->setCellValue('S'.$index, isset($v['MaxHum_R']) ? $v['MaxHum_R']:"")
+                    ->setCellValue('T'.$index, isset($v['MinHum_R']) ? $v['MinHum_R']:"")
                     ->setCellValue('U'.$index, isset($v['ups_max_discharge']) ? $v['ups_max_discharge']:"")
                     ->setCellValue('V'.$index, isset($v['ups_max_charge']) ? $v['ups_max_charge']:"");
             }
@@ -195,6 +194,7 @@ class QueryController extends Controller
             // Set active sheet index to the first sheet, so Excel opens this as the first sheet
             $objPHPExcel->setActiveSheetIndex(0);
             // Redirect output to a client’s web browser (Excel5)
+            // header("Content-type:application/vnd.ms-excel");
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment;filename="station_history.xls"');
             header('Cache-Control: max-age=0');
@@ -218,6 +218,7 @@ class QueryController extends Controller
     //组实时数据
     public function actionGroupmodule()
     {
+        $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
         $this->setPageCount();
         $id = Yii::app()->request->getParam('id',0);
 
@@ -296,7 +297,85 @@ class QueryController extends Controller
             );
         }
 
-        echo json_encode($ret);
+        if ($isDownload == 1) {
+            Yii::$enableIncludePath = false;
+            Yii::import('application.extensions.PHPExcel.PHPExcel', 1);
+            $objPHPExcel = new PHPExcel();
+            $workSheet = $objPHPExcel->setActiveSheetIndex(0);
+            // Add some data
+            $workSheet->setCellValue('A1', '站名')
+                ->setCellValue('B1', '站号')
+                ->setCellValue('C1', '组号')
+                ->setCellValue('D1', '电压V')
+                ->setCellValue('E1', '电流A')
+                ->setCellValue('F1', '平均温度℃')
+                ->setCellValue('G1', '湿度%')
+                ->setCellValue('H1', '电压均值')
+                ->setCellValue('I1', '温度均值')
+                ->setCellValue('J1', '内阻均值')
+                ->setCellValue('K1', '氢气浓度%')
+                ->setCellValue('L1', '氧气浓度%')
+                ->setCellValue('M1', '电池数')
+                ->setCellValue('N1', '时间')
+                ->setCellValue('O1', '最大放电电流A')
+                ->setCellValue('P1', '最大充电电流A')
+                ->setCellValue('Q1', '氢气上限%')
+                ->setCellValue('R1', '氧气上限%')
+                ->setCellValue('S1', '温度上限℃')
+                ->setCellValue('T1', '温度下限℃')
+                ->setCellValue('U1', '湿度上限%')
+                ->setCellValue('V1', '湿度下限%');
+            $index = 1;
+            foreach ($ret['data']['list'] as $v) {
+                $index ++;
+                $workSheet->setCellValue('A'.$index, isset($v['site_name']) ? $v['site_name']:"")
+                    ->setCellValue('B'.$index, isset($v['sid']) ? $v['sid']:"")
+                    ->setCellValue('C'.$index, isset($v['bid']) ? $v['bid']:"")
+                    ->setCellValue('D'.$index, isset($v['Voltage']) ? $v['Voltage']:"")
+                    ->setCellValue('E'.$index, isset($v['Current']) ? $v['Current']:"")
+                    ->setCellValue('F'.$index, isset($v['Temperature']) ? $v['Temperature']:"")
+                    ->setCellValue('G'.$index, isset($v['Humidity']) ? $v['Humidity']:"")
+                    ->setCellValue('H'.$index, isset($v['Avg_U']) ? $v['Avg_U']:"")
+                    ->setCellValue('I'.$index, isset($v['Avg_T']) ? $v['Avg_T']:"")
+                    ->setCellValue('J'.$index, isset($v['Avg_R']) ? $v['Avg_R']:"")
+                    ->setCellValue('K'.$index,"")
+                    ->setCellValue('L'.$index,"")
+                    ->setCellValue('M'.$index, isset($v['GroBats']) ? $v['GroBats']:"")
+                    ->setCellValue('N'.$index, isset($v['record_time']) ? $v['record_time']:"")
+                    ->setCellValue('O'.$index, isset($v['DisChaLim_R']) ? $v['DisChaLim_R']:"")
+                    ->setCellValue('P'.$index, isset($v['ChaLim_R']) ? $v['ChaLim_R']:"")
+                    ->setCellValue('Q'.$index,"")
+                    ->setCellValue('R'.$index,"")
+                    ->setCellValue('S'.$index, isset($v['MaxTem_R']) ? $v['MaxTem_R']:"")
+                    ->setCellValue('T'.$index, isset($v['MinTem_R']) ? $v['MinTem_R']:"")
+                    ->setCellValue('U'.$index, isset($v['MaxHumi_R']) ? $v['MaxHumi_R']:"")
+                    ->setCellValue('V'.$index, isset($v['MinHumi_R']) ? $v['MinHumi_R']:"");
+            }
+            // Rename worksheet
+            $objPHPExcel->getActiveSheet()->setTitle('站历史数据');
+            // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+            $objPHPExcel->setActiveSheetIndex(0);
+            // Redirect output to a client’s web browser (Excel5)
+            // header("Content-type:application/vnd.ms-excel");
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="group_history.xls"');
+            header('Cache-Control: max-age=0');
+// If you're serving to IE 9, then the following may be needed
+            header('Cache-Control: max-age=1');
+
+// If you're serving to IE over SSL, then the following may be needed
+            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header ('Pragma: public'); // HTTP/1.0
+
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+        } else {
+            echo json_encode($ret);
+        }
+
+
     }
 
     // 电池实时数据
