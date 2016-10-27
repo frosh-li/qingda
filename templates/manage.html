@@ -516,6 +516,13 @@
                 <input class="input-w-1" type="text" key="functionary_phone"/>
             </div>
             <div class="rowElem">
+                <label class="item-title">是否接收短信: </label>
+                <input type="hidden" key="functionary_sms" value=1 />
+                <input class="input-w-1" disable key="functionary_sms" value='是' type="text" />
+                <label class="item-title">接收邮件(不接收填空): </label>
+                <input class="input-w-1" type="text" key="functionary_mail"/>
+            </div>
+            <div class="rowElem">
                 <label class="item-title">设备负责人: </label>
                 <input class="input-w-1" type="text" key="device_owner"/>
                 <label class="item-title">设备负责人电话: </label>
@@ -528,10 +535,36 @@
                 <input class="input-w-1" type="text" key="emergency_phone"/>
             </div>
             <div class="rowElem">
+                <label class="item-title">区域主管: </label>
+                <input class="input-w-1" type="text" key="area_owner"/>
+                <label class="item-title">区域主管电话: </label>
+                <input class="input-w-1" type="text" key="area_owner_phone"/>
+            </div>
+            <div class="rowElem">
+
+                <label class="item-title">接收邮件(不接收填空): </label>
+                <input class="input-w-1" type="text" key="area_owner_mail"/>
+                <label class="item-title">是否接收短信: </label>
+                <select class="input-w-1" key="area_owner_sms">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </div>
+            <div class="rowElem">
                 <label class="item-title">上级主管: </label>
                 <input class="input-w-1" type="text" key="parent_owner"/>
                 <label class="item-title">上级主管电话: </label>
                 <input class="input-w-1" type="text" key="parent_owner_phone"/>
+            </div>
+            <div class="rowElem">
+
+                <label class="item-title">接收邮件(不接收填空): </label>
+                <input class="input-w-1" type="text" key="parent_owner_mail"/>
+                <label class="item-title">是否接收短信: </label>
+                <select class="input-w-1" key="parent_owner_sms">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
             </div>
             <div class="rowElem">
                 <label class="item-title">电池组数: </label>
@@ -1068,15 +1101,22 @@
                 <div id="treesWrap" class="tree-selector ztree"></div>
                 <input type="hidden" key="id" />
             </div>
+
             <div class="rowElem">
                 <label class="item-title" for="name">登陆名: </label>
-                <input class="input-w-1" type="text" key="name" />
+                <input class="input-w-1" type="text" key="username" />
                 <label class="item-title" for="name">登陆密码: </label>
                 <input class="input-w-1" type="password" key="password" />
             </div>
             <div class="rowElem">
+                <label class="item-title" for="unit">单位名称: </label>
+                <input class="input-w-1" type="text" key="unit" />
+                <label class="item-title" for="backup_phone">备用电话: </label>
+                <input class="input-w-1" type="text" key="backup_phone" />
+            </div>
+            <div class="rowElem">
                 <label class="item-title" for="name">姓名: </label>
-                <input class="input-w-1" type="text" key="username" />
+                <input class="input-w-1" type="text" key="name" />
                 <label class="item-title" for="name">电话: </label>
                 <input class="input-w-1" type="text" key="phone" />
             </div>
@@ -1088,7 +1128,9 @@
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">地址: </label>
-                <input class="input-w-2" type="text" key="location" />
+                <input class="input-w-1" type="text" key="location" />
+                <label class="item-title" for="name">班次: </label>
+                <input class="input-w-1" type="text" key="duty_num" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">角色: </label>
@@ -1442,7 +1484,18 @@
                 <label class="item-title" for="name">内阻采集时间间隔(分): </label>
                 <input class="input-w-1" type="text" key="resistance" />
                 <label class="item-title" for="name">是否显示地图页面: </label>
-                <label><input type="checkbox" name="email" key="dismap" specify-value="1|0">显示</label>
+                <label><input type="checkbox" name="dismap" key="dismap" specify-value="1|0">显示</label>
+           </div>
+           <div class="rowElem">
+
+                <label class="item-title" for="name">灯光报警: </label>
+                <label><input type="checkbox" name="light" key="light_on_off" specify-value="1|0">开</label>
+                <label class="item-title" for="name">声音报警: </label>
+                <label><input type="checkbox" name="voice" key="voice_on_off" specify-value="1|0">开</label>
+                <label class="item-title" for="name">短信: </label>
+                <label><input type="checkbox" name="sms" key="sms_on_off" specify-value="1|0">开</label>
+                <label class="item-title" for="name">邮件: </label>
+                <label><input type="checkbox" name="email" key="email_on_off" specify-value="1|0">开</label>
            </div>
         </form>
         <div class="form-btns">

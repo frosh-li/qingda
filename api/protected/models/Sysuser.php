@@ -7,6 +7,8 @@
  * @property integer $id
  * @property string $username
  * @property string $name
+ * @property string $unit
+ * @property string $backup_phone
  * @property string $gender
  * @property string $password
  * @property string $salt
@@ -21,6 +23,7 @@
  * @property string $create_time
  * @property string $update_time
  * @property string $area
+ * @property string $duty_num
  */
 class Sysuser extends CActiveRecord
 {
@@ -50,7 +53,7 @@ class Sysuser extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('username, name, password, role, postname, location, area', 'required'),
+			array('username, name, password, role, postname, location, area,unit, backup_phone,duty_num', 'required'),
 			array('role', 'numerical', 'integerOnly'=>true),
 			array('username, password, email', 'length', 'max'=>128),
 			array('name', 'length', 'max'=>20),
@@ -87,6 +90,9 @@ class Sysuser extends CActiveRecord
 			'name' => 'Name',
 			'gender' => 'Gender',
 			'password' => 'Password',
+			'backup_phone' => 'Backup_phone',
+			'unit' => 'Unit_phone',
+			'duty_num' => 'Duty_num',
 			'salt' => 'Salt',
 			'role' => 'Role',
 			'phone' => 'Phone',
@@ -130,6 +136,9 @@ class Sysuser extends CActiveRecord
 		$criteria->compare('create_time',$this->create_time,true);
 		$criteria->compare('update_time',$this->update_time,true);
 		$criteria->compare('area',$this->area,true);
+		$criteria->compare('backup_phone',$this->backup_phone,true);
+		$criteria->compare('unit',$this->unit,true);
+		$criteria->compare('duty_num',$this->duty_num,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -153,6 +153,18 @@ class AlarmsetController extends Controller
         echo json_encode($ret);
 	}
 
+    public function actionUpdateMsg(){
+        $id = Yii::app()->request->getParam('id',0);
+        $field = Yii::app()->request->getParam('field',0);
+        $val = Yii::app()->request->getParam('val',0);
+        $sql = 'update my_station_alert_desc set '.$field.'='.$val." where id=".$id;
+        $update = Yii::app()->db->createCommand($sql)->queryAll();
+        $ret['response'] = array(
+                'code' => 0,
+                'msg' => '更新成功'
+        );
+        echo json_encode($ret);
+    }
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -180,6 +192,19 @@ class AlarmsetController extends Controller
         echo json_encode($result);
 		}
 
+    public function actionConfig(){
+        $sql = "select * from my_station_alert_desc";
+        $alertSets = Yii::app()->db->createCommand("select * from my_station_alert_desc order by id asc")->queryAll();
+        $ret['response'] = array(
+            'code' => 0,
+            'msg' => 'ok'
+        );
+        $ret['data'] = array();
+        foreach($alertSets as $key=>$value){
+            $ret['data']['list'][] = $value;
+        }
+        echo json_encode($ret);
+    }
 	/**
 	 * Lists all models.
 	 */

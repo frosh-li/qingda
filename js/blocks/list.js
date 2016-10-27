@@ -964,14 +964,76 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "site_property",title:"站点性质",width:150  },
                                     { "data": "areaname",title:"隶属区域",width:150  },
                                     { "data": "fix_phone",title:"固定电话"},
-                                    { "data": "functionary",title:"负责人"},
+                                    { "data": "functionary",title:"负责人",render:function(data,_,allData){
+                                        var html = [];
+                                        if(allData.functionary_sms){
+                                            html.push('<span style="background-color:green">')
+                                        }else{
+                                            html.push('<span>');
+                                        }
+                                        html.push("短");
+                                        html.push("</span>");
+
+                                        if(allData.functionary_mail){
+                                            html.push('<span style="background-color:green">')
+                                        }else{
+                                            html.push('<span>');
+                                        }
+
+                                        html.push("邮");
+                                        html.push("</span>");
+
+                                        return "<span>"+data+"</span>"+html.join("");
+                                    }},
                                     { "data": "functionary_phone",title:"负责人电话"},
                                     { "data": "device_owner",title:"设备负责人"},
                                     { "data": "device_owner_phone",title:"设备负责人电话"},
 
                                     { "data": "emergency_person",title:"紧急联系人姓名",width:150  },
                                     { "data": "emergency_phone",title:"紧急联系人手机",width:250  },
-                                    { "data": "parent_owner",title:"上级主管"},
+                                    { "data": "area_owner",title:"区域主管",render:function(data,_,allData){
+                                        var html = [];
+                                        if(allData.area_owner_sms){
+                                            html.push('<span style="background-color:green">')
+                                        }else{
+                                            html.push('<span>');
+                                        }
+                                        html.push("短");
+                                        html.push("</span>");
+
+                                        if(allData.area_owner_mail){
+                                            html.push('<span style="background-color:green">')
+                                        }else{
+                                            html.push('<span>');
+                                        }
+
+                                        html.push("邮");
+                                        html.push("</span>");
+
+                                        return "<span>"+data+"</span>"+html.join("");
+                                    }},
+                                    { "data": "area_owner_phone",title:"区域主管电话"},
+                                    { "data": "parent_owner",title:"上级主管",render:function(data,_,allData){
+                                        var html = [];
+                                        if(allData.parent_owner_sms){
+                                            html.push('<span style="background-color:green">')
+                                        }else{
+                                            html.push('<span>');
+                                        }
+                                        html.push("短");
+                                        html.push("</span>");
+
+                                        if(allData.parent_owner_mail){
+                                            html.push('<span style="background-color:green">')
+                                        }else{
+                                            html.push('<span>');
+                                        }
+
+                                        html.push("邮");
+                                        html.push("</span>");
+
+                                        return "<span>"+data+"</span>"+html.join("");
+                                    }},
                                     { "data": "parent_owner_phone",title:"上级主管电话"},
                                     { "data": "groups",title:"电池组数",width:100  },
                                     { "data": "batteries",title:"每组电池数",width:250  },
@@ -1383,11 +1445,14 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {leftColumns: 1},
                                 "columns": [
-                                    {"data": "username", title: "序号"},
-                                    {"data": "username", title: "姓名"},
+                                    {"data": "unit", title: "单位名称"},
+                                    {"data": "name", title: "姓名"},
+                                    {"data": "username", title: "登陆名"},
                                     {"data": "phone", title: "联系电话"},
+                                    {"data": "backup_phone", title: "备用电话"},
                                     {"data": "email", title: "邮箱"},
                                     {"data": "postname", title: "职位"},
+                                    {"data": "duty_num", title: "班次"},
                                     {"data": "location", title: "住址"},
                                     {"data": "areaname", title: "管理范围", render:function(data){
                                         var a = data.split(" ");
@@ -1396,7 +1461,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         return "<div>"+a.join(" ")+"</div>";
                                     }},
                                     {"data": "rolename", title: "角色"},
-                                    {"data": "name", title: "登陆名"},
+
                                     {
                                         data:"id",
                                         render: function (data) {
@@ -1418,18 +1483,16 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     events:{
                         "click .list-edit-btn":"onEdit",
                         "click .list-del-btn":"onDel",
+                        "change .changed": "onChange",
                         "mouseover .dataTable tr":"inRow",
                         "mouseout .dataTable tr":"inRow"
                     },
-                    onEdit:function(e){
-                        ui.showMessageEditDialog($(e.currentTarget).attr('pid'));
-                    },
-                    onDel:function(e){
-                        if(confirm("是否确定删除此人员")){
-                            API.deleteMessage({
-                                id:$(e.currentTarget).attr('pid')
-                            });
-                        }
+                    onChange: function(e){
+                        var field = $(e.currentTarget).attr('field');
+                        var id = $(e.currentTarget).attr("dataid");
+                        var val = $(e.currentTarget).val();
+                        console.log(field,id,val);
+                        API.updateMessage({id:id, field:field,val:val});
                     },
                     fetchData:function(_param){
                         API.getMessagesData(_param);
@@ -1446,20 +1509,49 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {leftColumns: 1},
                                 "columns": [
-                                    {"data": "username", title: "序号"},
-                                    {"data": "username", title: "接收人名称"},
-                                    {"data": "phone", title: "手机号码"},
-                                    {"data": "phone_status", title: "是否接收邮件",render:function(data){return createHasOrNotHtml(data)}},
-                                    {"data": "email", title: "邮箱"},
-                                    {"data": "email_status", title: "是否接收邮件",render:function(data){return createHasOrNotHtml(data)}},
-                                    {
-                                        data:"id",
-                                        render: function (data) {
-                                            return _.template('<div style="width:160px">'+$("#editBtn").html()+$("#delBtn").html()+'</div>')({
-                                                id:data
-                                            });
+                                    {"data": "id", title: "ID"},
+                                    {"data": "desc", title: "描述"},
+                                    {"data": "ignore", title: "是否可忽略", width:100,render: function(data,_,allDate){
+                                            var html = [];
+                                            html.push('<select class="changed" field="ignore" dataid='+allDate.id+'>');
+                                            if(data == '1'){
+                                                html.push('<option value=1 selected>是</option>');
+                                                html.push('<option value=0>否</option>');
+                                            }else{
+                                                html.push('<option value=1>是</option>');
+                                                html.push('<option value=0 selected>否</option>');
+                                            }
+                                            html.push('</select>');
+                                            return html.join("");
+                                        }},
+                                    {"data": "send_email", title: "是否发送邮件",width:100,
+                                        render: function(data,_,allDate){
+                                            var html = [];
+                                            html.push('<select class="changed" field="send_email" dataid='+allDate.id+'>');
+                                            if(data == '1'){
+                                                html.push('<option value=1 selected>是</option>');
+                                                html.push('<option value=0>否</option>');
+                                            }else{
+                                                html.push('<option value=1>是</option>');
+                                                html.push('<option value=0 selected>否</option>');
+                                            }
+                                            html.push('</select>');
+                                            return html.join("");
                                         }
-                                    }
+                                    },
+                                    {"data": "send_msg", title: "是否发送短信",width:100,render: function(data,_,allDate){
+                                            var html = [];
+                                            html.push('<select class="changed" field="send_msg" dataid='+allDate.id+'>');
+                                            if(data == '1'){
+                                                html.push('<option value=1 selected>是</option>');
+                                                html.push('<option value=0>否</option>');
+                                            }else{
+                                                html.push('<option value=1>是</option>');
+                                                html.push('<option value=0 selected>否</option>');
+                                            }
+                                            html.push('</select>');
+                                            return html.join("");
+                                        }},
                                 ]
                             })));
                         })

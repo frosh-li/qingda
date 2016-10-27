@@ -8,6 +8,10 @@ class ParamController extends Controller
         $collection  = Yii::app()->request->getParam('collection','');
         $resistance  = Yii::app()->request->getParam('resistance','');
         $dismap  = Yii::app()->request->getParam('dismap','');
+        $sms_on_off  = Yii::app()->request->getParam('sms_on_off','');
+        $email_on_off  = Yii::app()->request->getParam('email_on_off','');
+        $light_on_off  = Yii::app()->request->getParam('light_on_off','');
+        $voice_on_off  = Yii::app()->request->getParam('voice_on_off','');
         $ret['response'] = array(
             'code'=>0,
             'msg'=>'设置参数成功！'
@@ -38,10 +42,20 @@ class ParamController extends Controller
         if ($dismap != '') {
             $i++;
             Yii::app()->config->set('dismap', $dismap);
+            Yii::app()->config->set('sms_on_off', $sms_on_off);
+            Yii::app()->config->set('email_on_off', $email_on_off);
+            Yii::app()->config->set('light_on_off', $light_on_off);
+            Yii::app()->config->set('voice_on_off', $voice_on_off);
             $ret['data'] = array(
-                'dismap' => $dismap
+                'dismap' => $dismap,
+                'sms_on_off' => $sms_on_off,
+                'email_on_off' => $email_on_off,
+                'light_on_off' => $light_on_off,
+                'voice_on_off' => $voice_on_off
             );
         }
+
+
         if ($i ==0 ) {
             $ret['response'] = array(
                 'code'=>-1,
@@ -67,7 +81,7 @@ class ParamController extends Controller
                 $key=>$value
             );
         }else{
-            $array = array('refresh','collection','resistance','dismap');
+            $array = array('refresh','collection','resistance','dismap','sms_on_off','email_on_off','light_on_off','voice_on_off');
             foreach ($array as $key => $k) {
                 $v = Yii::app()->config->get($k);
                 $ret['data'][$k] = $v;

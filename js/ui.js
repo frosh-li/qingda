@@ -61,31 +61,35 @@ define(function(require){
                 }
                 // 更新灯的状态
 
-                if(data.status.sound_alarm_is_ON == "1"){
+                if(data.voice_on_off == "1"){
                     $("#alarm_sound").removeClass("graylight").addClass("grelight")
                 }else{
                     $("#alarm_sound").removeClass("grelight").addClass("graylight");
                 }
-                if(data.status.light_alarm_is_ON == "1"){
+                if(data.light_on_off == "1"){
                     $("#alarm_light").removeClass("graylight").addClass("grelight")
                 }else{
                     $("#alarm_light").removeClass("grelight").addClass("graylight");
                 }
-                if(data.status.sms_is_Send == "1"){
-                    $("#alarm_sms").removeClass("graylight").addClass("grelight")
-                }else{
-                    $("#alarm_sms").removeClass("grelight").addClass("graylight");
-                }
-                if(data.status.email_is_Send == "1"){
-                    $("#alarm_mail").removeClass("graylight").addClass("grelight")
-                }else{
-                    $("#alarm_mail").removeClass("grelight").addClass("graylight");
-                }
+
                 if(data.upiao == "1"){
                     $("#alarm_collecting").removeClass("graylight").addClass("grelight")
                 }else{
                     $("#alarm_collecting").removeClass("grelight").addClass("graylight");
                 }
+
+                if(data.sms_on_off == "1"){
+                    $("#alarm_sms").removeClass("graylight").addClass("grelight")
+                }else{
+                    $("#alarm_sms").removeClass("grelight").addClass("graylight");
+                }
+                if(data.email_on_off == "1"){
+                    $("#alarm_mail").removeClass("graylight").addClass("grelight")
+                }else{
+                    $("#alarm_mail").removeClass("grelight").addClass("graylight");
+                }
+
+
 
 
                 //$("#alarm_sound").removeClass("graylight").removeClass("")
@@ -102,8 +106,31 @@ define(function(require){
                 }else{
                     $("#map-switch").show();
                 }
+                if(data.sms_on_off == "1"){
+                    $("#alarm_sms").removeClass("graylight").addClass("grelight")
+                }else{
+                    $("#alarm_sms").removeClass("grelight").addClass("graylight");
+                }
+                if(data.email_on_off == "1"){
+                    $("#alarm_mail").removeClass("graylight").addClass("grelight")
+                }else{
+                    $("#alarm_mail").removeClass("grelight").addClass("graylight");
+                }
+
+                if(data.voice_on_off == "1"){
+                    $("#alarm_sound").removeClass("graylight").addClass("grelight")
+                }else{
+                    $("#alarm_sound").removeClass("grelight").addClass("graylight");
+                }
+                if(data.light_on_off == "1"){
+                    $("#alarm_light").removeClass("graylight").addClass("grelight")
+                }else{
+                    $("#alarm_light").removeClass("grelight").addClass("graylight");
+                }
+
                 alert("修改成功")
             });
+
 
             _this.listenTo(Backbone.Events,"monitoring:start",function(data){
                 if(data.total && data.total > 0){
@@ -401,10 +428,32 @@ define(function(require){
                 var param = common.getFormValue($("#otherOptionEdit"));
 
                 param.dismap = "0";
+                param.sms_on_off = "0";
+                param.email_on_off = "0";
+                param.light_on_off = "0";
+                param.voice_on_off = "0";
                 $("#map-switch").hide();
                 if($("#otherOptionEdit [key=dismap]").siblings(".jqTransformChecked").length){
                     param.dismap = "1";
                     $("#map-switch").show();
+                }
+
+                if($("#otherOptionEdit [key=sms_on_off]").siblings(".jqTransformChecked").length){
+                    param.sms_on_off = "1";
+                    // $("#map-switch").show();
+                }
+                if($("#otherOptionEdit [key=light_on_off]").siblings(".jqTransformChecked").length){
+                    param.light_on_off = "1";
+                    // $("#map-switch").show();
+                }
+                if($("#otherOptionEdit [key=voice_on_off]").siblings(".jqTransformChecked").length){
+                    param.voice_on_off = "1";
+                    // $("#map-switch").show();
+                }
+
+                if($("#otherOptionEdit [key=email_on_off]").siblings(".jqTransformChecked").length){
+                    param.email_on_off = "1";
+                    // $("#map-switch").show();
                 }
 
                 API.updateParam(param);

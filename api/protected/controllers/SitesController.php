@@ -138,6 +138,15 @@ class SitesController extends Controller
         $has_group_HO_control=Yii::app()->request->getParam('has_group_HO_control','');
         $device_mac=Yii::app()->request->getParam('device_mac','');
 
+        $functionary_mail=Yii::app()->request->getParam('functionary_mail','');
+        $area_owner_mail=Yii::app()->request->getParam('area_owner_mail','');
+        $area_owner_sms=Yii::app()->request->getParam('area_owner_sms',0);
+        $parent_owner_mail=Yii::app()->request->getParam('parent_owner_mail','');
+        $parent_owner_sms=Yii::app()->request->getParam('parent_owner_sms',0);
+
+        $area_owner=Yii::app()->request->getParam('area_owner','');
+        $area_owner_phone=Yii::app()->request->getParam('area_owner_phone','');
+
         if ($bms_install_date =='') {
             $bms_install_date = date('Y-m-d H:i:s');
         }
@@ -194,6 +203,16 @@ class SitesController extends Controller
             $model->has_group_TH_control=$has_group_TH_control;
             $model->has_group_HO_control=$has_group_HO_control;
             $model->device_mac=$device_mac;
+
+            $model->functionary_mail=$functionary_mail;
+            $model->area_owner_mail=$area_owner_mail;
+            $model->area_owner_sms=$area_owner_sms;
+            $model->parent_owner_mail=$parent_owner_mail;
+            $model->parent_owner_sms=$parent_owner_sms;
+
+            $model->area_owner=$area_owner;
+            $model->area_owner_phone=$area_owner_phone;
+
 
 
             $model->is_checked = 0 ;
@@ -339,6 +358,14 @@ class SitesController extends Controller
         $has_group_HO_control=Yii::app()->request->getParam('has_group_HO_control','');
         $device_mac=Yii::app()->request->getParam('device_mac','');
 
+        $functionary_mail=Yii::app()->request->getParam('functionary_mail','');
+        $area_owner_mail=Yii::app()->request->getParam('area_owner_mail','');
+        $area_owner_sms=Yii::app()->request->getParam('area_owner_sms',0);
+        $parent_owner_mail=Yii::app()->request->getParam('parent_owner_mail','');
+        $parent_owner_sms=Yii::app()->request->getParam('parent_owner_sms',0);
+        $area_owner_phone=Yii::app()->request->getParam('area_owner_phone','');
+        $area_owner=Yii::app()->request->getParam('area_owner','');
+
 		$model=$this->loadModel($id);
 
         if ($model) {
@@ -387,6 +414,16 @@ class SitesController extends Controller
             $has_group_TH_control !='' && $model->has_group_TH_control=$has_group_TH_control;
             $has_group_HO_control !='' && $model->has_group_HO_control=$has_group_HO_control;
             $device_mac !='' && $model->device_mac=$device_mac;
+
+            $area_owner !='' && $model->area_owner=$area_owner;
+            $area_owner_phone !='' && $model->area_owner_phone=$area_owner_phone;
+            $functionary_mail !='' && $model->functionary_mail=$functionary_mail;
+            $area_owner_mail !='' && $model->area_owner_mail=$area_owner_mail;
+            $area_owner_sms !='' && $model->area_owner_sms=$area_owner_sms;
+            $parent_owner_mail !='' && $model->parent_owner_mail=$parent_owner_mail;
+            $parent_owner_sms !='' && $model->parent_owner_sms=$parent_owner_sms;
+
+
 
             $ret['response'] = array(
                 'code'=>0,

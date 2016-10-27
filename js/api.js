@@ -229,7 +229,7 @@ define(function(require){
             },
             /***************************************短信邮箱***************************************/
             getMessagesData:function (args) {
-                var url = '/api/index.php/alarmset';
+                var url = '/api/index.php/alarmset/config';
                 this.fetch(url, "listdata:update", args, "get");
                 return this;
             },
@@ -239,7 +239,7 @@ define(function(require){
                 return this;
             },
             updateMessage:function(args) {
-                var url = '/api/index.php/messageinfo/update';
+                var url = '/api/index.php/alarmset/updateMsg';
                 this.fetch(url, "message:update", args, "post");
                 return this;
             },
