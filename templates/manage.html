@@ -1,4 +1,4 @@
-
+﻿
 <div class="left">
     <div class="set">
         <!--<div class="status">
@@ -189,25 +189,25 @@
     <div class="down chart-wrap" id="down">
             <span class="bottom-hide" title="隐藏趋势图"></span>
             <div class="clear"></div>
-        <h4></span>环境温度</h4>
+            <h4>环境温度</h4>
         <div class="show-data" id="chart" style="min-height:300px;"></div>
         <div class="btn-wrap clearfix">
             <div class="btn-bg undis btns station qureyStation">
                 <a class="switch-btn l-radius active" field="Temperature">
                     环境温度
-                    <span class="hide">（°C）</span>
+                    <span class="hide">(°C)</span>
                 </a>
                 <a class="switch-btn" field="Humidity">
                     环境湿度
-                    <span class="hide">（%）</span>
+                    <span class="hide">(%)</span>
                 </a>
                 <a class="switch-btn" field="Lifetime">
                     预估寿命
-                    <span class="hide">（%）</span>
+                    <span class="hide">(%)</span>
                 </a>
                 <a class="r-radius switch-btn" field="Capacity">
                     预估容量
-                    <span class="hide">（%）</span>
+                    <span class="hide">(%)</span>
                 </a>
             </div>
 
@@ -215,7 +215,7 @@
             <div class="btn-bg undis btns group qureyGroup">
                 <a class="l-radius switch-btn active" field="Current">
                     组电流
-                    <span class="hide">（A）</span>
+                    <span class="hide">(A)</span>
                 </a>
                 <a class="switch-btn disabled" field="Capacity">
                     氢气浓度
@@ -225,11 +225,11 @@
                 </a>
                 <a class="switch-btn" field="Temperature">
                     组温度
-                    <span class="hide">（°C）</span>
+                    <span class="hide">(°C)</span>
                 </a>
                 <a class="r-radius switch-btn" field="Humidity">
                     组湿度
-                    <span class="hide">（%）</span>
+                    <span class="hide">(%)</span>
                 </a>
             </div>
 
@@ -237,23 +237,23 @@
             <div class="btn-bg undis btns battery qureyBattery">
                 <a class="l-radius switch-btn active" field="Voltage">
                     电压状态
-                    <span class="hide">（V）</span>
+                    <span class="hide">(V)</span>
                 </a>
                 <a class="switch-btn" field="Temperature">
                     温度状态
-                    <span class="hide">（°C）</span>
+                    <span class="hide">(°C)</span>
                 </a>
                 <a class="switch-btn" field="Resistor">
                     内阻状态
-                    <span class="hide">（mΩ）</span>
+                    <span class="hide">(mΩ)</span>
                 </a>
                 <a class=" switch-btn" field="Capacity">
                     预估容量
-                    <span class="hide">（%）</span>
+                    <span class="hide">(%)</span>
                 </a>
                 <a class="r-radius switch-btn" field="Lifetime">
                     电池寿命
-                    <span class="hide">（%）</span>
+                    <span class="hide">(%)</span>
                 </a>
             </div>
 
@@ -367,17 +367,17 @@
         <table class="display" cellspacing="0" width="100%">
             <thead>
             <tr>
-                <th width="80">电流（A）</th>
-                <th width="80">电压（V）</th>
-                <th width="150">环境温度（℃）</th>
-                <th width="150">环境湿度（%）</th>
+                <th width="80">电流(A)</th>
+                <th width="80">电压(V)</th>
+                <th width="150">环境温度(℃)</th>
+                <th width="150">环境湿度(%)</th>
                 <th width="60">组数</th>
                 <th width="80">电池数</th>
                 <th width="100">电池状态</th>
-                <th width="220">预估后备时间（H）</th>
-                <th width="220">环境温度上限（℃）</th>
-                <th width="220">黄精温度下限（℃）</th>
-                <th width="220">环境湿度上限（%）</th>
+                <th width="220">预估后备时间(H)</th>
+                <th width="220">环境温度上限(℃)</th>
+                <th width="220">黄精温度下限(℃)</th>
+                <th width="220">环境湿度上限(%)</th>
             </tr>
             </thead>
         </table>
@@ -506,10 +506,32 @@
                 <input class="input-w-1" type="text" key="site_property"/>
             </div>
             <div class="rowElem">
+                <label class="item-title">固定电话: </label>
+                <input class="input-w-1" type="text" key="fix_phone"/>
+            </div>
+            <div class="rowElem">
+                <label class="item-title">负责人: </label>
+                <input class="input-w-1" type="text" key="functionary"/>
+                <label class="item-title">负责人电话: </label>
+                <input class="input-w-1" type="text" key="functionary_phone"/>
+            </div>
+            <div class="rowElem">
+                <label class="item-title">设备负责人: </label>
+                <input class="input-w-1" type="text" key="device_owner"/>
+                <label class="item-title">设备负责人电话: </label>
+                <input class="input-w-1" type="text" key="device_owner_phone"/>
+            </div>
+            <div class="rowElem">
                 <label class="item-title">紧急联系人姓名: </label>
                 <input class="input-w-1" type="text" key="emergency_person"/>
                 <label class="item-title">紧急联系人手机: </label>
                 <input class="input-w-1" type="text" key="emergency_phone"/>
+            </div>
+            <div class="rowElem">
+                <label class="item-title">上级主管: </label>
+                <input class="input-w-1" type="text" key="parent_owner"/>
+                <label class="item-title">上级主管电话: </label>
+                <input class="input-w-1" type="text" key="parent_owner_phone"/>
             </div>
             <div class="rowElem">
                 <label class="item-title">电池组数: </label>
@@ -567,6 +589,28 @@
                     <option value="自然">自然</option>
                 </select>
             </div>
+            <div class="rowElem">
+                <label class="item-title">灯光报警: </label>
+                <input class="input-w-1" type="text" key="has_light"/>
+                <label class="item-title">声音报警: </label>
+                <input class="input-w-1" type="text" key="has_speaker"/>
+            </div>
+            <div class="rowElem">
+                <label class="item-title">短信: </label>
+                <input class="input-w-1" type="text" key="has_sms"/>
+                <label class="item-title">智能控制: </label>
+                <input class="input-w-1" type="text" key="has_smart_control"/>
+            </div>
+            <div class="rowElem">
+                <label class="item-title">温湿度传感器: </label>
+                <input class="input-w-1" type="text" key="has_group_TH_control"/>
+                <label class="item-title">氢氧气传感器: </label>
+                <input class="input-w-1" type="text" key="has_group_HO_control"/>
+            </div>
+            <div class="rowElem">
+                <label class="item-title">网口MAC: </label>
+                <input class="input-w-1" type="text" key="device_mac"/>
+            </div>
            <!--<div class="rowElem">
                 <label class="item-title" for="name">负责人手机: </label>
                 <input class="input-w-1" type="text" key="person_phone"/>
@@ -609,48 +653,48 @@
 
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">标称电压（V）: </label>
+                <label class="item-title" for="name">标称电压(V): </label>
                 <input class="input-w-1" type="text" key="battery_voltage" />
-                <label class="item-title" for="name">标称内阻（MΩ）: </label>
+                <label class="item-title" for="name">标称内阻(MΩ): </label>
                 <input class="input-w-1" type="text" key="battery_oum" />
 
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">电池标称容量（Ah）: </label>
+                <label class="item-title" for="name">电池标称容量(Ah): </label>
                 <input class="input-w-1" type="text" key="battery_dianrong" />
-                <label class="item-title" for="name">浮充标准电压（V）: </label>
+                <label class="item-title" for="name">浮充标准电压(V): </label>
                 <input class="input-w-1" type="text" key="battery_float_voltage" />
             </div>
             <div class="rowElem">
 
 
-                <label class="item-title" for="name">最大充电电流（A）: </label>
+                <label class="item-title" for="name">最大充电电流(A): </label>
                 <input class="input-w-1" type="text" key="battery_max_current" />
-                <label class="item-title" for="name">最大放电电流（A）: </label>
+                <label class="item-title" for="name">最大放电电流(A): </label>
                 <input class="input-w-1" type="text" key="battery_max_discharge_current" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">浮充电压上限（V）: </label>
+                <label class="item-title" for="name">浮充电压上限(V): </label>
                 <input class="input-w-1" type="text" key="battery_float_up" />
-                <label class="item-title" for="name">电池浮充电压下限（V）: </label>
+                <label class="item-title" for="name">电池浮充电压下限(V): </label>
                 <input class="input-w-1" type="text" key="battery_float_dow" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">放电电压下限（V）: </label>
+                <label class="item-title" for="name">放电电压下限(V): </label>
                 <input class="input-w-1" type="text" key="battery_discharge_down" />
                 <label class="item-title" for="name">强制报废日期: </label>
                 <input class="input-w-1" type="text" ipttype="date" key="battery_scrap_date" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">设计寿命（年）: </label>
+                <label class="item-title" for="name">设计寿命(年): </label>
                 <input class="input-w-1" type="text" key="battery_life" />
                 <label class="item-title" for="name">电池级柱类型: </label>
                 <input class="input-w-1" type="text" key="battery_column_type" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">温度要求（度）: </label>
+                <label class="item-title" for="name">温度要求(度): </label>
                 <input class="input-w-1" type="text" key="battery_temperature" />
-                <label class="item-title" for="name">湿度要求（%）: </label>
+                <label class="item-title" for="name">湿度要求(%): </label>
                 <input class="input-w-1" type="text" key="battery_humidity" />
             </div>
             <div class="rowElem">
@@ -712,22 +756,35 @@
 <script type="text/html" id="CompanyEditTpl">
     <div id="CompanyEditTpl-dialog" class="dialog">
         <form class="jqtransform">
+
             <div class="rowElem">
-                <label class="item-title" for="name"><i class="mast-fill" for="site_name">*</i>站点: </label>
-                <input class="input-w-1" type="text" id="stationSelector" key="site_name" />
-                <input type="hidden" key="sid" />
-                <input type="hidden" key="id" />
-            </div> <div class="rowElem">
             <label class="item-title" for="name"><i class="mast-fill" for="company_name">*</i>用户单位总部名称 : </label>
             <input class="input-w-1" type="text" key="company_name" />
             <label class="item-title" for="name"><i class="mast-fill" for="company_address">*</i>用户单位总部地址 : </label>
             <input class="input-w-1" type="text" key="company_address" />
         </div>
+        <div class="rowElem">
+                <label class="item-title" for="area_name">
+                <i class="mast-fill" for="area_name"></i>管辖 :
+                </label>
+                <input type="hidden" key="id" />
+                <input class="input-w-1" type="text" key="area_name" />
+                <label class="item-title" for="parent_area"><i class="mast-fill" for="parent_area"></i>隶属 : </label>
+                <input class="input-w-1" type="text" key="parent_area" />
+            </div>
             <div class="rowElem">
                 <label class="item-title" for="name"><i class="mast-fill" for="supervisor_phone">*</i>主管领导电话 : </label>
                 <input class="input-w-1" type="text" key="supervisor_phone" />
                 <label class="item-title" for="name"><i class="mast-fill" for="supervisor_name">*</i>主管领导姓名 : </label>
                 <input class="input-w-1" type="text" key="supervisor_name" />
+            </div>
+            <div class="rowElem">
+                <label class="item-title" for="owner_phone">
+                <i class="mast-fill" for="owner_phone"></i>部门负责人电话 :
+                </label>
+                <input class="input-w-1" type="text" key="owner_phone" />
+                <label class="item-title" for="manage"><i class="mast-fill" for="manage"></i>管理员 : </label>
+                <input class="input-w-1" type="text" key="manage" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name"><i class="mast-fill" for="longitude">*</i>经度 : </label>
@@ -807,6 +864,23 @@
                 <label class="item-title" for="name">监控中心固定电话2 : </label>
                 <input class="input-w-1" type="text" key="monitor_tel2" />
             </div>
+            <div class="rowElem">
+                <label class="item-title" for="duty_status">
+                <i class="mast-fill" for="duty_status"></i>值守状态/班次 :
+                </label>
+                <input class="input-w-1" type="text" key="duty_status" />
+                <label class="item-title" for="owner"><i class="mast-fill" for="owner"></i>部门领导 : </label>
+                <input class="input-w-1" type="text" key="owner" />
+            </div>
+
+
+
+            <div class="rowElem">
+                <label class="item-title" for="viewer">
+                <i class="mast-fill" for="viewer"></i>观察员 :
+                </label>
+                <input class="input-w-1" type="text" key="viewer" />
+            </div>
         </form>
         <div class="form-btns">
             <input type="button" class="submit-btn btn" value="确定"/>
@@ -885,6 +959,11 @@
                 <input type="hidden" key="sid" />
                 <input type="hidden" key="id" />
            </div>
+           <div class="rowElem">
+                <label class="item-title" for="usid"><i class="mast-fill" for="usid">*</i>站号: </label>
+                <input class="input-w-1" type="text" key="usid" />
+
+           </div>
             <div class="rowElem">
                 <label class="item-title" for="name"><i class="mast-fill" for="ups_factory">*</i>生产厂家: </label>
                 <input class="input-w-1" type="text" key="ups_factory" />
@@ -898,37 +977,65 @@
                 <input class="input-w-1" type="text" ipttype="date" key="ups_install_date" />
            </div>
             <div class="rowElem">
-                <label class="item-title" for="name">功率（W）: </label>
+                <label class="item-title" for="name">功率(W): </label>
                 <input class="input-w-1" type="text" key="ups_power" />
                 <label class="item-title" for="name">冗余数量(台): </label>
                 <input class="input-w-1" type="text" key="redundancy_num" />
            </div>
+           <div class="rowElem">
+                <label class="item-title" for="ups_power_in">输入功率(V/A): </label>
+                <input class="input-w-1" type="text" key="ups_power_in" />
+                <label class="item-title" for="ups_power_out">输出功率(V/A): </label>
+                <input class="input-w-1" type="text" key="ups_power_out" />
+           </div>
+           <div class="rowElem">
+                <label class="item-title" for="ups_battery_vol">外接电池电压(V): </label>
+                <input class="input-w-1" type="text" key="ups_battery_vol" />
+                <label class="item-title" for="ups_battery_current">外接电池电流(A): </label>
+                <input class="input-w-1" type="text" key="ups_battery_current" />
+           </div>
+           <div class="rowElem">
+                <label class="item-title" for="ac_protect">AC过流保护(V/A): </label>
+                <input class="input-w-1" type="text" key="ac_protect" />
+                <label class="item-title" for="dc_protect">DC过流保护(V/A): </label>
+                <input class="input-w-1" type="text" key="dc_protect" />
+           </div>
+           <div class="rowElem">
+                <label class="item-title" for="on_net">联网检测: </label>
+                <input class="input-w-1" type="text" key="on_net" />
+                <label class="item-title" for="alarm_content">报警内容: </label>
+                <input class="input-w-1" type="text" key="alarm_content" />
+           </div>
+           <div class="rowElem">
+                <label class="item-title" for="discharge_protect">放电保护值(%): </label>
+                <input class="input-w-1" type="text" key="discharge_protect" />
+           </div>
             <div class="rowElem">
-                <label class="item-title" for="name">浮充电压（V）: </label>
+                <label class="item-title" for="name">浮充电压(V): </label>
                 <input class="input-w-1" type="text" key="floting_charge" />
                 <label class="item-title" for="name">电压范围(V): </label>
                 <input class="input-w-1" type="text" key="ups_vdc" />
            </div>
             <div class="rowElem">
-                <label class="item-title" for="name">额定候备时间（小时）: </label>
+                <label class="item-title" for="name">额定候备时间(小时): </label>
                 <input class="input-w-1" type="text" key="ups_reserve_hour" />
                 <label class="item-title" for="name">充电方式: </label>
                 <input class="input-w-1" type="text" key="ups_charge_mode" />
            </div>
             <div class="rowElem">
-                <label class="item-title" for="name">最大充电电流（A）: </label>
+                <label class="item-title" for="name">最大充电电流(A): </label>
                 <input class="input-w-1" type="text" key="ups_max_charge" />
-                <label class="item-title" for="name">最大放电电流（A）: </label>
+                <label class="item-title" for="name">最大放电电流(A): </label>
                 <input class="input-w-1" type="text" key="ups_max_discharge" />
            </div>
             <div class="rowElem">
-                <label class="item-title" for="name">规定维护周期（天）: </label>
+                <label class="item-title" for="name">规定维护周期(天): </label>
                 <input class="input-w-1" type="text" key="ups_period_days" />
-                <label class="item-title" for="name">维护放电时长（分钟）: </label>
+                <label class="item-title" for="name">维护放电时长(分钟): </label>
                 <input class="input-w-1" type="text" key="ups_discharge_time" />
            </div>
             <div class="rowElem">
-                <label class="item-title" for="name">维护放电容量（%）: </label>
+                <label class="item-title" for="name">维护放电容量(%): </label>
                 <input class="input-w-1" type="text" key="ups_discharge_capacity" />
                 <label class="item-title" for="name">维护到期日: </label>
                 <input class="input-w-1" type="text" ipttype="date" key="ups_maintain_date" />
@@ -1326,13 +1433,13 @@
     <div id="otherOptionEdit" class="dialog">
         <form class="jqtransform">
             <div class="rowElem">
-                <label class="item-title" for="name">前端刷新频率（秒）: </label>
+                <label class="item-title" for="name">前端刷新频率(秒): </label>
                 <input class="input-w-1" type="text" key="refresh" />
-                <label class="item-title" for="name">通信软件采集频率（秒）: </label>
+                <label class="item-title" for="name">通信软件采集频率(秒): </label>
                 <input class="input-w-1" type="text" key="collection"/>
            </div>
             <div class="rowElem">
-                <label class="item-title" for="name">内阻采集时间间隔（分）: </label>
+                <label class="item-title" for="name">内阻采集时间间隔(分): </label>
                 <input class="input-w-1" type="text" key="resistance" />
                 <label class="item-title" for="name">是否显示地图页面: </label>
                 <label><input type="checkbox" name="email" key="dismap" specify-value="1|0">显示</label>
@@ -1353,7 +1460,10 @@
                 <th width="">站名</th>
                 <th width="">站号</th>
                 <th width="">地址</th>
+                <th width="">固定电话</th>
                 <th width="">负责人</th>
+                <th width="">电话</th>
+                <th width="">紧急联系人</th>
                 <th width="">电话</th>
                 <th width="">UPS联系人</th>
                 <th width="">电话</th>

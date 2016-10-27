@@ -85,6 +85,15 @@ class CompanyinfoController extends Controller
         $monitor_tel1=Yii::app()->request->getParam('monitor_tel1','');
         $monitor_tel2=Yii::app()->request->getParam('monitor_tel2','');
         $modify_time=Yii::app()->request->getParam('modify_time',date('Y-m-d H:i:s'));
+
+        $area_name=Yii::app()->request->getParam('area_name','');
+        $parent_area=Yii::app()->request->getParam('parent_area','');
+        $duty_status=Yii::app()->request->getParam('duty_status','');
+        $owner=Yii::app()->request->getParam('owner','');
+        $owner_phone=Yii::app()->request->getParam('owner_phone','');
+        $manage=Yii::app()->request->getParam('manage','');
+        $viewer=Yii::app()->request->getParam('viewer','');
+
         if ($company_name) {
             $company_name !='' && $model->company_name=$company_name;
             $company_address !='' && $model->company_address=$company_address;
@@ -116,6 +125,16 @@ class CompanyinfoController extends Controller
             $monitor_tel1 !='' && $model->monitor_tel1=$monitor_tel1;
             $monitor_tel2 !='' && $model->monitor_tel2=$monitor_tel2;
             $modify_time !='' && $model->modify_time=$modify_time;
+
+            $area_name !='' && $model->area_name=$area_name;
+            $parent_area !='' && $model->parent_area=$parent_area;
+            $duty_status !='' && $model->duty_status=$duty_status;
+            $owner !='' && $model->owner=$owner;
+            $owner_phone !='' && $model->owner_phone=$owner_phone;
+            $manage !='' && $model->manage=$manage;
+            $viewer !='' && $model->viewer=$viewer;
+
+
             if ($model->save()) {
                 $ret['data'] = array(
                     'id'=>$model->id,
@@ -183,6 +202,16 @@ class CompanyinfoController extends Controller
         $monitor_tel1=Yii::app()->request->getParam('monitor_tel1','');
         $monitor_tel2=Yii::app()->request->getParam('monitor_tel2','');
         $modify_time=Yii::app()->request->getParam('modify_time',date('Y-m-d H:i:s'));
+
+        $area_name=Yii::app()->request->getParam('area_name','');
+        $parent_area=Yii::app()->request->getParam('parent_area','');
+        $duty_status=Yii::app()->request->getParam('duty_status','');
+        $owner=Yii::app()->request->getParam('owner','');
+        $owner_phone=Yii::app()->request->getParam('owner_phone','');
+        $manage=Yii::app()->request->getParam('manage','');
+        $viewer=Yii::app()->request->getParam('viewer','');
+
+
         if ($model) {
             $company_name !='' && $model->company_name=$company_name;
             $company_address !='' && $model->company_address=$company_address;
@@ -214,6 +243,16 @@ class CompanyinfoController extends Controller
             $monitor_tel1 !='' && $model->monitor_tel1=$monitor_tel1;
             $monitor_tel2 !='' && $model->monitor_tel2=$monitor_tel2;
             $modify_time !='' && $model->modify_time=$modify_time;
+
+            $area_name !='' && $model->area_name=$area_name;
+            $parent_area !='' && $model->parent_area=$parent_area;
+            $duty_status !='' && $model->duty_status=$duty_status;
+            $owner !='' && $model->owner=$owner;
+            $owner_phone !='' && $model->owner_phone=$owner_phone;
+            $manage !='' && $model->manage=$manage;
+            $viewer !='' && $model->viewer=$viewer;
+
+
             if ($model->save()) {
                 $ret['data'] = array(
                     'id'=>$model->id,

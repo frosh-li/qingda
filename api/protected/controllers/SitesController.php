@@ -96,7 +96,7 @@ class SitesController extends Controller
 
         $site_name=Yii::app()->request->getParam('site_name','');
         $StationFullChineseName=Yii::app()->request->getParam('StationFullChineseName','');
-        
+
         $site_property=Yii::app()->request->getParam('site_property','');
         $site_location=Yii::app()->request->getParam('site_location','');
         $site_chname=Yii::app()->request->getParam('site_chname','');
@@ -122,6 +122,21 @@ class SitesController extends Controller
         $battery_collect_type=Yii::app()->request->getParam('battery_collect_type','');
         $battery_collect_num=Yii::app()->request->getParam('battery_collect_num','');
         $humiture_type=Yii::app()->request->getParam('humiture_type','');
+
+        $fix_phone=Yii::app()->request->getParam('fix_phone','');
+        $functionary=Yii::app()->request->getParam('functionary','');
+        $functionary_phone=Yii::app()->request->getParam('functionary_phone','');
+        $device_owner=Yii::app()->request->getParam('device_owner','');
+        $device_owner_phone=Yii::app()->request->getParam('device_owner_phone','');
+        $parent_owner=Yii::app()->request->getParam('parent_owner','');
+        $parent_owner_phone=Yii::app()->request->getParam('parent_owner_phone','');
+        $has_light=Yii::app()->request->getParam('has_light','');
+        $has_speaker=Yii::app()->request->getParam('has_speaker','');
+        $has_sms=Yii::app()->request->getParam('has_sms','');
+        $has_smart_control=Yii::app()->request->getParam('has_smart_control','');
+        $has_group_TH_control=Yii::app()->request->getParam('has_group_TH_control','');
+        $has_group_HO_control=Yii::app()->request->getParam('has_group_HO_control','');
+        $device_mac=Yii::app()->request->getParam('device_mac','');
 
         if ($bms_install_date =='') {
             $bms_install_date = date('Y-m-d H:i:s');
@@ -164,6 +179,23 @@ class SitesController extends Controller
             $model->battery_collect_type=$battery_collect_type;
             $model->battery_collect_num=$battery_collect_num;
             $model->humiture_type=$humiture_type;
+
+            $model->fix_phone=$fix_phone;
+            $model->functionary=$functionary;
+            $model->functionary_phone=$functionary_phone;
+            $model->device_owner=$device_owner;
+            $model->device_owner_phone=$device_owner_phone;
+            $model->parent_owner=$parent_owner;
+            $model->parent_owner_phone=$parent_owner_phone;
+            $model->has_light=$has_light;
+            $model->has_speaker=$has_speaker;
+            $model->has_sms=$has_sms;
+            $model->has_smart_control=$has_smart_control;
+            $model->has_group_TH_control=$has_group_TH_control;
+            $model->has_group_HO_control=$has_group_HO_control;
+            $model->device_mac=$device_mac;
+
+
             $model->is_checked = 0 ;
             if ($model->save()) {
                 $this->saveAlarm($model);
@@ -292,8 +324,23 @@ class SitesController extends Controller
         $battery_collect_num=Yii::app()->request->getParam('battery_collect_num','');
         $humiture_type=Yii::app()->request->getParam('humiture_type','');
 
+        $fix_phone=Yii::app()->request->getParam('fix_phone','');
+        $functionary=Yii::app()->request->getParam('functionary','');
+        $functionary_phone=Yii::app()->request->getParam('functionary_phone','');
+        $device_owner=Yii::app()->request->getParam('device_owner','');
+        $device_owner_phone=Yii::app()->request->getParam('device_owner_phone','');
+        $parent_owner=Yii::app()->request->getParam('parent_owner','');
+        $parent_owner_phone=Yii::app()->request->getParam('parent_owner_phone','');
+        $has_light=Yii::app()->request->getParam('has_light','');
+        $has_speaker=Yii::app()->request->getParam('has_speaker','');
+        $has_sms=Yii::app()->request->getParam('has_sms','');
+        $has_smart_control=Yii::app()->request->getParam('has_smart_control','');
+        $has_group_TH_control=Yii::app()->request->getParam('has_group_TH_control','');
+        $has_group_HO_control=Yii::app()->request->getParam('has_group_HO_control','');
+        $device_mac=Yii::app()->request->getParam('device_mac','');
+
 		$model=$this->loadModel($id);
-        
+
         if ($model) {
             $oldvalue = $model->attributes;
             $sid                       !='' && $model->sid=$sid;
@@ -325,6 +372,21 @@ class SitesController extends Controller
             $battery_collect_type      !='' && $model->battery_collect_type=$battery_collect_type;
             $battery_collect_num       !='' && $model->battery_collect_num=$battery_collect_num;
             $humiture_type             !='' && $model->humiture_type=$humiture_type;
+
+            $fix_phone !='' && $model->fix_phone=$fix_phone;
+            $functionary !='' && $model->functionary=$functionary;
+            $functionary_phone !='' && $model->functionary_phone=$functionary_phone;
+            $device_owner !='' && $model->device_owner=$device_owner;
+            $device_owner_phone !='' && $model->device_owner_phone=$device_owner_phone;
+            $parent_owner !='' && $model->parent_owner=$parent_owner;
+            $parent_owner_phone !='' && $model->parent_owner_phone=$parent_owner_phone;
+            $has_light !='' && $model->has_light=$has_light;
+            $has_speaker !='' && $model->has_speaker=$has_speaker;
+            $has_sms !='' && $model->has_sms=$has_sms;
+            $has_smart_control !='' && $model->has_smart_control=$has_smart_control;
+            $has_group_TH_control !='' && $model->has_group_TH_control=$has_group_TH_control;
+            $has_group_HO_control !='' && $model->has_group_HO_control=$has_group_HO_control;
+            $device_mac !='' && $model->device_mac=$device_mac;
 
             $ret['response'] = array(
                 'code'=>0,
@@ -464,7 +526,7 @@ class SitesController extends Controller
     //生成站 组电池的默认参数
     public function createPara($row,$site)
     {
-        
+
         $sn_key = $row['sn_key'];
         $sid = $row['sid'];
         $ret = Yii::app()->bms->createCommand('select * from tb_station_param where sn_key='.$sn_key)->queryRow();
@@ -575,7 +637,7 @@ class SitesController extends Controller
                 $value['areaname'] = $areaName;
                 $ret['data']['list'][] = $value;
             }
-            
+
         }else{
             $ret['response'] = array(
                 'code' => -1,

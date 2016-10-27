@@ -15,8 +15,14 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                         _this.data = data;
                         _this.setValue();
                     });
-                    _this.listenTo(Backbone.Events,"company:create company:update",function(){
+                    _this.listenTo(Backbone.Events,"company:create",function(){
                         alert("添加成功");
+                        _this.oncancel();
+                        Backbone.Events.trigger("listdata:refresh", "batteryInfo");
+                    });
+
+                    _this.listenTo(Backbone.Events,"company:update",function(){
+                        alert("修改成功");
                         _this.oncancel();
                         Backbone.Events.trigger("listdata:refresh", "batteryInfo");
                     });
@@ -46,10 +52,6 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                         }
                     })
 
-                    if(!param.sid){
-                        return this.showErrTips('站点不存在');
-                    }
-
 
                     return isvalidate;
                 },
@@ -69,7 +71,6 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     this.stopListening();
                     this.dialogObj.dialog( "destroy" );
                     $(".ui-dialog,.ui-widget-overlay").remove();
-                    stationList.autocomplete('destroy');
                 }
             }
         },
@@ -95,16 +96,6 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     if(id){
                         API.getCompanyInfo({id:id});
                     }
-
-                    stationList = stationSelector.init({
-                        extOption:{
-                            select:function(event, ui){
-                                $(this).val(ui.item.label);
-                                $("[key=sid]").val(ui.item.value);
-                                return false;
-                            }
-                        }
-                    });
 
                     //日期选择器
                     $( "form.jqtransform [ipttype=date]" ).datepicker({

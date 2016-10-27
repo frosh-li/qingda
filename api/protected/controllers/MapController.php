@@ -8,6 +8,9 @@ class MapController extends Controller
         $sql = "select
                 s.sid,
                 s.site_name,s.serial_number ,s.emergency_phone,
+                s.fix_phone,
+                s.functionary,
+                s.functionary_phone,
                 s.emergency_person,s.site_location,
                 ui.ups_vender,ui.ups_service_phone
                 from {{site}} as s left JOIN  {{ups_info}} as ui on s.serial_number=ui.sid and s.is_checked = 1 ";
@@ -26,6 +29,9 @@ class MapController extends Controller
                 $row['sid'] = $value['sid'];
                 $row['site_name'] = $value['site_name'];
                 $row['sn_key'] = $value['serial_number'];
+                $row['fix_phone'] = $value['fix_phone'];
+                $row['functionary'] = $value['functionary'];
+                $row['functionary_phone'] = $value['functionary_phone'];
                 $row['emergency_phone'] = $value['emergency_phone'];
                 $row['emergency_person'] = $value['emergency_person'];
                 $row['site_location'] = $value['site_location'];

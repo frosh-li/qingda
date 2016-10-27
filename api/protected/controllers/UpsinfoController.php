@@ -31,7 +31,7 @@ class UpsinfoController extends Controller
         $ret['data'] = array();
 
         if ($id) {
-            $sql = "select ui.*,s.site_name from {{ups_info}} ui
+            $sql = "select ui.*,s.site_name,s.sid as usid from {{ups_info}} ui
                     LEFT  JOIN  {{site}} s on ui.sid = s.serial_number where ui.id=" . $id;
             $row = Yii::app()->db->createCommand($sql)->queryRow();
             if ($row) {
@@ -107,6 +107,18 @@ class UpsinfoController extends Controller
         $ups_vender=Yii::app()->request->getParam('ups_vender','');
         $ups_service=Yii::app()->request->getParam('ups_service','');
         $ups_service_phone=Yii::app()->request->getParam('ups_service_phone','');
+
+        $usid=Yii::app()->request->getParam('usid','');
+        $ups_power_in=Yii::app()->request->getParam('ups_power_in','');
+        $ups_power_out=Yii::app()->request->getParam('ups_power_out','');
+        $ups_battery_vol=Yii::app()->request->getParam('ups_battery_vol','');
+        $ups_battery_current=Yii::app()->request->getParam('ups_battery_current','');
+        $ac_protect=Yii::app()->request->getParam('ac_protect','');
+        $dc_protect=Yii::app()->request->getParam('dc_protect','');
+        $on_net=Yii::app()->request->getParam('on_net','');
+        $alarm_content=Yii::app()->request->getParam('alarm_content','');
+        $discharge_protect=Yii::app()->request->getParam('discharge_protect','');
+
         $ups_power == '' && $ups_power=0.00 ;
         $floting_charge == '' && $floting_charge=0.00 ;
         $ups_vdc == '' && $ups_vdc=0.00 ;
@@ -144,6 +156,18 @@ class UpsinfoController extends Controller
             $model->ups_vender            = $ups_vender;
             $model->ups_service           = $ups_service;
             $model->ups_service_phone     = $ups_service_phone;
+
+            $model->usid     = $usid;
+            $model->ups_power_in     = $ups_power_in;
+            $model->ups_power_out     = $ups_power_out;
+            $model->ups_battery_vol     = $ups_battery_vol;
+            $model->ups_battery_current     = $ups_battery_current;
+            $model->ac_protect     = $ac_protect;
+            $model->dc_protect     = $dc_protect;
+            $model->on_net     = $on_net;
+            $model->alarm_content     = $alarm_content;
+            $model->discharge_protect     = $discharge_protect;
+
             if ($model->save()) {
                 $ret['data'] = array(
                     'id'=>$model->id,
@@ -226,6 +250,19 @@ class UpsinfoController extends Controller
             $ups_vender = Yii::app()->request->getParam('ups_vender', '');
             $ups_service = Yii::app()->request->getParam('ups_service', '');
             $ups_service_phone = Yii::app()->request->getParam('ups_service_phone', '');
+
+            $usid=Yii::app()->request->getParam('usid','');
+            $ups_power_in=Yii::app()->request->getParam('ups_power_in','');
+            $ups_power_out=Yii::app()->request->getParam('ups_power_out','');
+            $ups_battery_vol=Yii::app()->request->getParam('ups_battery_vol','');
+            $ups_battery_current=Yii::app()->request->getParam('ups_battery_current','');
+            $ac_protect=Yii::app()->request->getParam('ac_protect','');
+            $dc_protect=Yii::app()->request->getParam('dc_protect','');
+            $on_net=Yii::app()->request->getParam('on_net','');
+            $alarm_content=Yii::app()->request->getParam('alarm_content','');
+            $discharge_protect=Yii::app()->request->getParam('discharge_protect','');
+
+
             if ($sid != 0){
                 $oldvalue = $model->attributes;
                 $sid                    !=0 && $model->sid                   = $sid;
@@ -249,6 +286,17 @@ class UpsinfoController extends Controller
                 $ups_vender             !='' && $model->ups_vender            = $ups_vender;
                 $ups_service            !='' && $model->ups_service           = $ups_service;
                 $ups_service_phone      !='' && $model->ups_service_phone     = $ups_service_phone;
+
+                $usid  !='' && $model->usid     = $usid;
+                $ups_power_in  !='' && $model->ups_power_in     = $ups_power_in;
+                $ups_power_out  !='' && $model->ups_power_out     = $ups_power_out;
+                $ups_battery_vol  !='' && $model->ups_battery_vol     = $ups_battery_vol;
+                $ups_battery_current  !='' && $model->ups_battery_current     = $ups_battery_current;
+                $ac_protect  !='' && $model->ac_protect     = $ac_protect;
+                $dc_protect  !='' && $model->dc_protect     = $dc_protect;
+                $on_net  !='' && $model->on_net     = $on_net;
+                $alarm_content  !='' && $model->alarm_content     = $alarm_content;
+                $discharge_protect  !='' && $model->discharge_protect     = $discharge_protect;
                 if ($model->save()) {
                     $ret['data'] = array(
                         'id' => $model->id,

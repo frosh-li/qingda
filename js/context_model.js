@@ -28,7 +28,19 @@ define(["require","backbone"],function(require,Backbone){
                             return "浮充";
                         }
                     } },
-                    { "data": "record_time",title:"时间",width:150 },
+                    { "data": "record_time",title:"时间",width:150
+                    /*
+                    , render:function(data){
+                        var now = +new Date();
+                        var originDate = +new Date(data);
+                        if(now - originDate > 10*1000){
+                            return '<div style="color:red">'+data+'</div>';
+                        }else{
+                            return '<div>'+data+'</div>'
+                        }
+                    }
+                    */
+                    },
                     { "data": "Groups",title:"组数",width:50  },
                     { "data": "GroBats",title:"电池数",width:80  },
                     { "data": "ups_power",title:"功率W/h",width:70 },
