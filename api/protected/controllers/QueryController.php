@@ -464,7 +464,7 @@ class QueryController extends Controller
                 }
 
                 $query = Yii::app()->bms->createCommand()
-                            ->select('*')
+                            ->select('ups_max_charge,ups_max_discharge,floting_charge,ups_power')
                             ->from('my_ups_info')
                             ->where("floor({$sn_key}/10000) = floor(sid/10000)")
                             ->limit(1)
@@ -481,7 +481,7 @@ class QueryController extends Controller
             // tb_station_parameter.DisbytegeStatus_U_upper,
             // tb_station_parameter.DisbytegeStatus_U_lower
                 $query = Yii::app()->bms->createCommand()
-                            ->select('*')
+                            ->select('battery_voltage,battery_oum,battery_max_current,battery_float_up,battery_float_dow,battery_discharge_down')
                             ->from('my_battery_info')
                             ->where("floor({$sn_key}/10000) = floor(sid/10000)")
                             ->limit(1)

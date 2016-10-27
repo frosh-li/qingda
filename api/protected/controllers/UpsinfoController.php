@@ -104,6 +104,7 @@ class UpsinfoController extends Controller
         $ups_discharge_capacity=Yii::app()->request->getParam('ups_discharge_capacity','');
         $ups_maintain_date=Yii::app()->request->getParam('ups_maintain_date','');
         $ups_vender_phone=Yii::app()->request->getParam('ups_vender_phone','');
+        $ups_vender=Yii::app()->request->getParam('ups_vender','');
         $ups_service=Yii::app()->request->getParam('ups_service','');
         $ups_service_phone=Yii::app()->request->getParam('ups_service_phone','');
         $ups_power == '' && $ups_power=0.00 ;
@@ -140,6 +141,7 @@ class UpsinfoController extends Controller
             $model->ups_discharge_capacity= $ups_discharge_capacity;
             $model->ups_maintain_date     = $ups_maintain_date;
             $model->ups_vender_phone      = $ups_vender_phone;
+            $model->ups_vender            = $ups_vender;
             $model->ups_service           = $ups_service;
             $model->ups_service_phone     = $ups_service_phone;
             if ($model->save()) {
@@ -196,7 +198,7 @@ class UpsinfoController extends Controller
             $id = Yii::app()->db->createCommand('select id from my_ups_info where sid='.$sid)->queryScalar();
         }
         $model=$this->loadModel($id);
-        
+
         $ret['response'] = array(
             'code'=>0,
             'msg'=>'ok'
@@ -221,6 +223,7 @@ class UpsinfoController extends Controller
             $ups_discharge_capacity = Yii::app()->request->getParam('ups_discharge_capacity', '');
             $ups_maintain_date = Yii::app()->request->getParam('ups_maintain_date', '');
             $ups_vender_phone = Yii::app()->request->getParam('ups_vender_phone', '');
+            $ups_vender = Yii::app()->request->getParam('ups_vender', '');
             $ups_service = Yii::app()->request->getParam('ups_service', '');
             $ups_service_phone = Yii::app()->request->getParam('ups_service_phone', '');
             if ($sid != 0){
@@ -243,6 +246,7 @@ class UpsinfoController extends Controller
                 $ups_discharge_capacity !='' && $model->ups_discharge_capacity= $ups_discharge_capacity;
                 $ups_maintain_date      !='' && $model->ups_maintain_date     = $ups_maintain_date;
                 $ups_vender_phone       !='' && $model->ups_vender_phone      = $ups_vender_phone;
+                $ups_vender             !='' && $model->ups_vender            = $ups_vender;
                 $ups_service            !='' && $model->ups_service           = $ups_service;
                 $ups_service_phone      !='' && $model->ups_service_phone     = $ups_service_phone;
                 if ($model->save()) {

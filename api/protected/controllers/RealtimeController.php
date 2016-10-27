@@ -262,12 +262,10 @@ class RealtimeController extends Controller
             left join my_site on my_site.serial_number/10000 = FLOOR(b.sn_key/10000)
             left join my_ups_info on my_ups_info.sid/10000 = FLOOR(b.sn_key/10000)
             left join my_battery_info on my_battery_info.sid/10000 = FLOOR(b.sn_key/10000)
-
-
-
         ";
         if ($id) {
             $sql .= " where sn_key in (".$id.")";
+            $sql .= " order by gid asc, b.bid asc";
             // $sites = Yii::app()->bms->createCommand()
             //     ->select('*')
             //     ->from('{{battery_module}}')
@@ -277,6 +275,7 @@ class RealtimeController extends Controller
             //     ->order('gid asc, record_time desc')
             //     //->order('record_time desc')
             //     ->queryAll();
+            // $sql .= " ordre by b.id asc";
             $sites = Yii::app()->bms->createCommand($sql)->queryAll();
 
             //观察员进行地域过滤 xl

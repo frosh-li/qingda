@@ -295,7 +295,7 @@ class TreesController extends Controller
 	{
 	    //xl
 	    $user_info = GeneralLogic::isWatcher($_SESSION['uid']);
-	    
+
         $trees = Yii::app()->db->createCommand()
             ->select('id,pid,title')
             ->from('{{trees}}')
@@ -307,7 +307,7 @@ class TreesController extends Controller
                    unset($trees[$k]);
                 }
             }
-            
+
             $trees = empty($trees) ? array() : array_values($trees);
         }
 
@@ -377,8 +377,8 @@ class TreesController extends Controller
             if ($keyword) {
                 $sql ="
                     select m.*, a.* from tb_station_module as a,my_site as m
-                    where m.is_checked = 1 
-                    and 
+                    where m.is_checked = 1
+                    and
                     a.sn_key = m.serial_number
                     and m.site_name like '%".$keyword."%'
                 ".$where;
@@ -386,8 +386,8 @@ class TreesController extends Controller
             }else{
                 $sql ="
                     select m.*, a.* from tb_station_module as a,my_site as m
-                    where m.is_checked = 1 
-                    and 
+                    where m.is_checked = 1
+                    and
                     a.sn_key = m.serial_number
                 ".$where;
             }
@@ -402,7 +402,7 @@ class TreesController extends Controller
                     $data = array();
                     $data['id'] = substr($value['serial_number'],0,-4);
                     $data['pid'] = $value['aid'];
-                    $data['title'] = $value['site_name'] .$value['sid'];
+                    $data['title'] = $value['site_name'] ."-".$value['sid'];
                     $data['is_checked'] = $value['is_checked'];
                     $data['leveltype'] = 2;
                     if($value['site_name']){
@@ -435,7 +435,7 @@ class TreesController extends Controller
                         ->selectDistinct('mid as id,gid as pid,sn_key as title')
                         ->from('{{battery_module}}')
                         ->where('floor(sn_key/10000) in ('.implode(',',$sids).')')
-                        ->order('id asc')
+                        ->order('gid asc, id asc')
                         ->queryAll();
                     if ($battery) {
                         foreach ( $battery as $key => $value) {

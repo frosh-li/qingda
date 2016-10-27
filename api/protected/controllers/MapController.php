@@ -7,10 +7,10 @@ class MapController extends Controller
         $id = Yii::app()->request->getParam('id',0);
         $sql = "select
                 s.sid,
-                s.site_name,s.serial_number ,
+                s.site_name,s.serial_number ,s.emergency_phone,
                 s.emergency_person,s.site_location,
-                ui.ups_factory,ui.ups_service_phone
-                from {{site}} as s left JOIN  {{ups_info}} as ui on s.sid=ui.sid and s.is_checked = 1 ";
+                ui.ups_vender,ui.ups_service_phone
+                from {{site}} as s left JOIN  {{ups_info}} as ui on s.serial_number=ui.sid and s.is_checked = 1 ";
         if ($id) {
             $sql .= " where s.serial_number in (" . $id . ")";
         }
@@ -26,13 +26,13 @@ class MapController extends Controller
                 $row['sid'] = $value['sid'];
                 $row['site_name'] = $value['site_name'];
                 $row['sn_key'] = $value['serial_number'];
-                $row['manager'] = $value['emergency_person'];
+                $row['emergency_phone'] = $value['emergency_phone'];
                 $row['emergency_person'] = $value['emergency_person'];
                 $row['site_location'] = $value['site_location'];
-                $row['ups_factory'] = $value['ups_factory'];
+                $row['ups_vender'] = $value['ups_vender'];
                 $row['ups_service_phone'] = $value['ups_service_phone'];
-
-                $ret['data']['list'][] = $row;
+                $bmsdata = Yii::app()->db->createCommand("select bms_service_contact,bms_phone from my_bms_info")->queryRow();
+                $ret['data']['list'][] = array_merge($row, $bmsdata);
             }
 
         }else{

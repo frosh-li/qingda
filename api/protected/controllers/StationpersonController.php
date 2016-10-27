@@ -52,10 +52,10 @@ class StationpersonController extends Controller
             'code'=>0,
             'msg'=>'ok'
         );
-        if(isset($_POST))  
+        if(isset($_POST))
         {
 
-            $model->attributes=$_POST;  
+            $model->attributes=$_POST;
             if($model->save()){
                 $ret['data'] = array(
                     'id'=>$model->id
@@ -72,8 +72,13 @@ class StationpersonController extends Controller
 	 */
 	public function actionUpdate()
 	{
+
         $id = Yii::app()->request->getParam('id' ,0);
-        $model=$this->loadModel($id);
+        $model=Sysuser::model()->findByAttributes(array('id' => $id));
+        //$model=$this->loadModel($id);
+
+        // var_dump($model);
+        // return;
 
         $ret['response'] = array(
             'code'=>0,
@@ -81,36 +86,21 @@ class StationpersonController extends Controller
         );
         $ret['data'] = array();
         if ($model) {
-            $sid=Yii::app()->request->getParam('sid','');
-            $Operater=Yii::app()->request->getParam('Operater','');
-            $Operater_cellphone=Yii::app()->request->getParam('Operater_cellphone','');
-            $Alarm_SMS_receive_cellphone=Yii::app()->request->getParam('Alarm_SMS_receive_cellphone','');
-            $Alarm_SMS_receive_email=Yii::app()->request->getParam('Alarm_SMS_receive_email','');
-            if ($sid) {
+            // $sid=Yii::app()->request->getParam('sid','');
+            $model->attributes=$_POST;
 
-                $sid != '' && $model->sid = $sid;
-                $Operater != '' && $model->Operater = $Operater;
-                $Operater_cellphone != '' && $model->Operater_cellphone = $Operater_cellphone;
-                $Alarm_SMS_receive_cellphone != '' && $model->Alarm_SMS_receive_cellphone = $Alarm_SMS_receive_cellphone;
-                $Alarm_SMS_receive_email != '' && $model->Alarm_SMS_receive_email = $Alarm_SMS_receive_email;
                 if ($model->save()) {
                     $ret['data'] = array(
                         'id'=>$model->id,
-                        'sid'=>$model->sid,
-                        'Operater'=>$model->Operater,
+                        'Operater'=>$model->username,
                     );
                 }else{
                     $ret['response'] = array(
                         'code'=>-1,
-                        'msg'=>'新建站点人员失败！'
+                        'msg'=>'更新站点人员失败！'
                     );
                 }
-            }else{
-                $ret['response'] = array(
-                    'code'=>-1,
-                    'msg'=>'站点不能为空！'
-                );
-            }
+
         }
         echo json_encode($ret);
 	}
@@ -155,7 +145,7 @@ class StationpersonController extends Controller
             ->offset(($this->page-1)*$this->count)
             ->order('id desc')
             ->queryAll();
-        
+
         //xl
         $user_info = GeneralLogic::getUserInfo($_SESSION['uid']);
         if(!empty($user_info)){
@@ -180,7 +170,7 @@ class StationpersonController extends Controller
             }
             $ups = empty($ups) ? array() : array_values($ups);
         }
-     
+
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
@@ -192,6 +182,28 @@ class StationpersonController extends Controller
             $ret['data']['pageSize'] = $this->count;
 
             foreach($ups as $key=>$value){
+                // var_dump($value['area']);
+                // $area = Yii::app()->db->createCommand("select title from my_trees where id=".$value['area'])->queryScalar();
+                //$value['area'] = $area;
+                $value['areaname'] = "123";
+
+                if($value['area'] == "*"){
+                    $value['areaname'] = "全国";
+                }else{
+                    $areas = explode(",",$value['area']);
+
+                    $sql = "select title from my_trees where id in (".$value['area'].")";
+
+                    $areanamelist = Yii::app()->db->createCommand($sql)->queryAll();
+
+                    $areas = array();
+                    foreach ($areanamelist as $akey => $avalue) {
+                        $areas[] = $avalue['title'];
+                    }
+                    //var_dump($areas);
+                    $value['areaname'] = implode(" ", $areas);
+                }
+
                 $ret['data']['list'][] = $value;
             }
 
@@ -229,7 +241,7 @@ class StationpersonController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=StationPerson::model()->findByPk($id);
+		$model=Sysuser::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;

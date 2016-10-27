@@ -90,6 +90,10 @@ class BatteryinfoController extends Controller
         $battery_temperature=Yii::app()->request->getParam('battery_temperature',0);
         $battery_type=Yii::app()->request->getParam('battery_type','');
         $battery_factory_phone=Yii::app()->request->getParam('battery_factory_phone','');
+
+        $battery_float_voltage=Yii::app()->request->getParam('battery_float_voltage','');
+        $battery_max_discharge_current=Yii::app()->request->getParam('battery_max_discharge_current','');
+        $battery_dianrong=Yii::app()->request->getParam('battery_dianrong','');
         if ($battery_date == '') {
             $battery_date = date('Y-m-d H:i:s');
         }
@@ -111,6 +115,10 @@ class BatteryinfoController extends Controller
         $battery_life == '' && $battery_life=0.00 ;
         $battery_humidity == '' && $battery_humidity=0.00 ;
         $battery_temperature == '' && $battery_temperature=0.00 ;
+
+        $battery_float_voltage == '' && $battery_float_voltage=0.00 ;
+        $battery_max_discharge_current == '' && $battery_max_discharge_current=0.00 ;
+        $battery_dianrong == '' && $battery_dianrong=0.00 ;
         /**
          * 检查是否是否重复，如果重复直接更新
          */
@@ -139,6 +147,10 @@ class BatteryinfoController extends Controller
             $model->battery_temperature      = $battery_temperature;
             $model->battery_type          =$battery_type          ;
             $model->battery_factory_phone =$battery_factory_phone ;
+
+            $model->battery_float_voltage =$battery_float_voltage ;
+            $model->battery_max_discharge_current =$battery_max_discharge_current ;
+            $model->battery_dianrong =$battery_dianrong ;
             if ($model->save()) {
                 $ret['data'] = array(
                     'id'=>$model->id,
@@ -203,7 +215,7 @@ class BatteryinfoController extends Controller
             'msg'=>'ok'
         );
         $ret['data'] = array();
-        
+
         $battery_factory=Yii::app()->request->getParam('battery_factory','');
         $battery_num=Yii::app()->request->getParam('battery_num','');
         $battery_date=Yii::app()->request->getParam('battery_date','');
@@ -220,6 +232,11 @@ class BatteryinfoController extends Controller
         $battery_temperature=Yii::app()->request->getParam('battery_temperature','');
         $battery_type=Yii::app()->request->getParam('battery_type','');
         $battery_factory_phone=Yii::app()->request->getParam('battery_factory_phone','');
+
+        $battery_float_voltage=Yii::app()->request->getParam('battery_float_voltage','');
+        $battery_max_discharge_current=Yii::app()->request->getParam('battery_max_discharge_current','');
+        $battery_dianrong=Yii::app()->request->getParam('battery_dianrong','');
+
         if ($sid != 0) {
             $oldvalue = $model->attributes;
            $sid                    != '' &&  $model->sid                   =$sid                   ;
@@ -239,6 +256,11 @@ class BatteryinfoController extends Controller
            $battery_temperature       != '' &&  $model->battery_temperature      = $battery_temperature;
            $battery_type           != '' &&  $model->battery_type          =$battery_type          ;
            $battery_factory_phone  != '' &&  $model->battery_factory_phone =$battery_factory_phone ;
+
+           $battery_float_voltage  != '' &&  $model->battery_float_voltage = $battery_float_voltage;
+           $battery_max_discharge_current != ''&&$model->battery_max_discharge_current =$battery_max_discharge_current;
+           $battery_dianrong  != '' &&  $model->battery_dianrong =$battery_dianrong ;
+
             if ($model->save()) {
                 $ret['data'] = array(
                     'id'=>$model->id,
@@ -315,7 +337,7 @@ class BatteryinfoController extends Controller
 	{
         $this->setPageCount();
          $offset = ($this->page-1)*$this->count;
-         
+
          //xl
          //通过sql直接选择地域进行过滤
          $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);

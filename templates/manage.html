@@ -77,14 +77,14 @@
                     <li class="switch-btn undis report batteryLife"><span><a href="#/report/batteryLife">电池使用年限统计表</a></span></li>
                     <li class="switch-btn undis report reportUilog"><span><a href="#/report/reportUilog/options">UI日志表</a></span></li>
                     <!-- 查询 -->
-                    <li class="active switch-btn undis qurey qureyStation"><span><a href="#/qurey/qureyStation">站数据</a></span></li>
-                    <li class="active switch-btn undis qurey qureyGroup"><span><a href="#/qurey/qureyGroup">组数据</a></span></li>
-                    <li class="active switch-btn undis qurey qureyBattery"><span><a href="#/qurey/qureyBattery">电池数据</a></span></li>
+                    <li class="active switch-btn undis qurey qureyStation"><span><a href="#/qurey/qureyStation">站数据</a><i for="station"></i></span></li>
+                    <li class="active switch-btn undis qurey qureyGroup"><span><a href="#/qurey/qureyGroup">组数据</a><i for="group"></i></span></li>
+                    <li class="active switch-btn undis qurey qureyBattery"><span><a href="#/qurey/qureyBattery">电池数据</a><i for="battery"></i></span></li>
                     <li class="active switch-btn undis qurey uilog"><span><a href="#/qurey/uilog/options">UI日志</a></span></li>
                     <li class="active switch-btn undis qurey baseinfo"><span><a href="#/qurey/baseinfo/queryStationSituation">基本信息</a></span></li>
                     <!--li class="active switch-btn undis qurey limitation"><span><a href="#/qurey/limitation">门限</a></span></li-->
                     <li class="active switch-btn undis qurey runlog"><span><a href="#/qurey/runlog">运行日志</a></span></li>
-                    <li class="active switch-btn undis qurey option"><span><a href="#/qurey/option/stationOption">参数</a></span></li>
+                    <!--li class="active switch-btn undis qurey option"><span><a href="#/qurey/option/stationOption">参数</a></span></li-->
                     <li class="active switch-btn undis qurey equipment"><span><a href="#/qurey/equipment">外控设备</a></span></li>
                     <li class="active switch-btn undis qurey adminConfig"><span><a href="#/qurey/adminConfig">管理人员</a></span></li>
                     <li class="active switch-btn undis qurey IRCollect"><span><a href="#/qurey/IRCollect">强制内阻采集</a></span></li>
@@ -203,10 +203,11 @@
                 </a>
                 <a class="switch-btn" field="Lifetime">
                     预估寿命
+                    <span class="hide">（%）</span>
                 </a>
                 <a class="r-radius switch-btn" field="Capacity">
                     预估容量
-                    <span class="hide">（H）</span>
+                    <span class="hide">（%）</span>
                 </a>
             </div>
 
@@ -605,14 +606,28 @@
             <div class="rowElem">
                 <label class="item-title" for="name">生产日期: </label>
                 <input class="input-w-1" type="text" ipttype="date" key="battery_date" />
-                <label class="item-title" for="name">标称电压（V）: </label>
-                <input class="input-w-1" type="text" key="battery_voltage" />
+
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">标称内阻（毫欧）: </label>
+                <label class="item-title" for="name">标称电压（V）: </label>
+                <input class="input-w-1" type="text" key="battery_voltage" />
+                <label class="item-title" for="name">标称内阻（MΩ）: </label>
                 <input class="input-w-1" type="text" key="battery_oum" />
+
+            </div>
+            <div class="rowElem">
+                <label class="item-title" for="name">电池标称容量（Ah）: </label>
+                <input class="input-w-1" type="text" key="battery_dianrong" />
+                <label class="item-title" for="name">浮充标准电压（V）: </label>
+                <input class="input-w-1" type="text" key="battery_float_voltage" />
+            </div>
+            <div class="rowElem">
+
+
                 <label class="item-title" for="name">最大充电电流（A）: </label>
                 <input class="input-w-1" type="text" key="battery_max_current" />
+                <label class="item-title" for="name">最大放电电流（A）: </label>
+                <input class="input-w-1" type="text" key="battery_max_discharge_current" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">浮充电压上限（V）: </label>
@@ -810,38 +825,44 @@
             </div>-->
             <div class="rowElem">
                 <input type="hidden" key="id" />
-                <label class="item-title" for="name"><i class="mast-fill" for="bms_company">*</i>BMS设备生产厂家名称 : </label>
+                <label class="item-title" for="name"><i class="mast-fill" for="bms_company">*</i>生产厂家 : </label>
                 <input class="input-w-1" type="text" key="bms_company" />
-                <label class="item-title" for="name"><i class="mast-fill" for="bms_device_addr">*</i>BMS设备生产厂家地址 : </label>
+                <label class="item-title" for="name"><i class="mast-fill" for="bms_device_addr">*</i>厂家地址 : </label>
                 <input class="input-w-1" type="text" key="bms_device_addr" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">BMS设备生产厂家邮编 : </label>
+                <label class="item-title" for="name">邮编 : </label>
                 <input class="input-w-1" type="text" key="bms_postcode" />
-                <label class="item-title" for="name">BMS技术支持网址 : </label>
+                <label class="item-title" for="name">支持网址 : </label>
                 <input class="input-w-1" type="text" key="bms_url" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">BMS技术支持固话 : </label>
+                <label class="item-title" for="name">支持固话 : </label>
                 <input class="input-w-1" type="text" key="bms_tel" />
-                <label class="item-title" for="name"><i class="mast-fill" for="bms_phone">*</i>BMS技术支持手机 : </label>
+                <label class="item-title" for="name"><i class="mast-fill" for="bms_phone">*</i>支持手机 : </label>
                 <input class="input-w-1" type="text" key="bms_phone" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name"><i class="mast-fill" for="bms_service_phone">*</i>BMS服务商电话 : </label>
+                <label class="item-title" for="name"><i class="mast-fill" for="bms_service_phone">*</i>服务商电话 : </label>
                 <input class="input-w-1" type="text" key="bms_service_phone" />
-                <label class="item-title" for="name"><i class="mast-fill" for="bms_service_name">*</i>BMS服务商名称 : </label>
+                <label class="item-title" for="name"><i class="mast-fill" for="bms_service_name">*</i>服务商名称 : </label>
                 <input class="input-w-1" type="text" key="bms_service_name" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name"><i class="mast-fill" for="bms_service_url">*</i>BMS服务商地址 : </label>
+                <label class="item-title" for="name"><i class="mast-fill" for="bms_service_contact">*</i>服务商联系人 : </label>
+                <input class="input-w-1" type="text" key="bms_service_contact" />
+                <label class="item-title" for="name"><i class="mast-fill" for="bms_service_url">*</i>服务商地址 : </label>
                 <input class="input-w-1" type="text" key="bms_service_url" />
-                <label class="item-title" for="name">软件版本号 : </label>
-                <input class="input-w-1" type="text" key="bms_version" />
+
             </div>
             <div class="rowElem">
+                <label class="item-title" for="name">软件版本号 : </label>
+                <input class="input-w-1" type="text" key="bms_version" />
                 <label class="item-title" for="name">软件升级记录 : </label>
                 <input class="input-w-1" type="text" key="bms_update_mark" />
+
+            </div>
+            <div class="rowElem">
                 <label class="item-title" for="name">备注 : </label>
                 <input class="input-w-1" type="text" key="bms_mark" />
             </div>
@@ -913,12 +934,14 @@
                 <input class="input-w-1" type="text" ipttype="date" key="ups_maintain_date" />
            </div>
             <div class="rowElem">
-                <label class="item-title" for="name">UPS厂家联系电话: </label>
+                <label class="item-title" for="name">联系电话: </label>
                 <input class="input-w-1" type="text" key="ups_vender_phone" />
                 <label class="item-title" for="name">服务商: </label>
                 <input class="input-w-1" type="text" key="ups_service" />
            </div>
             <div class="rowElem">
+                <label class="item-title" for="name">服务商联系人: </label>
+                <input class="input-w-1" type="text" key="ups_vender" />
                 <label class="item-title" for="name">服务商电话: </label>
                 <input class="input-w-1" type="text" key="ups_service_phone" />
            </div>
@@ -936,6 +959,7 @@
             <div class="rowElem tree">
                 <label class="item-title"><i class="mast-fill">*</i>隶属区域: </label>
                 <div id="treesWrap" class="tree-selector ztree"></div>
+                <input type="hidden" key="id" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">登陆名: </label>
@@ -1322,20 +1346,25 @@
 
 <!-- 站信息弹窗模板 -->
 <script type="text/html" id="stationinfoTpl">
-    <div id="stationinfoTpl-dialog">
+    <div id="stationinfoTpl-dialog" class="dialog">
         <table cellspacing="0" width="100%">
             <thead>
             <tr>
-                <th width="">站号</th>
                 <th width="">站名</th>
+                <th width="">站号</th>
                 <th width="">地址</th>
                 <th width="">负责人</th>
-                <th width="">联系人</th>
-                <th width="">UPS厂商</th>
-                <th width="">UPS厂商电话</th>
+                <th width="">电话</th>
+                <th width="">UPS联系人</th>
+                <th width="">电话</th>
+                <th width="">BMS联系人</th>
+                <th width="">电话</th>
             </tr>
             </thead>
         </table>
+        <div class="form-btns">
+            <input type="button" class="goto-detail btn" value="站详情"/>
+        </div>
     </div>
 </script>
 <!-- 强采密码 -->

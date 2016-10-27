@@ -58,24 +58,37 @@ define(['require','api','context','table'],function(require,API,context){
                                     "scrollX":true,
                                     "scrollY":true,
                                     "columns": [
-                                        { "data": "sid" },
                                         { "data": "site_name" },
+                                        { "data": "sid" },
                                         { "data": "site_location" },
-                                        { "data": "manager" },
                                         { "data": "emergency_person" },
-                                        { "data": "ups_factory" },
-                                        { "data": "ups_service_phone" }
+                                        { "data": "emergency_phone" },
+                                        { "data": "ups_vender" },
+                                        { "data": "ups_service_phone" },
+                                        { "data": "bms_service_contact" },
+                                        { "data": "bms_phone" }
                                     ]
                                 });
                                 $('#stationinfoTpl-dialog .dataTables_scrollBody').height(100)
 
 
                                 $("#stationinfoTpl-dialog").off("click").on("click",".submit-btn",function(){
-                                    _this.jumpToRealTime();
                                     $dialog.dialog( "destroy" );
                                      _this.table.destroy();
                                     $(".ui-dialog,.ui-widget-overlay").remove();
+                                    _this.jumpToRealTime();
+
                                 })
+
+                                $("#stationinfoTpl-dialog").off("click").on("click",".goto-detail",function(){
+                                    $dialog.dialog( "destroy" );
+                                    _this.table.destroy();
+                                    $(".ui-dialog,.ui-widget-overlay").remove();
+                                    window.location.href="#/qurey/baseinfo/queryStationSituation";
+
+                                })
+
+
                             }
                         });
 

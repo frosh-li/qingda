@@ -17,7 +17,7 @@ class StatController extends Controller
         // var_dump($upiao);
         // var_dump(date('Y-m-d H:i:s'));
         // var_dump(floor(strtotime(date("Y-m-d H:i:s")) - strtotime($upiao))%86400%60);
-        $upiaoStatus = empty($upiao) || ((strtotime(date("Y-m-d H:i:s")) - strtotime($upiao))%86400%60 > 30) ? 0:1;
+        $upiaoStatus = empty($upiao) || ((strtotime(date("Y-m-d H:i:s")) - strtotime($upiao)) > 30) ? 0:1;
 
         $ret['response'] = array(
             'code' => 0,
@@ -29,7 +29,10 @@ class StatController extends Controller
             'refresh'=>Yii::app()->config->get("refresh"),
             'dismap'=>Yii::app()->config->get("dismap"),
             'status'=>$statusSql[0],
-            'upiao' => $upiaoStatus
+            'upiao' => $upiaoStatus,
+            'server_date'=>strtotime(date("Y-m-d H:i:s")),
+            'server_upiao'=>strtotime($upiao),
+            'last_update' => $upiao
         );
         echo json_encode($ret);
 	}

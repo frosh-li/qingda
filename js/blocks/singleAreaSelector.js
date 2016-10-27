@@ -3,8 +3,8 @@ define(['require','api','backbone','zTreeExcheck'],function(require,API,Backbone
         setting = {
             check: {
                 enable: true,
-                chkStyle:"checkbox",
-                nocheckInherit:true
+                chkStyle:"radio",
+                radioType:"all"
             },
             data: {
                 key:{
@@ -22,8 +22,6 @@ define(['require','api','backbone','zTreeExcheck'],function(require,API,Backbone
         data:null,
         tree:null,
         navPlugin:null,
-        ids:[],
-        checkedall:false,
         initialize:function(option){
             var _this = this;
             _this.option={};
@@ -36,33 +34,18 @@ define(['require','api','backbone','zTreeExcheck'],function(require,API,Backbone
         },
         filterData:function(){
             var _this = this;
-
             if(_this.data){
                 $.each(_this.data,function(i,d){
-                    // console.log('yes data', d.id, _this.option.value);
-                    if(_this.option.value == "*"){
-                        d.checked = true;
-                    }else{
-
-
-                        if(_this.option.value && _this.option.value.split(",").indexOf(d.id) > -1 ){
-                            console.log('yes data', d.id);
-                            d.checked = true
-                        }
+                    if(_this.option.value && _this.option.value == d.id ){
+                        d.checked = true
                     }
                 })
             }
         },
         getCheckedData:function(){
-            this.ids = [];
-            var _this = this;
             var checkedNodes = this.tree.getCheckedNodes(),
                 checkedData = {};
-            var all = false;
-            var allnode = this.tree.getNodes();
-
             $.each(checkedNodes,function(i,node){
-                _this.ids.push(node.id);
                 checkedData[node.id] = {
                     id:node.id,
                     pId:node.pId,
@@ -70,18 +53,10 @@ define(['require','api','backbone','zTreeExcheck'],function(require,API,Backbone
                     level:node.level
                 }
             })
-            console.log(allnode.length, checkedNodes.length)
-            if(_this.data.length == checkedNodes.length){
-                _this.checkedall = true;
-            }
             return checkedData;
         },
         getValue:function(){
-            this.getCheckedData();
-            if(this.checkedall){
-                return "*";
-            }
-            return this.ids.join(",");
+            return this.tree.getCheckedNodes()[0]&&this.tree.getCheckedNodes()[0].id;
         },
         setValue:function(id){
             if(id){
@@ -94,11 +69,11 @@ define(['require','api','backbone','zTreeExcheck'],function(require,API,Backbone
         },
         render:function(){
             var _this = this,$radios;
-            _this.ids = [];
             $.fn.zTree.init($("#treesWrap"), setting, _this.data);
-            console.log('tree data', _this.data);
             _this.tree = $.fn.zTree.getZTreeObj('treesWrap');
             _this.tree.expandAll(true);
+
+
             return this;
         }
     }

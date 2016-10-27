@@ -94,7 +94,7 @@ define(["require","backbone","api","stationsinfoDialog","common"],function(requi
                 _map = _this.map,
                 _alarmNum = 0;
             if(_data && _data.length){
-                
+
                 $.each(_data,function(i,d){
                     var pt = new BMap.Point(d["site_longitude"], d["site_latitude"]);
                     var icon = new BMap.Icon(MARK.icon[d.status||'0'], new BMap.Size(MARK.w,MARK.h));
@@ -108,6 +108,12 @@ define(["require","backbone","api","stationsinfoDialog","common"],function(requi
                     }
 
                     marker.addEventListener("click", function(_d){
+                        return function(){
+                            stationInfoDialog.show(_d.serial_number);
+                        }
+                    }(d));
+
+                    label.addEventListener("click", function(_d){
                         return function(){
                             stationInfoDialog.show(_d.serial_number);
                         }
@@ -140,16 +146,16 @@ define(["require","backbone","api","stationsinfoDialog","common"],function(requi
                 var pt = new BMap.Point(d["site_longitude"],d["site_latitude"]);
                 myGeo.getLocation(pt, function(rs){
                     var addComp = rs.addressComponents;
-                    
+
                     if(!common.inArray(addComp.city,adds)){
                         adds.push(addComp.city);
                         var currentCity = localStorage.getItem('currentCity') || '全国';
                         if(currentCity == addComp.city){
                             selectHtml += '<option selected>'+addComp.city+'</option>';
-                        }else{  
-                            selectHtml += '<option>'+addComp.city+'</option>';    
+                        }else{
+                            selectHtml += '<option>'+addComp.city+'</option>';
                         }
-                        
+
                     }
                     count++;
                     if(count == dataLen){
@@ -169,7 +175,7 @@ define(["require","backbone","api","stationsinfoDialog","common"],function(requi
                                 myGeo.getPoint(prov, function(point){
                                     if (point) {
                                         _this.map.centerAndZoom(point, 12);
-                                        
+
                                     }else{
                                         alert("您选择地址没有解析到结果!");
                                     }

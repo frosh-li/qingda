@@ -3,27 +3,37 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         maxLoadingTime = 1000,
         curLoadingTime = 0;
     window.navTree = null;
-    var $stationPop = $(".stationPop");
-    $stationPop.on('click',function(e){
-        console.log('station pop clicked');
-        var id = navTree.getSites().ids;
-        console.log('id',id)
-        if(id < 0){
-            alert('请选择站点');
-            return;
-        }
-        for(var i = 0 ; i < id.length ; i++){
-            id[i] = id[i]+"0000";
-        }
 
-        stationsinfoDialog.show(id.join(","));
-    });
     function init(sys,pageType,sub,params){
+        var $stationPop = $(".stationPop");
+        $stationPop.off('click').on('click',function(e){
+            console.log('station pop clicked');
+            var id = navTree.getSites().ids;
+            console.log('id',id)
+            if(id < 0){
+                alert('请选择站点');
+                return;
+            }
+            for(var i = 0 ; i < id.length ; i++){
+                id[i] = id[i]+"0000";
+            }
+
+            stationsinfoDialog.show(id.join(","));
+        });
         console.log('init', sys,pageType,sub,params);
         $(".exportdata").hide();
         var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
         if(roleid == 3){
             $(".switch-btn.settings").hide();//
+            //$(".manage.newstations").show();
+            $(".manage.newstations").hide();
+        }else{
+            if(sys == "manage"){
+                $(".manage.newstations").show();
+            }else{
+                $(".manage.newstations").hide();
+            }
+            //$(".switch-btn.settings").show();//
         }
         if(roleid == 2){
             $("#addBMS").hide();
@@ -87,18 +97,20 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             })
             return;
         }
-        
+
         setTimeout(function(){
             var refreshpage = ['#/manage/station', '#/manage/group', '#/manage/battery', '#/manage/caution'];
             var time = parseInt($("#collectDuration").val());
             // 判断是否在实时页面
             var hash = window.location.hash;
             console.log('time', time, hash, localStorage.getItem("collecting"),hash.indexOf("manage/station"))
-            if(time 
-                && localStorage.getItem("collecting") == 'true'){
-
-                if(refreshpage.indexOf(hash) > -1 
+            if(refreshpage.indexOf(hash) > -1
                     || hash.indexOf("manage/station")>-1 ){
+
+                if(time
+                    && localStorage.getItem("collecting") == 'true'){
+
+
                     console.log('need refresh')
                     $("body").addClass('collecting').everyTime(time+"s",'collect',API.collect);
                     $("#startCollectBtn").hide();
@@ -111,7 +123,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
             }else{
                 $("body").removeClass('collecting').stopTime('collect',API.collect);
-                $("#startCollectBtn").css('display','block');
+                $("#startCollectBtn").css('display','none');
                 $(".tzcj").hide();
             }
         },1000);
@@ -123,6 +135,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             $("#dataItem").html($("#listTpl").html());
             ui.downHide(true);
             $(".atype").show();
+            $(".stationPop").show();
             $collectWrap.show();
             if(pageType == 'battery'){
                 $(".list-bottom.undis").show();
@@ -159,6 +172,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             $("#dataItem").html($("#listTpl").html());
             ui.downHide(true);
             $collectWrap.show();
+            $(".stationPop").hide();
             if(pageType == 'battery'){
                 $(".list-bottom.undis").show();
             }else{
@@ -194,6 +208,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             $("#dataItem").html($("#listTpl").html());
             ui.downShow(true);
         	$collectWrap.show();
+            $(".stationPop").show();
             if(pageType == 'battery'){
                 $(".list-bottom.undis").show();
             }else{
@@ -222,6 +237,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                 isOver();
             })
         }else if (/^(IRCollect)$/.test(pageType)) {
+            $(".stationPop").hide();
             ui.downHide(true);
             $("#dataItem").html($("#listTpl").html());
         	$collectIRWrap.show();
@@ -238,6 +254,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             })
         }else if (/^(limitation|baseinfo|equipment|option|runlog|adminConfig)$/.test(pageType)) {
             ui.downHide(true);
+            $(".stationPop").hide();
             $("#dataItem").html($("#listTpl").html());
         	$durationWrap.show();
 
@@ -252,6 +269,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                 isOver();
             })
         }else if(/^(uilog)$/.test(pageType)){
+            $(".stationPop").hide();
             $("#dataItem").html($("#listTpl").html());
             ui.downHide(true);
 
@@ -274,6 +292,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             })
         }else if (/^(qureyBattery|qureyStation|qureyGroup|qureyCaution)$/.test(pageType)) {
             $("#dataItem").html($("#listTpl").html());
+            $(".stationPop").hide();
             ui.downShow(true);
             ui.switchChartBtns(pageType);
             $searchWrap.show();
@@ -295,6 +314,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             })
         }else if (/^(reportUilog|chargeOrDischarge|deviationTrend|batteryLife|reportCaution)$/.test(pageType)) {
             ui.downHide(true);
+            $(".stationPop").hide();
             $(".exportdata").show();
             $("#dataItem").html($("#listTpl").html());
             $searchWrap.show();
@@ -321,7 +341,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             })
         }else if(/^(manager|message|optionSetting|cautionEquipmentSetting|equipmentSetting|update|limitationSetting)$/.test(pageType)) {
             ui.downHide(true);
-
+            $(".stationPop").hide();
             if("otherOption" == sub){
                 require(["blocks/nav","api"],function(nav,API) {
                     $("#dataItem").html($("#otherOptionEditTpl-tpl").html());
@@ -350,6 +370,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             }
 
         }else if(/^(stationInfo)$/.test(pageType)) {
+            $(".stationPop").hide();
             ui.downHide(true);
             if(sub=="tree"){//树形结构图
                 require(["blocks/customTree","blocks/nav"],function(tree,nav) {

@@ -63,6 +63,7 @@ class BmsinfoController extends Controller
         $bms_tel=Yii::app()->request->getParam('bms_tel','');
         $bms_phone=Yii::app()->request->getParam('bms_phone','');
         $bms_service_phone=Yii::app()->request->getParam('bms_service_phone','');
+        $bms_service_contact=Yii::app()->request->getParam('bms_service_contact','');
         $bms_service_name=Yii::app()->request->getParam('bms_service_name','');
         $bms_service_url=Yii::app()->request->getParam('bms_service_url','');
         $bms_version=Yii::app()->request->getParam('bms_version','');
@@ -78,6 +79,7 @@ class BmsinfoController extends Controller
             $bms_tel != '' && $model->bms_tel = $bms_tel;
             $bms_phone != '' && $model->bms_phone = $bms_phone;
             $bms_service_phone != '' && $model->bms_service_phone = $bms_service_phone;
+            $bms_service_contact != '' && $model->bms_service_contact = $bms_service_contact;
             $bms_service_name != '' && $model->bms_service_name = $bms_service_name;
             $bms_service_url != '' && $model->bms_service_url = $bms_service_url;
             $bms_version != '' && $model->bms_version = $bms_version;
@@ -132,6 +134,7 @@ class BmsinfoController extends Controller
         $bms_phone=Yii::app()->request->getParam('bms_phone','');
         $bms_service_phone=Yii::app()->request->getParam('bms_service_phone','');
         $bms_service_name=Yii::app()->request->getParam('bms_service_name','');
+        $bms_service_contact=Yii::app()->request->getParam('bms_service_contact','');
         $bms_service_url=Yii::app()->request->getParam('bms_service_url','');
         $bms_version=Yii::app()->request->getParam('bms_version','');
         $bms_update_mark=Yii::app()->request->getParam('bms_update_mark','');
@@ -146,6 +149,7 @@ class BmsinfoController extends Controller
             $bms_phone != '' && $model->bms_phone = $bms_phone;
             $bms_service_phone != '' && $model->bms_service_phone = $bms_service_phone;
             $bms_service_name != '' && $model->bms_service_name = $bms_service_name;
+            $bms_service_contact != '' && $model->bms_service_contact = $bms_service_contact;
             $bms_service_url != '' && $model->bms_service_url = $bms_service_url;
             $bms_version != '' && $model->bms_version = $bms_version;
             $bms_update_mark != '' && $model->bms_update_mark = $bms_update_mark;

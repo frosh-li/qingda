@@ -12,13 +12,10 @@ define(['require','api','common','blocks/areaSelector'],function(require,API,com
                 initialize:function(data){
                     var _this = this;
 
-                    //_this.listenTo(Backbone.Events,"stationinfo:foredit:update",function(data){
-                    this.level = this.level||areaSelector.init();
-                    console.log(this.level);
-                    //});
-
                     _this.listenTo(Backbone.Events,"personalInfo:get",function(data){
                         _this.data = data;
+
+                        this.level = this.level||areaSelector.init({value:data.area});
                         _this.setValue();
                     });
                     _this.listenTo(Backbone.Events,"personal:create personal:update",function(){
@@ -67,6 +64,7 @@ define(['require','api','common','blocks/areaSelector'],function(require,API,com
         };
     return {
         show:function(id){
+            var _this = this;
             var $dialogWrap = $("#personalEditTpl-dialog").length?$("#personalEditTpl-dialog").replaceWith($($("#personalEditTpl").html())):$($("#personalEditTpl").html());
             try{
                 var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
@@ -93,6 +91,8 @@ define(['require','api','common','blocks/areaSelector'],function(require,API,com
                         API.getPersonalInfo({id:id}, function(){
                             console.log('get data');
                         });
+                    }else{
+                        _this.level = areaSelector.init();
                     }
                     setTimeout(function(){
                         // if(roleid == 1){
@@ -105,7 +105,7 @@ define(['require','api','common','blocks/areaSelector'],function(require,API,com
                         //     $('.rolelist').append('<option value=3>观察员</option>');
                         // }
                     },1000)
-                    
+
 
                 }
             });

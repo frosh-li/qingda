@@ -153,6 +153,9 @@ define(function(require){
             if(customCols){
                 customCols = customCols.split(',');
             }
+            if(!customCols || customCols.length == 0){
+                customCols = allCols;
+            }
             $.each(allCols,function(i,col){
                 if(common.inArray(col.data,customCols)){
                     col.ischeck="checked"
@@ -167,6 +170,17 @@ define(function(require){
                 width:600,
                 buttons: [
                     {
+                        text:'全选',
+                        icons:{
+                            primary:'ui-icon-heart'
+                        },
+                        click: function(){
+                            $("[type=checkbox]",$(this)).each(function(i,el){
+                                $(el).attr('checked','checked');
+                            })
+                        }
+                    },
+                    {
                         text: "确认",
                         icons: {
                             primary: "ui-icon-heart"
@@ -176,8 +190,15 @@ define(function(require){
                             $("[type=checkbox]:checked",$(this)).each(function(i,el){
                                 selectCols += $(el).attr('key')+',';
                             })
+                            console.log('selectCols', selectCols);
+                            if(!selectCols){
+                                alert('请至少选择一列展示');
+                                return;
+                            }
+
                             common.cookie.setCookie(type+'Cols', selectCols.replace(/,$/,''));
-                            Backbone.Events.trigger('colsChange');
+                            console.log(type+"ColsChange");
+                            Backbone.Events.trigger(type+'ColsChange');
                             $( this ).dialog( "close" );
                         }
                     }
@@ -224,7 +245,6 @@ define(function(require){
          * 定时器---采集
          */
         isCollecting:function(){
-
             return localStorage.getItem('collecting') === 'true';
         },
         startCollect:function(){
@@ -557,6 +577,7 @@ define(function(require){
             return this;
         },
         switchBtnGroups:function(sys,pageType,sub){
+            console.log('switch-btn');
             var $listBtns = $("#listBtns ."+pageType+(sub?"-"+sub:"")),
                 $subListTab = $("#subListTab ."+pageType);
             $(".item-list .switch-btn").hide();
