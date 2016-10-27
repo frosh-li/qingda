@@ -454,7 +454,7 @@ class RealtimeController extends Controller
             $ret['data']['total'] = $total[0]['total'];
             foreach($sites as $key=>$value){
                 $addinfo = Yii::app()->bms
-                    ->createCommand('select `desc`,en,`limit`,suggest,send_msg,send_email,tips,`type` from my_station_alert_desc where en="'.$value['code'].'" and type="'.$value['type'].'"')
+                    ->createCommand("select `desc`,en,`limit`,suggest,send_msg,send_email,tips,`type` from my_station_alert_desc where en='".$value['code']."' and type='".$value['type']."'")
                     ->queryAll();
                 // $value = $addinfo[0];
                 $sql = "select site_name,sid from my_site where serial_number=".(FLOOR($value['sn_key']/10000)*10000);
