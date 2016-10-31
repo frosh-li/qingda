@@ -128,7 +128,15 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
     return {
         show:function(id, bringdata){
             var $dialogWrap = $("#stationEditTpl-dialog").length?$("#stationEditTpl-dialog").replaceWith($($("#stationEditTpl").html())):$($("#stationEditTpl").html());
+            var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+            var ifdisabled = "";
+            if(roleid != 1){
+                ifdisabled = "disabled";
+            }else{
+                ifdisabled = "";
+            }
 
+            // $dialogWrap = $($dialogWrap);
             $dialogWrap.dialog({
                 modal:true,
                 show:300,
@@ -142,7 +150,9 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                     $("form.jqtransform").jqTransform();
                     view = new (Backbone.View.extend(config.extobj))();
                     view.dialogObj = $(this);
-
+                    $("form.jqtransform").html($("form.jqtransform").html().replace(/{{disabled}}/g,ifdisabled));
+                    // console.log($on_dis,ifdisabled);
+                    $("form.jqtransform").find("[changedisabled=disabled]").attr('disabled',true);
                     if(id){
                         $(".submit-btn",view.el).show();
                         API.getStationEditInfo({id:id});

@@ -142,6 +142,12 @@ define(['require','api','context','ui'],function(require,API,context,ui){
                         ld["subhtml"] = "";
                         ld["hasSameLevelClass"] = "";
                         ld["level"] = "";
+                        var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+                        if(roleid != 1){
+                            ld['ifhide'] = "hide";
+                        }else{
+                            ld['ifhide'] = "";
+                        }
                         subTreesDataMap[ld.id].html = _.template($("#treeInfoItemTpl").html())(ld);
                     }
                 })
@@ -241,7 +247,8 @@ define(['require','api','context','ui'],function(require,API,context,ui){
                     title:'',
                     level:level,
                     hasSameLevelClass:'',
-                    subhtml:''
+                    subhtml:'',
+                    ifhide:''
                 }));
             }
         }

@@ -378,6 +378,8 @@ ul.login-layout li a.forget{font-size:18px;color:#042439;text-decoration: underl
 .small .show-bar div.show-list{font-size:12px;}
 .small i.icon{background: url("../images/btn-list-small.png") no-repeat;}
 .small i.grelight{width:22px;height:22px;background-position: -21px top;}
+.small i#alarm_collecting.grelight{background: url(../images/greenlight.gif) no-repeat 0 0;background-size: 95%;}
+i#alarm_collecting.grelight{background: url(../images/greenlight.gif) no-repeat 0 0;background-size: 95%;}
 .small i.graylight{width:22px;height:22px;background-position:-67px 4px; }
 .small i.redlight{width:22px;height: 22px;background-position: -44px top;}
 .small i.yunxing{width:20px;height:17px;background-position: 0px -291px;}

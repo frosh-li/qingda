@@ -399,10 +399,10 @@
 <script id="treeInfoItemTpl" type="text/html">
     <div class="tree-info-subitem tree-item-wrap <%= hasSameLevelClass %>" level="<%= level %>" treeid="<%= id %>" pid="<%= pid %>">
         <div class="tree-info-subitem-top">
-            <input type="button" class="add-same-level"/>
+            <input type="button" class="add-same-level <%=ifhide%>"/>
             <input type="text" class="level-name  level-title-input" value="<%=title%>" current-title="<%=title%>"/>
-            <input type="button" class="delete-level"/>
-            <input type="button" class="add-level"/>
+            <input type="button" class="delete-level <%=ifhide%>"/>
+            <input type="button" class="add-level <%=ifhide%>"/>
         </div>
         <div class="tree-info-subitem-sub">
             <%= subhtml %>
@@ -483,24 +483,24 @@
             </div>
             <div class="rowElem">
                 <label class="item-title"><i class="mast-fill" for="serial_number">*</i>物理地址: </label>
-                <input class="input-w-1" placeholder="10位MAC地址" type="text" key="serial_number"/>
+                <input class="input-w-1" changedisabled={{disabled}} placeholder="10位MAC地址" type="text" key="serial_number"/>
                 <label class="item-title"><i class="mast-fill" for="password">*</i>修改或编辑密码: </label>
                 <input class="input-w-1" type="password" key="password" />
             </div>
             <div class="rowElem">
                 <label class="item-title"><i class="mast-fill" for="site_name">*</i>站点简称: </label>
                 <input class="input-w-1" type="text" key="site_name"/>
-                <label class="item-title"><i class="mast-fill" for="StationFullChineseName">*</i>站点全称: </label>
+                <label class="item-title">站点全称: </label>
                 <input class="input-w-1" type="text" key="StationFullChineseName"/>
             </div>
             <div class="rowElem">
-                <label class="item-title"><i class="mast-fill" for="site_latitude">*</i>站点纬度: </label>
+                <label class="item-title">站点纬度: </label>
                 <input class="input-w-1" type="text" key="site_latitude"/>
-                <label class="item-title"><i class="mast-fill" for="site_longitude">*</i>站点经度: </label>
+                <label class="item-title">站点经度: </label>
                 <input class="input-w-1" type="text" key="site_longitude"/>
             </div>
             <div class="rowElem">
-                <label class="item-title"><i class="mast-fill" for="site_location">*</i>站点地址: </label>
+                <label class="item-title">站点地址: </label>
                 <input class="input-w-1" type="text" key="site_location"/>
                 <label class="item-title">站点性质: </label>
                 <input class="input-w-1" type="text" key="site_property"/>
@@ -510,9 +510,9 @@
                 <input class="input-w-1" type="text" key="fix_phone"/>
             </div>
             <div class="rowElem">
-                <label class="item-title">负责人: </label>
+                <label class="item-title"><i class="mast-fill" for="functionary">*</i>负责人: </label>
                 <input class="input-w-1" type="text" key="functionary"/>
-                <label class="item-title">负责人电话: </label>
+                <label class="item-title"><i class="mast-fill" for="functionary_phone">*</i>负责人电话: </label>
                 <input class="input-w-1" type="text" key="functionary_phone"/>
             </div>
             <div class="rowElem">
@@ -585,64 +585,64 @@
             <div class="rowElem">
                 <label class="item-title">IP地址: </label>
                 <input class="input-w-1" type="text" key="ipaddress"/>
-                <label class="item-title">控制器IP地址或方式: </label>
+                <label class="item-title" >控制器IP地址或方式: </label>
                 <input class="input-w-1" type="text" key="ipaddress_method"/>
             </div>
             <div class="rowElem">
                 <label class="item-title">站点控制器型号: </label>
-                <input class="input-w-1" type="text" key="site_control_type"/>
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="site_control_type"/>
                 <label class="item-title">BMS系统安装日期: </label>
-                <input class="input-w-1" type="text" key="bms_install_date"/>
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="bms_install_date"/>
             </div>
             <div class="rowElem">
                 <label class="item-title">组电流采集器型号: </label>
-                <input class="input-w-1" type="text" key="group_collect_type"/>
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="group_collect_type"/>
                 <label class="item-title">组电流采集器数量: </label>
-                <input class="input-w-1" type="text" key="group_collect_num"/>
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="group_collect_num"/>
             </div>
             <div class="rowElem">
                 <label class="item-title">互感器品牌: </label>
-                <input class="input-w-1" type="text" key="inductor_brand"/>
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="inductor_brand"/>
                 <label class="item-title">互感器型号: </label>
-                <input class="input-w-1" type="text" key="inductor_type"/>
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="inductor_type"/>
             </div>
             <div class="rowElem">
                 <label class="item-title">组电流采集器安装模式: </label>
-                <input class="input-w-1" type="text" key="group_collect_install_type"/>
+                <input class="input-w-1"  changedisabled={{disabled}} type="text" key="group_collect_install_type"/>
                 <label class="item-title">电池数据采集器型号: </label>
-                <input class="input-w-1" type="text" key="battery_collect_type"/>
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_collect_type"/>
             </div>
             <div class="rowElem">
                 <label class="item-title">电池数据采集器数量: </label>
-                <input class="input-w-1" type="text" key="battery_collect_num"/>
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_collect_num"/>
                 <label class="item-title">环境温湿度方式: </label>
                 <!--input class="input-w-1" type="text" key="humiture_type"/-->
-                <select class="input-w-1" key="humiture_type">
+                <select class="input-w-1" changedisabled={{disabled}} key="humiture_type">
                     <option value="恒温">恒温</option>
                     <option value="自然">自然</option>
                 </select>
             </div>
             <div class="rowElem">
                 <label class="item-title">灯光报警: </label>
-                <input class="input-w-1" type="text" key="has_light"/>
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="has_light"/>
                 <label class="item-title">声音报警: </label>
-                <input class="input-w-1" type="text" key="has_speaker"/>
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="has_speaker"/>
             </div>
             <div class="rowElem">
                 <label class="item-title">短信: </label>
-                <input class="input-w-1" type="text" key="has_sms"/>
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="has_sms"/>
                 <label class="item-title">智能控制: </label>
-                <input class="input-w-1" type="text" key="has_smart_control"/>
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="has_smart_control"/>
             </div>
             <div class="rowElem">
                 <label class="item-title">温湿度传感器: </label>
-                <input class="input-w-1" type="text" key="has_group_TH_control"/>
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="has_group_TH_control"/>
                 <label class="item-title">氢氧气传感器: </label>
-                <input class="input-w-1" type="text" key="has_group_HO_control"/>
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="has_group_HO_control"/>
             </div>
             <div class="rowElem">
                 <label class="item-title">网口MAC: </label>
-                <input class="input-w-1" type="text" key="device_mac"/>
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="device_mac"/>
             </div>
            <!--<div class="rowElem">
                 <label class="item-title" for="name">负责人手机: </label>
