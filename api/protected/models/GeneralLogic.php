@@ -10,26 +10,42 @@ class GeneralLogic
 {
 
     CONST SUPER_ROLE = 1;
-    
+
     CONST ADMIN_ROLE = 2;
-    
+
     CONST WATCH_ROLE = 3;
-    
+
     public static function getUserInfo($uid, $is_role = true) {
         $uid = intval($uid);
         $sql = "select * from {{sysuser}} where id='" . $uid . "'";
         $user_info = Yii::app()->db->createCommand($sql)->queryRow();
         if(!empty($user_info['area'])){
-            $user_info['areas'] = explode(",", $user_info['area']);
+
+
+            if($user_info['area'] == "*"){
+
+                $asql = "select id from {{trees}}";
+                $areainfo = Yii::app()->db->createCommand($asql)->queryAll();
+                foreach ($areainfo as $v) {
+
+                    $user_info['areas'][] = $v['id'];
+                }
+
+            }else{
+                $user_info['areas'] = explode(",", $user_info['area']);
+            }
+
+            // var_dump($user_info);
+            // return;
         }
-        
+
         if ($is_role) {
             $sql = "select * from {{roles}}";
             $row = Yii::app()->db->createCommand($sql)->queryAll();
             if (empty($row)) {
                 return array();
             }
-            
+
             $role_name = '';
             foreach ($row as $v) {
                 if ($v['id'] == $user_info['role']) {
@@ -37,7 +53,7 @@ class GeneralLogic
                     break;
                 }
             }
-            
+
             switch ($role_name) {
                 case '超级管理员' :
                     $user_info['role_cus'] = self::SUPER_ROLE;
@@ -45,7 +61,7 @@ class GeneralLogic
                 case '管理员' :
                     $user_info['role_cus'] = self::ADMIN_ROLE;
                 break;
-                
+
                 case '观察员' :
                     $user_info['role_cus'] = self::WATCH_ROLE;
                 break;
@@ -53,12 +69,12 @@ class GeneralLogic
         }
         return empty($user_info) ? array() : $user_info;
     }
-    
+
     public static function filterDataByAid($uid, $sites){
         if(empty($sites)){
             return array();
         }
-        
+
         //观察员进行地域过滤 xl
         $user_info = self::getUserInfo($uid);
         if(!empty($user_info['role_cus']) && $user_info['role_cus'] == GeneralLogic::ADMIN_ROLE){
@@ -69,15 +85,15 @@ class GeneralLogic
             }
             $sites = empty($sites) ? array() : array_values($sites);
         }
-        
+
         return $sites;
     }
-    
+
     public static function filterDataBySn($uid, $sites){
         if(empty($sites)){
             return array();
         }
-    
+
         //观察员进行地域过滤 xl
         $sns = self::getWatchSeriNumByAid($uid);
         if($sns == false){
@@ -96,30 +112,30 @@ class GeneralLogic
         }
         return $sites;
     }
-    
+
     public static function isWatcher($uid){
         if(empty($uid)){
             return array();
         }
-    
+
         //观察员进行地域过滤 xl
         $user_info = self::getUserInfo($uid);
         if(!empty($user_info['role_cus']) && $user_info['role_cus'] == GeneralLogic::ADMIN_ROLE){
             return $user_info;
         }
-    
+
         return array();
     }
-    
+
     public static function getWatchSeriNumByAid($uid){
         if(empty($uid)){
             return array();
         }
-    
+
         //观察员进行地域过滤 xl
         $user_info = self::getUserInfo($uid);
         if(!empty($user_info['role_cus']) && $user_info['role_cus'] == GeneralLogic::ADMIN_ROLE){
-            $sql = "select serial_number  from my_site where aid in(" .$user_info['area'] .")";
+            $sql = "select serial_number  from my_site where aid in(" .implode(",", $user_info['areas']) .")";
             $sns = Yii::app()->db->createCommand($sql)->queryAll();
             if(!empty($sns)){
                 foreach($sns as $sn){
@@ -129,7 +145,7 @@ class GeneralLogic
             }
             return array();
         }
-    
+
         return false;
     }
 

@@ -8,6 +8,7 @@
  * @property string $username
  * @property string $name
  * @property string $unit
+ * @property string $canedit
  * @property string $backup_phone
  * @property string $gender
  * @property string $password
@@ -53,7 +54,7 @@ class Sysuser extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('username, name, password, role, postname, location, area,unit, backup_phone,duty_num', 'required'),
+			array('username, name, password, role, postname, location, area,unit, backup_phone,duty_num,canedit', 'required'),
 			array('role', 'numerical', 'integerOnly'=>true),
 			array('username, password, email', 'length', 'max'=>128),
 			array('name', 'length', 'max'=>20),
@@ -105,6 +106,7 @@ class Sysuser extends CActiveRecord
 			'create_time' => 'Create Time',
 			'update_time' => 'Update Time',
 			'area' => 'Area',
+			'canedit' => 'Canedit'
 		);
 	}
 

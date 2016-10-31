@@ -11,17 +11,24 @@ define(['require','api','common','blocks/areaSelector'],function(require,API,com
                 },
                 initialize:function(data){
                     var _this = this;
-
+                    _this.level = areaSelector.init();
                     _this.listenTo(Backbone.Events,"personalInfo:get",function(data){
                         _this.data = data;
-
-                        this.level = this.level||areaSelector.init({value:data.area});
+                        this.level = areaSelector.init({value:data.area});
                         _this.setValue();
                     });
                     _this.listenTo(Backbone.Events,"personal:create personal:update",function(){
                         _this.oncancel();
                         Backbone.Events.trigger("listdata:refresh", "batteryInfo");
                     });
+
+                    _this.listenTo(Backbone.Events,"personal:update:fail",function(data){
+                        alert(data.response.msg);
+                        return;
+                        //Backbone.Events.trigger("listdata:refresh", "batteryInfo");
+                    });
+
+
                 },
                 setValue:function(){
                     if(this.data){
@@ -43,6 +50,7 @@ define(['require','api','common','blocks/areaSelector'],function(require,API,com
                         _param = _this.getParam();
                     _param.area = this.level.getValue();
                     _param.role = $("[key=role]",this.el).val();
+                    _param.canedit = $("[key=canedit]",this.el).val();
                     console.log(_param);
                     console.log(this.level,'level');
                     if(_this.validate(_param)){
@@ -92,7 +100,8 @@ define(['require','api','common','blocks/areaSelector'],function(require,API,com
                             console.log('get data');
                         });
                     }else{
-                        _this.level = areaSelector.init();
+                        _this.level = _this.level || areaSelector.init();
+                        console.log(_this.level);
                     }
                     setTimeout(function(){
                         // if(roleid == 1){

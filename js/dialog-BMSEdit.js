@@ -71,7 +71,13 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
     return {
         show:function(id){
             var $dialogWrap = $("#BMSEditTpl-dialog").length?$("#BMSEditTpl-dialog").replaceWith($($("#BMSEditTpl").html())):$($("#BMSEditTpl").html());
-
+            var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+            var ifdisabled = "";
+            if(roleid != 1){
+                ifdisabled = "disabled";
+            }else{
+                ifdisabled = "";
+            }
             $dialogWrap.dialog({
                 modal:true,
                 show:300,
@@ -85,7 +91,8 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     $("form.jqtransform").jqTransform();
                     view = new (Backbone.View.extend(config.extobj))();
                     view.dialogObj = $(this);
-
+                    $("form.jqtransform").html($("form.jqtransform").html().replace(/{{disabled}}/g,ifdisabled));
+                    $("form.jqtransform").find("[changedisabled=disabled]").attr('disabled',true);
                     if(id){
                         API.getBMSInfo({id:id});
                     }

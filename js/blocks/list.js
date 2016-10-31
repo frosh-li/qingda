@@ -106,6 +106,20 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             }
                             _this.render();
                             _this.renderChart();
+                            console.log('render over');
+                            setTimeout(function(){
+                                var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+                                var canedit = JSON.parse(localStorage.getItem('userinfo')).canedit;
+                                if(roleid == 2 && canedit != 1){
+                                    console.log('start to hide',$(".list-edit-btn"));
+                                    $(".list-edit-btn").hide();
+                                    $(".list-del-btn").hide();
+                                    $("#listBtns li.undis").hide();
+                                }
+                            },100);
+
+
+
                             overFlag = true;
                         });
 
@@ -134,9 +148,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     startTime = +new Date(startTime);
                                     endTime = +new Date(endTime);
                                 }
-
-
-
 
                                 if(hash.indexOf("Group") > -1){
                                     navData = nav.getGroups();
@@ -1058,6 +1069,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "has_group_TH_control",title:"温湿度传感器"},
                                     { "data": "has_group_HO_control",title:"氢氧气传感器"},
                                     { "data": "device_mac",title:"网口MAC"},
+                                    { "data": "remark",title:"备注",width:150 },
                                     {
                                         data:"id",
                                         render: function (data,type,itemData) {
@@ -1137,6 +1149,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "battery_humidity",title:"湿度要求（%）",width:150  },
                                     { "data": "battery_type",title:"电池种类",width:150  },
                                     { "data": "battery_factory_phone",title:"电池厂家联系电话",width:150  },
+                                    { "data": "remark",title:"备注",width:150 },
                                     {
                                         data:"id",
                                         render: function (data) {
@@ -1191,7 +1204,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "columns": [
 
                                     { "data": "site_name",title:"站名",width:250 },
-                                    { "data": "usid",title:"站号",width:80 },
+                                    { "data": "truesid",title:"站号",width:80 },
                                     { "data": "ups_factory",title:"生产厂家",width:250 },
                                     { "data": "ups_type",title:"型号",width:100 },
                                     { "data": "ups_create_date",title:"生产日期",width:150 },
@@ -1221,6 +1234,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "ups_service",title:"服务商名称",width:120 },
                                     { "data": "ups_vender",title:"联系人",width:120 },
                                     { "data": "ups_service_phone",title:"服务商电话",width:100 },
+                                    { "data": "remark",title:"备注",width:150 },
                                     {
                                         data:"id",
                                         render: function (data) {
@@ -1372,7 +1386,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     {data:'manage',title:'管理员'},
                                     {data:'viewer',title:'观察员'},
 
-
+                                    { "data": "remark",title:"备注",width:150 },
                                     {
                                         data:"id",
                                         render: function (data) {
@@ -1631,6 +1645,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     {
                                         data:"sn_key",
                                         render: function (data) {
+                                            var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+
+                                            if(roleid!=1){
+                                                return "";
+                                            }
                                             return _.template($("#editBtn").html())({
                                                 id:data
                                             });
@@ -1695,6 +1714,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     {
                                         data:"sn_key",
                                         render: function (data) {
+                                            var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+
+                                            if(roleid!=1){
+                                                return "";
+                                            }
                                             return _.template($("#editBtn").html())({
                                                 id:data
                                             });
@@ -1772,6 +1796,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     {
                                         data:"sn_key",
                                         render: function (data) {
+                                            var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+
+                                            if(roleid!=1){
+                                                return "";
+                                            }
                                             return _.template($("#editBtn").html())({
                                                 id:data
                                             });

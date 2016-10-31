@@ -119,6 +119,8 @@ class UpsinfoController extends Controller
         $alarm_content=Yii::app()->request->getParam('alarm_content','');
         $discharge_protect=Yii::app()->request->getParam('discharge_protect','');
 
+        $remark=Yii::app()->request->getParam('remark','');
+
         $ups_power == '' && $ups_power=0.00 ;
         $floting_charge == '' && $floting_charge=0.00 ;
         $ups_vdc == '' && $ups_vdc=0.00 ;
@@ -167,6 +169,7 @@ class UpsinfoController extends Controller
             $model->on_net     = $on_net;
             $model->alarm_content     = $alarm_content;
             $model->discharge_protect     = $discharge_protect;
+            $model->remark     = $remark;
 
             if ($model->save()) {
                 $ret['data'] = array(
@@ -261,6 +264,7 @@ class UpsinfoController extends Controller
             $on_net=Yii::app()->request->getParam('on_net','');
             $alarm_content=Yii::app()->request->getParam('alarm_content','');
             $discharge_protect=Yii::app()->request->getParam('discharge_protect','');
+            $remark=Yii::app()->request->getParam('remark','');
 
 
             if ($sid != 0){
@@ -297,6 +301,7 @@ class UpsinfoController extends Controller
                 $on_net  !='' && $model->on_net     = $on_net;
                 $alarm_content  !='' && $model->alarm_content     = $alarm_content;
                 $discharge_protect  !='' && $model->discharge_protect     = $discharge_protect;
+                $remark  !='' && $model->remark     = $remark;
                 if ($model->save()) {
                     $ret['data'] = array(
                         'id' => $model->id,

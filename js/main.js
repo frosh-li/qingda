@@ -23,9 +23,13 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         console.log('init', sys,pageType,sub,params);
         $(".exportdata").hide();
         var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
-        if(roleid == 3){
-            $(".switch-btn.settings").hide();//
-            //$(".manage.newstations").show();
+        var canedit = JSON.parse(localStorage.getItem('userinfo')).canedit;
+        if(roleid == 2 && canedit != 1){
+            $(".list-edit-btn").hide();
+            $(".list-del-btn").hide();
+            $("#listBtns li.undis").hide();
+        }
+        if(roleid != 1){
             $(".manage.newstations").hide();
         }else{
             if(sys == "manage"){
@@ -33,7 +37,11 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             }else{
                 $(".manage.newstations").hide();
             }
-            //$(".switch-btn.settings").show();//
+        }
+        if(roleid == 3){
+            $(".switch-btn.settings").hide();//
+            //$(".manage.newstations").show();
+
         }
         if(roleid == 2){
             $("#addBMS").hide();
@@ -41,6 +49,8 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             $("#addBattery").hide();
             $("#addUps").hide();
         }
+
+
         Backbone.listenTo(Backbone.Events,"stat",function(data){
             $("#stat_login_time").html(data.loginTime);
             $("#stat_sys_uptime").html(data.startTime);

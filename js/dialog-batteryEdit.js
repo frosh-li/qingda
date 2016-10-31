@@ -100,7 +100,13 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
     return {
         show:function(id,data){
             var $dialogWrap = $("#batteryEditTpl-dialog").length?$("#batteryEditTpl-dialog").replaceWith($($("#batteryEditTpl").html())):$($("#batteryEditTpl").html());
-
+            var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+            var ifdisabled = "";
+            if(roleid != 1){
+                ifdisabled = "disabled";
+            }else{
+                ifdisabled = "";
+            }
             $dialogWrap.dialog({
                 modal:true,
                 show:300,
@@ -118,7 +124,8 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     $("form.jqtransform").jqTransform();
                     view = new (Backbone.View.extend(config.extobj))();
                     view.dialogObj = $(this);
-
+                    $("form.jqtransform").html($("form.jqtransform").html().replace(/{{disabled}}/g,ifdisabled));
+                    $("form.jqtransform").find("[changedisabled=disabled]").attr('disabled',true);
                     if(id){
                         $(".submit-btn",view.el).show();
                         API.getBatteryInfo({id:id});

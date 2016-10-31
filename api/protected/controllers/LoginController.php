@@ -49,9 +49,10 @@ class LoginController extends LController
                         'username'=>$username,
                         'uid'=>$row['id'],
                         'role'=>$row['role'],
-                        'area'=>$row['area']
+                        'area'=>$row['area'],
+                        'canedit' => $row['canedit']
                     );
-                    $this->session->register($row['id'], $row['username'], $row['role'],$row['area']);
+                    $this->session->register($row['id'], $row['username'], $row['role'],$row['area'],$row['canedit']);
                     $log = array(
                         'type'=>1,
                         'uid'=>$row['id'],

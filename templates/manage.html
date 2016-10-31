@@ -58,14 +58,15 @@
                     <li class="active undis switch-btn manage station"><span><a href="#/manage/station">站数据</a></span><i for="station"></i></li>
                     <li class="switch-btn undis manage group"><span><a href="#/manage/group">组数据</a></span><i for="group"></i></li>
                     <li class="switch-btn undis manage battery"><span><a href="#/manage/battery">电池数据</a></span><i for="battery"></i></li>
-                    <li class="switch-btn undis manage caution"><span><a href="#/manage/caution">报警数据</a></span><i for="caution"></i></li>
+                    <li class="switch-btn undis manage caution"><span><a href="#/manage/caution">数据报警</a></span><i for="caution"></i></li>
+                    <li class="switch-btn undis manage systemAlarm"><span><a href="#/manage/systemAlarm">系统报警</a></span><i for="systemAlarm"></i></li>
                     <li class="switch-btn undis manage newstations"><span><a href="#/manage/newstations">待添加站</a></span><i for="newstations"></i></li>
 
                     <!-- 设置 -->
                     <li class="active switch-btn undis settings stationInfo"><span><a href="#/settings/stationInfo/stationSituation">基本信息</a></span></li>
                     <li class="switch-btn undis settings manager"><span><a href="#/settings/manager/personal">管理人员</a></span></li>
                     <li class="switch-btn undis settings message"><span><a href="#/settings/message">短信/邮箱</a></span></li>
-                    <li class="switch-btn undis settings optionSetting"><span><a href="#/settings/optionSetting/stationOption">报警参数</a></span></li>
+                    <li class="switch-btn undis settings optionSetting"><span><a href="#/settings/optionSetting/stationOption">参数</a></span></li>
                     <li class="switch-btn undis settings limitationSetting"><span><a href="#/settings/limitationSetting">报警级别</a></span></li>
                     <li class="switch-btn undis settings cautionEquipmentSetting"><span><a href="#/settings/cautionEquipmentSetting/upperMonitor">报警设备</a></span></li>
                     <li class="switch-btn undis settings update"><span><a href="#/settings/update">远程升级</a></span></li>
@@ -151,6 +152,7 @@
                     <li class="switch-btn undis optionSetting stationOption"><span><a href="#/settings/optionSetting/stationOption">站参数</a></span><i></i></li>
                     <li class="switch-btn undis optionSetting groupOption"><span><a href="#/settings/optionSetting/groupOption">组参数</a></span><i></i></li>
                     <li class="switch-btn undis optionSetting batteryOption"><span><a href="#/settings/optionSetting/batteryOption">电池参数</a></span><i></i></li>
+                    <li class="switch-btn undis optionSetting systemOption"><span><a href="#/settings/optionSetting/systemOption">系统报警参数</a></span><i></i></li>
                     <li class="switch-btn optionSetting otherOption"><span><a href="#/settings/optionSetting/otherOption">其他参数</a></span><i></i></li>
 
                     <li class="switch-btn undis option stationOption"><span><a href="#/qurey/option/stationOption">站参数</a></span><i></i></li>
@@ -644,6 +646,12 @@
                 <label class="item-title">网口MAC: </label>
                 <input class="input-w-1" changedisabled={{disabled}} type="text" key="device_mac"/>
             </div>
+            <div class="rowElem">
+                <label class="item-title" for="remark">
+                <i class="mast-fill" for="remark"></i>备注 :
+                </label>
+                <input class="input-w-1" type="text" key="remark" />
+            </div>
            <!--<div class="rowElem">
                 <label class="item-title" for="name">负责人手机: </label>
                 <input class="input-w-1" type="text" key="person_phone"/>
@@ -668,73 +676,79 @@
         <form class="jqtransform">
             <div class="rowElem">
                 <label class="item-title" for="name"><i class="mast-fill">*</i>站点: </label>
-                <input class="input-w-1" type="text" id="stationSelector" key="site_name" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" id="stationSelector" key="site_name" />
                 <label class="item-title"><i class="mast-fill" for="password">*</i>修改或编辑密码: </label>
-                <input class="input-w-1" type="password" key="password" />
-                <input type="hidden" key="sid" />
-                <input type="hidden" key="id" />
+                <input class="input-w-1" changedisabled={{disabled}} type="password" key="password" />
+                <input type="hidden" changedisabled={{disabled}} key="sid" />
+                <input type="hidden" changedisabled={{disabled}} key="id" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name"><i class="mast-fill" for="battery_factory">*</i>生产厂家: </label>
-                <input class="input-w-1" type="text" key="battery_factory" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_factory" />
                 <label class="item-title" for="name">电池型号: </label>
-                <input class="input-w-1" type="text" key="battery_num" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_num" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">生产日期: </label>
-                <input class="input-w-1" type="text" ipttype="date" key="battery_date" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" ipttype="date" key="battery_date" />
 
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">标称电压(V): </label>
-                <input class="input-w-1" type="text" key="battery_voltage" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_voltage" />
                 <label class="item-title" for="name">标称内阻(MΩ): </label>
-                <input class="input-w-1" type="text" key="battery_oum" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_oum" />
 
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">电池标称容量(Ah): </label>
-                <input class="input-w-1" type="text" key="battery_dianrong" />
-                <label class="item-title" for="name">浮充标准电压(V): </label>
-                <input class="input-w-1" type="text" key="battery_float_voltage" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_dianrong" />
+                <label class="item-title" changedisabled={{disabled}} for="name">浮充标准电压(V): </label>
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_float_voltage" />
             </div>
             <div class="rowElem">
 
 
                 <label class="item-title" for="name">最大充电电流(A): </label>
-                <input class="input-w-1" type="text" key="battery_max_current" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_max_current" />
                 <label class="item-title" for="name">最大放电电流(A): </label>
-                <input class="input-w-1" type="text" key="battery_max_discharge_current" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_max_discharge_current" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">浮充电压上限(V): </label>
-                <input class="input-w-1" type="text" key="battery_float_up" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_float_up" />
                 <label class="item-title" for="name">电池浮充电压下限(V): </label>
-                <input class="input-w-1" type="text" key="battery_float_dow" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_float_dow" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">放电电压下限(V): </label>
-                <input class="input-w-1" type="text" key="battery_discharge_down" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_discharge_down" />
                 <label class="item-title" for="name">强制报废日期: </label>
-                <input class="input-w-1" type="text" ipttype="date" key="battery_scrap_date" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" ipttype="date" key="battery_scrap_date" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">设计寿命(年): </label>
-                <input class="input-w-1" type="text" key="battery_life" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_life" />
                 <label class="item-title" for="name">电池级柱类型: </label>
-                <input class="input-w-1" type="text" key="battery_column_type" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_column_type" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">温度要求(度): </label>
-                <input class="input-w-1" type="text" key="battery_temperature" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_temperature" />
                 <label class="item-title" for="name">湿度要求(%): </label>
-                <input class="input-w-1" type="text" key="battery_humidity" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_humidity" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">电池种类: </label>
-                <input class="input-w-1" type="text" key="battery_type" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_type" />
                 <label class="item-title" for="name">电池厂家联系电话: </label>
-                <input class="input-w-1" type="text" key="battery_factory_phone" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="battery_factory_phone" />
+            </div>
+            <div class="rowElem">
+                <label class="item-title" for="remark">
+                <i class="mast-fill" for="remark"></i>备注 :
+                </label>
+                <input class="input-w-1" type="text" key="remark" />
             </div>
         </form>
         <div class="form-btns">
@@ -791,9 +805,9 @@
         <form class="jqtransform">
 
             <div class="rowElem">
-            <label class="item-title" for="name"><i class="mast-fill" for="company_name">*</i>用户单位总部名称 : </label>
+            <label class="item-title" for="name"><i class="mast-fill" for="company_name">*</i>单位名称 : </label>
             <input class="input-w-1" type="text" key="company_name" />
-            <label class="item-title" for="name"><i class="mast-fill" for="company_address">*</i>用户单位总部地址 : </label>
+            <label class="item-title" for="name"><i class="mast-fill" for="company_address">*</i>单位地址 : </label>
             <input class="input-w-1" type="text" key="company_address" />
         </div>
         <div class="rowElem">
@@ -806,18 +820,20 @@
                 <input class="input-w-1" type="text" key="parent_area" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name"><i class="mast-fill" for="supervisor_phone">*</i>主管领导电话 : </label>
-                <input class="input-w-1" type="text" key="supervisor_phone" />
                 <label class="item-title" for="name"><i class="mast-fill" for="supervisor_name">*</i>主管领导姓名 : </label>
                 <input class="input-w-1" type="text" key="supervisor_name" />
+                <label class="item-title" for="name"><i class="mast-fill" for="supervisor_phone">*</i>主管领导电话 : </label>
+                <input class="input-w-1" type="text" key="supervisor_phone" />
+
             </div>
             <div class="rowElem">
+                <label class="item-title" for="owner"><i class="mast-fill" for="owner"></i>部门负责人 : </label>
+                <input class="input-w-1" type="text" key="owner" />
                 <label class="item-title" for="owner_phone">
                 <i class="mast-fill" for="owner_phone"></i>部门负责人电话 :
                 </label>
                 <input class="input-w-1" type="text" key="owner_phone" />
-                <label class="item-title" for="manage"><i class="mast-fill" for="manage"></i>管理员 : </label>
-                <input class="input-w-1" type="text" key="manage" />
+
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name"><i class="mast-fill" for="longitude">*</i>经度 : </label>
@@ -830,7 +846,7 @@
                 <input class="input-w-1" type="text" key="station_num" /><!--
                 <label class="item-title" for="name"><i class="mast-fill">*</i>已联网站点个数 : </label>
                 <input class="input-w-1" type="text" key="station_num" />-->
-                <label class="item-title" for="name"><i class="mast-fill" for="area_level">*</i>隶属分几级 : </label>
+                <label class="item-title" for="name"><i class="mast-fill" for="area_level">*</i>隶属层级 : </label>
                 <input class="input-w-1" type="text" key="area_level" />
             </div>
             <div class="rowElem">
@@ -870,31 +886,36 @@
                 <input class="input-w-1" type="text" key="backup_type" />
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name"><i class="mast-fill" for="supervisor_depname">*</i>监控中心主管部门名称 : </label>
+                <label class="item-title" for="name"><i class="mast-fill" for="supervisor_depname">*</i>监控部门名称 : </label>
                 <input class="input-w-1" type="text" key="supervisor_depname" />
-                <label class="item-title" for="name"><i class="mast-fill" for="monitor_name1">*</i>监控中心负责人姓名1 : </label>
+
+            </div>
+            <div class="rowElem">
+                <label class="item-title" for="name"><i class="mast-fill" for="monitor_name1">*</i>监控部门负责人 : </label>
                 <input class="input-w-1" type="text" key="monitor_name1" />
-            </div>
-            <div class="rowElem">
-                <label class="item-title" for="name"><i class="mast-fill" for="monitor_phone1">*</i>监控中心负责人电话1 : </label>
+                <label class="item-title" for="name"><i class="mast-fill" for="monitor_phone1">*</i>监控部门负责人电话 : </label>
                 <input class="input-w-1" type="text" key="monitor_phone1" />
-                <label class="item-title" for="name">监控中心负责人姓名2 : </label>
+
+
+            </div>
+            <div class="rowElem">
+
+                <label class="item-title" for="name">其他负责人 : </label>
                 <input class="input-w-1" type="text" key="monitor_name2" />
-            </div>
-            <div class="rowElem">
-                <label class="item-title" for="name">监控中心负责人电话2 : </label>
+                <label class="item-title" for="name">其他负责人电话 : </label>
                 <input class="input-w-1" type="text" key="monitor_phone2" />
-                <label class="item-title" for="name">监控中心负责人姓名3 : </label>
+            </div>
+            <div class="rowElem">
+                <label class="item-title" for="name">其他负责人 : </label>
                 <input class="input-w-1" type="text" key="monitor_name3" />
-            </div>
-            <div class="rowElem">
-                <label class="item-title" for="name">监控中心负责人电话3 : </label>
+                <label class="item-title" for="name">其他负责人电话 : </label>
                 <input class="input-w-1" type="text" key="monitor_phone3" />
-                <label class="item-title" for="name">监控中心固定电话1 : </label>
-                <input class="input-w-1" type="text" key="monitor_tel1" />
+
             </div>
             <div class="rowElem">
-                <label class="item-title" for="name">监控中心固定电话2 : </label>
+                <label class="item-title" for="name">监控部门固定电话1 : </label>
+                <input class="input-w-1" type="text" key="monitor_tel1" />
+                <label class="item-title" for="name">监控部门固定电话2 : </label>
                 <input class="input-w-1" type="text" key="monitor_tel2" />
             </div>
             <div class="rowElem">
@@ -902,8 +923,8 @@
                 <i class="mast-fill" for="duty_status"></i>值守状态/班次 :
                 </label>
                 <input class="input-w-1" type="text" key="duty_status" />
-                <label class="item-title" for="owner"><i class="mast-fill" for="owner"></i>部门领导 : </label>
-                <input class="input-w-1" type="text" key="owner" />
+                <label class="item-title" for="manage"><i class="mast-fill" for="manage"></i>管理员 : </label>
+                <input class="input-w-1" type="text" key="manage" />
             </div>
 
 
@@ -913,6 +934,12 @@
                 <i class="mast-fill" for="viewer"></i>观察员 :
                 </label>
                 <input class="input-w-1" type="text" key="viewer" />
+            </div>
+            <div class="rowElem">
+                <label class="item-title" for="remark">
+                <i class="mast-fill" for="remark"></i>备注 :
+                </label>
+                <input class="input-w-1" type="text" key="remark" />
             </div>
         </form>
         <div class="form-btns">
@@ -933,45 +960,45 @@
             <div class="rowElem">
                 <input type="hidden" key="id" />
                 <label class="item-title" for="name"><i class="mast-fill" for="bms_company">*</i>生产厂家 : </label>
-                <input class="input-w-1" type="text" key="bms_company" />
+                <input changedisabled={{disabled}} class="input-w-1" type="text" key="bms_company" />
                 <label class="item-title" for="name"><i class="mast-fill" for="bms_device_addr">*</i>厂家地址 : </label>
-                <input class="input-w-1" type="text" key="bms_device_addr" />
+                <input changedisabled={{disabled}} class="input-w-1" type="text" key="bms_device_addr" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">邮编 : </label>
-                <input class="input-w-1" type="text" key="bms_postcode" />
+                <input changedisabled={{disabled}} class="input-w-1" type="text" key="bms_postcode" />
                 <label class="item-title" for="name">支持网址 : </label>
-                <input class="input-w-1" type="text" key="bms_url" />
+                <input changedisabled={{disabled}} class="input-w-1" type="text" key="bms_url" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">支持固话 : </label>
-                <input class="input-w-1" type="text" key="bms_tel" />
+                <input changedisabled={{disabled}} class="input-w-1" type="text" key="bms_tel" />
                 <label class="item-title" for="name"><i class="mast-fill" for="bms_phone">*</i>支持手机 : </label>
-                <input class="input-w-1" type="text" key="bms_phone" />
+                <input changedisabled={{disabled}} class="input-w-1" type="text" key="bms_phone" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name"><i class="mast-fill" for="bms_service_phone">*</i>服务商电话 : </label>
-                <input class="input-w-1" type="text" key="bms_service_phone" />
+                <input changedisabled={{disabled}} class="input-w-1" type="text" key="bms_service_phone" />
                 <label class="item-title" for="name"><i class="mast-fill" for="bms_service_name">*</i>服务商名称 : </label>
-                <input class="input-w-1" type="text" key="bms_service_name" />
+                <input changedisabled={{disabled}} class="input-w-1" type="text" key="bms_service_name" />
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name"><i class="mast-fill" for="bms_service_contact">*</i>服务商联系人 : </label>
-                <input class="input-w-1" type="text" key="bms_service_contact" />
+                <input changedisabled={{disabled}} class="input-w-1" type="text" key="bms_service_contact" />
                 <label class="item-title" for="name"><i class="mast-fill" for="bms_service_url">*</i>服务商地址 : </label>
-                <input class="input-w-1" type="text" key="bms_service_url" />
+                <input changedisabled={{disabled}} class="input-w-1" type="text" key="bms_service_url" />
 
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">软件版本号 : </label>
-                <input class="input-w-1" type="text" key="bms_version" />
+                <input changedisabled={{disabled}} class="input-w-1" type="text" key="bms_version" />
                 <label class="item-title" for="name">软件升级记录 : </label>
-                <input class="input-w-1" type="text" key="bms_update_mark" />
+                <input changedisabled={{disabled}} class="input-w-1" type="text" key="bms_update_mark" />
 
             </div>
             <div class="rowElem">
                 <label class="item-title" for="name">备注 : </label>
-                <input class="input-w-1" type="text" key="bms_mark" />
+                <input changedisabled={{disabled}} class="input-w-1" type="text" key="bms_mark" />
             </div>
         </form>
         <div class="form-btns">
@@ -986,105 +1013,111 @@
         <form class="jqtransform">
             <div class="rowElem">
                 <label class="item-title" for="name">站点: </label>
-                <input class="input-w-1" type="text" id="stationSelector" key="site_name" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" id="stationSelector" key="site_name" />
                 <label class="item-title"><i class="mast-fill" for="password">*</i>修改或编辑密码: </label>
-                <input class="input-w-1" type="password" key="password" />
+                <input class="input-w-1" changedisabled={{disabled}} type="password" key="password" />
                 <input type="hidden" key="sid" />
                 <input type="hidden" key="id" />
            </div>
-           <div class="rowElem">
+           <!--div class="rowElem">
                 <label class="item-title" for="usid"><i class="mast-fill" for="usid">*</i>站号: </label>
-                <input class="input-w-1" type="text" key="usid" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="usid" />
 
-           </div>
+           </div-->
             <div class="rowElem">
                 <label class="item-title" for="name"><i class="mast-fill" for="ups_factory">*</i>生产厂家: </label>
-                <input class="input-w-1" type="text" key="ups_factory" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_factory" />
                 <label class="item-title" for="name">型号: </label>
-                <input class="input-w-1" type="text" key="ups_type" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_type" />
            </div>
             <div class="rowElem">
                 <label class="item-title" for="name">生产日期: </label>
-                <input class="input-w-1" type="text" ipttype="date" key="ups_create_date" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" ipttype="date" key="ups_create_date" />
                 <label class="item-title" for="name">安装日期: </label>
-                <input class="input-w-1" type="text" ipttype="date" key="ups_install_date" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" ipttype="date" key="ups_install_date" />
            </div>
             <div class="rowElem">
                 <label class="item-title" for="name">功率(W): </label>
-                <input class="input-w-1" type="text" key="ups_power" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_power" />
                 <label class="item-title" for="name">冗余数量(台): </label>
-                <input class="input-w-1" type="text" key="redundancy_num" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="redundancy_num" />
            </div>
            <div class="rowElem">
                 <label class="item-title" for="ups_power_in">输入功率(V/A): </label>
-                <input class="input-w-1" type="text" key="ups_power_in" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_power_in" />
                 <label class="item-title" for="ups_power_out">输出功率(V/A): </label>
-                <input class="input-w-1" type="text" key="ups_power_out" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_power_out" />
            </div>
            <div class="rowElem">
                 <label class="item-title" for="ups_battery_vol">外接电池电压(V): </label>
-                <input class="input-w-1" type="text" key="ups_battery_vol" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_battery_vol" />
                 <label class="item-title" for="ups_battery_current">外接电池电流(A): </label>
-                <input class="input-w-1" type="text" key="ups_battery_current" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_battery_current" />
            </div>
            <div class="rowElem">
                 <label class="item-title" for="ac_protect">AC过流保护(V/A): </label>
-                <input class="input-w-1" type="text" key="ac_protect" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ac_protect" />
                 <label class="item-title" for="dc_protect">DC过流保护(V/A): </label>
-                <input class="input-w-1" type="text" key="dc_protect" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="dc_protect" />
            </div>
            <div class="rowElem">
                 <label class="item-title" for="on_net">联网检测: </label>
-                <input class="input-w-1" type="text" key="on_net" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="on_net" />
                 <label class="item-title" for="alarm_content">报警内容: </label>
-                <input class="input-w-1" type="text" key="alarm_content" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="alarm_content" />
            </div>
            <div class="rowElem">
                 <label class="item-title" for="discharge_protect">放电保护值(%): </label>
-                <input class="input-w-1" type="text" key="discharge_protect" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="discharge_protect" />
            </div>
             <div class="rowElem">
                 <label class="item-title" for="name">浮充电压(V): </label>
-                <input class="input-w-1" type="text" key="floting_charge" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="floting_charge" />
                 <label class="item-title" for="name">电压范围(V): </label>
-                <input class="input-w-1" type="text" key="ups_vdc" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_vdc" />
            </div>
             <div class="rowElem">
                 <label class="item-title" for="name">额定候备时间(小时): </label>
-                <input class="input-w-1" type="text" key="ups_reserve_hour" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_reserve_hour" />
                 <label class="item-title" for="name">充电方式: </label>
-                <input class="input-w-1" type="text" key="ups_charge_mode" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_charge_mode" />
            </div>
             <div class="rowElem">
                 <label class="item-title" for="name">最大充电电流(A): </label>
-                <input class="input-w-1" type="text" key="ups_max_charge" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_max_charge" />
                 <label class="item-title" for="name">最大放电电流(A): </label>
-                <input class="input-w-1" type="text" key="ups_max_discharge" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_max_discharge" />
            </div>
             <div class="rowElem">
                 <label class="item-title" for="name">规定维护周期(天): </label>
-                <input class="input-w-1" type="text" key="ups_period_days" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_period_days" />
                 <label class="item-title" for="name">维护放电时长(分钟): </label>
-                <input class="input-w-1" type="text" key="ups_discharge_time" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_discharge_time" />
            </div>
             <div class="rowElem">
                 <label class="item-title" for="name">维护放电容量(%): </label>
-                <input class="input-w-1" type="text" key="ups_discharge_capacity" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_discharge_capacity" />
                 <label class="item-title" for="name">维护到期日: </label>
-                <input class="input-w-1" type="text" ipttype="date" key="ups_maintain_date" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" ipttype="date" key="ups_maintain_date" />
            </div>
             <div class="rowElem">
                 <label class="item-title" for="name">联系电话: </label>
-                <input class="input-w-1" type="text" key="ups_vender_phone" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_vender_phone" />
                 <label class="item-title" for="name">服务商: </label>
-                <input class="input-w-1" type="text" key="ups_service" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_service" />
            </div>
             <div class="rowElem">
                 <label class="item-title" for="name">服务商联系人: </label>
-                <input class="input-w-1" type="text" key="ups_vender" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_vender" />
                 <label class="item-title" for="name">服务商电话: </label>
-                <input class="input-w-1" type="text" key="ups_service_phone" />
+                <input class="input-w-1" changedisabled={{disabled}} type="text" key="ups_service_phone" />
            </div>
+           <div class="rowElem">
+                <label class="item-title" for="remark">
+                <i class="mast-fill" for="remark"></i>备注 :
+                </label>
+                <input class="input-w-1" type="text" key="remark" />
+            </div>
         </form>
         <div class="form-btns">
             <input type="button" class="submit-btn btn" value="确定"/>
@@ -1139,7 +1172,11 @@
                     <option value=2>管理员</option>
                     <option value=3>观察员</option>
                 </select>
-
+                <label class="item-title" for="canedit">是否有编辑权限: </label>
+                <select key="canedit">
+                    <option value=1>是</option>
+                    <option value=0>否</option>
+                </select>
             </div>
         </form>
         <div class="form-btns">
@@ -1481,8 +1518,6 @@
                 <input class="input-w-1" type="text" key="collection"/>
            </div>
             <div class="rowElem">
-                <label class="item-title" for="name">内阻采集时间间隔(分): </label>
-                <input class="input-w-1" type="text" key="resistance" />
                 <label class="item-title" for="name">是否显示地图页面: </label>
                 <label><input type="checkbox" name="dismap" key="dismap" specify-value="1|0">显示</label>
            </div>

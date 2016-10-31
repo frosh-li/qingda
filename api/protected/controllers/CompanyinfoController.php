@@ -93,6 +93,7 @@ class CompanyinfoController extends Controller
         $owner_phone=Yii::app()->request->getParam('owner_phone','');
         $manage=Yii::app()->request->getParam('manage','');
         $viewer=Yii::app()->request->getParam('viewer','');
+        $remark=Yii::app()->request->getParam('remark','');
 
         if ($company_name) {
             $company_name !='' && $model->company_name=$company_name;
@@ -133,6 +134,7 @@ class CompanyinfoController extends Controller
             $owner_phone !='' && $model->owner_phone=$owner_phone;
             $manage !='' && $model->manage=$manage;
             $viewer !='' && $model->viewer=$viewer;
+            $remark !='' && $model->remark=$remark;
 
 
             if ($model->save()) {
@@ -210,6 +212,7 @@ class CompanyinfoController extends Controller
         $owner_phone=Yii::app()->request->getParam('owner_phone','');
         $manage=Yii::app()->request->getParam('manage','');
         $viewer=Yii::app()->request->getParam('viewer','');
+        $remark=Yii::app()->request->getParam('remark','');
 
 
         if ($model) {
@@ -251,6 +254,8 @@ class CompanyinfoController extends Controller
             $owner_phone !='' && $model->owner_phone=$owner_phone;
             $manage !='' && $model->manage=$manage;
             $viewer !='' && $model->viewer=$viewer;
+
+            $remark !='' && $model->remark=$remark;
 
 
             if ($model->save()) {

@@ -28,7 +28,7 @@ define(function(require){
                                 // alert(res.response.msg);
                             }
                         } else {
-                            Backbone.Events.trigger(event,"error", res.response.message);
+                            Backbone.Events.trigger(event,"error", res.response.message || res.response.msg);
                         }
                     },
                     error: function (res) {

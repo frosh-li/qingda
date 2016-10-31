@@ -146,6 +146,7 @@ class SitesController extends Controller
 
         $area_owner=Yii::app()->request->getParam('area_owner','');
         $area_owner_phone=Yii::app()->request->getParam('area_owner_phone','');
+        $remark=Yii::app()->request->getParam('remark','');
 
         if ($bms_install_date =='') {
             $bms_install_date = date('Y-m-d H:i:s');
@@ -212,6 +213,7 @@ class SitesController extends Controller
 
             $model->area_owner=$area_owner;
             $model->area_owner_phone=$area_owner_phone;
+            $model->remark=$remark;
 
 
 
@@ -365,6 +367,7 @@ class SitesController extends Controller
         $parent_owner_sms=Yii::app()->request->getParam('parent_owner_sms',0);
         $area_owner_phone=Yii::app()->request->getParam('area_owner_phone','');
         $area_owner=Yii::app()->request->getParam('area_owner','');
+        $remark=Yii::app()->request->getParam('remark','');
 
 		$model=$this->loadModel($id);
 
@@ -422,6 +425,8 @@ class SitesController extends Controller
             $area_owner_sms !='' && $model->area_owner_sms=$area_owner_sms;
             $parent_owner_mail !='' && $model->parent_owner_mail=$parent_owner_mail;
             $parent_owner_sms !='' && $model->parent_owner_sms=$parent_owner_sms;
+
+            $remark !='' && $model->remark=$remark;
 
 
 

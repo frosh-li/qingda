@@ -427,6 +427,20 @@ define(function(require){
             require(["common"],function(common){
                 var param = common.getFormValue($("#otherOptionEdit"));
 
+
+                console.log(param);
+
+                if(parseInt(param.refresh) < 8){
+                    alert('刷新频率最小间隔8秒');
+                    $("#otherOptionEdit [key=refresh]").val(8);
+                    return;
+                }
+                if(parseInt(param.collection) < 8){
+                    alert('采集频率最小间隔8秒');
+                    $("#otherOptionEdit [key=collection]").val(8);
+                    return;
+                }
+
                 param.dismap = "0";
                 param.sms_on_off = "0";
                 param.email_on_off = "0";

@@ -94,6 +94,7 @@ class BatteryinfoController extends Controller
         $battery_float_voltage=Yii::app()->request->getParam('battery_float_voltage','');
         $battery_max_discharge_current=Yii::app()->request->getParam('battery_max_discharge_current','');
         $battery_dianrong=Yii::app()->request->getParam('battery_dianrong','');
+        $remark=Yii::app()->request->getParam('remark','');
         if ($battery_date == '') {
             $battery_date = date('Y-m-d H:i:s');
         }
@@ -151,6 +152,7 @@ class BatteryinfoController extends Controller
             $model->battery_float_voltage =$battery_float_voltage ;
             $model->battery_max_discharge_current =$battery_max_discharge_current ;
             $model->battery_dianrong =$battery_dianrong ;
+            $model->remark =$remark ;
             if ($model->save()) {
                 $ret['data'] = array(
                     'id'=>$model->id,
@@ -236,6 +238,7 @@ class BatteryinfoController extends Controller
         $battery_float_voltage=Yii::app()->request->getParam('battery_float_voltage','');
         $battery_max_discharge_current=Yii::app()->request->getParam('battery_max_discharge_current','');
         $battery_dianrong=Yii::app()->request->getParam('battery_dianrong','');
+        $remark=Yii::app()->request->getParam('remark','');
 
         if ($sid != 0) {
             $oldvalue = $model->attributes;
@@ -260,6 +263,7 @@ class BatteryinfoController extends Controller
            $battery_float_voltage  != '' &&  $model->battery_float_voltage = $battery_float_voltage;
            $battery_max_discharge_current != ''&&$model->battery_max_discharge_current =$battery_max_discharge_current;
            $battery_dianrong  != '' &&  $model->battery_dianrong =$battery_dianrong ;
+           $remark  != '' &&  $model->remark =$remark ;
 
             if ($model->save()) {
                 $ret['data'] = array(

@@ -80,7 +80,13 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
     return {
         show:function(id,data){
             var $dialogWrap = $("#UPSEditTpl-dialog").length?$("#UPSEditTpl-dialog").replaceWith($($("#UPSEditTpl").html())):$($("#UPSEditTpl").html());
-
+            var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+            var ifdisabled = "";
+            if(roleid != 1){
+                ifdisabled = "disabled";
+            }else{
+                ifdisabled = "";
+            }
             $dialogWrap.dialog({
                 modal:true,
                 show:300,
@@ -102,6 +108,9 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     if(data){
                         view.setValue(data);
                     }
+
+                    $("form.jqtransform").html($("form.jqtransform").html().replace(/{{disabled}}/g,ifdisabled));
+                    $("form.jqtransform").find("[changedisabled=disabled]").attr('disabled',true);
 
                     stationList = stationSelector.init({
                         extOption:{
