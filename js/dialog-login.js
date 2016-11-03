@@ -15,7 +15,9 @@ define(['require','api','common'],function(require,API,common){
                     _this.listenTo(Backbone.Events,"login:box",function(data){
                         console.log(data);
                         localStorage.setItem('userinfo', JSON.stringify(data));
+                        window.location.href="#/manage/station";
                         window.location.reload();
+                        _this.oncancel();
                     })
                     _this.listenTo(Backbone.Events,"login:box:fail",function(data){
                         alert('登录失败，请重试');
