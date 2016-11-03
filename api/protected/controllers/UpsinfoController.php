@@ -385,14 +385,40 @@ class UpsinfoController extends Controller
 	public function actionIndex()
 	{
         $this->setPageCount();
-        $ups = Yii::app()->db->createCommand()
-            ->select('ui.*,s.site_name,s.sid as truesid')
-            ->from('{{ups_info}} ui')
-            ->leftJoin('{{site}} s','ui.sid = s.serial_number')
-            //->limit($this->count)
-            //->offset(($this->page-1)*$this->count)
-            ->order('ui.id desc')
-            ->queryAll();
+        $offset = ($this->page-1)*$this->count;
+
+         //xl
+         //通过sql直接选择地域进行过滤
+         $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
+         if(!empty($sns)){
+             // $sql = "select b.* from my_battery_info b, my_site a ";
+             // $sql .= " where 1=1 ";
+             // $sql .= " and b.sid = a.serial_number ";
+             // $sql .= "and a.serial_number in (" . implode(",", $sns) .") ";
+
+             $sql = "SELECT b . * , s.site_name, s.sid
+                FROM  {{ups_info}} AS b
+                LEFT JOIN {{site}} AS s ON b.sid = s.serial_number
+                where s.serial_number in (" . implode(",", $sns) .") ";
+
+         }
+         elseif($sns === false){
+
+            $sql = "SELECT b . * , s.site_name, s.sid
+                FROM  {{ups_info}} AS b
+                LEFT JOIN {{site}} AS s ON b.sid = s.serial_number";
+         }
+        $ups = Yii::app()->db->createCommand($sql)->queryAll();
+        //$ups = Yii::app()->db->createCommand()
+        //    ->select('s.site_name,bi.*')
+        //    ->from('{{battery_info}} bi')
+        //    ->leftJoin('{{site}} s','bi.sid = s.id')
+        //    ->limit($this->count)
+        //    ->offset(($this->page-1)*$this->count)
+        //    ->order('bi.id desc')
+        //    ->queryAll();
+        //echo json_encode($ups);
+        //exit;
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
@@ -415,6 +441,39 @@ class UpsinfoController extends Controller
         }
 
         echo json_encode($ret);
+
+
+        // $this->setPageCount();
+        // $ups = Yii::app()->db->createCommand()
+        //     ->select('ui.*,s.site_name,s.sid as truesid')
+        //     ->from('{{ups_info}} ui')
+        //     ->leftJoin('{{site}} s','ui.sid = s.serial_number')
+        //     //->limit($this->count)
+        //     //->offset(($this->page-1)*$this->count)
+        //     ->order('ui.id desc')
+        //     ->queryAll();
+        // $ret['response'] = array(
+        //     'code' => 0,
+        //     'msg' => 'ok'
+        // );
+        // $ret['data'] = array();
+
+        // if ($ups) {
+        //     $ret['data']['page'] = $this->page;
+        //     $ret['data']['pageSize'] = $this->count;
+
+        //     foreach($ups as $key=>$value){
+        //         $ret['data']['list'][] = $value;
+        //     }
+
+        // }else{
+        //     $ret['response'] = array(
+        //         'code' => -1,
+        //         'msg' => '暂无UPS数据！'
+        //     );
+        // }
+
+        // echo json_encode($ret);
 	}
 
 	/**
