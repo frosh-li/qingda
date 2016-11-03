@@ -39,7 +39,9 @@ class RealtimeController extends Controller
                 on batterymodule.sn_key = tb_station_module.sn_key
             left join my_ups_info
                 on my_ups_info.sid = tb_station_module.sn_key
-            where tb_station_module.sn_key in (".$id.")";
+            where tb_station_module.sn_key in (".$id.")
+            order by aid"
+            ;
 
             $sites = Yii::app()->bms->createCommand($sql)->queryAll();
 

@@ -350,13 +350,13 @@ class TreesController extends Controller
         $where = "";
         if($auths == "*"){
             $sql = "select id,pid, title
-                from my_trees";
+                from my_trees order by id asc";
         }else{
             $areaids = implode(",",explode(",", $auths));
             $sql = "select id,pid, title
                 from my_trees
                 where id in (".$areaids.")";
-            $where .= " and m.aid in (".$areaids.")";
+            $where .= " and m.aid in (".$areaids.") order by id asc";
         }
        // var_dump($sql);
         $trees = Yii::app()->db->createCommand($sql)

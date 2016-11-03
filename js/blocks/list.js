@@ -943,11 +943,10 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 },
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {leftColumns: 1},
+                                "fixedColumns": {leftColumns: 2},
                                 "columns": [
 
                                     { "data": "sid",title:"站号",width:100  },
-                                    { "data": "serial_number",title:"物理地址",width:50},
                                     {
                                         "data": "site_name",
                                         title:"站点简称",
@@ -959,6 +958,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                             return tpl;
                                         }
                                     },
+                                    { "data": "serial_number",title:"物理地址",width:50},
+                                    
                                     {
                                         "data": "site_name",
                                         title:"站点全称",
@@ -978,21 +979,17 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "functionary",title:"负责人",render:function(data,_,allData){
                                         var html = [];
                                         if(allData.functionary_sms){
-                                            html.push('<span style="background-color:green">')
-                                        }else{
-                                            html.push('<span>');
+                                            html.push('<span>')
+                                            html.push('<img src="/images/sms.png">');
+                                            html.push("</span>");
                                         }
-                                        html.push("短");
-                                        html.push("</span>");
+                                        
 
                                         if(allData.functionary_mail){
-                                            html.push('<span style="background-color:green">')
-                                        }else{
-                                            html.push('<span>');
+                                            html.push('<span>')
+                                            html.push('<img src="/images/email.png">');
+                                            html.push("</span>");
                                         }
-
-                                        html.push("邮");
-                                        html.push("</span>");
 
                                         return "<span>"+data+"</span>"+html.join("");
                                     }},
@@ -1005,21 +1002,17 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "area_owner",title:"区域主管",render:function(data,_,allData){
                                         var html = [];
                                         if(allData.area_owner_sms){
-                                            html.push('<span style="background-color:green">')
-                                        }else{
-                                            html.push('<span>');
+                                            html.push('<span>')
+                                            html.push('<img src="/images/sms.png">');
+                                            html.push("</span>");
                                         }
-                                        html.push("短");
-                                        html.push("</span>");
+                                        
 
                                         if(allData.area_owner_mail){
-                                            html.push('<span style="background-color:green">')
-                                        }else{
-                                            html.push('<span>');
+                                            html.push('<span>')
+                                            html.push('<img src="/images/email.png">');
+                                            html.push("</span>");
                                         }
-
-                                        html.push("邮");
-                                        html.push("</span>");
 
                                         return "<span>"+data+"</span>"+html.join("");
                                     }},
@@ -1027,21 +1020,17 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "parent_owner",title:"上级主管",render:function(data,_,allData){
                                         var html = [];
                                         if(allData.parent_owner_sms){
-                                            html.push('<span style="background-color:green">')
-                                        }else{
-                                            html.push('<span>');
+                                            html.push('<span>')
+                                            html.push('<img src="/images/sms.png">');
+                                            html.push("</span>");
                                         }
-                                        html.push("短");
-                                        html.push("</span>");
+                                        
 
                                         if(allData.parent_owner_mail){
-                                            html.push('<span style="background-color:green">')
-                                        }else{
-                                            html.push('<span>');
+                                            html.push('<span>')
+                                            html.push('<img src="/images/email.png">');
+                                            html.push("</span>");
                                         }
-
-                                        html.push("邮");
-                                        html.push("</span>");
 
                                         return "<span>"+data+"</span>"+html.join("");
                                     }},

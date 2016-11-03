@@ -22,6 +22,7 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                     _this.listenTo(Backbone.Events,"stationdata:create stationdata:update",function(data){
                         common.loadTips.close();
                         _this.oncancel();
+                        window.location.reload();
                         Backbone.Events.trigger("listdata:refresh", "station");
                     });
                     _this.listenTo(Backbone.Events,"stationdata:create:fail stationdata:update:fail",function(data){
