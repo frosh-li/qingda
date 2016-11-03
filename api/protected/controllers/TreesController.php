@@ -376,7 +376,7 @@ class TreesController extends Controller
             $sql = "";
             if ($keyword) {
                 $sql ="
-                    select m.*, a.* from tb_station_module as a,my_site as m
+                    select m.*, a.*,m.sid as sid from tb_station_module as a,my_site as m
                     where m.is_checked = 1
                     and
                     a.sn_key = m.serial_number
@@ -385,7 +385,7 @@ class TreesController extends Controller
 
             }else{
                 $sql ="
-                    select m.*, a.* from tb_station_module as a,my_site as m
+                    select m.*, a.*,m.sid as sid from tb_station_module as a,my_site as m
                     where m.is_checked = 1
                     and
                     a.sn_key = m.serial_number
@@ -407,7 +407,6 @@ class TreesController extends Controller
                     $data['leveltype'] = 2;
                     if($value['site_name']){
                         $ret['data']['list'][] = $data;
-
                         $sids[] = $value['serial_number']/10000;
                     }
                 }

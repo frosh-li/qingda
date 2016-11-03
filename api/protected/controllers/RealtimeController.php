@@ -40,7 +40,7 @@ class RealtimeController extends Controller
             left join my_ups_info
                 on my_ups_info.sid = tb_station_module.sn_key
             where tb_station_module.sn_key in (".$id.")
-            order by aid"
+            order by aid asc "
             ;
 
             $sites = Yii::app()->bms->createCommand($sql)->queryAll();
