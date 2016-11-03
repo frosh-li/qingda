@@ -20,7 +20,7 @@
             </dl>
         </div><!--set-wrap-->
         <div class="clear"></div>
-        <div class="kscj blocks" style="display:none;" id="collectIRWrap"><span>每次采集只针对同一站点</span><span class="cj-btn"></span></div><!--kscj-->
+        
         <div class="cx blocks" style="display:none;" id="duration">
             <div class="search-wrap"><input id="dbeginTime" type="text" class="search" placeholder="开始时间"><img src="images/xiala-bg.jpg"> </div>
             <div class="search-wrap"><input id="dendTime" type="text" class="search" placeholder="结束时间"><img src="images/xiala-bg.jpg"> </div>
@@ -94,6 +94,15 @@
         </div>
         <div class="data-wrap">
             <div class="list-header">
+                <div class="kscj blocks" style="display:none;height:50px;line-height: 50px;" id="collectIRWrap">
+
+                    <span>每次只能采集一个站点</span>
+
+                    <input type="text" id="cj_password" value="" />
+
+                    <a href="javascript:void(0)" id="startCollectR">开始采集</a>
+
+                </div><!--kscj-->
                 <!--搜索条-->
                 <form class="search-jqtransform undis">
                     <div class="rowElem">

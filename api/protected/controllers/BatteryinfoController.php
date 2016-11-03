@@ -340,7 +340,7 @@ class BatteryinfoController extends Controller
 	public function actionIndex()
 	{
         $this->setPageCount();
-         $offset = ($this->page-1)*$this->count;
+        $offset = ($this->page-1)*$this->count;
 
          //xl
          //通过sql直接选择地域进行过滤

@@ -207,6 +207,16 @@ define(function(require){
                 this.fetch(url, "listdata:update", args, "get");
                 return this;
             },
+            getIRCollectData: function(args){
+                var url = '/api/index.php/ircollect';
+                this.fetch(url, "listdata:update", args, "get");
+                return this;
+            },
+            updateCollect: function(args){
+                var url = '/api/index.php/ircollect/update';
+                this.fetch(url, "rCollect:start", args, "post");
+                return this;
+            },
             checkStation:function(args){
                 var url = '/api/index.php/sites/check';
                 this.fetch(url, "station:check", args, "get");

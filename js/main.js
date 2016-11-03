@@ -83,7 +83,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         var _arg = arguments,
             $navTreeWrap = $("#navTree"),
             $collectWrap = $("#collect").hide(),
-            $collectIRWrap = $("#collectIR").hide(),
+            $collectIRWrap = $("#collectIRWrap").hide(),
             $durationWrap = $("#duration").hide(),
             $searchWrap = $(".search-jqtransform").hide();
             $stationPop = $('.stationPop');
@@ -259,9 +259,9 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             ui.downHide(true);
             $("#dataItem").html($("#listTpl").html());
         	$collectIRWrap.show();
-            require(["blocks/list","blocks/nav","js/dialog-collectPswdDialog"],function(list,nav,collectPswdDialog){
-                refreshModules([nav,list,collectPswdDialog],_arg);
-                collectPswdDialog.show();
+            require(["blocks/list","blocks/nav"],function(list,nav){
+                refreshModules([nav,list],_arg);
+                // collectPswdDialog.show();
                 afterInit(sys,pageType,sub);
                 if(!navTree){
                     nav.run();

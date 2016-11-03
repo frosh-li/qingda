@@ -208,6 +208,7 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
                     }
                 })
             }
+            
             console.log('getBatterys', ids, siteid);
             return ids;
         },

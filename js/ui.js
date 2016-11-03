@@ -36,6 +36,7 @@ define(function(require){
             "click .exportdata": "onExportCSV",
             "click #searchBtn span span":"onSearch",
             "click #switchUser": "switchUser",
+            "click #startCollectR": "startCollectR"
             //"click .stationPop": "stationPop"
         },
         initialize:function(){
@@ -161,6 +162,43 @@ define(function(require){
                 dialog && dialog.show();
             })
 
+        },
+
+        startCollectR: function(){
+            var pwd = $("#cj_password").val();
+            if(pwd != "bms"){
+                alert('请输入正确的采集密码');
+                return;
+            }
+            
+            require(['blocks/nav'], function(nav){
+
+                var navData = nav.getSites();
+                var ids;
+                if(this.ids && this.ids.sid){
+                    ids = this.ids.sid;
+                }else{
+                    ids = navData.ids.join(",");
+                }
+                console.log(ids);
+                if(ids.split(",").length > 1){
+                    alert('只能勾选一个站点');
+                    return;
+                }
+
+                var batteryId = nav.getBatteryIds();
+                console.log(batteryId);
+                var battyerids = batteryId?batteryId.ids.join(','):'';
+
+
+                API.updateCollect({
+                    stationid: ids, 
+                    batterys: battyerids
+                },"rCollect:start")
+    
+            })
+            
+            // Backbone.Events.trigger('startCollect');
         },
 
         onSearch: function(){

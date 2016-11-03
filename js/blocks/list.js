@@ -2247,8 +2247,66 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             downloadUrl:"/api/index.php/query/batterymodule",
         }
     })
+
+    //查询：强采内阻
+    listConfig.IRCollect = $.extend(true,{},listConfig.station,{
+        extObj:{
+            fetchData:function(_param){
+                var _param = {};
+
+                API.getIRCollectData()
+            },
+            downloadUrl:"/api/index.php/query/groupmodule",
+            extEvent:function(){
+                var _this = this;
+                this.listenTo(Backbone.Events,"rCollect:start",function(data){
+                    common.loadTips.show("系统已经开始采集，请等待采集结果");
+                    setTimeout(function(){
+                        common.loadTips.close();
+                    },5000)
+                    
+                });
+
+                this.listenTo(Backbone.Events,"rCollect:start:fail",function(data){
+                    common.loadTips.show("采集失败，请重试");
+                    setTimeout(function(){
+                        common.loadTips.close();
+                    },5000)
+                });
+            },
+            render: function(){
+                var _this = this;
+                _this.destoryPlugin();
+                require(["fixedColumn"], function () {
+                    _this.listPlugin.push($('#auto table').DataTable($.extend(true, {
+                        "data": _this.data,
+                        "language": {
+                            "emptyTable": "采集内阻数据为空"
+                        },
+                        "scrollX": ui.getListHeight(),
+                        "scrollY": ui.getListHeight(),
+                        "fixedColumns": {leftColumns: 1},
+                        "columns": [
+
+                            {"data": "sid", title: "站号", width: 100},
+                            {"data": "site_name", title: "站点简称", width: 200},
+                            {"data": "stationid", title: "物理地址"},
+                            {"data": "groupid", title: "组号"},
+                            {"data": "batteryid", title: "电池号"},
+                            {"data": "R", title: "采集的内阻值"},
+                            {"data": "collect_time", title: "开始采集时间"},
+                            {"data": "collect_endtime", title: "开始结束时间"},
+                        ]
+                    }, dataTableDefaultOption)));
+                });
+            }
+        }
+    })
+
+
     //查询：门限
     listConfig.limitation = $.extend(true,{},listConfig.limitationSetting,{extObj:{
+        
         render:function() {
             var _this = this;
             _this.destoryPlugin();
@@ -2618,6 +2676,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             })
         }
     }})
+
+    
 
     function initPage(listType,sub,ids){
         if(listView){
