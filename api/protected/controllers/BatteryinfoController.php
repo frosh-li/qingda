@@ -346,12 +346,19 @@ class BatteryinfoController extends Controller
          //通过sql直接选择地域进行过滤
          $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
          if(!empty($sns)){
-             $sql = "select b.* from my_battery_info b, my_site a ";
-             $sql .= " where 1=1 ";
-             $sql .= " and b.sid = a.serial_number ";
-             $sql .= "and a.serial_number in (" . implode(",", $sns) .") ";
+             // $sql = "select b.* from my_battery_info b, my_site a ";
+             // $sql .= " where 1=1 ";
+             // $sql .= " and b.sid = a.serial_number ";
+             // $sql .= "and a.serial_number in (" . implode(",", $sns) .") ";
+
+             $sql = "SELECT b . * , s.site_name, s.sid
+                FROM  {{battery_info}} AS b
+                LEFT JOIN {{site}} AS s ON b.sid = s.serial_number
+                where s.serial_number in (" . implode(",", $sns) .") ";
+
          }
          elseif($sns === false){
+
             $sql = "SELECT b . * , s.site_name, s.sid
                 FROM  {{battery_info}} AS b
                 LEFT JOIN {{site}} AS s ON b.sid = s.serial_number";

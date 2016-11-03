@@ -1114,7 +1114,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 },
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {leftColumns: 1},
+                                "fixedColumns": {leftColumns: 2},
                                 "columns": [
 
                                     { "data": "sid",title:"站号",width:100  },
@@ -1189,11 +1189,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 },
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {leftColumns: 1},
+                                "fixedColumns": {leftColumns: 2},
                                 "columns": [
-
-                                    { "data": "site_name",title:"站名",width:250 },
                                     { "data": "truesid",title:"站号",width:80 },
+                                    { "data": "site_name",title:"站名",width:250 },
+                                    
                                     { "data": "ups_factory",title:"生产厂家",width:250 },
                                     { "data": "ups_type",title:"型号",width:100 },
                                     { "data": "ups_create_date",title:"生产日期",width:150 },
