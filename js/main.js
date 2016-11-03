@@ -24,6 +24,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         $(".exportdata").hide();
         var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
         var canedit = JSON.parse(localStorage.getItem('userinfo')).canedit;
+        var area = JSON.parse(localStorage.getItem("userinfo")).area;
         if(roleid == 2 && canedit != 1){
             $(".list-edit-btn").hide();
             $(".list-del-btn").hide();
@@ -48,7 +49,14 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             $("#addCompany").hide();
             $("#addBattery").hide();
             $("#addUps").hide();
+            $(".settings.message").hide();
         }
+
+        if(roleid == 2 && area != "*"){
+            $(".optionSetting.otherOption").hide();
+        }
+
+
 
 
         Backbone.listenTo(Backbone.Events,"stat",function(data){
