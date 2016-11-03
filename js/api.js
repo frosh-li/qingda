@@ -1,7 +1,7 @@
 define(function(require){
     var $ = require('jquery'),
         API = {
-            isContained(a, b){
+            isContained:function(a, b){
                 if(!(a instanceof Array) || !(b instanceof Array)) return false;
                 if(a.length < b.length) return false;
                 var aStr = a.toString();
