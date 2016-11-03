@@ -108,7 +108,7 @@ class UpsinfoController extends Controller
         $ups_service=Yii::app()->request->getParam('ups_service','');
         $ups_service_phone=Yii::app()->request->getParam('ups_service_phone','');
 
-        $usid=Yii::app()->request->getParam('usid','');
+        
         $ups_power_in=Yii::app()->request->getParam('ups_power_in','');
         $ups_power_out=Yii::app()->request->getParam('ups_power_out','');
         $ups_battery_vol=Yii::app()->request->getParam('ups_battery_vol','');
@@ -159,7 +159,7 @@ class UpsinfoController extends Controller
             $model->ups_service           = $ups_service;
             $model->ups_service_phone     = $ups_service_phone;
 
-            $model->usid     = $usid;
+            
             $model->ups_power_in     = $ups_power_in;
             $model->ups_power_out     = $ups_power_out;
             $model->ups_battery_vol     = $ups_battery_vol;
@@ -254,7 +254,7 @@ class UpsinfoController extends Controller
             $ups_service = Yii::app()->request->getParam('ups_service', '');
             $ups_service_phone = Yii::app()->request->getParam('ups_service_phone', '');
 
-            $usid=Yii::app()->request->getParam('usid','');
+            
             $ups_power_in=Yii::app()->request->getParam('ups_power_in','');
             $ups_power_out=Yii::app()->request->getParam('ups_power_out','');
             $ups_battery_vol=Yii::app()->request->getParam('ups_battery_vol','');
@@ -291,7 +291,7 @@ class UpsinfoController extends Controller
                 $ups_service            !='' && $model->ups_service           = $ups_service;
                 $ups_service_phone      !='' && $model->ups_service_phone     = $ups_service_phone;
 
-                $usid  !='' && $model->usid     = $usid;
+                
                 $ups_power_in  !='' && $model->ups_power_in     = $ups_power_in;
                 $ups_power_out  !='' && $model->ups_power_out     = $ups_power_out;
                 $ups_battery_vol  !='' && $model->ups_battery_vol     = $ups_battery_vol;
