@@ -1,7 +1,19 @@
 define(function(require){
     var $ = require('jquery'),
         API = {
+            isContained(a, b){
+                if(!(a instanceof Array) || !(b instanceof Array)) return false;
+                if(a.length < b.length) return false;
+                var aStr = a.toString();
+            console.info(aStr);
+                for(var i = 0, len = b.length; i < len; i++){
+            console.info(aStr.indexOf(b[i]));
+                   if(aStr.indexOf(b[i]) == -1) return false;
+                }
+                return true;
+            },
             fetch: function (url, event, data, type, context,unalert, cb) {
+                var _this = this;
                 $.ajax({
                     type: type || 'GET',
                     data: $.extend(true,{},data),
@@ -13,6 +25,35 @@ define(function(require){
                             if(res.response.code == 0){
                                 if(cb){
                                     res.data.callback = cb;
+                                }
+                                if(url == "/api/index.php/stationperson/index"){
+                                    var filterdata = [];
+                                    var userid = JSON.parse(localStorage.getItem("userinfo")).uid;
+                                    var currentUser = null;
+                                    
+                                    $.each(res.data.list,function(i,item){
+                                        console.log(i,item);
+                                        if(item.id == userid){
+                                            currentUser = item;
+                                            return;
+                                        }
+                                    });
+                                    console.log('currentUser', currentUser);
+                                    if(currentUser.area== "*"){
+                                        filterdata = res.data.list;
+                                    }else{
+                                        $.each(res.data.list,function(i,item){
+                                            if(item.area != "*"){
+                                                console.log(currentUser.area, item.area)
+                                                if(_this.isContained(currentUser.area.split(","), item.area.split(","))){
+                                                    filterdata.push(item);
+                                                }
+                                            }
+                                        })
+                                    }
+                                    res.data = {
+                                        list: filterdata
+                                    }
                                 }
                                 Backbone.Events.trigger(event, res.data, context);
                                 if(cb){

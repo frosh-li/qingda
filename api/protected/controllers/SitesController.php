@@ -652,7 +652,7 @@ class SitesController extends Controller
         $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
         if(!empty($sns)){
             $sql = "select * from my_site as a";
-            $sql .= " where  a.serial_number in (" . implode(",", $sns) .") order by id desc ";
+            $sql .= " where  a.serial_number in (" . implode(",", $sns) .") order by aid asc, id desc ";
             $sites = Yii::app()->bms->createCommand($sql)->queryAll();
         }elseif($sns === false){
             $sites = Yii::app()->db->createCommand()
@@ -660,7 +660,7 @@ class SitesController extends Controller
                 ->from('{{site}}')
                 //->limit($this->count)
                 //->offset(($this->page-1)*$this->count)
-                ->order('id desc')
+                ->order('aid asc,id desc')
                 ->queryAll();
         }
         $ret['response'] = array(
