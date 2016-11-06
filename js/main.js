@@ -221,6 +221,44 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             })
         }
 
+        if(/^systemAlarm$/.test(pageType)){
+
+            $("#dataItem").html($("#listTpl").html());
+            ui.downHide(true);
+            $collectWrap.show();
+            $(".stationPop").hide();
+            if(pageType == 'battery'){
+                $(".list-bottom.undis").show();
+            }else{
+                $(".list-bottom.upage").show();
+            }
+
+            ui.switchChartBtns(pageType);
+            require(["blocks/list","blocks/nav","api"],function(list,nav,API){
+
+                afterInit(sys,pageType,sub);
+
+                if(!navTree){
+                    refreshModules([nav],_arg);
+                    nav.run(function(){
+                        navTree=nav;
+
+                        refreshModules([list],_arg);
+                    });
+
+                }else{
+
+                    refreshModules([list],_arg);
+                }
+
+                API.getLinkingStationNum().getParam({},'refresh:get');
+
+                isOver();
+            })
+        }
+
+
+
 
         if (/^(station|group|battery)$/.test(pageType)) {
             $("#dataItem").html($("#listTpl").html());

@@ -177,6 +177,11 @@ define(function(require){
                 this.fetch(url, "stationdata:get", args, "get");
                 return this;
             },
+            getSystemAlarm: function(args){
+                var url = '/api/index.php/systemalarm';
+                this.fetch(url, "listdata:update", args, "get");
+                return this;
+            },
             getGroupHistoryData:function(args){
                 var url = '/api/index.php/query/groupmodule';
                 this.fetch(url, "listdata:update", args, "get");

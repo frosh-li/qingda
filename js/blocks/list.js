@@ -882,6 +882,45 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     }
                 }
             },
+            // 系统报警
+            systemAlarm:{
+                extObj:{
+                    getNavData:function(){
+                        return nav.getSites();
+                    },
+                    fetchData:function(_param){
+                        API.getSystemAlarm(_param);
+                    },
+
+                    render:function(){
+                        //this.destoryPlugin();
+                        var _this = this;
+                        //ui.resizeAutoListWidth();
+                        if(_this.listPlugin && _this.listPlugin[0]){
+                            _this.updateList();
+
+                        }else{
+
+                            this.listPlugin.push($('#auto table').DataTable( $.extend(true,{},dataTableDefaultOption,{
+                                "data": this.data,
+                                "paging":false,
+                                "scrollX":ui.getListHeight(),
+                                //"scrollY":ui.getListHeight(),
+                                "columns": [
+                                    { "data": "station",title:"物理地址"},
+                                    { "data": "record_time",title:"时间"},//组序列号
+                                    { "data": "desc", title:'故障描述'}
+                                ]
+                            })));
+                        }
+
+                        // _this.checkAllRows();
+                        return this;
+                    }
+                }
+            },
+
+
             "stationInfo_stationSituation":{
                 extObj:{
                     events:{
