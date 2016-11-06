@@ -36,7 +36,8 @@ define(function(require){
             "click .exportdata": "onExportCSV",
             "click #searchBtn span span":"onSearch",
             "click #switchUser": "switchUser",
-            "click #startCollectR": "startCollectR"
+            "click #startCollectR": "startCollectR",
+            "click #about": "about"
             //"click .stationPop": "stationPop"
         },
         initialize:function(){
@@ -159,6 +160,15 @@ define(function(require){
         switchUser: function(){
 
             require(["js/dialog-login"],function(dialog){
+                dialog && dialog.show();
+            })
+
+        },
+
+        about: function(){
+
+            require(["js/dialog-about"],function(dialog){
+                dialog.init();
                 dialog && dialog.show();
             })
 

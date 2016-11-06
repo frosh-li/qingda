@@ -38,7 +38,6 @@ define(function(require){
                                             return;
                                         }
                                     });
-                                    console.log('currentUser', currentUser);
                                     if(currentUser.area== "*"){
                                         filterdata = res.data.list;
                                     }else{
@@ -55,6 +54,7 @@ define(function(require){
                                         list: filterdata
                                     }
                                 }
+                                console.log('start trigger', event);
                                 Backbone.Events.trigger(event, res.data, context);
                                 if(cb){
                                     cb();
@@ -165,6 +165,11 @@ define(function(require){
             getStationRealTimeData:function(args){
                 var url = '/api/index.php/realtime';
                 this.fetch(url, "stationdata:get", args, "get");
+                return this;
+            },
+            getAboutInfo:function(args){
+                var url = '/api/index.php/bmsinfo';
+                this.fetch(url, "abouts:get", args, "get");
                 return this;
             },
             getStationHistoryData:function(args){

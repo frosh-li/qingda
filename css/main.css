@@ -433,3 +433,26 @@ i#alarm_collecting.grelight{background: url(../images/greenlight.gif) no-repeat 
 
 
 
+#aboutTpl-dialog *{
+    font-family: "微软雅黑";
+    font-size:14px;
+}
+
+#aboutTpl-dialog label{
+    width:150px;
+    text-align: right;
+    display: inline-block;
+    padding-right:10px;
+}
+
+#aboutTpl-dialog div{
+    height:26px;
+    line-height: 30px;
+}
+
+#aboutTpl-dialog a{
+    color:blue;
+    text-decoration: underline;
+    outline:none;
+    border:none;
+}
