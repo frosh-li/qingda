@@ -226,7 +226,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             $("#dataItem").html($("#listTpl").html());
             ui.downHide(true);
             $collectWrap.show();
-            $(".stationPop").hide();
+            $(".stationPop").show();
             if(pageType == 'battery'){
                 $(".list-bottom.undis").show();
             }else{
