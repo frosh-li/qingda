@@ -911,7 +911,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "sid",title:"站号"},
                                     { "data": "station",title:"物理地址"},
                                     { "data": "record_time",title:"时间"},//组序列号
-                                    { "data": "desc", title:'故障描述'}
+                                    { "data": "desc", title:'故障描述'},
+                                    { "data": "tips", title:'建议处理方式'}
                                 ]
                             })));
                         }

@@ -117,7 +117,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         }
 
         setTimeout(function(){
-            var refreshpage = ['#/manage/station', '#/manage/group', '#/manage/battery', '#/manage/caution'];
+            var refreshpage = ['#/manage/station', '#/manage/group', '#/manage/battery', '#/manage/caution','#/manage/systemAlarm'];
             var time = parseInt($("#collectDuration").val());
             // 判断是否在实时页面
             var hash = window.location.hash;
