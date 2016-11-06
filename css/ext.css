@@ -17,7 +17,7 @@ table.dataTable tbody tr.selected
 table.dataTable thead tr th
 {
     color: #254880;
-    font-size: 14px;
+    font-size: 16px;
     background: #f5f5f5;
 }
 table.dataTable thead
