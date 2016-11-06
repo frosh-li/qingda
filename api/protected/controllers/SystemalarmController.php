@@ -40,7 +40,7 @@ class SystemalarmController extends Controller
          //        FROM  {{collect}} AS b
          //        LEFT JOIN {{site}} AS s ON b.stationid = s.serial_number";
          // }
-        $sql = "select * from systemAlarm order by id desc";
+        $sql = "select * from systemAlarm  left join my_site on (my_site.serial_number=systemAlarm.station) order by systemAlarm.id desc";
         $ups = Yii::app()->db->createCommand($sql)->queryAll();
         
         $ret['response'] = array(

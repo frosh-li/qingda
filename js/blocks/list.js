@@ -907,6 +907,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollX":ui.getListHeight(),
                                 //"scrollY":ui.getListHeight(),
                                 "columns": [
+                                    { "data": "site_name",title:"站名"},
+                                    { "data": "sid",title:"站号"},
                                     { "data": "station",title:"物理地址"},
                                     { "data": "record_time",title:"时间"},//组序列号
                                     { "data": "desc", title:'故障描述'}
