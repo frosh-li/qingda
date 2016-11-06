@@ -34,7 +34,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     if(data){
                         common.setFormValue(this.el,data);
 
-                        $("[key=sid]",this.el).val(data.sid);
+                        $("[key=sid]",this.el).val(data.serial_number);
                         console.log('now data', data);
                     }
                 },

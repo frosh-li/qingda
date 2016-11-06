@@ -116,7 +116,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                         extOption:{
                             select:function(event, ui){
                                 $(this).val(ui.item.label);
-                                $("[key=sid]").val(ui.item.value.substring(0,10));
+                                $("[key=sid]").val(ui.item.value);
                                 return false;
                             }
                         }
