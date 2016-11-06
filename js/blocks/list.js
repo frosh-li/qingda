@@ -2335,9 +2335,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             {"data": "stationid", title: "物理地址"},
                             {"data": "groupid", title: "组号"},
                             {"data": "batteryid", title: "电池号"},
-                            {"data": "R", title: "采集的内阻值"},
-                            {"data": "collect_time", title: "开始采集时间"},
-                            {"data": "collect_endtime", title: "开始结束时间"},
+                            {"data": "R", title: "内阻值"},
+                            {"data": "collect_time", title: "开始时间"},
+                            {"data": "collect_endtime", title: "完成时间"},
                         ]
                     }, dataTableDefaultOption)));
                 });
