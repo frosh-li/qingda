@@ -946,7 +946,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "fixedColumns": {leftColumns: 2},
                                 "columns": [
 
-                                    { "data": "sid",title:"站号",width:100  },
+                                    { "data": "sid",title:"站号",width:80  },
                                     {
                                         "data": "site_name",
                                         title:"站点简称",
@@ -958,7 +958,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                             return tpl;
                                         }
                                     },
-                                    { "data": "serial_number",title:"物理地址",width:50},
+                                    { "data": "serial_number",title:"物理地址",width:100},
                                     
                                     {
                                         "data": "site_name",
@@ -976,7 +976,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "site_property",title:"站点性质",width:150  },
                                     { "data": "areaname",title:"隶属区域",width:150  },
                                     { "data": "fix_phone",title:"固定电话"},
-                                    { "data": "functionary",title:"负责人",render:function(data,_,allData){
+                                    { "data": "functionary",title:"负责人",width:120,render:function(data,_,allData){
                                         var html = [];
                                         if(allData.functionary_sms){
                                             html.push('<span>')
@@ -993,13 +993,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
                                         return "<span>"+data+"</span>"+html.join("");
                                     }},
-                                    { "data": "functionary_phone",title:"负责人电话"},
-                                    { "data": "device_owner",title:"设备负责人"},
-                                    { "data": "device_owner_phone",title:"设备负责人电话"},
+                                    { "data": "functionary_phone",title:"负责人电话",width:120},
+                                    { "data": "device_owner",title:"设备负责人",width:120},
+                                    { "data": "device_owner_phone",title:"设备负责人电话",width:120},
 
-                                    { "data": "emergency_person",title:"紧急联系人姓名",width:150  },
-                                    { "data": "emergency_phone",title:"紧急联系人手机",width:250  },
-                                    { "data": "area_owner",title:"区域主管",render:function(data,_,allData){
+                                    { "data": "emergency_person",title:"紧急联系人姓名",width:120 },
+                                    { "data": "emergency_phone",title:"紧急联系人手机",width:120  },
+                                    { "data": "area_owner",title:"区域主管",width:120,render:function(data,_,allData){
                                         var html = [];
                                         if(allData.area_owner_sms){
                                             html.push('<span>')
@@ -1016,8 +1016,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
                                         return "<span>"+data+"</span>"+html.join("");
                                     }},
-                                    { "data": "area_owner_phone",title:"区域主管电话"},
-                                    { "data": "parent_owner",title:"上级主管",render:function(data,_,allData){
+                                    { "data": "area_owner_phone",title:"区域主管电话",width:120},
+                                    { "data": "parent_owner",title:"上级主管",width:120,render:function(data,_,allData){
                                         var html = [];
                                         if(allData.parent_owner_sms){
                                             html.push('<span>')
@@ -1036,13 +1036,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     }},
                                     { "data": "parent_owner_phone",title:"上级主管电话"},
                                     { "data": "groups",title:"电池组数",width:100  },
-                                    { "data": "batteries",title:"每组电池数",width:250  },
-                                    { "data": "postal_code",title:"邮政编码",width:250  },
-                                    { "data": "site_latitude",title:"站点纬度",width:250  },
-                                    { "data": "site_longitude",title:"站点经度",width:250  },
-                                    { "data": "ipaddress",title:"IP地址",width:250  },
+                                    { "data": "batteries",title:"每组电池数",width:80  },
+                                    { "data": "postal_code",title:"邮政编码",width:80  },
+                                    { "data": "site_latitude",title:"站点纬度",width:80  },
+                                    { "data": "site_longitude",title:"站点经度",width:80  },
+                                    { "data": "ipaddress",title:"IP地址",width:100  },
                                     { "data": "ipaddress_method",title:"控制器IP地址或方式",width:150  },
-                                    { "data": "site_control_type",title:"站点控制器型号",width:200  },
+                                    { "data": "site_control_type",title:"站点控制器型号",width:100  },
                                     { "data": "bms_install_date",title:"BMS系统安装日期",width:150  },
                                     { "data": "group_collect_type",title:"组电流采集器型号",width:150  },
                                     { "data": "group_collect_num",title:"组电流采集器数量",width:150  },
@@ -1051,13 +1051,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "battery_collect_type",title:"电池数据采集器型号",width:150  },
                                     { "data": "battery_collect_num",title:"电池数据采集器数量",width:150  },
                                     { "data": "humiture_type",title:"环境温湿度方式",width:150  },
-                                    { "data": "has_light",title:"灯光报警"},
-                                    { "data": "has_speaker",title:"声音报警"},
-                                    { "data": "has_sms",title:"短信"},
-                                    { "data": "has_smart_control",title:"智能控制"},
-                                    { "data": "has_group_TH_control",title:"温湿度传感器"},
-                                    { "data": "has_group_HO_control",title:"氢氧气传感器"},
-                                    { "data": "device_mac",title:"网口MAC"},
+                                    { "data": "has_light",title:"灯光报警",width:80},
+                                    { "data": "has_speaker",title:"声音报警",width:80},
+                                    { "data": "has_sms",title:"短信",width:80},
+                                    { "data": "has_smart_control",title:"智能控制",width:80},
+                                    { "data": "has_group_TH_control",title:"温湿度传感器",width:150},
+                                    { "data": "has_group_HO_control",title:"氢氧气传感器",width:150},
+                                    { "data": "device_mac",title:"网口MAC",width:150},
                                     { "data": "remark",title:"备注",width:150 },
                                     {
                                         data:"id",
@@ -1191,7 +1191,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {leftColumns: 2},
                                 "columns": [
-                                    { "data": "truesid",title:"站号",width:80 },
+                                    { "data": "sid",title:"站号",width:80 },
                                     { "data": "site_name",title:"站名",width:250 },
                                     
                                     { "data": "ups_factory",title:"生产厂家",width:250 },
@@ -1340,40 +1340,40 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     {data:'company_name',title:'单位名称',width:150},
                                     {data:'company_address',title:'单位地址',width:300},
                                     {data:'area_name',title:'管辖'},
-                                    {data:'parent_area',title:'隶属'},
-                                    {data:'supervisor_name',title:'主管领导姓名',width:150},
-                                    {data:'supervisor_phone',title:'主管领导电话',width:150},
-                                    {data:'owner',title:'部门负责人'},
-                                    {data:'owner_phone',title:'部门负责人电话'},
-                                    {data:'longitude',title:'经度',width:70},
-                                    {data:'latitude',title:'纬度',width:70},
-                                    {data:'station_num',title:'所辖站点个数',width:100},
+                                    {data:'parent_area',title:'隶属',width:100,},
+                                    {data:'supervisor_name',title:'主管领导姓名',width:80},
+                                    {data:'supervisor_phone',title:'主管领导电话',width:100},
+                                    {data:'owner',title:'部门负责人',width:80},
+                                    {data:'owner_phone',title:'部门负责人电话',width:100},
+                                    {data:'longitude',title:'经度',width:80},
+                                    {data:'latitude',title:'纬度',width:80},
+                                    {data:'station_num',title:'所辖站点个数',width:80},
                                     {data:'area_level',title:'隶属层级',width:100},
                                     {data:'network_type',title:'联网方式',width:100},
                                     {data:'bandwidth',title:'网络带宽',width:100},
                                     {data:'ipaddr',title:'IP地址',width:100},
                                     {data:'computer_brand',title:'上位机品牌',width:100},
-                                    {data:'computer_os',title:'上位机操作系统',width:150},
+                                    {data:'computer_os',title:'上位机操作系统',width:100},
                                     {data:'computer_conf',title:'主机配置',width:100},
-                                    {data:'browser_name',title:'浏览器名称',width:150},
-                                    {data:'server_capacity',title:'服务器容量',width:150},
-                                    {data:'server_type',title:'服务器型号',width:150},
-                                    {data:'cloud_address',title:'云空间地址',width:150},
-                                    {data:'backup_period',title:'数据备份周期',width:150},
-                                    {data:'backup_type',title:'数据备份方式',width:150},
-                                    {data:'supervisor_depname',title:'监控部门名称',width:200},
-                                    {data:'monitor_name1',title:'监控部门负责人',width:200},
-                                    {data:'monitor_phone1',title:'监控部门负责人电话',width:200},
-                                    {data:'monitor_name2',title:'其他联系人',width:200},
-                                    {data:'monitor_phone2',title:'其他联系人电话',width:200},
-                                    {data:'monitor_name3',title:'其他联系人',width:200},
-                                    {data:'monitor_phone3',title:'其他联系人电话',width:200},
-                                    {data:'monitor_tel1',title:'监控部门固定电话1',width:200},
-                                    {data:'monitor_tel2',title:'监控部门固定电话2',width:200},
+                                    {data:'browser_name',title:'浏览器名称',width:100},
+                                    {data:'server_capacity',title:'服务器容量',width:100},
+                                    {data:'server_type',title:'服务器型号',width:100},
+                                    {data:'cloud_address',title:'云空间地址',width:100},
+                                    {data:'backup_period',title:'数据备份周期',width:100},
+                                    {data:'backup_type',title:'数据备份方式',width:100},
+                                    {data:'supervisor_depname',title:'监控部门名称',width:100},
+                                    {data:'monitor_name1',title:'监控部门负责人',width:100},
+                                    {data:'monitor_phone1',title:'监控部门负责人电话',width:100},
+                                    {data:'monitor_name2',title:'其他联系人',width:100},
+                                    {data:'monitor_phone2',title:'其他联系人电话',width:100},
+                                    {data:'monitor_name3',title:'其他联系人',width:100},
+                                    {data:'monitor_phone3',title:'其他联系人电话',width:100},
+                                    {data:'monitor_tel1',title:'监控部门固定电话1',width:100},
+                                    {data:'monitor_tel2',title:'监控部门固定电话2',width:100},
 
-                                    {data:'duty_status',title:'值守状态/班次'},
-                                    {data:'manage',title:'管理员'},
-                                    {data:'viewer',title:'观察员'},
+                                    {data:'duty_status',title:'值守状态/班次',width:80},
+                                    {data:'manage',title:'管理员',width:80},
+                                    {data:'viewer',title:'观察员',width:80},
 
                                     { "data": "remark",title:"备注",width:150 },
                                     {
