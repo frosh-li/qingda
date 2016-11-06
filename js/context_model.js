@@ -44,7 +44,16 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "Groups",title:"组数",width:50  },
                     { "data": "GroBats",title:"电池数",width:80  },
                     { "data": "ups_power",title:"功率W/h",width:70 },
-                    { "data": "ups_maintain_date",title:"维护日期",width:100},
+                    { "data": "ups_maintain_date",title:"维护日期",width:100, render:function(data){
+                        var wh = +new Date(data);
+                        var now = +new Date();
+                        var dis = (wh - now)/1000/60/60/24;
+                        if(dis < 7 && dis > 0){
+                            return '<div style="color:red">'+data+'</div>'
+                        }else{
+                            return data;
+                        }
+                    }},
                     { "data": "start_time",title:"放电开始",width:150, render: function(data){
                         return data != false ? data:""
                     } },
