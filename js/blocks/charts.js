@@ -7,15 +7,15 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
         charType="bar",
         ALARM_COLOR = {
             "0":"green",
-            "1":"#ffee2c",
+            "1":"#f76363",
             "2":"#ff975e",
-            "3":"#f76363"
+            "3":"#ffee2c"
         },
         ALARM_SYMBOL = {
             '0':'image://images/chart-normal.png',
-            '1':'image://images/chart-notice.png',
+            '1':'image://images/chart-caution.png',
             '2':'image://images/chart-alert.png',
-            '3':'image://images/chart-caution.png'
+            '3':'image://images/chart-notice.png'
         };
 
     var chart_extobj = {
