@@ -115,9 +115,9 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "Temperature",title:"温度℃",width:80 },
                     { "data": "Resistor",title:"内阻MΩ",width:100 },
                     //{ "data": "AmpRange",title:"量程",width:80 },
-                    { "data": "Dev_U",title:"电压偏离",width:100, render: function(data){return Math.abs(data*100).toFixed(2)} },
-                    { "data": "Dev_T",title:"温度偏离",width:100, render: function(data){return Math.abs(data*100).toFixed(2)} },
-                    { "data": "Dev_R",title:"内阻偏离",width:100, render: function(data){return Math.abs(data*100).toFixed(2)} },
+                    { "data": "Dev_U",title:"电压偏离",width:100, render: function(data){return Math.abs(data).toFixed(2)} },
+                    { "data": "Dev_T",title:"温度偏离",width:100, render: function(data){return Math.abs(data).toFixed(2)} },
+                    { "data": "Dev_R",title:"内阻偏离",width:100, render: function(data){return Math.abs(data).toFixed(2)} },
                     { "data": "Lifetime",title:"电池寿命%",width:100 },
                     { "data": "Capacity",title:"容量%",width:100 },
                     // { "data": "R",title:"电池寿命%",width:100, render:function(data, type,itemData){
