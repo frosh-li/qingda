@@ -6,7 +6,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         dataTableDefaultOption = {
             "paging": false,
             "searching": true,
-            "order": [ 1, 'asc' ],
+            "order": [ ],
             "autoWidth": true,
             "scrollCollapse":true,
             "language": {
