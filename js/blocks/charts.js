@@ -56,11 +56,11 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 }
                 for(var i = 0 ; i < _this.origindata.list.length; i++){
                     var cdata =  _this.origindata.list[i];
-                        if(hash.indexOf('station') > -1){
+                        if(hash.indexOf('station') > -1 || hash.indexOf("queryStation") > -1){
                             xAixs.push(cdata.site_name+"-"+cdata.sid);
-                        }else if(hash.indexOf("group") > -1){
+                        }else if(hash.indexOf("group") > -1 || hash.indexOf("queryGroup") > -1){
                             xAixs.push(cdata.site_name+"-"+cdata.sid+"\n"+"组"+cdata.gid);
-                        }else if(hash.indexOf("battery") > -1){
+                        }else if(hash.indexOf("battery") > -1 || hash.indexOf("queryBattery") > -1){
                             xAixs.push(cdata.site_name+"-"+cdata.sid+"\n"+"组"+cdata.gid+"-"+cdata.bid);
                         }
                         var status = cdata[col.substring(0,3)+"Col"] || 0;
