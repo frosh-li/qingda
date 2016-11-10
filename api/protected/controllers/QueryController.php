@@ -100,7 +100,7 @@ class QueryController extends Controller
         if ($sites) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;
-            $ret['data']['totals'] = $totals;
+            $ret['data']['totals'] = intval($totals);
             foreach($sites as $key=>$value){
                 // 获取site_name
                 $sql = "select site_name from my_site where serial_number={$value['sn_key']}";
@@ -247,7 +247,8 @@ class QueryController extends Controller
                 $sql .= " where {$where}";
                 $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
                 $sql .= "and a.serial_number in (" . implode(",", array_intersect($sns,$temp)) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . $this->count;
-
+                $totalsql = "select count(*) as totals from tb_group_module_history as b, my_site a  where {$where} and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000) and a.serial_number in (" . implode(",", array_intersect($sns,$temp)) .")";
+                $totals = Yii::app()->bms->createCommand($totalsql)->queryScalar();
                 $sites = Yii::app()->bms->createCommand($sql)->queryAll();
             }elseif($sns === false){
 
@@ -261,6 +262,10 @@ class QueryController extends Controller
                 ->offset(($this->page-1)*$this->count)
                 ->order('record_time desc')
                 ->queryAll();
+
+                $totalsql = "select count(*) as totals from tb_group_module_history as b, my_site a  where {$where}"; 
+                $totals = Yii::app()->bms->createCommand($totalsql)->queryScalar();
+
         }
         //}
 
@@ -273,7 +278,7 @@ class QueryController extends Controller
         if ($sites) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;
-
+            $ret['data']['totals'] = $totals;
             foreach($sites as $key=>$value){
                 $sql = "select * from tb_group_param where floor(sn_key/10000)=".floor($value['sn_key']/10000);
                 $data = Yii::app()->bms->createCommand($sql)->queryRow();
@@ -402,7 +407,7 @@ class QueryController extends Controller
 
         $offset = ($this->page-1)*$this->count;
         $sql .= " where ".$where;
-
+        $sqltotal = "";
         //xl
         //通过sql直接选择地域进行过滤
         $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
@@ -411,10 +416,13 @@ class QueryController extends Controller
             $sql .= " where ".$where;
             $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
             $sql .= "and a.serial_number in (" . implode(",", array_intersect($sns,$temp)) .")";
+            $sqltotal = $sql;
             $sql .= " order by b.record_time desc ";
+
         }else{
             $sql .= " and sn_key in (" . implode(",", $temp) .")";
             $sql .= " order by b.record_time desc ";
+            $sqltotal = $sql;
         }
 
         //var_dump($sql);
@@ -424,8 +432,8 @@ class QueryController extends Controller
             $sql .= " limit 0,5000";
         }
 
-            $sites = Yii::app()->bms->createCommand($sql)
-                ->queryAll();
+        $sites = Yii::app()->bms->createCommand($sql)
+            ->queryAll();
         //}
 
 

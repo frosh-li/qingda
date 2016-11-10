@@ -3,8 +3,6 @@ define(['require','api','context'],function(require,API,context){
 		init:function(pageType) {
 
 			$( "#beginTime" ).datetimepicker({
-				defaultDate:new Date(),
-				//defaultDate: "+1w",
 				changeMonth: true,
 				showSecond:false,
 				showMillisec:false,

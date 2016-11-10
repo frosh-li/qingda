@@ -92,15 +92,20 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             if(!$(_this.el).length || !$(_this.el).is(":visible")){
                                 return;
                             }
-
+                            var page = data.page,
+                                totals = data.totals || 0,
+                                pageSize = data.pageSize || 10;
                             _this.data = data.list||data||_this.data;
+                            $("#totaldatas").text(totals);
+                            $("#currentpage").text(_this.curPage);
+                            $("#totalpage").text(Math.ceil(totals/(pageSize||10)));
                             if(_this.curPage == 1){
-                                $(".mprev").hide();
+                            //    $(".mprev").hide();
                             }else{
                                 $(".mprev").show();
                             }
                             if(_this.data.length < 10){
-                                $(".mnext").hide();
+                            //    $(".mnext").hide();
                             }else{
                                 $(".mnext").show();
                             }
