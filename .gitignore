@@ -1,5 +1,5 @@
 .idea/
 .DS_Store
 npm-debug.log
-database
-bmsdatabase
+database.php
+bmsdatabase.php
