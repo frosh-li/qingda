@@ -24,24 +24,21 @@ class SystemalarmController extends Controller
         $this->setPageCount();
         $offset = ($this->page-1)*$this->count;
 
-         // //xl
-         // //通过sql直接选择地域进行过滤
-         // $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
-         // if(!empty($sns)){
-         //     $sql = "SELECT b . * , s.site_name, s.sid
-         //        FROM  {{collect}} AS b
-         //        LEFT JOIN {{site}} AS s ON b.stationid = s.serial_number
-         //        where s.serial_number in (" . implode(",", $sns) .") ";
-
-         // }
-         // elseif($sns === false){
-
-         //    $sql = "SELECT b . * , s.site_name, s.sid
-         //        FROM  {{collect}} AS b
-         //        LEFT JOIN {{site}} AS s ON b.stationid = s.serial_number";
-         // }
         $sql = "select * from systemAlarm  left join my_site on (my_site.serial_number=systemAlarm.station) order by systemAlarm.id desc";
-        $ups = Yii::app()->db->createCommand($sql)->queryAll();
+        $ups = Yii::app()->db->createCommand()
+                ->select("*")
+                ->from("systemAlarm")
+                ->leftJoin("my_site","my_site.serial_number=systemAlarm.station")
+                ->order("systemAlarm.id desc")
+                ->limit($this->count)
+                ->offset(($this->page - 1) * $this->count)
+                ->queryAll();
+
+        $upsTotal = Yii::app()->createCommand()
+                ->select("count(*) as totals")
+                ->from("systemAlarm")
+                ->order("systemAlarm.id desc")
+                ->queryScalar();
         
         $ret['response'] = array(
             'code' => 0,
@@ -52,7 +49,7 @@ class SystemalarmController extends Controller
         if ($ups) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;
-
+            $ret['data']['totals'] = intval($upsTotal);
             foreach($ups as $key=>$value){
                 $ret['data']['list'][] = $value;
             }
@@ -60,7 +57,7 @@ class SystemalarmController extends Controller
         }else{
             $ret['response'] = array(
                 'code' => -1,
-                'msg' => '采集数据！'
+                'msg' => '无系统报警数据！'
             );
         }
 
