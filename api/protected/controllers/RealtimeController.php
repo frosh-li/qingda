@@ -37,6 +37,7 @@ class RealtimeController extends Controller
                 ->leftJoin("my_ups_info","my_ups_info.sid=tb_station_module.sn_key")
                 ->leftJoin('tb_station_param as p','tb_station_module.sn_key=p.sn_key')
                 ->where(array("in","tb_station_module.sn_key",$temp))
+                ->order("my_site.aid")
                 ->limit($this->count)
                 ->offset(($this->page - 1) * $this->count)
                 ->queryAll();
