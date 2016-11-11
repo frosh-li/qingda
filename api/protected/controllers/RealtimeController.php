@@ -59,7 +59,7 @@ class RealtimeController extends Controller
 
         //观察员进行地域过滤 xl
         $sites = GeneralLogic::filterDataByAid($_SESSION['uid'], $sites);
-
+        $total = GeneralLogic::filterDataByAid($_SESSION['uid'], $total);
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
@@ -101,8 +101,7 @@ class RealtimeController extends Controller
         left join my_site on my_site.serial_number/10000 = floor(g.sn_key/10000)
 
         ";
-        //if ($id) {
-
+        
             $arr = explode(',',$id);
             $temp = array();
             foreach ($arr as $key => $value) {
@@ -111,13 +110,16 @@ class RealtimeController extends Controller
             $id =  implode(',',$temp);
 
             $sql .= ' where g.sn_key in ('.$id.')';
-        //}
+        
         $sql .= "limit $offset, $this->count ";
         $sites = Yii::app()->bms->createCommand($sql)->queryAll();
-
+        $totals = Yii::app()->bms->createCommand('
+            select count(*) as totals from tb_group_module
+            where tb_group_module.sn_key in ('.$id.')
+            ')->queryScalar();
         //观察员进行地域过滤 xl
         $sites = GeneralLogic::filterDataByAid($_SESSION['uid'], $sites);
-
+        $totals = GeneralLogic::filterDataByAid($_SESSION['uid'], $totals);
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
@@ -127,9 +129,8 @@ class RealtimeController extends Controller
         if ($sites) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;
-
+            $ret['data']['totals'] = intval($totals);
             foreach($sites as $key=>$value){
-
                 $sql = "select * from tb_group_param where floor(sn_key/10000)=".floor($value['sn_key']/10000);
                 $data = Yii::app()->bms->createCommand($sql)->queryRow();
                 if(empty($data)){
@@ -287,7 +288,7 @@ class RealtimeController extends Controller
         if ($sites) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = 15;
-            $ret['data']['total'] = intval($total);
+            $ret['data']['totals'] = intval($total);
             foreach($sites as $key=>$value){
                 $addinfo = Yii::app()->bms
                     ->createCommand("select `desc`,en,`limit`,suggest,send_msg,send_email,tips,`type` from my_station_alert_desc where en='".$value['code']."' and type='".$value['type']."'")

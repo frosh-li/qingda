@@ -436,6 +436,8 @@ class QueryController extends Controller
             ->queryAll();
         //}
 
+        $totals = Yii::app()->bms->createCommand($sqltotal)
+            ->queryAll();
 
         $ret['response'] = array(
             'code' => 0,
@@ -446,7 +448,7 @@ class QueryController extends Controller
         if ($sites) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;
-
+            $ret['data']['totals'] = count($totals);
             foreach($sites as $key=>$value){
                 $sn_key = $value['sn_key'];
                 $query = Yii::app()->bms->createCommand()

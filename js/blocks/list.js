@@ -57,6 +57,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         _this.listPlugin=[];
                         _this.captureEvt();
                         _this.curPage = 1;
+                        _this.totalpage = 1;
                     },
                     checkAllRows: function(){
                         return;
@@ -76,11 +77,17 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
                         var _this = this;
                         $(".mnext").click(function(){
+                            if(_this.curPage >= _this.totalpage){
+                                return;
+                            }
                             _this.curPage++;
                             console.log(_this.curPage)
                             _this.fetchData();
                         });
                         $(".mprev").click(function(){
+                            if(_this.curPage == 1){
+                                return;
+                            }
                             _this.curPage--;
                             console.log(_this.curPage)
                             _this.fetchData();
@@ -99,6 +106,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             $("#totaldatas").text(totals);
                             $("#currentpage").text(_this.curPage);
                             $("#totalpage").text(Math.ceil(totals/(pageSize||10)));
+                            _this.totalpage = Math.ceil(totals/(pageSize||10));
                             if(_this.curPage == 1){
                             //    $(".mprev").hide();
                             }else{
