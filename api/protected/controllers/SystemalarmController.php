@@ -34,7 +34,7 @@ class SystemalarmController extends Controller
                 ->offset(($this->page - 1) * $this->count)
                 ->queryAll();
 
-        $upsTotal = Yii::app()->createCommand()
+        $upsTotal = Yii::app()->db->createCommand()
                 ->select("count(*) as totals")
                 ->from("systemAlarm")
                 ->order("systemAlarm.id desc")
