@@ -214,14 +214,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             alert("删除成功");
                             _this.refresh();
                         });
-                        /*_this.listenTo(Backbone.Events,"pageType:change",function(type){
-                         if(!$(_this.el).length || !$(_this.el).is(":visible")){
-                         return;
-                         }
-                         initPage(type);
-                         console.log("pageType:change");
-                         _this.refresh();
-                         });*/
+                        
                         _this.listenTo(Backbone.Events,"curstation:change",function(data){
                             _this.ids = null;
                             if(!$(_this.el).length || !$(_this.el).is(":visible")){
@@ -258,19 +251,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     inRow:function(evt){
                         var _this = this;
                         _this.changeRowClass($(evt.currentTarget),'highlight');
-                    },/*
-                     outRow:function(evt){
-                     var _this = this,
-                     $tr = $(evt.currentTarget),
-                     trIndex = $tr.index(),
-                     $tbodys = $("tbody",_this.el),
-                     data = _this.getRowData(evt.currentTarget);
-
-                     $tbodys.each(function(i,tbody){
-                     var $tbody = $(tbody);
-                     $tbody.find("tr").eq(trIndex).toggleClass('highlight');
-                     })
-                     },*/
+                    },
                     changeRowClass:function($tr,className){
                         var _this = this,
                             trIndex = $tr.index(),
@@ -2388,6 +2369,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     //查询：基本信息：站
     listConfig.baseinfo_queryStationSituation = $.extend(true,{},listConfig.stationInfo_stationSituation,{extObj:{
         downloadUrl:"/api/index.php/query",
+        getNavData:function(){
+            return nav.getSites();
+        },
         render:function(){
             var _this = this;
             _this.destoryPlugin();
@@ -2400,24 +2384,103 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollX": ui.getListHeight(),
                     "scrollY": ui.getListHeight(),
                     "columns": [
+                        { "data": "sid",title:"站号",width:80  },
+                        {
+                            "data": "site_name",
+                            title:"站点简称",
+                            width:100 ,
+                            render: function (data,type,itemData) {
+                                var tpl='';
+                                tpl = '<div class="list-edit-text" pid="'+itemData.id+'">'+itemData.site_name+'</div>';
 
-                        { "data": "sid",title:"站号",width:100  },
-                        { "data": "serial_number",title:"物理地址",width:50  },
-                        { "data": "site_name",title:"站点简称",width:100  },
-                        { "data": "StationFullChineseName",title:"站点全称",width:100  },
+                                return tpl;
+                            }
+                        },
+                        { "data": "serial_number",title:"物理地址",width:100},
+                        
+                        {
+                            "data": "site_name",
+                            title:"站点全称",
+                            width:100 ,
+                            render: function (data,type,itemData) {
+                                var tpl='';
+                                tpl = '<div class="list-edit-text" pid="'+itemData.id+'">'+itemData.StationFullChineseName+'</div>';
+
+                                return tpl;
+                            }
+                        },
+
                         { "data": "site_location",title:"站点地址",width:100  },
                         { "data": "site_property",title:"站点性质",width:150  },
-                        { "data": "aid",title:"隶属区域",width:150  },
-                        { "data": "emergency_person",title:"紧急联系人姓名",width:150  },
-                        { "data": "emergency_phone",title:"紧急联系人手机",width:250  },
+                        { "data": "areaname",title:"隶属区域",width:150  },
+                        { "data": "fix_phone",title:"固定电话"},
+                        { "data": "functionary",title:"负责人",width:120,render:function(data,_,allData){
+                            var html = [];
+                            if(allData.functionary_sms){
+                                html.push('<span>')
+                                html.push('<img src="/images/sms.png">');
+                                html.push("</span>");
+                            }
+                            
+
+                            if(allData.functionary_mail){
+                                html.push('<span>')
+                                html.push('<img src="/images/email.png">');
+                                html.push("</span>");
+                            }
+
+                            return "<span>"+data+"</span>"+html.join("");
+                        }},
+                        { "data": "functionary_phone",title:"负责人电话",width:120},
+                        { "data": "device_owner",title:"设备负责人",width:120},
+                        { "data": "device_owner_phone",title:"设备负责人电话",width:120},
+
+                        { "data": "emergency_person",title:"紧急联系人姓名",width:120 },
+                        { "data": "emergency_phone",title:"紧急联系人手机",width:120  },
+                        { "data": "area_owner",title:"区域主管",width:120,render:function(data,_,allData){
+                            var html = [];
+                            if(allData.area_owner_sms){
+                                html.push('<span>')
+                                html.push('<img src="/images/sms.png">');
+                                html.push("</span>");
+                            }
+                            
+
+                            if(allData.area_owner_mail){
+                                html.push('<span>')
+                                html.push('<img src="/images/email.png">');
+                                html.push("</span>");
+                            }
+
+                            return "<span>"+data+"</span>"+html.join("");
+                        }},
+                        { "data": "area_owner_phone",title:"区域主管电话",width:120},
+                        { "data": "parent_owner",title:"上级主管",width:120,render:function(data,_,allData){
+                            var html = [];
+                            if(allData.parent_owner_sms){
+                                html.push('<span>')
+                                html.push('<img src="/images/sms.png">');
+                                html.push("</span>");
+                            }
+                            
+
+                            if(allData.parent_owner_mail){
+                                html.push('<span>')
+                                html.push('<img src="/images/email.png">');
+                                html.push("</span>");
+                            }
+
+                            return "<span>"+data+"</span>"+html.join("");
+                        }},
+                        { "data": "parent_owner_phone",title:"上级主管电话"},
                         { "data": "groups",title:"电池组数",width:100  },
-                        { "data": "batteries",title:"每组电池数",width:250  },
-                        { "data": "postal_code",title:"邮政编码",width:250  },
-                        { "data": "site_latitude",title:"站点纬度",width:250  },
-                        { "data": "site_longitude",title:"站点经度",width:250  },
-                        { "data": "ipaddress",title:"IP地址",width:250  },
+                        { "data": "batteries",title:"每组电池数",width:80  },
+                        { "data": "postal_code",title:"邮政编码",width:80  },
+                        { "data": "site_latitude",title:"站点纬度",width:80  },
+                        { "data": "site_longitude",title:"站点经度",width:80  },
+                        { "data": "ipaddress",title:"IP地址",width:100  },
                         { "data": "ipaddress_method",title:"控制器IP地址或方式",width:150  },
-                        { "data": "site_control_type",title:"站点控制器型号",width:200  },
+                        { "data": "site_control_type",title:"站点控制器型号",width:100  },
                         { "data": "bms_install_date",title:"BMS系统安装日期",width:150  },
                         { "data": "group_collect_type",title:"组电流采集器型号",width:150  },
                         { "data": "group_collect_num",title:"组电流采集器数量",width:150  },
@@ -2425,7 +2488,15 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         { "data": "group_collect_install_type",title:"组电流采集器安装模式",width:150  },
                         { "data": "battery_collect_type",title:"电池数据采集器型号",width:150  },
                         { "data": "battery_collect_num",title:"电池数据采集器数量",width:150  },
-                        { "data": "humiture_type",title:"环境温湿度方式",width:150  }
+                        { "data": "humiture_type",title:"环境温湿度方式",width:150  },
+                        { "data": "has_light",title:"灯光报警",width:80},
+                        { "data": "has_speaker",title:"声音报警",width:80},
+                        { "data": "has_sms",title:"短信",width:80},
+                        { "data": "has_smart_control",title:"智能控制",width:80},
+                        { "data": "has_group_TH_control",title:"温湿度传感器",width:150},
+                        { "data": "has_group_HO_control",title:"氢氧气传感器",width:150},
+                        { "data": "device_mac",title:"网口MAC",width:150},
+                        { "data": "remark",title:"备注",width:150 },
                     ]
                 },dataTableDefaultOption)));
 
@@ -2455,19 +2526,22 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         { "data": "battery_num",title:"电池型号",width:150  },
                         { "data": "battery_num",title:"生产日期",width:150  },
                         { "data": "battery_voltage",title:"标称电压（V）",width:150  },
-                        { "data": "battery_oum",title:"标称内阻（毫欧）",width:150  },
+                        { "data": "battery_oum",title:"标称内阻（MΩ）",width:150  },
+                        { "data": "battery_dianrong",title:"电池标称容量（Ah）",width:150  },
+                        { "data": "battery_float_voltage",title:"浮充标准电压（V）",width:150  },
                         { "data": "battery_max_current",title:"最大充电电流（A）",width:150  },
+                        { "data": "battery_max_discharge_current",title:"最大放电电流（A）",width:150  },
                         { "data": "battery_float_up",title:"浮充电压上限（V）",width:150  },
                         { "data": "battery_float_dow",title:"电池浮充电压下限（V）",width:150  },
                         { "data": "battery_discharge_down",title:"放电电压下限（V）",width:150  },
                         { "data": "battery_scrap_date",title:"强制报废日期",width:150  },
                         { "data": "battery_life",title:"设计寿命（年）",width:150  },
                         { "data": "battery_column_type",title:"电池级柱类型",width:150  },
-                        { "data": "battery_temperature",title:"温湿度要求（度）",width:150  },
+                        { "data": "battery_temperature",title:"温度要求（℃）",width:150  },
                         { "data": "battery_humidity",title:"湿度要求（%）",width:150  },
                         { "data": "battery_type",title:"电池种类",width:150  },
                         { "data": "battery_factory_phone",title:"电池厂家联系电话",width:150  },
-
+                        { "data": "remark",title:"备注",width:150 },
                     ]
                 },dataTableDefaultOption)));
 
@@ -2488,36 +2562,45 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollY":ui.getListHeight(),
                     "fixedColumns": {leftColumns: 1},
                     "columns": [
-
-                        {data:'company_name',title:'用户单位总部名称',width:150},
-                        {data:'company_address',title:'用户单位总部地址',width:300},
-                        {data:'supervisor_phone',title:'主管领导电话',width:150},
-                        {data:'supervisor_name',title:'主管领导姓名',width:150},
-                        {data:'longitude',title:'经度',width:70},
-                        {data:'latitude',title:'纬度',width:70},
-                        {data:'station_num',title:'所辖站点个数',width:100},
-                        {data:'area_level',title:'隶属分几级',width:100},
+                        {data:'company_name',title:'单位名称',width:150},
+                        {data:'company_address',title:'单位地址',width:300},
+                        {data:'area_name',title:'管辖'},
+                        {data:'parent_area',title:'隶属',width:100,},
+                        {data:'supervisor_name',title:'主管领导姓名',width:80},
+                        {data:'supervisor_phone',title:'主管领导电话',width:100},
+                        {data:'owner',title:'部门负责人',width:80},
+                        {data:'owner_phone',title:'部门负责人电话',width:100},
+                        {data:'longitude',title:'经度',width:80},
+                        {data:'latitude',title:'纬度',width:80},
+                        {data:'station_num',title:'所辖站点个数',width:80},
+                        {data:'area_level',title:'隶属层级',width:100},
                         {data:'network_type',title:'联网方式',width:100},
                         {data:'bandwidth',title:'网络带宽',width:100},
                         {data:'ipaddr',title:'IP地址',width:100},
                         {data:'computer_brand',title:'上位机品牌',width:100},
-                        {data:'computer_os',title:'上位机操作系统',width:150},
+                        {data:'computer_os',title:'上位机操作系统',width:100},
                         {data:'computer_conf',title:'主机配置',width:100},
-                        {data:'browser_name',title:'浏览器名称',width:150},
-                        {data:'server_capacity',title:'服务器容量',width:150},
-                        {data:'server_type',title:'服务器型号',width:150},
-                        {data:'cloud_address',title:'云空间地址',width:150},
-                        {data:'backup_period',title:'数据备份周期',width:150},
-                        {data:'backup_type',title:'数据备份方式',width:150},
-                        {data:'supervisor_depname',title:'监控中心主管部门名称',width:200},
-                        {data:'monitor_name1',title:'监控中心负责人姓名1',width:200},
-                        {data:'monitor_phone1',title:'监控中心负责人电话1',width:200},
-                        {data:'monitor_name2',title:'监控中心负责人姓名2',width:200},
-                        {data:'monitor_phone2',title:'监控中心负责人电话2',width:200},
-                        {data:'monitor_name3',title:'监控中心负责人姓名3',width:200},
-                        {data:'monitor_phone3',title:'监控中心负责人电话3',width:200},
-                        {data:'monitor_tel1',title:'监控中心固定电话1',width:200},
-                        {data:'monitor_tel2',title:'监控中心固定电话2',width:200}
+                        {data:'browser_name',title:'浏览器名称',width:100},
+                        {data:'server_capacity',title:'服务器容量',width:100},
+                        {data:'server_type',title:'服务器型号',width:100},
+                        {data:'cloud_address',title:'云空间地址',width:100},
+                        {data:'backup_period',title:'数据备份周期',width:100},
+                        {data:'backup_type',title:'数据备份方式',width:100},
+                        {data:'supervisor_depname',title:'监控部门名称',width:100},
+                        {data:'monitor_name1',title:'监控部门负责人',width:100},
+                        {data:'monitor_phone1',title:'监控部门负责人电话',width:100},
+                        {data:'monitor_name2',title:'其他联系人',width:100},
+                        {data:'monitor_phone2',title:'其他联系人电话',width:100},
+                        {data:'monitor_name3',title:'其他联系人',width:100},
+                        {data:'monitor_phone3',title:'其他联系人电话',width:100},
+                        {data:'monitor_tel1',title:'监控部门固定电话1',width:100},
+                        {data:'monitor_tel2',title:'监控部门固定电话2',width:100},
+
+                        {data:'duty_status',title:'值守状态/班次',width:80},
+                        {data:'manage',title:'管理员',width:80},
+                        {data:'viewer',title:'观察员',width:80},
+
+                        { "data": "remark",title:"备注",width:150 },
                     ]
                 },dataTableDefaultOption)));
             })
@@ -2537,25 +2620,80 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollY":ui.getListHeight(),
                     "fixedColumns": {leftColumns: 1},
                     "columns": [
-
-                        {data:'bms_company',title:'BMS设备生产厂家名称',width:200},
-                        {data:'bms_device_addr',title:'BMS设备生产厂家地址',width:200},
-                        {data:'bms_postcode',title:'BMS设备生产厂家邮编',width:200},
-                        {data:'bms_url',title:'BMS技术支持网址',width:200},
-                        {data:'bms_tel',title:'BMS技术支持固话',width:200},
-                        {data:'bms_phone',title:'BMS技术支持手机',width:200},
-                        {data:'bms_service_phone',title:'BMS服务商电话',width:200},
-                        {data:'bms_service_name',title:'BMS服务商名称',width:200},
-                        {data:'bms_service_url',title:'BMS服务商地址',width:300},
+                        {data:'bms_company',title:'生产厂家',width:200},
+                        {data:'bms_device_addr',title:'厂家地址',width:200},
+                        {data:'bms_postcode',title:'邮编',width:200},
+                        {data:'bms_url',title:'支持网址',width:200},
+                        {data:'bms_tel',title:'支持固话',width:200},
+                        {data:'bms_phone',title:'手机',width:200},
+                        {data:'bms_service_phone',title:'服务商电话',width:200},
+                        {data:'bms_service_name',title:'服务商名称',width:200},
+                        {data:'bms_service_contact',title:'服务商联系人',width:200},
+                        {data:'bms_service_url',title:'服务商地址',width:300},
                         {data:'bms_version',title:'软件版本号',width:150},
                         {data:'bms_update_mark',title:'软件升级记录',width:170},
-                        {data:'bms_mark',title:'备注',width:300}
+                        {data:'bms_mark',title:'备注',width:300},
                     ]
                 },dataTableDefaultOption)));
             })
             return this;
         }
     }})
+
+    //查询：基本信息：UPS信息表
+    listConfig.baseinfo_queryUpsInfo = $.extend(true,{},listConfig.stationInfo_upsInfo,{extObj:{
+        render:function(){
+            var _this = this;
+            _this.destoryPlugin();
+            $('#auto').width('100%');
+            console.log(listConfig.stationInfo_upsInfo);
+            require(["fixedColumn"],function() {
+                _this.listPlugin.push($('#auto table').DataTable( $.extend(true,{
+                    "data": _this.data,
+                    "scrollX":ui.getListHeight(),
+                    "scrollY":ui.getListHeight(),
+                    "fixedColumns": {leftColumns: 1},
+                    "columns": [
+                        { "data": "sid",title:"站号",width:80 },
+                        { "data": "site_name",title:"站名",width:250 },
+                        { "data": "ups_factory",title:"生产厂家",width:250 },
+                        { "data": "ups_type",title:"型号",width:100 },
+                        { "data": "ups_create_date",title:"生产日期",width:150 },
+                        { "data": "ups_install_date",title:"安装日期",width:150 },
+                        { "data": "ups_power",title:"功率/容量（V/A）",width:150 },
+                        { "data": "ups_power_in",title:"输入功率（V/A）",width:150 },
+                        { "data": "ups_power_out",title:"输出功率（V/A）",width:150 },
+                        { "data": "ups_battery_vol",title:"外接电池电压（V）",width:150 },
+                        { "data": "ups_battery_current",title:"外接电池电流（A）",width:150 },
+                        { "data": "ac_protect",title:"AC过流保护（V/A）",width:150 },
+                        { "data": "dc_protect",title:"DC过流保护（V/A）",width:150 },
+                        { "data": "on_net",title:"联网检测",width:150 },
+                        { "data": "alarm_content",title:"报警内容",width:150 },
+                        { "data": "discharge_protect",title:"放电保护值（%）",width:150 },
+                        { "data": "redundancy_num",title:"冗余数量(台)",width:150 },
+                        { "data": "floting_charge",title:"浮充电压（V）",width:150 },
+                        { "data": "ups_vdc",title:"电压范围(V)",width:150 },
+                        { "data": "ups_reserve_hour",title:"额定候备时间（W/H）",width:250 },
+                        { "data": "ups_charge_mode",title:"充电方式",width:100 },
+                        { "data": "ups_max_charge",title:"最大充电电流（A）",width:150 },
+                        { "data": "ups_max_discharge",title:"最大放电电流（A）",width:150 },
+                        { "data": "ups_period_days",title:"规定维护周期（天）",width:150 },
+                        { "data": "ups_discharge_time",title:"维护放电时长（分钟）",width:150 },
+                        { "data": "ups_discharge_capacity",title:"维护放电容量（%）",width:150 },
+                        { "data": "ups_maintain_date",title:"维护到期日",width:150 },
+                        { "data": "ups_vender_phone",title:"厂家联系电话",width:120 },
+                        { "data": "ups_service",title:"服务商名称",width:120 },
+                        { "data": "ups_vender",title:"联系人",width:120 },
+                        { "data": "ups_service_phone",title:"服务商电话",width:100 },
+                        { "data": "remark",title:"备注",width:150 },
+                    ]
+                },dataTableDefaultOption)));
+            })
+            return this;
+        }
+    }})
+
+
     //查询：参数：组
     listConfig.option_groupOption = $.extend(true,{},listConfig.optionSetting_groupOption,{extObj:{
         render:function(){

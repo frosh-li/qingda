@@ -246,11 +246,11 @@ ul.item-list li span a{padding: 0px 15px;display: block;}
 .config-item-list label{ display: inline-block;float: left; padding: 2px 4px; margin: 3px; background-color: #efefef}
 
 ul.sub-list-tab{width: 100%; height: 50px; padding-top: 10px}
-ul.sub-list-tab li{height:30px; padding: 0px 12px; line-height:30px;font-size:16px;color:#5a5a5a;text-align:center;margin-right:8px;float:left;background-color: #f2f2f2; border: 1px solid #dddddd; position:relative;cursor: pointer;}
+ul.sub-list-tab li{height:30px; padding:0px; line-height:30px;font-size:16px;color:#5a5a5a;text-align:center;margin-right:8px;float:left;background-color: #f2f2f2; border: 1px solid #dddddd; position:relative;cursor: pointer;}
 ul.sub-list-tab li:hover,
 ul.sub-list-tab li.active{color:#ffffff;background-color: #0f7ec5; border: 1px solid #024162;}
 ul.sub-list-tab li:hover a,
-ul.sub-list-tab li.active a{color:#ffffff;background-color: #0f7ec5;}
+ul.sub-list-tab li.active a{color:#ffffff;background-color: #0f7ec5; padding:0px 10px;}
 
 ul.list-btns{width: 100%; height: 40px; overflow: hidden;}
 ul.list-btns li{height:30px; padding: 0px 12px 0px 32px; line-height:30px;font-size:16px;color:#de5f00;text-align:center;margin-right:8px;float:left;background:url("../images/add-btn.png") no-repeat 10px 8px #ffefb3; border: 1px solid #ff870f; position:relative;cursor: pointer;}
