@@ -26,7 +26,7 @@ define(function(require){
             "click .zoom":"upShow",
             "click .bottom-hide":"downHide",
             "click .bottom-show":"downShow",
-            "click .switch-btn" :"switchBtn",
+            "click .switch-btn a" :"switchBtn",
             "click .ggsj":"onUpadtaTime",
             "click #startCollectBtn":"startCollect",
             "click #navSearchBtn":"onSearchNav",
@@ -287,7 +287,7 @@ define(function(require){
 
         },
         switchBtn:function(evt){
-            var $el = $(evt.currentTarget),
+            var $el = $($(evt.currentTarget).parents(".switch-btn")),
                 $els = $el.siblings('.switch-btn');
             $els.removeClass('active');
             $el.addClass('active');
