@@ -354,20 +354,37 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             $searchWrap.show();
             $searchWrap.jqTransform();
             $(".exportdata").show();
+
         	//$durationWrap.show();
             $(".list-bottom.upage").show();
             $(".report-caution-selector",$searchWrap).parents('.jqTransformSelectWrapper').hide()
                 $(".reportCaution",$searchWrap).hide()
-            require(["blocks/listSearch","blocks/charts","blocks/list","blocks/nav"],function(listSearch,chart,list,nav){
-                refreshModules([nav,listSearch,list,chart],_arg);
-                afterInit(sys,pageType,sub);
-                if(!navTree){
-                    nav.run();
-                    navTree=nav;
-                }
+            if(/^qureyCaution$/.test(pageType)){
+                
+                ui.downHide(true);
+                require(["blocks/listSearch","blocks/list","blocks/nav"],function(listSearch,list,nav){
+                    refreshModules([nav,listSearch,list],_arg);
+                    afterInit(sys,pageType,sub);
+                    if(!navTree){
+                        nav.run();
+                        navTree=nav;
+                    }
 
-                isOver();
-            })
+                    isOver();
+                })
+            }else{
+                require(["blocks/listSearch","blocks/charts","blocks/list","blocks/nav"],function(listSearch,chart,list,nav){
+                    refreshModules([nav,listSearch,list,chart],_arg);
+                    afterInit(sys,pageType,sub);
+                    if(!navTree){
+                        nav.run();
+                        navTree=nav;
+                    }
+
+                    isOver();
+                })    
+            }
+            
         }else if (/^(reportUilog|chargeOrDischarge|deviationTrend|batteryLife|reportCaution)$/.test(pageType)) {
             ui.downHide(true);
             $(".stationPop").hide();

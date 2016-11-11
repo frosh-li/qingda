@@ -2284,6 +2284,16 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         }
     })
 
+    //查询：数据报警查询
+    listConfig.qureyCaution = $.extend(true,{},listConfig.caution,{
+
+        extObj:{
+            
+        }
+    })
+
+    
+
     //查询：强采内阻
     listConfig.IRCollect = $.extend(true,{},listConfig.station,{
         extObj:{
