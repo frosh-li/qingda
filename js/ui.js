@@ -135,20 +135,21 @@ define(function(require){
 
 
             _this.listenTo(Backbone.Events,"monitoring:start",function(data){
-                if(data.total && data.total > 0){
+                console.log('monitoring', data);
+                if(data.totals && data.totals > 0){
                     $(".baojing").css('display','block')
                 }else{
                     $(".baojing").css('display','none')
                 }
-                $(".baojing .bg").html(data.total||0);
+                $(".baojing .bg").html(data.totals||0);
             });
             _this.listenTo(Backbone.Events,"monitoring:start:fail",function(data){
-                if(data.total && data.total > 0){
+                if(data.totals && data.totals > 0){
                     $(".baojing").css('display','block')
                 }else{
                     $(".baojing").css('display','none')
                 }
-                $(".baojing .bg").html(data.total||0);
+                $(".baojing .bg").html(data.totals||0);
             });
             _this.listenTo(Backbone.Events,"station:next",function(data){
                 _this.showBatteryEditDialog(false,data);
