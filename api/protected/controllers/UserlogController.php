@@ -5,22 +5,23 @@ class UserlogController extends Controller
     public $types = array(1=>'登录相关',2=>'设置相关',3=>'其他');
 	public function actionIndex()
 	{
+        $this->setPageCount();
 		$type = Yii::app()->request->getParam('type' ,0);
-        $start =Yii::app()->request->getParam('start');
+        $start =substr(Yii::app()->request->getParam('start'),0,10);
         $end = substr(Yii::app()->request->getParam('end'),0,10);
         $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
         
 
         $where = ' 1 =1 ';
-        if ($type != 0 ) {
+        //if ($type != 0 ) {
             $where .= ' and type='.$type;
-        }
+        //}
         if($start){
-            $start = date('Y-m-d H:i:s', Yii::app()->request->getParam('start'));
+            $start = date('Y-m-d H:i:s', $start);
             $where .= ' and modify_time >= "'.$start.'"';
         }
         if($end){
-            $end = date('Y-m-d H:i:s', substr(Yii::app()->request->getParam('end'),0,10));
+            $end = date('Y-m-d H:i:s', $end);
             $where .= ' and modify_time <= "'.$end.'"';
         }
 
@@ -44,7 +45,14 @@ class UserlogController extends Controller
             ->order('id desc')
             ->queryAll();
         }
-        
+        $totals = Yii::app()->db->createCommand()
+            ->select('count(*) as totals')
+            ->from('{{action_log}}')
+            ->where($where)
+            ->limit($this->count)
+            ->offset(($this->page-1)*$this->count)
+            ->order('id desc')
+            ->queryScalar();
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
@@ -53,7 +61,7 @@ class UserlogController extends Controller
         if ($logs) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;
-
+            $ret['data']['totals'] = intval($totals);
             foreach($logs as $key=>$value){
                 $value['type'] = $this->types[$value['type']];
                 $ret['data']['list'][] = $value;

@@ -2143,9 +2143,21 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             "scrollX": ui.getListHeight(),
                             "scrollY": ui.getListHeight(),
                             "columns": [
-
                                 {"data": "username", title: "用户", width: 100},
-                                {"data": "content", title: "操作内容"},
+                                {"data": "content", title: "操作内容",render:function(_,__,data){
+                                    if(!data.newvalue){
+                                        return data.content;
+                                    }
+                                    var json = JSON.parse(data.newvalue);
+                                    if(json.site_name){
+                                        var site = json.site_name;
+                                        site = unescape(site.replace(/(u[a-z0-9]{4,4})/g,"%$1"));
+                                        console.log(site);
+                                        return data.content+"(站名:"+site+")";
+                                    }else{
+                                        return data.content
+                                    }
+                                }},
                                 {"data": "modify_time", title: "操作时间", width: 150}
                             ]
                         }, dataTableDefaultOption)));
