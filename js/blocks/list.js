@@ -684,7 +684,23 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         API.getCautionsData(_param);
                     },
                     events:{
-                        "click .resolveBtn":"resove"
+                        "click .resolveBtn":"resove",
+                        "click .show_station_detail": 'show_station_detail'
+                    },
+                    show_station_detail:function(e){
+                        var id = [$(e.currentTarget).attr('id')];
+                        console.log('station pop clicked');
+
+                        console.log('id',id)
+                        if(id < 0){
+                            alert('请选择站点');
+                            return;
+                        }
+                        for(var i = 0 ; i < id.length ; i++){
+                            id[i] = id[i];
+                        }
+
+                        stationInfoDialog.show(id.join(","));
                     },
                     resove:function(e){
                         ui.showUnsolveDialog({id:$(e.currentTarget).attr('pid'),suggestion:$(e.currentTarget).attr('suggestion')});
@@ -718,10 +734,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 //"scrollY":ui.getListHeight(),
                                 "columns": [
 
-                                    { "data": "site_name",title:"站名",width:150 ,"sClass":"site_name_left",render:function(data,type,itemData){
-                                        return itemData.site_name;
-                                        // var color = ['red', 'green', '#f90']
-                                        //return '<span style="color:white;background-color:'+color[itemData.alarm_emergency_level -1]+'">'+itemData.alram_equipment+'</span>';
+                                    { "data": "site_name", "title":"站名",width:150,"sClass":"site_name_left",render:function(data,type,itemData){
+                                            return "<div class='show_station_detail' style='color:blue;cursor:pointer;' id='"+(itemData.sn_key.substring(0,10)+"0000")+"'>"+data+"</div>"
                                     }},
                                     { "data": "sn_key",title:"站号",width:100, render:function(data, type,itemData){
                                         return itemData.sid;
