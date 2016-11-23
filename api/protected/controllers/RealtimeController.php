@@ -50,9 +50,10 @@ class RealtimeController extends Controller
 
         }else{
             $ret['response'] = array(
-                'code' => -1,
-                'msg' => '暂无站点数据！'
+                'code' => 0,
+                'msg' => 'ok'
             );
+            $ret['data'] = array();
             echo json_encode($ret);
             Yii::app()->end();
         }
@@ -80,13 +81,7 @@ class RealtimeController extends Controller
                 $ret['data']['list'][] = $value;
             }
 
-        }else{
-            $ret['response'] = array(
-                'code' => -1,
-                'msg' => '暂无站点数据！'
-            );
         }
-
         echo json_encode($ret);
 	}
 
@@ -140,11 +135,6 @@ class RealtimeController extends Controller
                 $ret['data']['list'][] = $value;
             }
 
-        }else{
-            $ret['response'] = array(
-                'code' => -1,
-                'msg' => '暂无组数据！'
-            );
         }
 
         echo json_encode($ret);
@@ -224,19 +214,15 @@ class RealtimeController extends Controller
                     $ret['data']['list'][] = $value;
                 }
 
-            }else{
-                $ret['response'] = array(
-                    'code' => -1,
-                    'msg' => '暂无电池数据！'
-                );
             }
 
             echo json_encode($ret);
         }else{
             $ret['response'] = array(
-                'code' => -1,
-                'msg' => '暂无电池数据！'
+                'code' => 0,
+                'msg' => 'ok'
             );
+            $ret['data'] = array();
             echo json_encode($ret);
         }
 

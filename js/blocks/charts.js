@@ -29,8 +29,15 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
         chartName:"",
         initialize:function(data){
             var _this = this;
-            _this.listenTo(Backbone.Events,"listdata:update stationdata:get",function(data){
+            _this.listenTo(Backbone.Events,"listdata:update stationdata:get listdata:update:fail listdata:get listdata:get:fail",function(data){
                 _this.updateChart(data);
+            });
+
+            _this.listenTo(Backbone.Events,"curstation:change",function(data){
+                if(typeof navData == 'undefined' || !navData || !navData.ids.length){
+                    _this.origindata.list = [];
+                    _this.updateChart();
+                }
             });
         },
         clear:function(){
@@ -40,6 +47,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
 
         },
         updateChart:function(data){
+            console.log('start update charts', data);
             var _this = this;
             _this.origindata = data||_this.origindata;
 
@@ -90,6 +98,12 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 }
                 if(values){
                     console.log(values, xAixs);
+                    require(['charts'],function(chart){
+                        echart = chart;
+                        _this.createOption(charType,values,xAixs).render();
+                        overFlag = true;
+                    })
+                }else{
                     require(['charts'],function(chart){
                         echart = chart;
                         _this.createOption(charType,values,xAixs).render();
@@ -149,7 +163,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 },
                 series = [];
 
-            if(data){
+            //if(data){
                 series.push($.extend(true,seriesBarCommonOption,{
                     type:type,
                     data:data,
@@ -186,7 +200,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                         show : true
                     }
                 }
-            }
+            //}
 
             return this;
         },
