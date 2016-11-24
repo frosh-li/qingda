@@ -22,7 +22,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
             },
             "zeroRecords": "暂无数据，请查看左侧数形结构是否已勾选或检查网络连接",
-            "dom":"irtlp",
+                "dom":"irtlp",
             "scroller": {
                 "rowHeight": 'auto'
             },
@@ -202,6 +202,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             // _this.refresh();
                         });
                         _this.listenTo(Backbone.Events,"listdata:refresh",function(){
+                            Backbone.Events.trigger("curstation:change",{});
                             _this.refresh();
                         });
                         _this.listenTo(Backbone.Events,"listdata:update:fail stationdata:get:fail",function(data){
@@ -979,7 +980,21 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             // _this.refresh();
                         });
                     },
+                    getNavData:function(){
+                        return nav.getSites();
+                    },
                     fetchData:function(_param){
+                        var _param = {};
+                        var navData = nav.getSites();
+                        var ids;
+
+                        if(this.ids && this.ids.sid){
+                            ids = this.ids.sid;
+                        }else{
+                            ids = navData.ids.join(",");
+                        }
+
+                        $.extend(_param,{id:ids});
                         API.getStationsInfo(_param);
                     },
                     render:function(){

@@ -250,7 +250,7 @@ define(function(require){
             },
             getStationsInfo: function (args) {
                 var url = '/api/index.php/sites';
-                this.fetch(url, "listdata:update", args, "get");
+                this.fetch(url, "listdata:update", args, "post");
                 return this;
             },
             getStationEditInfo: function (args) {
