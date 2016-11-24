@@ -190,12 +190,12 @@ define(function(require){
             },
             getGroupHistoryData:function(args){
                 var url = '/api/index.php/query/groupmodule';
-                this.fetch(url, "listdata:update", args, "get");
+                this.fetch(url, "listdata:update", args, "post");
                 return this;
             },
             getBatteryHistoryData:function(args){
                 var url = '/api/index.php/query/batterymodule';
-                this.fetch(url, "listdata:update", args, "get");
+                this.fetch(url, "listdata:update", args, "post");
                 return this;
             },
             getLinkingStationNum:function(args,event){
