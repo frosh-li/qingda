@@ -138,6 +138,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
                         _this.listenTo(Backbone.Events,"search:done",function(){
                             _this.refresh();
+                            Backbone.Events.trigger("curstation:change",{});
                         });
                         _this.listenTo(Backbone.Events,"export:done",function(){
                             console.log(_this.downloadUrl, window.location.hash);

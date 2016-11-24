@@ -1,5 +1,6 @@
 define(function(require){
     var $ = require('jquery'),
+        common = require('common'),
         API = {
             isContained:function(a, b){
                 if(!(a instanceof Array) || !(b instanceof Array)) return false;
@@ -14,12 +15,16 @@ define(function(require){
             },
             fetch: function (url, event, data, type, context,unalert, cb) {
                 var _this = this;
+                if(url.indexOf("query") > -1){
+                    common.loadTips.show("数据加载中...");
+                }
                 $.ajax({
                     type: type || 'GET',
                     data: $.extend(true,{},data),
                     //jsonp: 'callback',
                     url: url,
                     success: function (res) {
+                        common.loadTips.close();
                         typeof res == 'string' && (res = $.parseJSON(res));
                         if (!!res && typeof res === 'object') {
                             if(res.response.code == 0){
@@ -75,6 +80,7 @@ define(function(require){
                     error: function (res) {
                         //Backbone.Events.trigger(event, $.evalJSON(res.responseText), context);
                         //TODO:正式联调时替换为下列
+                        common.loadTips.close();
                         console.log(res);
                         Backbone.Events.trigger("messager", {ret: 1, massage: url, data: []}, context || window);
                     }

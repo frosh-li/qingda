@@ -28,6 +28,7 @@ require.config({
         'table':'libs/jquery.dataTables',
         'fixedColumn':'libs/dataTables.fixedColumns.min',
         'fixedHeader':'libs/dataTables.fixedHeader.min',
+        'vcol':'libs/dataTables.colVis.js',
 	    "respond":"js/respond",
         "router" :"js/router",
         "api" :"js/api",
@@ -45,7 +46,8 @@ require.config({
         table:['jquery'],
         jtimer:['jquery'],
 
-        fixedColumn:['jquery','table'],
+        fixedColumn:['jquery','table','vcol'],
+
         common:['jquery'],
         zTreeCore:['jquery'],
         zTreeExcheck:['zTreeCore'],
@@ -114,7 +116,7 @@ require(["jquery","router","api","table","jJson","jtimer","charts"],function($,r
 
     require(["jJson","bootstrap","jqueryUI","ui","jForm","jqueryTime"],function(){
       $.timepicker.setDefaults( $.timepicker.regional[ "zh-CN" ] );
-
+      $.datepicker.setDefaults( $.timepicker.regional[ "zh-CN" ] );
       $.timepicker.regional['zh-CN'] = {
 
         closeText: '关闭',

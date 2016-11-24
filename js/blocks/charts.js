@@ -34,7 +34,8 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
             });
 
             _this.listenTo(Backbone.Events,"curstation:change",function(data){
-                if(typeof navData == 'undefined' || !navData || !navData.ids.length){
+                if(typeof navData == 'undefined' || !navData || !navData.ids.length || !data){
+                    _this.origindata = {};
                     _this.origindata.list = [];
                     _this.updateChart();
                 }

@@ -120,7 +120,10 @@ class QueryController extends Controller
                 }
                 $sql = "select * from tb_station_param where sn_key=".$value['sn_key'];
                     $data = Yii::app()->bms->createCommand($sql)->queryRow();
-                    $value = array_merge($value, $data);
+                    if($data){
+                        $value = array_merge($value, $data);
+                    }
+ 
                 $sql = "select record_time as end_time from tb_station_module_history where ChaState=2 and  sn_key=".$value['sn_key']." order by record_time desc limit 0,1";
                 $end_time = Yii::app()->bms->createCommand($sql)->queryScalar();
                 $sql = "select record_time as start_time from tb_station_module_history where ChaState!=2  and sn_key=".$value['sn_key']." and record_time < '".$end_time."' order by record_time desc limit 0,1";
