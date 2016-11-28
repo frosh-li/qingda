@@ -28,7 +28,6 @@ require.config({
         'table':'libs/jquery.dataTables',
         'fixedColumn':'libs/dataTables.fixedColumns.min',
         'fixedHeader':'libs/dataTables.fixedHeader.min',
-        'vcol':'libs/dataTables.colVis.js',
 	    "respond":"js/respond",
         "router" :"js/router",
         "api" :"js/api",
@@ -46,7 +45,7 @@ require.config({
         table:['jquery'],
         jtimer:['jquery'],
 
-        fixedColumn:['jquery','table','vcol'],
+        fixedColumn:['jquery','table'],
 
         common:['jquery'],
         zTreeCore:['jquery'],
