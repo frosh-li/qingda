@@ -342,6 +342,18 @@ class BatteryinfoController extends Controller
         $this->setPageCount();
         $offset = ($this->page-1)*$this->count;
 
+        $id = Yii::app()->request->getParam('id',0);
+        $temp = false;
+        if ($id) {
+            $arr = explode(',',$id);
+            $temp = array();
+            foreach ($arr as $key => $value) {
+                $temp[] = $value."0000";
+            }
+        }else{
+            $temp = false;
+        }
+
          //xl
          //通过sql直接选择地域进行过滤
          $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
@@ -350,11 +362,13 @@ class BatteryinfoController extends Controller
              // $sql .= " where 1=1 ";
              // $sql .= " and b.sid = a.serial_number ";
              // $sql .= "and a.serial_number in (" . implode(",", $sns) .") ";
-
+            if($temp){
+                $ids = array_intersect($temp,$sns);
+            }
              $sql = "SELECT b . * , s.site_name, s.sid
                 FROM  {{battery_info}} AS b
-                LEFT JOIN {{site}} AS s ON b.sid = s.serial_number
-                where s.serial_number in (" . implode(",", $sns) .") ";
+                LEFT JOIN {{site}} AS s ON b.sid = s.serial_number 
+                where s.serial_number in (" . implode(",", $ids) .") ";
 
          }
          elseif($sns === false){
@@ -362,6 +376,9 @@ class BatteryinfoController extends Controller
             $sql = "SELECT b . * , s.site_name, s.sid
                 FROM  {{battery_info}} AS b
                 LEFT JOIN {{site}} AS s ON b.sid = s.serial_number";
+            if($temp){
+                $sql .= " where s.serial_number in (" . implode(",", $temp) . ")";
+            }
          }
         $ups = Yii::app()->db->createCommand($sql)->queryAll();
         //$ups = Yii::app()->db->createCommand()

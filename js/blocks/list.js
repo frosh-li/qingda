@@ -2440,26 +2440,14 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         {
                             "data": "site_name",
                             title:"站点简称",
-                            width:100 ,
-                            render: function (data,type,itemData) {
-                                var tpl='';
-                                tpl = '<div class="list-edit-text" pid="'+itemData.id+'">'+itemData.site_name+'</div>';
-
-                                return tpl;
-                            }
+                            width:100
                         },
                         { "data": "serial_number",title:"物理地址",width:100},
                         
                         {
                             "data": "site_name",
                             title:"站点全称",
-                            width:100 ,
-                            render: function (data,type,itemData) {
-                                var tpl='';
-                                tpl = '<div class="list-edit-text" pid="'+itemData.id+'">'+itemData.StationFullChineseName+'</div>';
-
-                                return tpl;
-                            }
+                            width:100
                         },
 
                         { "data": "site_location",title:"站点地址",width:100  },
@@ -2558,6 +2546,23 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     }})
     //查询：基本信息：电池
     listConfig.baseinfo_queryBatterys = $.extend(true,{},listConfig.stationInfo_batterys,{extObj:{
+        getNavData:function(){
+            return nav.getSites();
+        },
+        fetchData:function(_param){
+            var _param = {};
+            var navData = nav.getSites();
+            var ids;
+
+            if(this.ids && this.ids.sid){
+                ids = this.ids.sid;
+            }else{
+                ids = navData.ids.join(",");
+            }
+            console.log(navData);
+            $.extend(_param,{id:ids});
+            API.getBatteryInfosData(_param);
+        },
         downloadUrl:"/api/index.php/query/batterymodule",
         render:function(){
             var _this = this;
@@ -2603,6 +2608,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     }})
     //查询：基本信息：用户单位信息信息表
     listConfig.baseinfo_queryInstitutions = $.extend(true,{},listConfig.stationInfo_institutions,{extObj:{
+        getNavData:function(){
+            return nav.getSites();
+        },
         render:function(){
             var _this = this;
             _this.destoryPlugin();
@@ -2694,6 +2702,23 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
     //查询：基本信息：UPS信息表
     listConfig.baseinfo_queryUpsInfo = $.extend(true,{},listConfig.stationInfo_upsInfo,{extObj:{
+        getNavData:function(){
+            return nav.getSites();
+        },
+        fetchData:function(_param){
+            var _param = {};
+            var navData = nav.getSites();
+            var ids;
+
+            if(this.ids && this.ids.sid){
+                ids = this.ids.sid;
+            }else{
+                ids = navData.ids.join(",");
+            }
+            console.log(navData);
+            $.extend(_param,{id:ids});
+            API.getUpsInfosData(_param);
+        },
         render:function(){
             var _this = this;
             _this.destoryPlugin();
