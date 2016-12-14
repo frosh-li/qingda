@@ -2330,7 +2330,31 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.qureyCaution = $.extend(true,{},listConfig.caution,{
 
         extObj:{
-            
+            fetchData:function(_param){
+                var _param = {};
+                var navData = nav.getBatteryIds();
+                var ids;
+
+                if(this.ids && this.ids.sid){
+                    ids = this.ids.sid;
+                }else{
+                    ids = navData.ids.join(",");
+                }
+
+                if($('#beginTime').val() == ""){
+                    alert('请选择时间');
+                    return;
+                }
+                if($('#startTime').val() == ""){
+                    alert('请选择时间');
+                    return;
+                }
+                API.getCautionsData({id:ids,page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
+            },
+            refresh:function(){
+                this.fetchData();
+            },
+            downloadUrl:"/api/index.php/query/batterymodule"
         }
     })
 

@@ -234,7 +234,22 @@ class RealtimeController extends Controller
     {
         // 具体流程见 警情判断流程判断逻辑.docx 文档
         // 数据直接出，通过command来处理数据
+
+        $start =substr(Yii::app()->request->getParam('start'),0,10);
+        $end = substr(Yii::app()->request->getParam('end'),0,10);
+
         $id = Yii::app()->request->getParam('id',0);
+        $temp = false;
+        if ($id) {
+            $arr = explode(',',$id);
+            $temp = array();
+            foreach ($arr as $key => $value) {
+                $temp[] = $value."0000";
+            }
+        }else{
+            $temp = false;
+        }
+        
         $page = Yii::app()->request->getParam('page',1);
         $this->setPageCount(15);
         $total = 0;
