@@ -2,13 +2,45 @@
 
 class StationparaController extends Controller
 {
+    public static function getStationIds($zero = '0000'){
+        $id = Yii::app()->request->getParam('id',0);
+        if(!$id){
+            $ret['response'] = array(
+                'code' => -1,
+                'msg' => '暂无站点数据！'
+            );
+            echo json_encode($ret);
+            Yii::app()->end();
+        }
+        $arr = explode(',',$id);
+        $temp = array();
+
+        foreach ($arr as $key => $value) {
+            $temp[] = $value.$zero;
+        }
+
+        $id =  implode(',',$temp);
+        return $temp;
+    }
+
 	public function actionIndex()
 	{
+        $id = Yii::app()->request->getParam('id',0);
+        $temp = self::getStationIds();
+
         $this->setPageCount();
+        // var_dump(implode(",",$temp));
         $site = Yii::app()->db->createCommand()
             ->select('*')
             ->from('{{site}}')
             ->queryAll();
+        if($temp){
+            $site = Yii::app()->db->createCommand()
+                ->select('*')
+                ->from('{{site}}')
+                ->where('serial_number in ('.implode(",",$temp).')')
+                ->queryAll();
+        }
         $data = array();
         if ($site) {
             foreach ($site as $key => $value) {
@@ -28,6 +60,14 @@ class StationparaController extends Controller
             //->offset(($this->page-1)*$this->count)
             ->order('sid desc')
             ->queryAll();
+        if($temp){
+            $batteryparm = Yii::app()->bms->createCommand()
+                ->select('*')
+                ->from('{{station_param}}')
+                ->where('sn_key in ('.implode(",",$temp).')')
+                ->order('sid desc')
+                ->queryAll();
+        }
         if ($batteryparm) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;

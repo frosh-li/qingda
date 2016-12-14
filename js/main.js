@@ -412,6 +412,28 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
                 isOver();
             })
+        }else if(/^(stationOption)$/.test(pageType)) {
+            $(".stationPop").hide();
+            $("#dataItem").html($("#listTpl").html());
+            ui.downHide(true);
+
+            $searchWrap.show();
+            $searchWrap.jqTransform();
+            $(".exportdata").show();
+            $(".list-bottom.upage").show();
+            $(".report-caution-selector",$searchWrap).parents('.jqTransformSelectWrapper').hide()
+            $(".reportCaution",$searchWrap).hide()
+            require(["blocks/listSearch","blocks/list","blocks/nav"],function(listSearch,list,nav){
+                refreshModules([nav,listSearch,list],_arg);
+                afterInit(sys,pageType,sub);
+                if(!navTree){
+                    nav.run();
+                    navTree=nav;
+                }
+
+                isOver();
+            })
+        
         }else if(/^(manager|message|optionSetting|cautionEquipmentSetting|equipmentSetting|update|limitationSetting)$/.test(pageType)) {
             ui.downHide(true);
             $(".stationPop").hide();

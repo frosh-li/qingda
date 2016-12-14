@@ -2797,6 +2797,39 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
     //查询：参数：组
     listConfig.option_groupOption = $.extend(true,{},listConfig.optionSetting_groupOption,{extObj:{
+        getNavData:function(){
+            return nav.getSites();
+        },
+        extEvent: function(){
+            var _this = this;
+            _this.listenTo(Backbone.Events,"curstation:change",function(data){
+                _this.ids = null;
+                if(!$(_this.el).length || !$(_this.el).is(":visible")){
+                    return;
+                }
+                var navData = _this.getNavData();
+                if(typeof navData == 'undefined' || !navData || !navData.ids.length){
+                    _this.data = [];
+                    _this.render();
+                }else{
+                    _this.fetchData();
+                }
+            });
+        },
+        fetchData:function(_param){
+            var _param = {};
+            var navData = nav.getSites();
+            var ids;
+
+            if(this.ids && this.ids.sid){
+                ids = this.ids.sid;
+            }else{
+                ids = navData.ids.join(",");
+            }
+            console.log(navData);
+            $.extend(_param,{id:ids});
+            API.getGroupOptionData(_param);
+        },
         render:function(){
             var _this = this;
             this.destoryPlugin();
@@ -2835,6 +2868,39 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     }})
     //查询：参数：站
     listConfig.option_stationOption = $.extend(true,{},listConfig.optionSetting_stationOption,{extObj:{
+        getNavData:function(){
+            return nav.getSites();
+        },
+        extEvent: function(){
+            var _this = this;
+            _this.listenTo(Backbone.Events,"curstation:change",function(data){
+                _this.ids = null;
+                if(!$(_this.el).length || !$(_this.el).is(":visible")){
+                    return;
+                }
+                var navData = _this.getNavData();
+                if(typeof navData == 'undefined' || !navData || !navData.ids.length){
+                    _this.data = [];
+                    _this.render();
+                }else{
+                    _this.fetchData();
+                }
+            });
+        },
+        fetchData:function(_param){
+            var _param = {};
+            var navData = nav.getSites();
+            var ids;
+
+            if(this.ids && this.ids.sid){
+                ids = this.ids.sid;
+            }else{
+                ids = navData.ids.join(",");
+            }
+            console.log(navData);
+            $.extend(_param,{id:ids});
+            API.getSationOptionsData(_param);
+        },
         render:function(){
             var _this = this;
             this.destoryPlugin();
@@ -2891,6 +2957,39 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     }})
     //查询：参数：电池
     listConfig.option_batteryOption = $.extend(true,{},listConfig.optionSetting_batteryOption,{extObj:{
+        getNavData:function(){
+            return nav.getSites();
+        },
+        extEvent: function(){
+            var _this = this;
+            _this.listenTo(Backbone.Events,"curstation:change",function(data){
+                _this.ids = null;
+                if(!$(_this.el).length || !$(_this.el).is(":visible")){
+                    return;
+                }
+                var navData = _this.getNavData();
+                if(typeof navData == 'undefined' || !navData || !navData.ids.length){
+                    _this.data = [];
+                    _this.render();
+                }else{
+                    _this.fetchData();
+                }
+            });
+        },
+        fetchData:function(_param){
+            var _param = {};
+            var navData = nav.getSites();
+            var ids;
+
+            if(this.ids && this.ids.sid){
+                ids = this.ids.sid;
+            }else{
+                ids = navData.ids.join(",");
+            }
+            console.log(navData);
+            $.extend(_param,{id:ids});
+            API.getBatteryOptionsData(_param);
+        },
         render:function(){
             var _this = this;
             this.destoryPlugin();
