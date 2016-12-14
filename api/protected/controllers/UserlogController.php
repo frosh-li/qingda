@@ -49,8 +49,6 @@ class UserlogController extends Controller
             ->select('count(*) as totals')
             ->from('{{action_log}}')
             ->where($where)
-            ->limit($this->count)
-            ->offset(($this->page-1)*$this->count)
             ->order('id desc')
             ->queryScalar();
         $ret['response'] = array(
