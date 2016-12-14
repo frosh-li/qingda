@@ -134,6 +134,8 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 $(".chart-wrap h4").text(this.currentFieldElement.text());
             //}
             this.chartName = this.currentFieldElement.text();
+            $('.chart-wrap .switch-btn').removeClass('active');
+            $(this.currentFieldElement).addClass('active');
             return this.currentFieldElement.attr('field');
         },
         createOption:function(type,data,xAixs){
