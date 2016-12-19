@@ -53,7 +53,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
             _this.origindata = data||_this.origindata;
 
                 var col = _this.getFieldValue();
-                // console.log('current filed', col);
+                console.log('current filed', col);
                 var ctype = "station";
                 //window.location.hash.indexOf("station") > -1 ? "station":(window.location.hash.indexOf("station")>-1)
                 var hash = window.location.hash;
@@ -118,21 +118,20 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
             if($el){
                 this.currentFieldElement = $el;
             }
-
             this.updateChart();
             // API.getChart({id:curids,field:this.getFieldValue($el)},curEvtType,listType);
         },
         getFieldValue:function($el){
             // var el = $el;
             if(!this.currentFieldElement){
-                this.currentFieldElement = $($(".chart-wrap .switch-btn.active:visible")[0]);
+                this.currentFieldElement = $($(".chart-wrap .switch-btn:visible")[0]);
             }
             if($el){
                 this.currentFieldElement = $el;
             }
-            //if($el && $el.length == 1){
-                $(".chart-wrap h4").text(this.currentFieldElement.text());
-            //}
+            
+            $(".chart-wrap h4").text(this.currentFieldElement.text());
+            
             this.chartName = this.currentFieldElement.text();
             $('.chart-wrap .switch-btn').removeClass('active');
             $(this.currentFieldElement).addClass('active');
