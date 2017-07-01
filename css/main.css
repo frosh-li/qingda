@@ -233,13 +233,24 @@ a.btn1,a.btn2{display:inline-block;width:112px;height:33px;line-height: 33px;mar
 a.btn2{width:127px;background: url("../images/btn-list2.png") no-repeat 0 -348px;}
 div.title-list{padding-left:50px;overflow: hidden;}
 
-ul.item-list li{/*width:113px;*/height:33px;line-height:33px; padding: 0px; border:1px solid #dfdfdf;border-bottom:none;font-size:16px;font-weight:bold;color:#5a5a5a;text-align:center;margin-right:8px;float:left;/*background: url("../images/btn-list2.png") no-repeat 0 -267px;*/background:#f9f9fa;position:relative;cursor: pointer;}
+ul.item-list li{height:33px;line-height:33px; padding: 0px;position: relative; border:1px solid #dfdfdf;border-bottom:none;font-size:16px;font-weight:bold;color:#5a5a5a;text-align:center;margin-right:8px;float:left;/*background: url("../images/btn-list2.png") no-repeat 0 -267px;*/background:#f9f9fa;position:relative;cursor: pointer;}
 ul.item-list li:hover,ul.item-list li.active{color:#fff;border:1px solid #0b5daa;border-bottom:none;background:#2276bf url("../images/libg.jpg") no-repeat left;/*background: url("../images/btn-list2.png") no-repeat 0 -223px;*/position: relative;}
-ul.item-list li:hover a,ul.item-list li.active a{color:#fff}
-ul.item-list li:hover i{background:url("../images/btn-list2.png") no-repeat -117px -214px;}
-ul.item-list li i,i.dian{display: none; padding:0px 7px; background:url("../images/btn-list2.png") no-repeat -117px -260px;}
-ul.item-list li.active i{display: inline; padding:0px 9px; background:url("../images/btn-list2.png") no-repeat -115px -214px;}
-ul.item-list li.active i:hover{background-color: #1287cd}
+ul.item-list li.active{
+    padding: 0px 10px 0 0    
+}
+
+
+ul.item-list li:hover a,ul.item-list li.active a{color:#fff;outline: none;}
+
+ul.item-list li i,i.dian{display: none; padding:0px 7px; background:url("../images/btn-list2.png") no-repeat -117px -260px;position: absolute;top: -33px;right: -37px;}
+ul.item-list li.active i{ padding:0px 9px; background:url("../images/btn-list2.png") no-repeat -115px -214px;  position: absolute;
+    top: 6px;
+    right: -5px;
+    z-index: 10000;
+    width: 10px;
+    display: block;
+    height: 20px;}
+
 ul.item-list li span a{padding: 0px 15px;display: block;}
 
 .config-item-list{padding: 3px 6px;}
