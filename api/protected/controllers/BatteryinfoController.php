@@ -368,7 +368,7 @@ class BatteryinfoController extends Controller
              $sql = "SELECT b . * , s.site_name, s.sid
                 FROM  {{battery_info}} AS b
                 LEFT JOIN {{site}} AS s ON b.sid = s.serial_number 
-                where s.serial_number in (" . implode(",", $ids) .") ";
+                where s.serial_number in (" . implode(",", $ids) .") order by b.sid desc";
 
          }
          elseif($sns === false){
@@ -379,6 +379,7 @@ class BatteryinfoController extends Controller
             if($temp){
                 $sql .= " where s.serial_number in (" . implode(",", $temp) . ")";
             }
+            $sql .=" order by b.sid desc";
          }
         $ups = Yii::app()->db->createCommand($sql)->queryAll();
         //$ups = Yii::app()->db->createCommand()

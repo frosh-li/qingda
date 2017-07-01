@@ -655,17 +655,17 @@ class SitesController extends Controller
 	public function actionIndex()
 	{
         $this->setPageCount();
-        $id = Yii::app()->request->getParam('id',0);
+        // $id = Yii::app()->request->getParam('id',0);
         $temp = false;
-        if ($id) {
-            $arr = explode(',',$id);
-            $temp = array();
-            foreach ($arr as $key => $value) {
-                $temp[] = $value."0000";
-            }
-        }else{
-            $temp = false;
-        }
+        // if ($id) {
+        //     $arr = explode(',',$id);
+        //     $temp = array();
+        //     foreach ($arr as $key => $value) {
+        //         $temp[] = $value."0000";
+        //     }
+        // }else{
+        //     $temp = false;
+        // }
 
 
         //xl
@@ -675,9 +675,9 @@ class SitesController extends Controller
         if(!empty($sns)){
             $sql = "select * from my_site as a";
             if($temp){
-                $sql .= " where  a.serial_number in (" . implode(",", array_intersect($temp,$sns)) .") order by aid asc, id desc ";
+                $sql .= " where  a.serial_number in (" . implode(",", array_intersect($temp,$sns)) .") order by serial_number desc ";
             }else{
-                $sql .= " where  a.serial_number in (" . implode(",", $sns) .") order by aid asc, id desc ";
+                $sql .= " where  a.serial_number in (" . implode(",", $sns) .") order by serial_number desc ";
             }
             $sites = Yii::app()->bms->createCommand($sql)->queryAll();
         }elseif($sns === false){
