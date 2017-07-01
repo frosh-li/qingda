@@ -7,9 +7,9 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
     function init(sys,pageType,sub,params){
         var $stationPop = $(".stationPop");
         $stationPop.off('click').on('click',function(e){
-            console.log('station pop clicked');
+
             var id = navTree.getSites().ids;
-            console.log('id',id)
+
             if(id < 0){
                 alert('请选择站点');
                 return;
@@ -20,7 +20,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
             stationsinfoDialog.show(id.join(","));
         });
-        console.log('init', sys,pageType,sub,params);
+
         $(".exportdata").hide();
         var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
         var canedit = JSON.parse(localStorage.getItem('userinfo')).canedit;
@@ -107,8 +107,6 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
 
         if("map" == sys){
-
-            console.log('delete navTree', navTree);
             require(["map"],function(map){
                 ui.resize();
                 map.init();
@@ -121,15 +119,13 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             var time = parseInt($("#collectDuration").val());
             // 判断是否在实时页面
             var hash = window.location.hash;
-            console.log('time', time, hash, localStorage.getItem("collecting"),hash.indexOf("manage/station"))
+
             if(refreshpage.indexOf(hash) > -1
                     || hash.indexOf("manage/station")>-1 ){
 
                 if(time
                     && localStorage.getItem("collecting") == 'true'){
 
-
-                    console.log('need refresh')
                     $("body").addClass('collecting').everyTime(time+"s",'collect',API.collect);
                     $("#startCollectBtn").hide();
                     $(".tzcj").css('display','block');
@@ -165,7 +161,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             require(["blocks/list","blocks/nav","api"],function(list,nav,API){
 
                 afterInit(sys,pageType,sub);
-                console.log(navTree);
+
                 if(!navTree){
                     refreshModules([nav],_arg);
                     nav.run(function(){

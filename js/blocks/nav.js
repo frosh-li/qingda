@@ -1,3 +1,4 @@
+window.NavDatas = null;
 define(['require','api','backbone','context','common','zTreeExcheck'],function(require,API,Backbone,context,common){
     var zTree,
         overFlag = false,
@@ -31,6 +32,11 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
         initialize:function(data){
             var _this = this;
             _this.listenTo(Backbone.Events,"nav:update",function(data){
+                if(NavDatas == JSON.stringify(data)){
+                    return;
+                }
+                NavDatas = JSON.stringify(data);
+                console.log('nav update', data);
                 _this.data = data.list;
                 _this.filterData().render();
                 overFlag = true;

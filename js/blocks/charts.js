@@ -48,12 +48,10 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
 
         },
         updateChart:function(data){
-            console.log('start update charts', data);
             var _this = this;
             _this.origindata = data||_this.origindata;
 
                 var col = _this.getFieldValue();
-                console.log('current filed', col);
                 var ctype = "station";
                 //window.location.hash.indexOf("station") > -1 ? "station":(window.location.hash.indexOf("station")>-1)
                 var hash = window.location.hash;
@@ -98,7 +96,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                     //}
                 }
                 if(values){
-                    console.log(values, xAixs);
+
                     require(['charts'],function(chart){
                         echart = chart;
                         _this.createOption(charType,values,xAixs).render();
@@ -113,7 +111,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
                 }
         },
         onChageField:function($el){
-            console.log('change field', $el);
+
             overFlag=false;
             if($el){
                 this.currentFieldElement = $el;
@@ -228,7 +226,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
 
     return {
         init:function(_sys,_listType,_sub){
-            console.log('chart init', _sys, _listType, _sub)
+
             sys = _sys;
             listType = _listType;
             sub = sub;
@@ -240,7 +238,7 @@ define(['require','api','ui','backbone'],function(require,API,ui,Backbone){
 
             $(".chart-wrap").off("click");
             $(".chart-wrap").on("click",".switch-btn",function(e){
-                console.log('click on switch-btn');
+
                 if($(this).hasClass('disabled')){
                     e.preventDefault();
                     return;

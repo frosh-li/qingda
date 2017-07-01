@@ -135,7 +135,6 @@ define(function(require){
 
 
             _this.listenTo(Backbone.Events,"monitoring:start",function(data){
-                console.log('monitoring', data);
                 if(data.totals && data.totals > 0){
                     $(".baojing").css('display','block')
                 }else{
@@ -191,14 +190,14 @@ define(function(require){
                 }else{
                     ids = navData.ids.join(",");
                 }
-                console.log(ids);
+
                 if(ids.split(",").length > 1){
                     alert('只能勾选一个站点');
                     return;
                 }
 
                 var batteryId = nav.getBatteryIds();
-                console.log(batteryId);
+
                 var battyerids = batteryId?batteryId.ids.join(','):'';
 
 
@@ -266,14 +265,14 @@ define(function(require){
                             $("[type=checkbox]:checked",$(this)).each(function(i,el){
                                 selectCols += $(el).attr('key')+',';
                             })
-                            console.log('selectCols', selectCols);
+
                             if(!selectCols){
                                 alert('请至少选择一列展示');
                                 return;
                             }
 
                             common.cookie.setCookie(type+'Cols', selectCols.replace(/,$/,''));
-                            console.log(type+"ColsChange");
+      
                             Backbone.Events.trigger(type+'ColsChange');
                             $( this ).dialog( "close" );
                         }
@@ -363,7 +362,8 @@ define(function(require){
             if(isMonitoring){return}
             isMonitoring = true;
             $("body").everyTime('5s','monitoring',function(){
-                API.getMapData(false,'realtime:mapdata');
+                //API.getMapData(false,'realtime:mapdata');
+                API.getNavData();
                 API.getLinkingStationNum();
                 API.getCautionsData(false,'monitoring:start',true);
             });
@@ -477,7 +477,6 @@ define(function(require){
                 var param = common.getFormValue($("#otherOptionEdit"));
 
 
-                console.log(param);
 
                 if(parseInt(param.refresh) < 8){
                     alert('刷新频率最小间隔8秒');
@@ -689,7 +688,7 @@ define(function(require){
             return this;
         },
         switchBtnGroups:function(sys,pageType,sub){
-            console.log('switch-btn');
+
             var $listBtns = $("#listBtns ."+pageType+(sub?"-"+sub:"")),
                 $subListTab = $("#subListTab ."+pageType);
             $(".item-list .switch-btn").hide();
