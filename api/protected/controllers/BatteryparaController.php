@@ -5,8 +5,8 @@ class BatteryparaController extends Controller
 	public function actionIndex()
 	{
         $this->setPageCount();
-        $id = Yii::app()->request->getParam('id',0);
-        $temp = self::getStationIds();
+        // $id = Yii::app()->request->getParam('id',0);
+        // $temp = self::getStationIds();
         $site = Yii::app()->db->createCommand()
             ->select('*')
             ->from('{{site}}')
@@ -27,14 +27,14 @@ class BatteryparaController extends Controller
             ->select('*')
             ->from('{{battery_param}}')
             ->queryAll();
-        if($temp){
-            $batteryparm = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{battery_param}}')
-                ->where('sn_key in ('.implode(",",$temp).')')
-                ->order('sid desc')
-                ->queryAll();
-        }
+        // if($temp){
+        //     $batteryparm = Yii::app()->bms->createCommand()
+        //         ->select('*')
+        //         ->from('{{battery_param}}')
+        //         //->where('sn_key in ('.implode(",",$temp).')')
+        //         ->order('sid desc')
+        //         ->queryAll();
+        // }
         if ($batteryparm) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;

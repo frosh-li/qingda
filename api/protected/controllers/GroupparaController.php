@@ -5,8 +5,8 @@ class GroupparaController extends Controller
 	public function actionIndex()
 	{
         $this->setPageCount();
-        $id = Yii::app()->request->getParam('id',0);
-        $temp = self::getStationIds();
+        // $id = Yii::app()->request->getParam('id',0);
+        // $temp = self::getStationIds();
         $site = Yii::app()->db->createCommand()
             ->select('*')
             ->from('{{site}}')
@@ -29,14 +29,14 @@ class GroupparaController extends Controller
             ->from('{{group_param}}')
             // ->order('gid desc')
             ->queryAll();
-        if($temp){
-            $batteryparm = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('{{group_param}}')
-                ->where('sn_key in ('.implode(",",$temp).')')
-                ->order('sid desc')
-                ->queryAll();
-        }
+        // if($temp){
+        //     $batteryparm = Yii::app()->bms->createCommand()
+        //         ->select('*')
+        //         ->from('{{group_param}}')
+        //         //->where('sn_key in ('.implode(",",$temp).')')
+        //         ->order('sid desc')
+        //         ->queryAll();
+        // }
         if ($batteryparm) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;
