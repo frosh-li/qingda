@@ -142,8 +142,9 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                     view.oncancel();
                 },
                 open:function(){
-                    $("form.jqtransform").jqTransform();
+                    
                     view = new (Backbone.View.extend(config.extobj))();
+
                     view.dialogObj = $(this);
                     $("form.jqtransform").html($("form.jqtransform").html().replace(/{{disabled}}/g,ifdisabled));
                     $("form.jqtransform").find("[changedisabled=disabled]").attr('disabled',true);
@@ -166,6 +167,8 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                     $( "form.jqtransform [key=bms_install_date]" ).datepicker({
                         dateFormat: "yy-mm-dd"
                     });
+
+                    $("form.jqtransform").jqTransform();
                 }
             });
 
