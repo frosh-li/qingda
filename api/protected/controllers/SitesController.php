@@ -485,6 +485,7 @@ class SitesController extends Controller
 	{
         $id = Yii::app()->request->getParam('id',0);
         $model = $this->loadModel($id);
+        $sid = $model->serial_number;
         $oldvalue = $model->attributes;
         $result = $model->delete();
         $ret['response'] = array(
@@ -501,6 +502,14 @@ class SitesController extends Controller
             $ret['data'] = array(
                 'uid'=>$id
             );
+            // 删除电池信息
+
+            Yii::app()->bms->createCommand('delete from my_battery_info where sid='.$sid)->execute();
+
+            // 删除ups信息
+
+            Yii::app()->bms->createCommand('delete from my_ups_info where sid='.$sid)->execute();
+
             $username = isset($_SESSION['username']) ? $_SESSION['username'] : 'test';
             $log = array(
                 'type'=>2,

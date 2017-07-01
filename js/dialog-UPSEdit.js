@@ -21,22 +21,33 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     });
                 },
                 setValue:function(data){
+                    console.log('now data', data);
                     var data = data || this.data;
+
                     if(data){
+                        // $("[key=site_name]",this.el).val(data.site_name);
                         common.setFormValue(this.el,data);
+                        $("[key=site_name]",this.el).val(data.site_name);
+                        $("[key=sid]",this.el).val(data.sid);
                     }
                 },
                 getParam:function(){
-                    return common.getFormValue(this.el,true);
+   
+
+                    var obj = common.getFormValue(this.el,true);
+                    obj.sid = $("[key=sid]").val();
+                    return obj;
+
+
                 },
                 showErrTips:function(tips){
                     alert(tips);
                     return false;
                 },
                 validate:function(param){
-                    if(!param.site_name){
-                        return this.showErrTips('站点为必填项');
-                    }
+                    // if(!param.site_name){
+                    //     return this.showErrTips('站点为必填项');
+                    // }
                     if(!param.sid){
                         return this.showErrTips('站点不存在');
                     }
@@ -97,26 +108,33 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     view.oncancel();
                 },
                 open:function(){
+                    if(!id && data){
+                        $("[key=site_name]").attr('disabled','disabled');
+                    }
                     $("form.jqtransform").jqTransform();
                     view = new (Backbone.View.extend(config.extobj))();
                     view.dialogObj = $(this);
+
+                    $("form.jqtransform").html($("form.jqtransform").html().replace(/{{disabled}}/g,ifdisabled));
+                    $("form.jqtransform").find("[changedisabled=disabled]").attr('disabled',true);
 
                     if(id){
                         API.getUpsInfo({id:id});
                     }
 
                     if(data){
+                        console.log('init ups data', data);
                         view.setValue(data);
                     }
 
-                    $("form.jqtransform").html($("form.jqtransform").html().replace(/{{disabled}}/g,ifdisabled));
-                    $("form.jqtransform").find("[changedisabled=disabled]").attr('disabled',true);
+                    
 
                     stationList = stationSelector.init({
                         extOption:{
                             select:function(event, ui){
+                                console.log('setup list');
                                 $(this).val(ui.item.label);
-                                $("[key=sid]").val(ui.item.value);
+                                $("[key=sid]").val(ui.item.value.substring(0,10));
                                 return false;
                             }
                         }

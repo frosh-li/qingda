@@ -20,13 +20,12 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                         _this.oncancel();
                         Backbone.Events.trigger("listdata:refresh", "batteryInfo");
                     });
-                    _this.listenTo(Backbone.Events,"battery:create:next",function(){
+                    _this.listenTo(Backbone.Events,"battery:create:next",function(data){
                         var data = _this.getParam();
+                        delete data.id;
+                        console.log('battery next',data);
                         _this.oncancel();
-                        Backbone.Events.trigger("battery:next", {
-                            sid:data.sid,
-                            site_name:data.site_name
-                        });
+                        Backbone.Events.trigger("battery:next", data);
                     });
                 },
                 setValue:function(data){
@@ -40,7 +39,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                 },
                 getParam:function(){
                     var obj = common.getFormValue(this.el,true);
-                    obj.serial_number = $("[key=serial_number]").val();
+                    obj.serial_number = $("[key=sid]").val();
                     return obj;
                 },
                 showErrTips:function(tips){
@@ -134,6 +133,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     }
 
                     if(data){
+                        console.log('battery init',data)
                         view.setValue(data);
 
                     }
@@ -141,6 +141,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     stationList = stationSlector.init({
                         extOption:{
                             select:function(event, ui){
+                                console.log('setup list');
                                 $(this).val(ui.item.label);
                                 $("[key=sid]").val(ui.item.value.substring(0,10));
                                 return false;

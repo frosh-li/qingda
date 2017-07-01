@@ -301,8 +301,12 @@ class RealtimeController extends Controller
 
                 $siteName = Yii::app()->bms
                     ->createCommand($sql)->queryAll();
-                //var_dump($siteName);
-                $ret['data']['list'][] = array_merge($value,$addinfo[0],$siteName[0]);
+                if($siteName){
+                    $ret['data']['list'][] = array_merge($value,$addinfo[0],$siteName[0]);    
+                }else{
+                    $ret['data']['list'][] = array_merge($value,$addinfo[0], array("site_name"=>"未知","sid"=>""));    
+                }
+                
             }
             $psql = "select count(*) as count,right(code,1) as atype from my_alerts group by right(code,1)";
             $alertType = Yii::app()->bms->createCommand($psql)->queryAll();

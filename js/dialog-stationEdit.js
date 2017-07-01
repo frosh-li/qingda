@@ -82,12 +82,6 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                         return this.showErrTips('物理地址必须为10位数字');
                     }
 
-                    if(!/^\d+\.?\d+$/.test(param.site_latitude)){
-                        return this.showErrTips('站点纬度格式有误');
-                    }
-                    if(!/^\d+\.?\d+$/.test(param.site_longitude)){
-                        return this.showErrTips('站点经度格式有误');
-                    }
 
                     return true;
                 },

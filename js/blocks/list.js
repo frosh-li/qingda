@@ -93,6 +93,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             _this.fetchData();
                         });
                         _this.listenTo(Backbone.Events,"listdata:update stationdata:get",function(data){
+                            console.log('listdata update', data);
                             if(data.types){
                                 _this.types = data.types;
                             }
@@ -522,24 +523,20 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
                         var stations = this.stations,
                             curStation = this.curStation;
+
                         console.log(stations, curStation);
-                        // if(!stations || (stations.ids.length == 0&&this.prevIds.length==0)){
-                        //     $("#page .cur").html('当前站点：全部');
-                        //     $("#page .next,#page .prev").hide();
-                        //     return '';
-                        // }else{
-                            var batteryId = nav.getBatterys(curStation);
-                            if(curStation){
-                                $("#page .cur").html('当前站点：'+stations.map[curStation].title);
-                                this.updatePageView();
-                            }
-                            return batteryId?batteryId.ids.join(','):'';
-                        // }
+
+                        var batteryId = nav.getBatterys(curStation);
+                        if(curStation){
+                            $("#page .cur").html('当前站点：'+stations.map[curStation].title);
+                            this.updatePageView();
+                        }
+                        return batteryId?batteryId.ids.join(','):'';
                     },
                     updateStations:function(){
 
                         this.stations = nav.getSites();
-                        console.log(this.stations)
+                        console.log('stations',this.stations)
                         this.prevIds = [];
                         this.curStation = '';
                         return this;
@@ -552,9 +549,12 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     },
                     fetchData:function(){
                         this.updateStations();
-                        if(this.curStation && this.curStation == this.stations[0]){
-                            return;
+                        if(!this.curStation){
+                            this.curStation = this.stations[0];
                         }
+                        // if(this.curStation && this.curStation == this.stations[0]){
+                        //     return;
+                        // }
                         this.nextStation();
                         this._fetch();
                     },
