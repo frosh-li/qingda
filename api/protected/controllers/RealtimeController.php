@@ -238,42 +238,42 @@ class RealtimeController extends Controller
         $start =substr(Yii::app()->request->getParam('start'),0,10);
         $end = substr(Yii::app()->request->getParam('end'),0,10);
 
-        $id = Yii::app()->request->getParam('id',0);
+        //$id = Yii::app()->request->getParam('id',0);
         $temp = false;
-        if ($id) {
-            $arr = explode(',',$id);
-            $temp = array();
-            foreach ($arr as $key => $value) {
-                $temp[] = $value."0000";
-            }
-        }else{
-            $temp = false;
-        }
+        // if ($id) {
+        //     $arr = explode(',',$id);
+        //     $temp = array();
+        //     foreach ($arr as $key => $value) {
+        //         $temp[] = $value."0000";
+        //     }
+        // }else{
+        //     $temp = false;
+        // }
         
         $page = Yii::app()->request->getParam('page',1);
-        $this->setPageCount(15);
+        $this->setPageCount(20);
         $total = 0;
-        if ($id != 0) {
+        // if ($id != 0) {
+        //     $sites = Yii::app()->bms->createCommand()
+        //         ->select('*')
+        //         ->from('my_alerts')
+        //         ->where('status = 0')
+        //         ->limit(15)
+        //         ->offset(($page - 1) * 15)
+        //         ->order('time desc')
+        //         ->queryAll();
+
+        // }else{
             $sites = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('my_alerts')
                 ->where('status = 0')
-                ->limit(15)
-                ->offset(($page - 1) * 15)
+                ->limit(20)
+                ->offset(($page-1)*20)
                 ->order('time desc')
                 ->queryAll();
 
-        }else{
-            $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('my_alerts')
-                ->where('status = 0')
-                ->limit(15)
-                ->offset(($page-1)*15)
-                ->order('time desc')
-                ->queryAll();
-
-        }
+        //}
         $total = Yii::app()->bms->createCommand()
                 ->select("count(*) as total")
                 ->from('my_alerts')
@@ -288,7 +288,7 @@ class RealtimeController extends Controller
 
         if ($sites) {
             $ret['data']['page'] = $this->page;
-            $ret['data']['pageSize'] = 15;
+            $ret['data']['pageSize'] = 20;
             $ret['data']['totals'] = intval($total);
             foreach($sites as $key=>$value){
                 $addinfo = Yii::app()->bms
