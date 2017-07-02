@@ -1152,20 +1152,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 extObj:{
                     events:{
                         "click .list-edit-btn":"onEdit",
-                        "click .list-del-btn":"onDel",
                         "mouseover .dataTable tr":"inRow",
                         "mouseout .dataTable tr":"inRow"
                     },
                     onEdit:function(e){
                         ui.showBatteryEditDialog($(e.currentTarget).attr('pid'));
                     },
-                    onDel:function(e){
-                        if(confirm("是否确定删除此电池")){
-                            API.deleteBattery({
-                                id:$(e.currentTarget).attr('pid')
-                            });
-                        }
-                    },
+
                     fetchData:function(_param){
                         API.getBatteryInfosData(_param);
                     },
@@ -1208,7 +1201,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     {
                                         data:"id",
                                         render: function (data) {
-                                            return _.template('<div style="width:160px">'+$("#editBtn").html()+$("#delBtn").html()+'</div>')({
+                                            return _.template('<div style="width:160px">'+$("#editBtn").html()+'</div>')({
                                                 id:data
                                             });
                                         }
