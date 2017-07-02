@@ -32,7 +32,7 @@ class StationparaController extends Controller
         // var_dump(implode(",",$temp));
         $site = Yii::app()->db->createCommand()
             ->select('*')
-            ->from('{{site}}')
+            ->from('my_site')
             ->queryAll();
         // if($temp){
         //     $site = Yii::app()->db->createCommand()
@@ -41,6 +41,7 @@ class StationparaController extends Controller
         //         //->where('serial_number in ('.implode(",",$temp).')')
         //         ->queryAll();
         // }
+
         $data = array();
         if ($site) {
             foreach ($site as $key => $value) {
@@ -56,9 +57,6 @@ class StationparaController extends Controller
         $batteryparm = Yii::app()->bms->createCommand()
             ->select('*')
             ->from('{{station_param}}')
-            //->limit($this->count)
-            //->offset(($this->page-1)*$this->count)
-            ->order('sid desc')
             ->queryAll();
         // if($temp){
         //     $batteryparm = Yii::app()->bms->createCommand()
@@ -265,6 +263,7 @@ class StationparaController extends Controller
         if ($sn_key) {
             $row = array();
             $sn_key !='' && $row['sn_key']=$sn_key;
+            $sid !='' && $row['sid']=$sid;
             $Groups !='' && $row['Groups']=$Groups;
             $GroBats !='' && $row['GroBats']=$GroBats;
             $Time_MR !='' && $row['Time_MR']=$Time_MR;
@@ -302,6 +301,14 @@ class StationparaController extends Controller
             $upsql = Utils::buildUpdateSQL($row);
             $sql = "update {{station_param}} set ".$upsql." where sn_key=".$sn_key;
             $exec = Yii::app()->bms->createCommand($sql)->execute();
+            // 修改完了之后修改站相关的参数
+            $sitearray = array();
+            $sitearray['serial_number']=$sn_key;
+            $sitearray['sid']=$sid;
+            $sitearray['groups']=$Groups;
+            $sitearray['batteries']=$GroBats;
+            $upsitesql = Utils::buildUpdateSQL($sitearray);
+            Yii::app()->bms->createCommand("update my_site set ".$upsitesql." where serial_number=".$sn_key)->execute();
             if ($exec) {
                 $ret['data'] = array(
                     'sn_key'=>$sn_key,

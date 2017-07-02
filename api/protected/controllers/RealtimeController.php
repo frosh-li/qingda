@@ -302,12 +302,12 @@ class RealtimeController extends Controller
 
                 $siteName = Yii::app()->bms
                     ->createCommand($sql)->queryAll();
-                if($siteName && $addinfo && sizeof($addinfo) > 0){
+                if($siteName && sizeof($siteName) > 0){
                     $ret['data']['list'][] = array_merge($value,$addinfo[0],$siteName[0]);    
                 }else{
-                    if($addinfo && sizeof($addinfo) > 0){
-                        $ret['data']['list'][] = array_merge($value,$addinfo[0], array("site_name"=>"未知","sid"=>""));        
-                    }
+                    
+                    $ret['data']['list'][] = array_merge($value,$addinfo[0], array("site_name"=>"未知","sid"=>""));        
+                
                     
                 }
                 

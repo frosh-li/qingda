@@ -1,0 +1,45 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : localhost 2
+ Source Server Type    : MySQL
+ Source Server Version : 100110
+ Source Host           : localhost
+ Source Database       : db_bms_english4
+
+ Target Server Type    : MySQL
+ Target Server Version : 100110
+ File Encoding         : utf-8
+
+ Date: 07/02/2017 10:01:02 AM
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+--  Table structure for `my_station_alert_desc`
+-- ----------------------------
+DROP TABLE IF EXISTS `my_station_alert_desc`;
+CREATE TABLE `my_station_alert_desc` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `desc` varchar(255) DEFAULT NULL,
+  `en` varchar(255) NOT NULL,
+  `limit` varchar(255) DEFAULT NULL,
+  `suggest` varchar(255) DEFAULT NULL,
+  `send_msg` int(1) NOT NULL DEFAULT '1',
+  `send_email` int(1) DEFAULT '1',
+  `tips` varchar(200) DEFAULT NULL,
+  `type` varchar(200) NOT NULL DEFAULT 'station',
+  `ignore` int(1) DEFAULT '0' COMMENT '是否可以忽略',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `my_station_alert_desc`
+-- ----------------------------
+BEGIN;
+INSERT INTO `my_station_alert_desc` VALUES ('36', '环境温度超上限_红', 'MaxTem_R', '60', '检查空调状态及时降温或关闭UPS', '1', '1', null, 'station', '0'), ('37', '环境温度将达上限_橙', 'MaxTem_O', '55', '检查空调状态及时降温或关闭UPS', '1', '1', null, 'station', '0'), ('38', '环境温度偏高_黄', 'MaxTem_Y', '50', '检查空调状态及时降温或关闭UPS', '1', '1', null, 'station', '0'), ('39', '环境温度超下限_红', 'MinTem_R', '3', '检查空调状态及时保温或关闭UPS', '1', '1', null, 'station', '0'), ('40', '环境温度将达下限_橙', 'MinTem_O', '5', '检查空调状态及时保温或关闭UPS', '1', '1', null, 'station', '0'), ('41', '环境温度偏低_黄', 'MinTem_Y', '9', '检查空调状态及时保温或关闭UPS', '1', '1', null, 'station', '0'), ('42', '环境温湿度传感器故障_黄', 'TemSenErr', '7', '联系BMS厂家维护', '1', '1', null, 'station', '0'), ('43', '环境湿度超上限_红', 'MaxHum_R', '90', '检查加湿器状态或关闭UPS', '1', '1', null, 'station', '0'), ('44', '环境湿度将达上限_橙', 'MaxHum_O', '85', '检查加湿器状态或关闭UPS', '1', '1', null, 'station', '0'), ('45', '环境湿度偏高_黄', 'MaxHum_Y', '80', '检查加湿器状态或关闭UPS', '1', '1', null, 'station', '0'), ('46', '环境湿度超下限_红', 'MinHum_R', '3', '检查加湿器工作状态', '1', '1', null, 'station', '0'), ('47', '环境湿度将达下限_橙', 'MinHum_O', '5', '检查加湿器工作状态', '1', '1', null, 'station', '0'), ('48', '环境湿度偏低_黄', 'MinHum_Y', '8', '检查加湿器工作状态', '1', '1', null, 'station', '0'), ('49', '站放电电流超上限_红', 'DisChaLim_R', '40', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'station', '0'), ('50', '站放电电流将达上限_橙', 'DisChaLim_O', '35', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'station', '0'), ('51', '站放电电流偏高_黄', 'DisChaLim_Y', '30', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'station', '0'), ('52', '站充电电流超上限_红', 'ChaLim_R', '-20', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'station', '0'), ('53', '站充电电流将达上限_橙', 'ChaLim_O', '-18', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'station', '0'), ('54', '站充电电流偏高_黄', 'ChaLim_Y', '-16', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'station', '0'), ('55', '站电流传感器故障_黄', 'CurSenErr', '7', '联系BMS厂家维护', '1', '1', null, 'station', '0'), ('56', '站电池总电压超上限_红', 'HiVolLim_R', '89', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'station', '0'), ('57', '站电池总电压将达上限_橙', 'HiVolLim_O', '86', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'station', '0'), ('58', '站电池总电压偏高_黄', 'HiVolLim_Y', '83', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'station', '0'), ('59', '站电池总电压超下限_红', 'LoVolLim_R', '63', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'station', '0'), ('60', '站电池总电压将达下限_橙', 'LoVolLim_O', '65', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'station', '0'), ('61', '站电池总电压偏低_黄', 'LoVolLim_Y', '67', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'station', '0'), ('62', '组间电流偏差_红', 'GroCurDevLim_R', '10', '检查电池线缆连接状态或通知BMS厂家检测电流传感器', '1', '1', null, 'station', '0'), ('63', '组间电流偏差_橙', 'GroCurDevLim_O', '7', '检查电池线缆连接状态或通知BMS厂家检测电流传感器', '1', '1', null, 'station', '0'), ('64', '组间电流偏差_黄', 'GroCurDevLim_Y', '4', '检查电池线缆连接状态或通知BMS厂家检测电流传感器', '1', '1', null, 'station', '0'), ('65', '组间电压偏差_红', 'GroVolDevLim_R', '3', '检查单个电池电压状态或通知BMS厂家检测电压传感器', '1', '1', null, 'station', '0'), ('66', '组间电压偏差_橙', 'GroVolDevLim_O', '2', '检查单个电池电压状态或通知BMS厂家检测电压传感器', '1', '1', null, 'station', '0'), ('67', '组间电压偏差_黄', 'GroVolDevLim_Y', '1', '检查单个电池电压状态或通知BMS厂家检测电压传感器', '1', '1', null, 'station', '0'), ('68', '组间温度偏差_红', 'GroTTemDevLim_R', '7', '检查电池箱温度状态或通知BMS厂家检测温度传感器', '1', '1', null, 'station', '0'), ('69', '组间温度偏差_橙', 'GroTemDevLim_O', '5', '检查电池箱温度状态或通知BMS厂家检测温度传感器', '1', '1', null, 'station', '0'), ('70', '组间温度偏差_黄', 'GroTemDevLim_Y', '3', '检查电池箱温度状态或通知BMS厂家检测温度传感器', '1', '1', null, 'station', '0'), ('71', '组放电电流超上限_红', 'DisChaLim_R', '30', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'group', '0'), ('72', '组放电电流将达上限_橙', 'DisChaLim_O', '28', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'group', '0'), ('73', '组放电电流偏高_黄', 'DisChaLim_Y', '25', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'group', '0'), ('74', '组充电电流超上限_红', 'ChaLim_R', '-20', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'group', '0'), ('75', '组充电电流将达上限_橙', 'ChaLim_O', '-18', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'group', '0'), ('76', '组充电电流偏高_黄', 'ChaLim_Y', '-16', '检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'group', '0'), ('77', '组电流传感器故障_黄', 'CurSenErr', '7', '联系BMS厂家检查传感器状态', '1', '1', null, 'group', '0'), ('78', '电池电压超上限_红', 'MaxU_R', '14.1', '检查电池状态或关闭UPS、更换电池，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('79', '电池电压将达上限_橙', 'MaxU_O', '14', '检查电池状态或关闭UPS、更换电池，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('80', '电池电压偏高_黄', 'MaxU_Y', '13.9', '检查电池状态或关闭UPS、更换电池，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('81', '电池电压超下限_红', 'MinU_R', '10.2', '检查电池状态或关闭UPS、更换电池，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('82', '电池电压将达下限_橙', 'MinU_O', '10.5', '检查电池状态或关闭UPS、更换电池，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('83', '电池电压偏低_黄', 'MinU_Y', '10.8', '检查电池状态或关闭UPS、更换电池，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('84', '电压传感器故障', 'VolSenErr', '7', '检查通信线路连接状态、联系BMS厂家维护或更换采集模块', '1', '1', null, 'battery', '0'), ('85', '电池温度超上限_红', 'MaxT_R', '55', '检查电池状态或关闭UPS、更换电池，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('86', '电池温度将达上限_橙', 'MaxT_O', '50', '检查电池状态或关闭UPS、更换电池，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('87', '电池温度偏高_黄', 'MaxT_Y', '45', '检查电池状态或关闭UPS、更换电池，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('88', '电池温度超下限_红', 'MinT_R', '3', '做好电池保温或关闭UPS', '1', '1', null, 'battery', '0'), ('89', '电池温度将达下限_橙', 'MinT_O', '6', '做好电池保温或关闭UPS', '1', '1', null, 'battery', '0'), ('90', '电池温度偏低_黄', 'MinT_Y', '9', '做好电池保温或关闭UPS', '1', '1', null, 'battery', '0'), ('91', '温度传感器故障', 'TemSenErr', '7', '检查通信线路连接状态、联系BMS厂家维护或更换采集模块', '1', '0', null, 'battery', '0'), ('92', '电池内阻超上限_红', 'MaxR_R', '15', '联系电池或UPS厂家、更换电池、关闭UPS', '1', '1', null, 'battery', '0'), ('93', '电池内阻将达上限_橙', 'MaxR_O', '12.5', '联系电池或UPS厂家、更换电池、关闭UPS', '1', '1', null, 'battery', '0'), ('94', '电池内阻偏高_黄', 'MaxR_Y', '10', '联系电池或UPS厂家、更换电池、关闭UPS', '1', '1', null, 'battery', '0'), ('95', '内阻传感器故障', 'ResSenErr', '7', '检查通信线路连接状态、联系BMS厂家维护或更换采集模块', '0', '1', null, 'battery', '0'), ('96', '电池电压偏差_红', 'MaxDevU_R', '0.5', '关注电池变化，偏离过大或超过门限，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('97', '电池电压偏差_橙', 'MaxDevU_O', '0.4', '关注电池变化，偏离过大或超过门限，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('98', '电池电压偏差_黄', 'MaxDevU_Y', '0.3', '关注电池变化，偏离过大或超过门限，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('99', '电池温度偏差_红', 'MaxDevT_R', '5', '关注电池变化，偏离过大或超过门限，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('100', '电池温度偏差_橙', 'MaxDevT_O', '4', '关注电池变化，偏离过大或超过门限，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('101', '电池温度偏差_黄', 'MaxDevT_Y', '3', '关注电池变化，偏离过大或超过门限，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('102', '电池内阻偏差_红', 'MaxDevR_R', '5', '关注电池变化，偏离过大或超过门限，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('103', '电池内阻偏差_橙', 'MaxDevR_O', '4', '关注电池变化，偏离过大或超过门限，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('104', '电池内阻偏差_黄', 'MacDevR_Y', '3', '关注电池变化，偏离过大或超过门限，联系电池、UPS厂商', '1', '1', null, 'battery', '0'), ('105', '电池模块通讯故障_黄', 'ComErr', '0', '请检查BMS电池模块或联系BMS厂家', '1', '1', null, 'battery', '0'), ('106', '站电流模块通讯故障_黄', 'ComErr', '0', '请检查BMS电流模块或联系BMS厂家', '1', '1', null, 'station', '0'), ('107', '组电流模块通讯故障_黄', 'ComErr', '0', '请检查BMS组电流模块或联系BMS厂家', '1', '1', null, 'group', '0'), ('108', '组充电电流将达上限_橙', 'ChaLim_O', '5', '请检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'group', '0'), ('109', '组充电电流偏高_黄', 'ChaLim_Y', '6', '请检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'group', '0'), ('110', '组充电电流超上限_红', 'ChaLim_R', '7', '请检查UPS状态或关闭UPS、联系UPS厂家', '1', '1', null, 'group', '0'), ('111', '组温度超上限_红', 'MaxTem_R', '1', '及时降温或关闭UPS', '0', '1', null, 'group', '0'), ('112', '组温度将达上限_橙', 'MaxTem_O', '2', '及时降温或关闭UPS', '0', '1', null, 'group', '0'), ('113', '组温度偏高_黄', 'MaxTem_Y', '3', '及时降温或关闭UPS', '0', '1', null, 'group', '0'), ('114', '组温度超下限_红', 'MinTem_R', '4', '做好保温或关闭UPS', '0', '1', null, 'group', '0'), ('115', '组温度将达下限_橙', 'MinTem_O', '5', '做好保温或关闭UPS', '0', '1', null, 'group', '0'), ('116', '组温度偏低_黄', 'MinTem_Y', '6', '做好保温或关闭UPS', '0', '1', null, 'group', '0');
+COMMIT;
+
+SET FOREIGN_KEY_CHECKS = 1;

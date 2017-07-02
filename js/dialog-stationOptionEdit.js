@@ -18,6 +18,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     _this.listenTo(Backbone.Events,"stationoption:update",function(){
                         _this.showErrTips('修改完成，请等待5到10秒后刷新查看');
                         _this.oncancel();
+                        API.getSationOptionsData();
                         Backbone.Events.trigger("listdata:refresh", "batteryInfo");
 
                     });

@@ -1242,10 +1242,19 @@
                 <label class="item-title" for="name">站点: </label>
                 <input class="input-w-1" type="text" id="stationSelector" key="site_name" />
             </div>-->
-            
             <div class="rowElem">
-                <input type="hidden" key="sn_key" />
                 <input type="hidden" key="id" />
+                <label class="item-title" for="sn_key">站MAC地址: </label>
+                <input class="input-w-1" type="text" key="sn_key" />
+                <label class="item-title" for="name">站号: </label>
+                <input class="input-w-1" type="text" key="sid" />
+            </div>
+            <div class="rowElem">
+                <label class="item-title" for="sn_key">电流传感器安装状态: </label>
+                <input class="input-w-1" type="text" key="CurSensor" />
+            </div>
+            <div class="rowElem">
+
                 <label class="item-title" for="name">站内组数: </label>
                 <input class="input-w-1" type="text" key="Groups" />
                 <label class="item-title" for="name">每组电池数: </label>
@@ -1362,7 +1371,7 @@
             </div>-->
             <div class="rowElem">
                 <label class="item-title" for="GroBatNum">每组电池数: </label>
-                <input class="input-w-1" type="text" key="GroBatNum" />
+                <input class="input-w-1" type="text" disabled key="GroBatNum" />
                 <label class="item-title" for="CurRange">组电流量程: </label>
                 <input class="input-w-1" type="text" key="CurRange" />
             </div>
