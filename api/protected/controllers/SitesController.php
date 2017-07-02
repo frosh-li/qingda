@@ -678,6 +678,7 @@ class SitesController extends Controller
         //通过sql直接选择地域进行过滤
         $sites = array();
         $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
+
         if(!empty($sns)){
             $sql = "select * from my_site as a";
             if($temp){
@@ -694,6 +695,7 @@ class SitesController extends Controller
                 //->offset(($this->page-1)*$this->count)
                 ->order('serial_number desc')
                 ->queryAll();
+            
             if($temp){
                 $sites = Yii::app()->db->createCommand()
                 ->select('*')
@@ -705,6 +707,7 @@ class SitesController extends Controller
                 ->queryAll();
             }
         }
+
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'

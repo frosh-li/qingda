@@ -157,8 +157,8 @@ class AlarmsetController extends Controller
         $id = Yii::app()->request->getParam('id',0);
         $field = Yii::app()->request->getParam('field',0);
         $val = Yii::app()->request->getParam('val',0);
-        $sql = 'update my_station_alert_desc set '.$field.'='.$val." where id=".$id;
-        $update = Yii::app()->db->createCommand($sql)->queryAll();
+        $sql = 'update my_station_alert_desc set my_station_alert_desc.'.$field.'='.$val." where id=".$id;
+        $update = Yii::app()->db->createCommand($sql)->execute();
         $ret['response'] = array(
                 'code' => 0,
                 'msg' => '更新成功'
