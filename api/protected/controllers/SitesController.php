@@ -512,9 +512,9 @@ class SitesController extends Controller
 
             // 删除站组电池参数表
 
-            Yii::app()->bms->createCommand('delete from tb_station_param where sid='.$sid)->execute();
-            Yii::app()->bms->createCommand('delete from tb_battery_param where sid='.$sid)->execute();
-            Yii::app()->bms->createCommand('delete from tb_group_param where sid='.$sid)->execute();            
+            Yii::app()->bms->createCommand('delete from tb_station_param where sn_key='.$sid)->execute();
+            Yii::app()->bms->createCommand('delete from tb_battery_param where sn_key='.$sid)->execute();
+            Yii::app()->bms->createCommand('delete from tb_group_param where sn_key='.$sid)->execute();            
 
             $username = isset($_SESSION['username']) ? $_SESSION['username'] : 'test';
             $log = array(

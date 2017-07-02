@@ -952,6 +952,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             API.deleteStation({
                                 id:$(e.currentTarget).attr('pid')
                             });
+                            this.refresh();
                         }
                     },
                     onValidate:function(e){
