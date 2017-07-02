@@ -237,6 +237,7 @@ class RealtimeController extends Controller
 
         $start =substr(Yii::app()->request->getParam('start'),0,10);
         $end = substr(Yii::app()->request->getParam('end'),0,10);
+        $type = Yii::app()->request->getParam('type',0);
 
         //$id = Yii::app()->request->getParam('id',0);
         $temp = false;
@@ -264,21 +265,42 @@ class RealtimeController extends Controller
         //         ->queryAll();
 
         // }else{
-            $sites = Yii::app()->bms->createCommand()
+            if($type == 0){
+                $sites = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('my_alerts')
-                ->where('status = 0')
+                ->where('status = '.$type)
                 ->limit(20)
                 ->offset(($page-1)*20)
                 ->order('time desc')
-                ->queryAll();
+                ->queryAll();    
+            }else{
+                $sites = Yii::app()->bms->createCommand()
+                ->select('*')
+                ->from('my_alerts')
+                ->where('status <> 0 ')
+                ->limit(20)
+                ->offset(($page-1)*20)
+                ->order('time desc')
+                ->queryAll();    
+            }
+            
 
         //}
-        $total = Yii::app()->bms->createCommand()
+        if($type == 0){
+            $total = Yii::app()->bms->createCommand()
                 ->select("count(*) as total")
                 ->from('my_alerts')
-                ->where('status = 0')
-                ->queryScalar();
+                ->where('status=0')
+                ->queryScalar();   
+        }else{
+            $total = Yii::app()->bms->createCommand()
+                ->select("count(*) as total")
+                ->from('my_alerts')
+                ->where('status<>0')
+                ->queryScalar();    
+        }
+        
         // var_dump($total[0]['total']);
         $ret['response'] = array(
             'code' => 0,

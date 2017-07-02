@@ -22,8 +22,8 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                         _this.oncancel();
                         // Backbone.Events.trigger("listdata:refresh", "batteryInfo");
                     });
-                    _this.listenTo(Backbone.Events,"caution:resolved:fail",function(){
-                        _this.showErrTips('未知错误，请刷新后重试');
+                    _this.listenTo(Backbone.Events,"caution:resolved:fail",function(data){
+                        _this.showErrTips(data.response.message);
                         // Backbone.Events.trigger("listdata:refresh", "caution");
                         // _this.oncancel();
                         // Backbone.Events.trigger("listdata:refresh", "batteryInfo");

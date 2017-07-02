@@ -682,7 +682,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         var _param = {page:this.curPage};
                         var navData = nav.getSites();
 
-                        $.extend(_param,{id:navData.ids.join(",")});
+                        $.extend(_param,{id:navData.ids.join(","), type:0,});
                         API.getCautionsData(_param);
                     },
                     events:{
@@ -2263,6 +2263,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 API.getStationHistoryData({id:ids,page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             downloadUrl:"/api/index.php/query/",
+
         }
     })
     //查询：组
@@ -2343,12 +2344,91 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     alert('请选择时间');
                     return;
                 }
-                API.getCautionsData({id:ids,page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
+                API.getCautionsData({type:1,id:ids,page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             refresh:function(){
                 this.fetchData();
             },
-            downloadUrl:"/api/index.php/query/batterymodule"
+            downloadUrl:"/api/index.php/query/batterymodule",
+            render:function(){
+                //this.destoryPlugin();
+                var _this = this;
+                //ui.resizeAutoListWidth();
+                if(_this.listPlugin && _this.listPlugin[0]){
+                    _this.updateList();
+                    _this.updateAtype()
+                }else{
+                    _this.updateAtype()
+                    this.listPlugin.push($('#auto table').DataTable( $.extend(true,{},dataTableDefaultOption,{
+                        "data": this.data,
+                        "paging":false,
+                        "scrollX":ui.getListHeight(),
+                        //"scrollY":ui.getListHeight(),
+                        "columns": [
+
+                            { "data": "site_name", "title":"站名",width:150,"sClass":"site_name_left",render:function(data,type,itemData){
+                                    return "<div class='show_station_detail' style='color:blue;cursor:pointer;' id='"+(itemData.sn_key.substring(0,10)+"0000")+"'>"+data+"</div>"
+                            }},
+                            { "data": "sn_key",title:"站号",width:100, render:function(data, type,itemData){
+                                return itemData.sid;
+                            }},
+                            { "data": "sn_key",title:"组号",width:100, render:function(data, type,itemData){
+                                if(itemData.type == "battery" || itemData.type == "group"){
+                                    return itemData.sn_key.substring(10,12);
+                                }else{
+                                    return "";
+                                }
+
+                            }  },//组序列号
+                            { "data": "sn_key",title:"电池号",width:100, render:function(data, type,itemData){
+                                if(itemData.type == "battery")
+                                    return itemData.sn_key.substring(12,14);
+                                else{
+                                    return "";
+                                }
+                            }},
+                            { "data": "time",title:"时间" ,width:200},
+                            { "data": "desc",title:"警情内容",width:200,render:function(data, type, itemData){
+                                var desc = itemData.desc;
+                                var color="";
+                                if(desc.indexOf("橙") > -1){
+                                    color="#e7691d"
+                                }else if(desc.indexOf("黄") > -1){
+                                    color="#fabd05"
+                                }else{
+                                    color="#f20f0f"
+                                }
+                                return "<div style='color:"+color+"'>"+data+"</div>";
+                            }},
+                            { "data": "current",title:"数值",width:80,render:function(data, type, itemData){
+                                var desc = itemData.desc;
+                                var color="";
+                                if(desc.indexOf("橙") > -1){
+                                    color="#e7691d"
+                                }else if(desc.indexOf("黄") > -1){
+                                    color="#fabd05"
+                                }else{
+                                    color="#f20f0f"
+                                }
+                                return "<div style='font-weight:bold;color:"+color+"'>"+data+"</div>";
+                            }},
+                            { "data": "markup",title:"操作记录",width:400,render:function(data,type,itemData){
+                                var a = data == null ? "": data;
+                                if(itemData.status == 2){
+                                    return '<div style="text-align:left;">已忽略</div>';
+                                }
+                                return '<div style="text-align:left;">'+a+'</div>';
+                            }},
+                            { "data": "contact",title:"操作人",width:80},
+                            { "data": "markuptime",title:"操作时间",width:80},
+                            //{ "data": "alarm_process_and_memo",title:"处理过程、时间、管理员" }
+                        ]
+                    })));
+                }
+
+                // _this.checkAllRows();
+                return this;
+            }
         }
     })
 

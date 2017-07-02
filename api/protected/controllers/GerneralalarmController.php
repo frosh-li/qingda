@@ -42,15 +42,31 @@ class GerneralalarmController extends Controller
     {
         $id = Yii::app()->request->getParam('id',0);
         $markup = Yii::app()->request->getParam('markup','');
-        $contact = Yii::app()->request->getParam('contact','');
+        $contact = $username = isset($_SESSION['username']) ? $_SESSION['username'] : '未知';
         $status = Yii::app()->request->getParam('status', 1);
+        $ret = array();
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
         );
 
-        $ret['data'] = array();
+
+
+        
         if ($id) {
+            $checkifignore = Yii::app()->bms->createCommand('select my_station_alert_desc.ignore from my_station_alert_desc,my_alerts where my_alerts.code=my_station_alert_desc.en and my_station_alert_desc.type=my_alerts.type and my_alerts.id= '.$id)->queryScalar();
+            if($checkifignore == 0){
+                // 不可忽略
+                $ret['response'] = array(
+                    'code'=>-1,
+                    'message'=>'该警情不可忽略'
+                );
+                
+                echo json_encode($ret);
+
+                Yii::app()->end();
+            }
+            $ret['data'] = array();
             $row = array();
             $row['markup'] = $markup;
             $row['contact'] = $contact;
