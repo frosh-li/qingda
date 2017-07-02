@@ -18,7 +18,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     // });
                     _this.listenTo(Backbone.Events,"caution:resolved",function(){
                         _this.showErrTips('处理完成');
-                        Backbone.Events.trigger("listdata:refresh", "caution");
+                        //Backbone.Events.trigger("listdata:refresh", "caution");
                         _this.oncancel();
                         // Backbone.Events.trigger("listdata:refresh", "batteryInfo");
                     });
