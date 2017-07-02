@@ -510,6 +510,12 @@ class SitesController extends Controller
 
             Yii::app()->bms->createCommand('delete from my_ups_info where sid='.$sid)->execute();
 
+            // 删除站组电池参数表
+
+            Yii::app()->bms->createCommand('delete from tb_station_param where sid='.$sid)->execute();
+            Yii::app()->bms->createCommand('delete from tb_battery_param where sid='.$sid)->execute();
+            Yii::app()->bms->createCommand('delete from tb_group_param where sid='.$sid)->execute();            
+
             $username = isset($_SESSION['username']) ? $_SESSION['username'] : 'test';
             $log = array(
                 'type'=>2,
