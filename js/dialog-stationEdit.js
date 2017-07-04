@@ -94,9 +94,25 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                     if(_this.validate(_param)){
                         common.loadTips.show("正在保存，请稍后...");
                         if(_param.id){
+                            
+                            API.syncHard({
+                                sn_key:_param.sn_key,
+                                CurSensor:_param.CurSensor,
+                                sid:_param.sid,
+                                Groups:_param.Groups,
+                                GroBats:_param.GroBats
+                            },"StationPar");
+
                             API.updateStation(_param);
                         }else{
                             API.createStation(_param);
+                            API.syncHard({
+                                sn_key:_param.sn_key,
+                                CurSensor:_param.CurSensor,
+                                sid:_param.sid,
+                                Groups:_param.Groups,
+                                GroBats:_param.GroBats
+                            },"StationPar");
                         }
                     }
                 },
