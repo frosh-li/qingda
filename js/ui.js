@@ -200,6 +200,14 @@ define(function(require){
 
                 var battyerids = batteryId?batteryId.ids.join(','):'';
 
+                $.ajax({
+                    url:"http://"+window.location.host+":3000"+"/irc",
+                    type:"post",
+                    data:{
+                        batterys:battyerids
+                    }
+                })
+
 
                 API.updateCollect({
                     stationid: ids, 
