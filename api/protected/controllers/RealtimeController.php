@@ -105,9 +105,9 @@ class RealtimeController extends Controller
             $id =  implode(',',$temp);
 
             $sql .= ' where g.sn_key in ('.$id.')';
-        
+        $sql .= " order by my_site.serial_number asc ";
         $sql .= "limit $offset, $this->count ";
-        $sql .= " order by my_site.serial_number asc";
+        
         $sites = Yii::app()->bms->createCommand($sql)->queryAll();
         $totals = Yii::app()->bms->createCommand('
             select count(*) as totals from tb_group_module
