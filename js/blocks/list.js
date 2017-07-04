@@ -524,6 +524,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         var stations = this.stations,
                             curStation = this.curStation;
 
+                        this.stations.ids = this.stations.ids.sort(function(a,b){
+                            return a-b;
+                        })
                         console.log(stations, curStation);
 
                         var batteryId = nav.getBatterys(curStation);
