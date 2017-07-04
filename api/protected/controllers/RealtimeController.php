@@ -270,7 +270,7 @@ class RealtimeController extends Controller
                 $sites = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('my_alerts')
-                ->where('status <> 2')
+                ->where('status=0 or status=1')
                 ->limit(20)
                 ->offset(($page-1)*20)
                 ->order('time desc')
@@ -292,7 +292,7 @@ class RealtimeController extends Controller
             $total = Yii::app()->bms->createCommand()
                 ->select("count(*) as total")
                 ->from('my_alerts')
-                ->where('status<>2')
+                ->where('status=0 or status=1')
                 ->queryScalar();   
         }else{
             $total = Yii::app()->bms->createCommand()
