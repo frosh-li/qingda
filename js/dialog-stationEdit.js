@@ -95,23 +95,23 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                         common.loadTips.show("正在保存，请稍后...");
                         if(_param.id){
                             API.syncHard({
-                                sn_key:_param.sn_key,
-                                CurSensor:_param.CurSensor,
+                                sn_key:_param.serial_number,
+                                CurSensor:_param.CurSensor || 101,
                                 sid:_param.sid,
-                                Groups:_param.Groups,
-                                GroBats:_param.GroBats
+                                Groups:_param.groups,
+                                GroBats:_param.batteries
                             },"StationPar");
 
                             API.updateStation(_param);
                         }else{
                             API.syncHard({
-                                sn_key:_param.sn_key,
-                                CurSensor:_param.CurSensor,
+                                sn_key:_param.serial_number,
+                                CurSensor:_param.CurSensor || 101,
                                 sid:_param.sid,
-                                Groups:_param.Groups,
-                                GroBats:_param.GroBats
+                                Groups:_param.groups,
+                                GroBats:_param.batteries
                             },"StationPar");
-                            
+
                             API.createStation(_param);
                             
                         }
