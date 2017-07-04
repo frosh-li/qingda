@@ -37,7 +37,7 @@ class RealtimeController extends Controller
                 ->leftJoin("my_ups_info","my_ups_info.sid=tb_station_module.sn_key")
                 ->leftJoin('tb_station_param as p','tb_station_module.sn_key=p.sn_key')
                 ->where(array("in","tb_station_module.sn_key",$temp))
-                ->order("my_site.aid")
+                ->order("my_site.serial_number asc")
                 ->limit($this->count)
                 ->offset(($this->page - 1) * $this->count)
                 ->queryAll();
@@ -107,6 +107,7 @@ class RealtimeController extends Controller
             $sql .= ' where g.sn_key in ('.$id.')';
         
         $sql .= "limit $offset, $this->count ";
+        $sql .= " order by my_site.serial_number asc";
         $sites = Yii::app()->bms->createCommand($sql)->queryAll();
         $totals = Yii::app()->bms->createCommand('
             select count(*) as totals from tb_group_module
@@ -162,7 +163,7 @@ class RealtimeController extends Controller
         ";
         if ($id) {
             $sql .= " where sn_key in (".$id.")";
-            $sql .= " order by gid asc, b.bid asc";
+            $sql .= " order by my_site.serial_number asc, gid asc, b.bid asc";
             // $sites = Yii::app()->bms->createCommand()
             //     ->select('*')
             //     ->from('{{battery_module}}')
