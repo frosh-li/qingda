@@ -153,6 +153,18 @@ class GroupparaController extends Controller
         }
         echo json_encode($ret);
     }
+
+    public function checkPassword($password)
+    {
+        $sql = "select * from {{program_gerneral_parameters}} where id=1";
+        $row = Yii::app()->db->createCommand($sql)->queryRow();
+        if ($row['password'] == $password) {
+            return true;
+        }
+        return false;
+    }
+
+    
     public function actionUpdate()
     {
         $password = Yii::app()->request->getParam('password' ,'');
@@ -165,7 +177,7 @@ class GroupparaController extends Controller
             Yii::app()->end();
         }
 
-        
+
         $sn_key = Yii::app()->request->getParam('sn_key' ,0);
         $ret['response'] = array(
             'code'=>0,
