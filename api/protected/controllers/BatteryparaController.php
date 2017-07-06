@@ -165,6 +165,17 @@ class BatteryparaController extends Controller
 
     public function actionUpdate()
     {
+        $password = Yii::app()->request->getParam('password' ,'');
+        if (!$this->checkPassword($password)) {
+            $ret['response'] = array(
+                'code'=>-1,
+                'msg'=>'密码错误！'
+            );
+            echo json_encode($ret);
+            Yii::app()->end();
+        }
+
+        
         $sn_key=Yii::app()->request->getParam('sn_key','');
         $ret['response'] = array(
             'code'=>0,

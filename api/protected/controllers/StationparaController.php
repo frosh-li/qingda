@@ -217,6 +217,16 @@ class StationparaController extends Controller
     }
     public function actionUpdate()
     {
+        $password = Yii::app()->request->getParam('password' ,'');
+        if (!$this->checkPassword($password)) {
+            $ret['response'] = array(
+                'code'=>-1,
+                'msg'=>'密码错误！'
+            );
+            echo json_encode($ret);
+            Yii::app()->end();
+        }
+        
         $sid = Yii::app()->request->getParam('sid' ,0);
         $ret['response'] = array(
             'code'=>0,
