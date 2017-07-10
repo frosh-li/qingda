@@ -585,7 +585,7 @@ define(function(require){
                 return this;
             },
 			syncHard: function(args, ctype){
-				this.fetch("http://127.0.0.1:3000/setparam?type="+ctype, null, args, "post");
+				this.fetch(location.protocol+"//"+location.host+":3000/setparam?type="+ctype, null, args, "post");
 			}
         }
 

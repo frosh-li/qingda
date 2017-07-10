@@ -1663,7 +1663,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     {"data": "Groups", title: "站内组数",width:100},
                                     {"data": "GroBats", title: "每组电池数",width:100},
                                     {"data": "Time_MR", title: "内阻测量间隔",width:100},
-                                    {"data": "Time_MV", title: "电压测量间隔",width:100},
+                                    {"data": "SampleInt", title: "采集间隔",width:100},
                                     {"data": "MaxTem_R", title: "高温报警_红",width:100},
                                     {"data": "MaxTem_O", title: "高温报警_橙",width:100},
                                     {"data": "MaxTem_Y", title: "高温报警_黄",width:100},
