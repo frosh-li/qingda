@@ -2442,7 +2442,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         extObj:{
             fetchData:function(_param){
                 var _param = {};
-
+                _param.page=this.curPage;
                 API.getIRCollectData()
             },
             downloadUrl:"/api/index.php/query/groupmodule",

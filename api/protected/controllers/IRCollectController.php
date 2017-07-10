@@ -21,6 +21,8 @@ class IRCollectController extends Controller
 	 */
 	public function actionIndex()
 	{
+        ->limit($this->count)
+        ->offset(($this->page - 1) * $this->count)
         $this->setPageCount();
         $offset = ($this->page-1)*$this->count;
 
@@ -32,7 +34,9 @@ class IRCollectController extends Controller
                 FROM  {{collect}} AS b
                 LEFT JOIN {{site}} AS s ON b.stationid = s.serial_number
                 where s.serial_number in (" . implode(",", $sns) .") 
-                order by collect_time desc";
+                order by collect_time desc 
+                limit ". $this->count .
+                " offset ".($this->page - 1) * $this->count;
 
          }
          elseif($sns === false){
@@ -40,7 +44,9 @@ class IRCollectController extends Controller
             $sql = "SELECT b . * , s.site_name, s.sid
                 FROM  {{collect}} AS b
                 LEFT JOIN {{site}} AS s ON b.stationid = s.serial_number 
-                order by collect_time desc";
+                order by collect_time desc 
+                limit ". $this->count .
+                " offset ".($this->page - 1) * $this->count;
          }
         $ups = Yii::app()->db->createCommand($sql)->queryAll();
         

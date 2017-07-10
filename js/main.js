@@ -255,7 +255,6 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
 
 
-
         if (/^(station|group|battery)$/.test(pageType)) {
             $("#dataItem").html($("#listTpl").html());
             ui.downShow(true);
@@ -293,6 +292,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             ui.downHide(true);
             $("#dataItem").html($("#listTpl").html());
         	$collectIRWrap.show();
+            $(".list-bottom.upage").show();
             require(["blocks/list","blocks/nav"],function(list,nav){
                 refreshModules([nav,list],_arg);
                 // collectPswdDialog.show();
