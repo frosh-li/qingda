@@ -21,8 +21,7 @@ class IRCollectController extends Controller
 	 */
 	public function actionIndex()
 	{
-        ->limit($this->count)
-        ->offset(($this->page - 1) * $this->count)
+        
         $this->setPageCount();
         $offset = ($this->page-1)*$this->count;
 
