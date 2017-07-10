@@ -37,7 +37,7 @@ class IRCollectController extends Controller
                 limit ". $this->count .
                 " offset ".($this->page - 1) * $this->count;
 
-            $total = Yii::app()->bms->createCommand("SELECT count(*) as totals 
+            $total = Yii::app()->db->createCommand("SELECT count(*) as totals 
                 FROM  {{collect}} AS b
                 LEFT JOIN {{site}} AS s ON b.stationid = s.serial_number
                 where s.serial_number in (" . implode(",", $sns) .") ")->queryScalar();
@@ -51,7 +51,7 @@ class IRCollectController extends Controller
                 limit ". $this->count .
                 " offset ".($this->page - 1) * $this->count;
 
-            $total = Yii::app()->bms->createCommand("SELECT count(*) as totals 
+            $total = Yii::app()->db->createCommand("SELECT count(*) as totals 
                 FROM  {{collect}} AS b
                 LEFT JOIN {{site}} AS s ON b.stationid = s.serial_number")->queryScalar();
          }
