@@ -836,7 +836,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             sid:target.attr('sid'),
                             sn_key:target.attr('sn_key'),
                             Groups:target.attr('Groups'),
-                            GroBats:target.attr("GroBats")
+                            GroBats:target.attr("GroBats"),
+                            CurSensor:target.attr("CurSensor")
                         });
 
 
@@ -872,6 +873,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "columns": [
 
                                     { "data": "sn_key",title:"物理地址"},
+                                    { "data": "CurSensor",title:"电流传感安装状态"},
                                     { "data": "sid",title:"站号"},
                                     { "data": "Groups",title:"组数"},
                                     { "data": "GroBats",title:"电池数"},
@@ -882,7 +884,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         title:"操作",
                                         width:150,
                                         render: function (data,type,itemData) {
-                                            return _.template('<a class="resolveBtn" sn_key="<%=sn_key%>" GroBats="<%=GroBats%>" sid="<%=sid%>" Groups="<%=Groups%>" >添加</a>')(itemData);
+                                            return _.template('<a class="resolveBtn" sn_key="<%=sn_key%>" GroBats="<%=GroBats%>" sid="<%=sid%>" Groups="<%=Groups%>" CurSensor="<%=CurSensor%>" >添加</a>')(itemData);
                                         }
                                     },
                                     //{ "data": "alarm_process_and_memo",title:"处理过程、时间、管理员" }

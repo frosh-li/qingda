@@ -179,6 +179,7 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                         $("[key=sid]").val(bringdata.sid);
                         $("[key=groups]").val(bringdata.Groups);
                         $("[key=batteries]").val(bringdata.GroBats);
+                        $("[key=CurSensor]").val(bringdata.CurSensor);
                     }
                     //日期选择器
                     $( "form.jqtransform [key=bms_install_date]" ).datepicker({
