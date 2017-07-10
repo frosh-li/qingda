@@ -77,7 +77,7 @@ class Site extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			//array('sid, site_name, StationFullChineseName, serial_number, site_location, aid, groups, batteries, battery_status, bms_install_date, group_collect_type, group_collect_num, inductor_brand, inductor_type, group_collect_install_type, battery_collect_type, create_time, update_time', 'required'),
-			array('site_name, StationFullChineseName, serial_number, create_time, update_time', 'required'),
+			array('CurSensor,site_name, StationFullChineseName, serial_number, create_time, update_time', 'required'),
 			array('aid, groups, batteries, group_collect_num, battery_collect_num,is_checked', 'numerical', 'integerOnly'=>true),
 			array('site_longitude, site_latitude', 'numerical'),
 			array('sid', 'length', 'max'=>11),
@@ -89,7 +89,7 @@ class Site extends CActiveRecord
 			array('ipaddress_method, site_control_type, emergency_person, battery_status, group_collect_type, inductor_type, group_collect_install_type, battery_collect_type, humiture_type', 'length', 'max'=>30),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, sid, site_name, StationFullChineseName, serial_number, site_property, site_location, site_chname, site_longitude, site_latitude, ipaddress, ipaddress_method, site_control_type, postal_code, emergency_phone, emergency_person, remark, aid, groups, batteries, battery_status, bms_install_date, group_collect_type, group_collect_num, inductor_brand, inductor_type, group_collect_install_type, battery_collect_type, battery_collect_num, humiture_type, create_time, update_time', 'safe', 'on'=>'search'),
+			array('id, sid,CurSensor, site_name, StationFullChineseName, serial_number, site_property, site_location, site_chname, site_longitude, site_latitude, ipaddress, ipaddress_method, site_control_type, postal_code, emergency_phone, emergency_person, remark, aid, groups, batteries, battery_status, bms_install_date, group_collect_type, group_collect_num, inductor_brand, inductor_type, group_collect_install_type, battery_collect_type, battery_collect_num, humiture_type, create_time, update_time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -112,6 +112,7 @@ class Site extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'sid' => 'Sid',
+			'CurSensor' => 'CurSensor',
 			'site_name' => 'Site Name',
 			'StationFullChineseName' => 'Station Full Chinese Name',
 			'serial_number' => 'Serial Number',
@@ -158,6 +159,8 @@ class Site extends CActiveRecord
 
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('sid',$this->sid,true);
+		$criteria->compare('CurSensor',$this->CurSensor,true);
+		
 		$criteria->compare('site_name',$this->site_name,true);
 		$criteria->compare('StationFullChineseName',$this->StationFullChineseName,true);
 		$criteria->compare('serial_number',$this->serial_number,true);

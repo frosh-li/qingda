@@ -95,6 +95,7 @@ class SitesController extends Controller
         }
 
         $site_name=Yii::app()->request->getParam('site_name','');
+        $CurSensor=Yii::app()->request->getParam('CurSensor','');
         $StationFullChineseName=Yii::app()->request->getParam('StationFullChineseName','');
 
         $site_property=Yii::app()->request->getParam('site_property','');
@@ -163,6 +164,7 @@ class SitesController extends Controller
             $model->sid=$sid;
             $model->site_name=$site_name;
             $model->StationFullChineseName=$StationFullChineseName;
+            $model->CurSensor=$CurSensor;
             $model->serial_number=$serial_number;
             $model->site_property=$site_property;
             $model->site_location=$site_location;
@@ -318,7 +320,8 @@ class SitesController extends Controller
             Yii::app()->end();
         }
 
-
+        
+        $CurSensor=Yii::app()->request->getParam('CurSensor','');
         $site_property=Yii::app()->request->getParam('site_property','');
         $site_location=Yii::app()->request->getParam('site_location','');
         $site_chname=Yii::app()->request->getParam('site_chname','');
@@ -374,6 +377,8 @@ class SitesController extends Controller
         if ($model) {
             $oldvalue = $model->attributes;
             $sid                       !='' && $model->sid=$sid;
+            $CurSensor                 !='' && $model->CurSensor=$CurSensor;
+            
             $site_name                 !='' && $model->site_name=$site_name;
             $StationFullChineseName    !='' && $model->StationFullChineseName=$StationFullChineseName;
             $serial_number             !='' && $model->serial_number=$serial_number;
