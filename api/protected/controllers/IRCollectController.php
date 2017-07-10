@@ -37,6 +37,10 @@ class IRCollectController extends Controller
                 limit ". $this->count .
                 " offset ".($this->page - 1) * $this->count;
 
+            $total = Yii::app()->bms->createCommand("SELECT count(*) as totals 
+                FROM  {{collect}} AS b
+                LEFT JOIN {{site}} AS s ON b.stationid = s.serial_number
+                where s.serial_number in (" . implode(",", $sns) .") ")->queryScalar();
          }
          elseif($sns === false){
 
@@ -46,6 +50,10 @@ class IRCollectController extends Controller
                 order by collect_time desc 
                 limit ". $this->count .
                 " offset ".($this->page - 1) * $this->count;
+
+            $total = Yii::app()->bms->createCommand("SELECT count(*) as totals 
+                FROM  {{collect}} AS b
+                LEFT JOIN {{site}} AS s ON b.stationid = s.serial_number")->queryScalar();
          }
         $ups = Yii::app()->db->createCommand($sql)->queryAll();
         
@@ -54,11 +62,12 @@ class IRCollectController extends Controller
             'msg' => 'ok'
         );
         $ret['data'] = array();
-
+        $ret['data']['page'] = $this->page;
+            
         if ($ups) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;
-
+            $ret['data']['totals'] = intval($total);
             foreach($ups as $key=>$value){
                 $ret['data']['list'][] = $value;
             }
