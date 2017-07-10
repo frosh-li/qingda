@@ -31,14 +31,16 @@ class IRCollectController extends Controller
              $sql = "SELECT b . * , s.site_name, s.sid
                 FROM  {{collect}} AS b
                 LEFT JOIN {{site}} AS s ON b.stationid = s.serial_number
-                where s.serial_number in (" . implode(",", $sns) .") ";
+                where s.serial_number in (" . implode(",", $sns) .") 
+                order by collect_time desc";
 
          }
          elseif($sns === false){
 
             $sql = "SELECT b . * , s.site_name, s.sid
                 FROM  {{collect}} AS b
-                LEFT JOIN {{site}} AS s ON b.stationid = s.serial_number";
+                LEFT JOIN {{site}} AS s ON b.stationid = s.serial_number 
+                order by collect_time desc";
          }
         $ups = Yii::app()->db->createCommand($sql)->queryAll();
         
