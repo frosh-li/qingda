@@ -335,7 +335,7 @@ class RealtimeController extends Controller
                 }
                 
             }
-            $psql = "select count(*) as count,right(code,1) as atype from my_alerts group by right(code,1)";
+            $psql = "select count(*) as count,right(code,1) as atype from my_alerts where status=0 group by right(code,1) ";
             $alertType = Yii::app()->bms->createCommand($psql)->queryAll();
             $ret['data']['types'] = $alertType;
         }else{
