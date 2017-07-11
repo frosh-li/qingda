@@ -315,7 +315,7 @@ class RealtimeController extends Controller
             $ret['data']['totals'] = intval($total);
             foreach($sites as $key=>$value){
                 $addinfo = Yii::app()->bms
-                    ->createCommand("select `desc`,en,`limit`,suggest,send_msg,send_email,tips,`type` from my_station_alert_desc where en='".$value['code']."' and type='".$value['type']."'")
+                    ->createCommand("select `desc`,en,suggest,send_msg,send_email,tips,`type` from my_station_alert_desc where en='".$value['code']."' and type='".$value['type']."'")
                     ->queryAll();
                 // $value = $addinfo[0];
                 // var_dump($value);
