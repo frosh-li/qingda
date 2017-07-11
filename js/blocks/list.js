@@ -785,7 +785,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         }
                                         return "<div style='font-weight:bold;color:"+color+"'>"+data+"</div>";
                                     }},
-                                    { "data": "limit",title:"标准值",width:80},
+                                    { "data": "climit",title:"标准值",width:80},
                                     { "data": "markup",title:"操作记录",width:400,render:function(data){
                                         var a = data == null ? "": data;
 
