@@ -1578,7 +1578,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "fixedColumns": {leftColumns: 1},
                                 "columns": [
                                     {"data": "id", title: "ID"},
-                                    {"data": "desc", title: "描述"},
+                                    {"data": "desc", title: "描述", width:200},
                                     {"data": "en", title: "编码"},
                                     {"data": "ignore", title: "是否可忽略", width:100,render: function(data,_,allDate){
                                             var html = [];
