@@ -2452,7 +2452,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             extEvent:function(){
                 var _this = this;
                 this.listenTo(Backbone.Events,"rCollect:start",function(data){
-                    common.loadTips.show("系统已经开始采集，请等待采集结果");
+                    common.loadTips.show("正在与站点联系采集相关电池内阻，请稍后");
                     setTimeout(function(){
                         common.loadTips.close();
                     },5000)

@@ -178,6 +178,7 @@ define(function(require){
             var pwd = $("#cj_password").val();
             if(pwd != "bms"){
                 alert('请输入正确的采集密码');
+                $("#cj_password").val("");
                 return;
             }
             
@@ -199,7 +200,7 @@ define(function(require){
                 var batteryId = nav.getBatteryIds();
 
                 var battyerids = batteryId?batteryId.ids.join(','):'';
-
+                $('#cj_password').val("");
                 $.ajax({
                     url:"http://"+window.location.host+":3000"+"/irc",
                     type:"post",
