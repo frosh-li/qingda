@@ -68,7 +68,7 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
         },
         expandNode:function(){
             var tree = this.tree;
-            var nodes = tree.getNodes();
+            var nodes = tree.transformToArray(tree.getNodes());
             for(var i = 0 ; i < nodes.length ; i++){
                 var cnode = nodes[i];
                 if(cnode.leveltype == 3){
