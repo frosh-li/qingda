@@ -70,7 +70,7 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
             console.log('render tree now',this.ids);
             $.fn.zTree.init($("#nav"), setting, this.data);
             this.tree = $.fn.zTree.getZTreeObj('nav');
-            this.tree.expandAll(true);
+            this.tree.expandAll(false);
             var _this = this;
             var hash = window.location.hash;
             if(/^#\/manage\/station\/[0-9]+$/.test(hash)){
