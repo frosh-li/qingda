@@ -66,11 +66,24 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
             })
             return checkedData;
         },
+        expandNode:function(){
+            var tree = this.tree;
+            var nodes = tree.getNodes();
+            for(var i = 0 ; i < nodes.length ; i++){
+                var cnode = nodes[i];
+                if(cnode.leveltype == 4){
+                    tree.expandNode(cnode,false);
+                }else{
+                    tree.expandNode(cnode,true);
+                }
+            }
+        },
         render:function(){
             console.log('render tree now',this.ids);
             $.fn.zTree.init($("#nav"), setting, this.data);
             this.tree = $.fn.zTree.getZTreeObj('nav');
-            this.tree.expandAll(false);
+            // this.tree.expandAll(false);
+            this.expandNode();
             var _this = this;
             var hash = window.location.hash;
             if(/^#\/manage\/station\/[0-9]+$/.test(hash)){
