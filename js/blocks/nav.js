@@ -71,7 +71,7 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
             var nodes = tree.getNodes();
             for(var i = 0 ; i < nodes.length ; i++){
                 var cnode = nodes[i];
-                if(cnode.leveltype == 4){
+                if(cnode.leveltype == 3){
                     tree.expandNode(cnode,false);
                 }else{
                     tree.expandNode(cnode,true);
