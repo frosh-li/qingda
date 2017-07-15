@@ -345,8 +345,8 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         }else if (/^(qureyBattery|qureyStation|qureyGroup|qureyCaution)$/.test(pageType)) {
             $("#dataItem").html($("#listTpl").html());
             $(".stationPop").hide();
-            ui.downShow(true);
-            ui.switchChartBtns(pageType);
+            ui.downShow(false);
+            // ui.switchChartBtns(pageType);
             $searchWrap.show();
             $searchWrap.jqTransform();
             $(".exportdata").show();
@@ -369,8 +369,8 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     isOver();
                 })
             }else{
-                require(["blocks/listSearch","blocks/charts","blocks/list","blocks/nav"],function(listSearch,chart,list,nav){
-                    refreshModules([nav,listSearch,list,chart],_arg);
+                require(["blocks/listSearch","blocks/list","blocks/nav"],function(listSearch,list,nav){
+                    refreshModules([nav,listSearch,list],_arg);
                     afterInit(sys,pageType,sub);
                     if(!navTree){
                         nav.run();
