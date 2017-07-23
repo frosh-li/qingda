@@ -1657,7 +1657,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "data": _this.data,
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {leftColumns: 1},
+                                "fixedColumns": {leftColumns: 3},
                                 "columns": [
                                     {"data": "sn_key", title: "站MAC",width:100},
                                     {"data": "site_name", title: "站名称",width:100},
@@ -1745,7 +1745,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "data": _this.data,
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {leftColumns: 1},
+                                "fixedColumns": {leftColumns: 2},
                                 "columns": [
 
                                     {"data": "site_name", title: "站名称",width:100},
@@ -1815,7 +1815,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "data": _this.data,
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {leftColumns: 1},
+                                "fixedColumns": {leftColumns: 2},
                                 "columns": [
                                     {"data": "site_name", title: "站名称",width:100},
                                     {"data": "sid", title: "站号",width:100},
