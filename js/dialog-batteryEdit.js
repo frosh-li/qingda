@@ -18,6 +18,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     });
                     _this.listenTo(Backbone.Events,"battery:create batteryInfo:update",function(){
                         _this.oncancel();
+                        window.location.reload();
                         Backbone.Events.trigger("listdata:refresh", "batteryInfo");
                     });
                     _this.listenTo(Backbone.Events,"battery:create:next",function(data){
@@ -32,8 +33,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     var data = data || this.data;
                     if(data){
                         common.setFormValue(this.el,data);
-
-                        $("[key=sid]",this.el).val(data.serial_number);
+                        $("[key=sid]",this.el).val(data.serial_number || data.sid.substring(0,10));
                         console.log('now data', data);
                     }
                 },
@@ -134,8 +134,8 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
 
                     if(data){
                         console.log('battery init',data)
+                        data.sid = data.sid.substring(0,10);
                         view.setValue(data);
-
                     }
 
                     stationList = stationSlector.init({

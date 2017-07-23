@@ -88,6 +88,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     view.oncancel();
                 },
                 open:function(){
+                    console.log('dianchi');
                     $("form.jqtransform").jqTransform();
                     view = new (Backbone.View.extend(config.extobj))();
                     view.dialogObj = $(this);

@@ -17,6 +17,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     });
                     _this.listenTo(Backbone.Events,"ups:create ups:update",function(){
                         _this.oncancel();
+                        window.location.reload();
                         Backbone.Events.trigger("listdata:refresh", "batteryInfo");
                     });
                 },
