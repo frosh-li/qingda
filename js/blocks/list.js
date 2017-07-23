@@ -1194,7 +1194,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "site_name",title:"站点简称",width:100  },
                                     { "data": "battery_factory",title:"生产厂家",width:150  },
                                     { "data": "battery_num",title:"电池型号",width:150  },
-                                    { "data": "battery_num",title:"生产日期",width:150  },
+                                    { "data": "battery_date",title:"生产日期",width:150  },
                                     { "data": "battery_voltage",title:"标称电压（V）",width:150  },
                                     { "data": "battery_oum",title:"标称内阻（MΩ）",width:150  },
                                     { "data": "battery_dianrong",title:"电池标称容量（Ah）",width:150  },

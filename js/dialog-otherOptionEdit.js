@@ -17,6 +17,7 @@ define(['require','api','context','common','table'],function(require,API,context
                         _this.show();
                     });
                     _this.listenTo(Backbone.Events,"stationdata:create stationdata:update",function(){
+                        // window.location.reload();
                         _this.dialogObj.dialog('destroy');
                     });
                 },

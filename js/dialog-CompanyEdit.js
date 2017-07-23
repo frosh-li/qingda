@@ -22,7 +22,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     });
 
                     _this.listenTo(Backbone.Events,"company:update",function(){
-                        alert("修改成功");
+                        window.location.reload();
                         _this.oncancel();
                         Backbone.Events.trigger("listdata:refresh", "batteryInfo");
                     });

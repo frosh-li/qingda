@@ -263,7 +263,7 @@ class BatteryinfoController extends Controller
            $battery_float_voltage  != '' &&  $model->battery_float_voltage = $battery_float_voltage;
            $battery_max_discharge_current != ''&&$model->battery_max_discharge_current =$battery_max_discharge_current;
            $battery_dianrong  != '' &&  $model->battery_dianrong =$battery_dianrong ;
-           $remark  != '' &&  $model->remark =$remark ;
+           $model->remark =$remark ;
 
             if ($model->save()) {
                 $ret['data'] = array(

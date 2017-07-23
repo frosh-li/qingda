@@ -301,7 +301,7 @@ class UpsinfoController extends Controller
                 $on_net  !='' && $model->on_net     = $on_net;
                 $alarm_content  !='' && $model->alarm_content     = $alarm_content;
                 $discharge_protect  !='' && $model->discharge_protect     = $discharge_protect;
-                $remark  !='' && $model->remark     = $remark;
+                $model->remark     = $remark;
                 if ($model->save()) {
                     $ret['data'] = array(
                         'id' => $model->id,

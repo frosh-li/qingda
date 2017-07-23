@@ -255,7 +255,7 @@ class CompanyinfoController extends Controller
             $manage !='' && $model->manage=$manage;
             $viewer !='' && $model->viewer=$viewer;
 
-            $remark !='' && $model->remark=$remark;
+            $model->remark=$remark;
 
 
             if ($model->save()) {

@@ -47,7 +47,7 @@ class BmsInfo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('bms_company, bms_device_addr, bms_postcode, bms_url, bms_tel, bms_phone, bms_service_phone, bms_service_name, bms_service_url, bms_version, bms_update_mark, bms_mark, modify_time', 'required'),
+			array('bms_company, bms_device_addr, bms_postcode, bms_url, bms_tel, bms_phone, bms_service_phone, bms_service_name, bms_service_url, bms_version, bms_update_mark, modify_time', 'required'),
 			array('bms_company, bms_device_addr', 'length', 'max'=>255),
 			array('bms_postcode, bms_tel, bms_phone, bms_service_phone, bms_version', 'length', 'max'=>20),
 			array('bms_url, bms_service_url', 'length', 'max'=>150),

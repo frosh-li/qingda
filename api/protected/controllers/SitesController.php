@@ -393,7 +393,7 @@ class SitesController extends Controller
             $postal_code               !='' && $model->postal_code=$postal_code;
             $emergency_phone           !='' && $model->emergency_phone=$emergency_phone;
             $emergency_person          !='' && $model->emergency_person=$emergency_person;
-            $remark                    !='' && $model->remark=$remark;
+            $model->remark=$remark; //备注可以清空
             $aid                       !='' && $model->aid=$aid;
             $groups                    !='' && $model->groups=$groups;
             $batteries                 !='' && $model->batteries=$batteries;

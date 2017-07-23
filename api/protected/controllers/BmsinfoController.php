@@ -153,7 +153,7 @@ class BmsinfoController extends Controller
             $bms_service_url != '' && $model->bms_service_url = $bms_service_url;
             $bms_version != '' && $model->bms_version = $bms_version;
             $bms_update_mark != '' && $model->bms_update_mark = $bms_update_mark;
-            $bms_mark != '' && $model->bms_mark = $bms_mark;
+            $model->bms_mark = $bms_mark;
             $modify_time != '' && $model->modify_time = $modify_time;
             if ($model->save()) {
                 $ret['data'] = array(
@@ -162,7 +162,6 @@ class BmsinfoController extends Controller
                     'bms_device_addr'=>$model->bms_device_addr,
                 );
             }else{
-                var_dump($model->getErrors());
                 $ret['response'] = array(
                     'code'=>-1,
                     'msg'=>'修改BMS信息数据失败！'
