@@ -227,19 +227,22 @@ define(function(require){
             Backbone.Events.trigger('export:done');
         },
         showItemsLayer:function(evt){
+
             var $el = $(evt.currentTarget),
                 position = $el.offset(),
-                type = $el.attr('for'),
+                type = /qurey/.test(window.location.href) ? 'qurey_'+$el.attr('for'):$el.attr('for'),
                 customCols = common.cookie.getCookie(type+'Cols'),
                 allCols = context.getListCols(type).concat([]),
                 retCols=[],
                 htmls='';
+
             if(customCols){
                 customCols = customCols.split(',');
             }
             if(!customCols || customCols.length == 0){
                 customCols = allCols;
             }
+            console.log(allCols, customCols);
             $.each(allCols,function(i,col){
                 if(common.inArray(col.data,customCols)){
                     col.ischeck="checked"
@@ -281,7 +284,7 @@ define(function(require){
                             }
 
                             common.cookie.setCookie(type+'Cols', selectCols.replace(/,$/,''));
-      
+                            console.log('start trigger', type+'ColsChange');
                             Backbone.Events.trigger(type+'ColsChange');
                             $( this ).dialog( "close" );
                         }

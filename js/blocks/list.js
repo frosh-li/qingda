@@ -118,7 +118,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             }else{
                                 $(".mnext").show();
                             }
-                            _this.render();
+                            var ctype = /qurey/.test(window.location.href) ? 1 : 0;
+                            _this.render(ctype);
                             _this.renderChart();
                             console.log('render over');
                             setTimeout(function(){
@@ -138,7 +139,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         });
 
                         _this.listenTo(Backbone.Events,"search:done",function(){
-                            _this.refresh();
+                            _this.fetchData();
                             Backbone.Events.trigger("curstation:change",{});
                         });
                         _this.listenTo(Backbone.Events,"export:done",function(){
@@ -210,7 +211,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             if(data.response.code == "-1"){
                                 overFlag = true;
                                 _this.data = [];
-                                _this.render();
+                                var ctype = /qurey/.test(window.location.href) ? 1 : 0;
+                                _this.render(ctype);
                             }
                         });
                         _this.listenTo(Backbone.Events,"listitem:delete",function(data){
@@ -226,7 +228,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             var navData = _this.getNavData();
                             if(typeof navData == 'undefined' || !navData || !navData.ids.length){
                                 _this.data = [];
-                                _this.render();
+                                var ctype = /qurey/.test(window.location.href) ? 1 : 0;
+                                _this.render(ctype);
+                                // _this.render();
                             }else{
                                 _this.fetchData();
                             }
@@ -395,7 +399,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     extEvent:function(){
                         var _this = this;
                         _this.listenTo(Backbone.Events,"stationColsChange",function(data){
-                            window.location.reload();
+                            console.log('station col change');
+                            _this.destoryPlugin();
+                            _this.render();
                         });
                     },
                     show_station_detail:function(e){
@@ -441,9 +447,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         }
                         console.log(ele);
                     },
-                    render:function(){
-                        var _this = this,colums = _this.getCols('station');
-
+                    render:function(ctype){
+                        var _this = this,colums = _this.getCols(ctype == 1 ? 'qurey_station':"station");
+                        console.log(ctype);
                         //_this.destoryPlugin();
                         if(_this.listPlugin && _this.listPlugin[0]){
                             _this.updateList();
@@ -581,13 +587,14 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     extEvent:function(){
                         var _this = this;
                         _this.listenTo(Backbone.Events,"batteryColsChange",function(data){
-                            window.location.reload();
+                            _this.destoryPlugin();
+                            _this.render();
                         });
                         $('#dataItem').on('click','#page .prev',function(){_this.onPrev()});
                         $('#dataItem').on('click','#page .next',function(){_this.onNext()});
                     },
-                    render:function(){
-                        var _this = this,colums = _this.getCols('battery');
+                    render:function(ctype){
+                        var _this = this,colums = _this.getCols(ctype == 1 ?'qurey_battery':'battery');
                         if(this.data.length == 0){
                             $("#page").hide();
                         }
@@ -640,11 +647,12 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     extEvent:function(){
                         var _this = this;
                         _this.listenTo(Backbone.Events,"groupColsChange",function(data){
-                            window.location.reload();
+                            _this.destoryPlugin();
+                            _this.render();
                         });
                     },
-                    render:function(){
-                        var _this = this,colums = _this.getCols('group');
+                    render:function(ctype){
+                        var _this = this,colums = _this.getCols(ctype == 1?'qurey_group':'group');
                         //_this.destoryPlugin();
                         if(_this.listPlugin && _this.listPlugin[0]){
                             _this.updateList();
@@ -2248,6 +2256,14 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     //查询：站
     listConfig.qureyStation = $.extend(true,{},listConfig.station,{
         extObj:{
+            extEvent:function(){
+                var _this = this;
+                _this.listenTo(Backbone.Events,"qurey_stationColsChange",function(data){
+                    console.log('query station col change');
+                    _this.destoryPlugin();
+                    _this.render(1);
+                });
+            },
             fetchData:function(){
                 var _param = {};
                 var navData = nav.getSites();
@@ -2277,6 +2293,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     //查询：组
     listConfig.qureyGroup = $.extend(true,{},listConfig.group,{
         extObj:{
+            extEvent:function(){
+                var _this = this;
+                _this.listenTo(Backbone.Events,"qurey_groupColsChange",function(data){
+                    _this.destoryPlugin();
+                    _this.render(1);
+                });
+            },
             fetchData:function(_param){
                 var _param = {};
                 // var navData = nav.getSites();
@@ -2301,6 +2324,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     listConfig.qureyBattery = $.extend(true,{},listConfig.battery,{
 
         extObj:{
+            extEvent:function(){
+                var _this = this;
+                _this.listenTo(Backbone.Events,"qurey_batteryColsChange",function(data){
+                    _this.destoryPlugin();
+                    _this.render(1);
+                });
+            },
             fetchData:function(_param){
                 var _param = {};
                 var navData = nav.getBatteryIds();
@@ -2352,7 +2382,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     alert('请选择时间');
                     return;
                 }
-                API.getCautionsData({type:1,id:ids,page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
+                var cautionType = $("#cationCategory").val();
+                API.getCautionsData({cautionType:cautionType,type:1,id:ids,page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             refresh:function(){
                 this.fetchData();
@@ -2934,6 +2965,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "fixedColumns": {leftColumns: 1},
                     "columns": [
                             {"data": "site_name", title: "站名称",width:100},
+                            {"data": "sid", title: "站号",width:100},
                             {"data": "GroBatNum", title: "每组电池数",width:100},
                             {"data": "CurRange", title: "组电流量程",width:100},
                             {"data": "KI", title: "组电流系数",width:100},
@@ -3093,6 +3125,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "fixedColumns": {leftColumns: 2},
                     "columns": [
                         {"data": "site_name", title: "站名称",width:100},
+                        {"data": "sid", title: "站号",width:100},
                         {"data": "KV", title: "电压系数",width:100},
                         {"data": "KT", title: "温度系数",width:100},
                         {"data": "KI", title: "激励电流系数",width:100},

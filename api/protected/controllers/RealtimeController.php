@@ -236,6 +236,7 @@ class RealtimeController extends Controller
         $start =substr(Yii::app()->request->getParam('start'),0,10);
         $end = substr(Yii::app()->request->getParam('end'),0,10);
         $type = Yii::app()->request->getParam('type',0);
+        $cautionType = Yii::app()->request->getParam('cautionType','ALL');
 
         //$id = Yii::app()->request->getParam('id',0);
         $temp = false;
@@ -264,19 +265,21 @@ class RealtimeController extends Controller
 
         // }else{
             if($type == 0){
+                $where = $cautionType == "ALL" ? 'status=0 or status=1':'(status=0 or status=1) and right(code,1)="'.$cautionType.'"';
                 $sites = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('my_alerts')
-                ->where('status=0 or status=1')
+                ->where($where)
                 ->limit(20)
                 ->offset(($page-1)*20)
                 ->order('time desc')
                 ->queryAll();    
             }else{
+                $where = $cautionType == "ALL" ? '(status <> 0 )':'(status <> 0 ) and right(code,1)="'.$cautionType.'"';
                 $sites = Yii::app()->bms->createCommand()
                 ->select('*')
                 ->from('my_alerts')
-                ->where('status <> 0 ')
+                ->where($where)
                 ->limit(20)
                 ->offset(($page-1)*20)
                 ->order('time desc')
@@ -289,13 +292,13 @@ class RealtimeController extends Controller
             $total = Yii::app()->bms->createCommand()
                 ->select("count(*) as total")
                 ->from('my_alerts')
-                ->where('status=0 or status=1')
+                ->where($where)
                 ->queryScalar();   
         }else{
             $total = Yii::app()->bms->createCommand()
                 ->select("count(*) as total")
                 ->from('my_alerts')
-                ->where('status<>0')
+                ->where($where)
                 ->queryScalar();    
         }
         

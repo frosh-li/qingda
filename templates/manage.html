@@ -81,7 +81,7 @@
                     <li class="active switch-btn undis qurey qureyStation"><span><a href="#/qurey/qureyStation">站数据</a><i for="station"></i></span></li>
                     <li class="active switch-btn undis qurey qureyGroup"><span><a href="#/qurey/qureyGroup">组数据</a><i for="group"></i></span></li>
                     <li class="active switch-btn undis qurey qureyBattery"><span><a href="#/qurey/qureyBattery">电池数据</a><i for="battery"></i></span></li>
-                    <li class="active switch-btn undis qurey qureyCaution"><span><a href="#/qurey/qureyCaution">数据报警</a><i for="battery"></i></span></li>
+                    <li class="active switch-btn undis qurey qureyCaution"><span><a href="#/qurey/qureyCaution">数据报警</a></span></li>
                     <li class="active switch-btn undis qurey baseinfo"><span><a href="#/qurey/baseinfo/queryStationSituation">基本信息</a></span></li>
                     <!--li class="active switch-btn undis qurey stationOption"><span><a href="#/qurey/stationOption/queryStationOption">参数</a></span></li-->
                     <li class="active switch-btn undis qurey uilog"><span><a href="#/qurey/uilog/options">UI日志</a></span></li>
@@ -110,32 +110,12 @@
                     <div class="rowElem">
                         <label class="item-title reportCaution" for="name">警情分类</label>
                         <select name="ff" class="report-caution-selector" id="cationCategory">
-                            <option value="0">全部</option>
-                            <option value="1">红</option>
-                            <option value="2">黄</option>
-                            <option value="3">橙</option>
+                            <option value="ALL">全部</option>
+                            <option value="R">红</option>
+                            <option value="O">橙</option>
+                            <option value="Y">黄</option>
+                            
                         </select>
-
-                        <!--<label class="item-title" for="name">月报</label>
-                        <select name="" id="">
-                            <option value="">1</option>
-                            <option value="">1</option>
-                            <option value="">2</option>
-                        </select>
-
-                        <label class="item-title" for="name">季报</label>
-                        <select name="" id="">
-                            <option value="">1</option>
-                            <option value="">1</option>
-                            <option value="">2</option>
-                        </select>
-
-                        <label class="item-title" for="name">年报</label>
-                        <select name="" id="">
-                            <option value="">1</option>
-                            <option value="">1</option>
-                            <option value="">2</option>
-                        </select>-->
                         <label class="item-title" for="name">开始时间</label>
                         <input type="text" id="beginTime"/>
                         <label class="item-title" for="name">结束时间</label>
@@ -1550,8 +1530,10 @@
             <div class="rowElem">
                 <label class="item-title" for="name">前端刷新频率(秒): </label>
                 <input class="input-w-1" type="text" key="refresh" />
+                <div style="display: none">
                 <label style="display: none;" class="item-title" for="name">通信软件采集频率(秒): </label>
                 <input style="display: none;" class="input-w-1" type="text" key="collection"/>
+                </div>
            </div>
             <div class="rowElem">
                 <label class="item-title" for="name">是否显示地图页面: </label>
