@@ -23,14 +23,11 @@ class RealtimeController extends Controller
                     my_site.sid,
                     my_site.battery_status,
                     my_site.site_name,
+                    p.*,
                     my_ups_info.ups_maintain_date,
                     my_ups_info.ups_power,
                     my_ups_info.ups_max_discharge,
-                    my_ups_info.ups_max_charge,
-                    p.MaxTem_R,
-                    p.MinTem_R,
-                    p.MaxHum_R,
-                    p.MinHum_R
+                    my_ups_info.ups_max_charge
                     ')
                 ->from("tb_station_module")
                 ->leftJoin("my_site","my_site.serial_number=tb_station_module.sn_key")
