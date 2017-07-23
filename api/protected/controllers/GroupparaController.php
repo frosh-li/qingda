@@ -29,14 +29,7 @@ class GroupparaController extends Controller
             ->from('{{group_param}}')
             // ->order('gid desc')
             ->queryAll();
-        // if($temp){
-        //     $batteryparm = Yii::app()->bms->createCommand()
-        //         ->select('*')
-        //         ->from('{{group_param}}')
-        //         //->where('sn_key in ('.implode(",",$temp).')')
-        //         ->order('sid desc')
-        //         ->queryAll();
-        // }
+
         if ($batteryparm) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;
@@ -44,8 +37,10 @@ class GroupparaController extends Controller
             foreach($batteryparm as $key=>$value){
                 if (isset($data[floor($value['sn_key']/10000)])) {
                     $value['site_name'] = $data[floor($value['sn_key']/10000)]['site_name'];
+                    $value['sid'] = $data[floor($value['sn_key']/10000)]['sid'];
                 }else{
                     $value['site_name'] = '未添加站点';
+                    $value['sid'] = "";
                 }
                 $ret['data']['list'][] = $value;
             }

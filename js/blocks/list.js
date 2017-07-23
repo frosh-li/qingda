@@ -785,7 +785,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         }
                                         return "<div style='font-weight:bold;color:"+color+"'>"+data+"</div>";
                                     }},
-                                    { "data": "climit",title:"标准值",width:80},
+                                    { "data": "climit",title:"参考值",width:80},
                                     { "data": "markup",title:"操作记录",width:400,render:function(data){
                                         var a = data == null ? "": data;
 
@@ -1659,12 +1659,12 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {leftColumns: 1},
                                 "columns": [
-                                    {"data": "site_name", title: "站名称",width:100},
                                     {"data": "sn_key", title: "站MAC",width:100},
-                                    {"data": "CurSensor", title: "电流传感安装状态",width:100},
+                                    {"data": "site_name", title: "站名称",width:100},
                                     {"data": "sid", title: "站号",width:100},
                                     {"data": "Groups", title: "站内组数",width:100},
                                     {"data": "GroBats", title: "每组电池数",width:100},
+                                    {"data": "CurSensor", title: "电流传感安装状态",width:100},
                                     {"data": "Time_MR", title: "内阻测量间隔",width:100},
                                     {"data": "SampleInt", title: "采集间隔",width:100},
                                     {"data": "MaxTem_R", title: "高温报警_红",width:100},
@@ -1749,6 +1749,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "columns": [
 
                                     {"data": "site_name", title: "站名称",width:100},
+                                    {"data": "sid", title: "站号",width:100},
                                     {"data": "GroBatNum", title: "每组电池数",width:100},
                                     {"data": "CurRange", title: "组电流量程",width:100},
                                     {"data": "KI", title: "组电流系数",width:100},
@@ -1817,6 +1818,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "fixedColumns": {leftColumns: 1},
                                 "columns": [
                                     {"data": "site_name", title: "站名称",width:100},
+                                    {"data": "sid", title: "站号",width:100},
                                     {"data": "KV", title: "电压系数",width:100},
                                     {"data": "KT", title: "温度系数",width:100},
                                     {"data": "KI", title: "激励电流系数",width:100},
@@ -3002,12 +3004,12 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollY": ui.getListHeight(),
                     "fixedColumns": {leftColumns: 1},
                     "columns": [
-                        {"data": "site_name", title: "站名称",width:100},
                                     {"data": "sn_key", title: "站MAC",width:100},
-                                    {"data": "CurSensor", title: "电流传感安装状态",width:100},
+                                    {"data": "site_name", title: "站名称",width:100},
                                     {"data": "sid", title: "站号",width:100},
                                     {"data": "Groups", title: "站内组数",width:100},
                                     {"data": "GroBats", title: "每组电池数",width:100},
+                                    {"data": "CurSensor", title: "电流传感安装状态",width:100},
                                     {"data": "Time_MR", title: "内阻测量间隔",width:100},
                                     {"data": "Time_MV", title: "电压测量间隔",width:100},
                                     {"data": "MaxTem_R", title: "高温报警_红",width:100},

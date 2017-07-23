@@ -55,8 +55,10 @@ class BatteryparaController extends Controller
                 if (isset($data[strval(floor($value['sn_key']/10000))])) {
                     
                     $value['site_name'] = $data[strval(floor($value['sn_key']/10000))]['site_name'];
+                    $value['sid'] = $data[floor($value['sn_key']/10000)]['sid'];
                 }else{
                     $value['site_name'] = '未添加站点';
+                    $value['sid'] = '';
                 }
                 $ret['data']['list'][] = $value;
             }

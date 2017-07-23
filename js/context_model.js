@@ -115,9 +115,9 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "Lifetime",title:"电池寿命%",width:100 },
                     { "data": "Capacity",title:"容量%",width:100 },
                     { "data": "record_time",title:"时间",width:150 },
-                    { "data": "battery_float_up",title:"浮充上限V",width:80 },
-                    { "data": "battery_float_dow",title:"浮充下限V",width:80 },
-                    { "data": "battery_discharge_down",title:"放电下限V",width:80 },
+                    { "data": "MaxU_R",title:"浮充上限V",width:80 },
+                    { "data": "MaxDevU_R",title:"浮充偏差V",width:80 },
+                    { "data": "MinU_R",title:"放电下限V",width:80 },
                     { "data": "MaxT_R",title:"温度上限℃",width:80 },
                     { "data": "MinT_R",title:"温度下限℃",width:80 },
                     { "data": "MaxR_R",title:"内阻上限MΩ",width:100 }
