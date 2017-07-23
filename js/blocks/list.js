@@ -1271,9 +1271,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "ups_type",title:"型号",width:100 },
                                     { "data": "ups_create_date",title:"生产日期",width:150 },
                                     { "data": "ups_install_date",title:"安装日期",width:150 },
-                                    { "data": "ups_power",title:"功率/容量（V/A）",width:150 },
-                                    { "data": "ups_power_in",title:"输入功率（V/A）",width:150 },
-                                    { "data": "ups_power_out",title:"输出功率（V/A）",width:150 },
+                                    { "data": "ups_power",title:"功率/容量（W/H）",width:150 },
+                                    { "data": "ups_power_in",title:"输入功率（W/A）",width:150 },
+                                    { "data": "ups_power_out",title:"输出功率（W/A）",width:150 },
                                     { "data": "ups_battery_vol",title:"外接电池电压（V）",width:150 },
                                     { "data": "ups_battery_current",title:"外接电池电流（A）",width:150 },
                                     { "data": "ac_protect",title:"AC过流保护（V/A）",width:150 },
@@ -2537,6 +2537,49 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         }
     })
 
+    //查询：强采内阻
+    listConfig.adminConfig = $.extend(true,{},listConfig.station,{
+        extObj:{
+            fetchData:function(_param){
+                        API.getPersonalsData(_param);
+                    },
+                    render:function(){
+                        var _this = this;
+                        this.destoryPlugin();
+                        //this.clearTables();
+                        $('#lock').hide();
+                        require(["fixedColumn"],function() {
+                            _this.listPlugin.push($('#auto table').DataTable($.extend(true, {}, dataTableDefaultOption, {
+                                "data": _this.data,
+                                "scrollX": ui.getListHeight(),
+                                "scrollY": ui.getListHeight(),
+                                "fixedColumns": {leftColumns: 1},
+                                "columns": [
+                                    {"data": "unit", title: "单位名称"},
+                                    {"data": "name", title: "姓名"},
+                                    {"data": "username", title: "登陆名"},
+                                    {"data": "phone", title: "联系电话"},
+                                    {"data": "backup_phone", title: "备用电话"},
+                                    {"data": "email", title: "邮箱"},
+                                    {"data": "postname", title: "职位"},
+                                    {"data": "duty_num", title: "班次"},
+                                    {"data": "location", title: "住址"},
+                                    {"data": "areaname", title: "管理范围", render:function(data){
+                                        var a = data.split(" ");
+                                        if(a.length > 1)
+                                            a.shift();
+                                        return "<div>"+a.join(" ")+"</div>";
+                                    }},
+                                    {"data": "rolename", title: "角色"}
+                                ]
+                            })));
+                            _this.checkAllRows();
+                        })
+                        return this;
+                    }
+        }
+    })
+
 
     //查询：门限
     listConfig.limitation = $.extend(true,{},listConfig.limitationSetting,{extObj:{
@@ -2727,7 +2770,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         { "data": "site_name",title:"站点简称",width:100  },
                         { "data": "battery_factory",title:"生产厂家",width:150  },
                         { "data": "battery_num",title:"电池型号",width:150  },
-                        { "data": "battery_num",title:"生产日期",width:150  },
+                        { "data": "battery_date",title:"生产日期",width:150  },
                         { "data": "battery_voltage",title:"标称电压（V）",width:150  },
                         { "data": "battery_oum",title:"标称内阻（MΩ）",width:150  },
                         { "data": "battery_dianrong",title:"电池标称容量（Ah）",width:150  },

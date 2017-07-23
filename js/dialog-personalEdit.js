@@ -18,6 +18,7 @@ define(['require','api','common','blocks/areaSelector'],function(require,API,com
                         _this.setValue();
                     });
                     _this.listenTo(Backbone.Events,"personal:create personal:update",function(){
+                        window.location.reload();
                         _this.oncancel();
                         Backbone.Events.trigger("listdata:refresh", "batteryInfo");
                     });
