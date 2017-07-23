@@ -2494,8 +2494,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 {"data": "groupid", title: "组号"},
                                 {"data": "batteryid", title: "电池号"},
                                 {"data": "R", title: "内阻值"},
-                                {"data": "collect_time", title: "开始时间"},
-                                {"data": "collect_endtime", title: "完成时间"},
+                                {"data": "collect_time", title: "完成时间"}// ,
+                                //{"data": "collect_endtime", title: "完成时间"},
                             ]
                         }, dataTableDefaultOption)));
                     });
