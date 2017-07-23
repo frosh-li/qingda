@@ -2455,9 +2455,14 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     common.loadTips.show("正在与站点联系采集相关电池内阻，请稍后");
                     setTimeout(function(){
                         common.loadTips.close();
-                    },5000)
-                    
+                    },5000);
+                    $('body').everyTime('2s','irc',function(){
+                        console.log('get IRCollect');
+                        _this.fetchData();
+                    });
                 });
+
+                
 
                 this.listenTo(Backbone.Events,"rCollect:start:fail",function(data){
                     common.loadTips.show("采集失败，请重试");
@@ -2468,29 +2473,33 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             },
             render: function(){
                 var _this = this;
-                _this.destoryPlugin();
-                require(["fixedColumn"], function () {
-                    _this.listPlugin.push($('#auto table').DataTable($.extend(true, {
-                        "data": _this.data,
-                        "language": {
-                            "emptyTable": "采集内阻数据为空"
-                        },
-                        "scrollX": ui.getListHeight(),
-                        "scrollY": ui.getListHeight(),
-                        "fixedColumns": {leftColumns: 1},
-                        "columns": [
+                //_this.destoryPlugin();
+                if(_this.listPlugin && _this.listPlugin[0]){
+                    _this.updateList();
+                }else{
+                    require(["fixedColumn"], function () {
+                        _this.listPlugin.push($('#auto table').DataTable($.extend(true, {
+                            "data": _this.data,
+                            "language": {
+                                "emptyTable": "采集内阻数据为空"
+                            },
+                            "scrollX": ui.getListHeight(),
+                            "scrollY": ui.getListHeight(),
+                            "fixedColumns": {leftColumns: 1},
+                            "columns": [
 
-                            {"data": "sid", title: "站号", width: 100},
-                            {"data": "site_name", title: "站点简称", width: 200},
-                            {"data": "stationid", title: "物理地址"},
-                            {"data": "groupid", title: "组号"},
-                            {"data": "batteryid", title: "电池号"},
-                            {"data": "R", title: "内阻值"},
-                            {"data": "collect_time", title: "开始时间"},
-                            {"data": "collect_endtime", title: "完成时间"},
-                        ]
-                    }, dataTableDefaultOption)));
-                });
+                                {"data": "sid", title: "站号", width: 100},
+                                {"data": "site_name", title: "站点简称", width: 200},
+                                {"data": "stationid", title: "物理地址"},
+                                {"data": "groupid", title: "组号"},
+                                {"data": "batteryid", title: "电池号"},
+                                {"data": "R", title: "内阻值"},
+                                {"data": "collect_time", title: "开始时间"},
+                                {"data": "collect_endtime", title: "完成时间"},
+                            ]
+                        }, dataTableDefaultOption)));
+                    });
+                }
             }
         }
     })

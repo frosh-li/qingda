@@ -6,6 +6,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
     function init(sys,pageType,sub,params){
         var $stationPop = $(".stationPop");
+        $("body").stopTime('irc');
         $stationPop.off('click').on('click',function(e){
 
             var id = navTree.getSites().ids;
@@ -292,7 +293,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             ui.downHide(true);
             $("#dataItem").html($("#listTpl").html());
         	$collectIRWrap.show();
-            $(".list-bottom.upage").show();
+            // $(".list-bottom.upage").show();
             require(["blocks/list","blocks/nav"],function(list,nav){
                 refreshModules([nav,list],_arg);
                 // collectPswdDialog.show();
