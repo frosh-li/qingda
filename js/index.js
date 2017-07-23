@@ -115,7 +115,7 @@ require(["jquery","router","api","table","jJson","jtimer","charts"],function($,r
 
     require(["jJson","bootstrap","jqueryUI","ui","jForm","jqueryTime"],function(){
       $.timepicker.setDefaults( $.timepicker.regional[ "zh-CN" ] );
-      $.datepicker.setDefaults( $.timepicker.regional[ "zh-CN" ] );
+      
       $.timepicker.regional['zh-CN'] = {
 
         closeText: '关闭',
@@ -150,6 +150,7 @@ require(["jquery","router","api","table","jJson","jtimer","charts"],function($,r
         amNames: ['AM', 'A'],
         pmNames: ['PM', 'P'],
         isRTL: false,};
+        $.datepicker.setDefaults( $.timepicker.regional[ "zh-CN" ] );
       $.timepicker.setDefaults($.timepicker.regional['zh-CN']);
         $(document).tooltip();
         router.start();

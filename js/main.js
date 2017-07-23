@@ -328,7 +328,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
             $searchWrap.show();
             $searchWrap.jqTransform();
-            $(".exportdata").show();
+            $(".exportdata").hide();
             //$durationWrap.show();
             $(".list-bottom.upage").show();
             $(".report-caution-selector",$searchWrap).parents('.jqTransformSelectWrapper').hide()
@@ -349,7 +349,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             ui.downShow(false);
             $searchWrap.show();
             $searchWrap.jqTransform();
-            $(".exportdata").show();
+            $(".exportdata").hide();
 
             $(".list-bottom.upage").show();
             $(".report-caution-selector",$searchWrap).parents('.jqTransformSelectWrapper').hide()
