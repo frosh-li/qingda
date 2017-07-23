@@ -108,10 +108,10 @@ class Controller extends CController
     /**
      * [setPageCount description]
      */
-    public function setPageCount()
+    public function setPageCount($count=10)
     {
         $this->page = Yii::app()->request->getParam('page',1);
-        $this->count = Yii::app()->request->getParam('pageSize',10);
+        $this->count = Yii::app()->request->getParam('pageSize',$count);
         $this->checkPageCount();
     }
 

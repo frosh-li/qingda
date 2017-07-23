@@ -25,7 +25,7 @@ class QueryController extends Controller
     //站点实时数据
 	public function actionIndex()
 	{
-        $this->setPageCount();
+        $this->setPageCount(20);
         $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
         $id = Yii::app()->request->getParam('id',0);
         $start =Yii::app()->request->getParam('start');
@@ -222,7 +222,7 @@ class QueryController extends Controller
     public function actionGroupmodule()
     {
         $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
-        $this->setPageCount();
+        $this->setPageCount(20);
         $id = Yii::app()->request->getParam('id',0);
 
         $start =Yii::app()->request->getParam('start');
@@ -389,7 +389,7 @@ class QueryController extends Controller
     // 电池实时数据
     public function actionBatterymodule()
     {
-        $this->setPageCount();
+        $this->setPageCount(20);
         $id = Yii::app()->request->getParam('id',0);
         $start =Yii::app()->request->getParam('start');
         $end = Yii::app()->request->getParam('end');

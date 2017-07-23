@@ -2408,10 +2408,10 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             { "data": "site_name", "title":"站名",width:150,"sClass":"site_name_left",render:function(data,type,itemData){
                                     return "<div class='show_station_detail' style='color:blue;cursor:pointer;' id='"+(itemData.sn_key.substring(0,10)+"0000")+"'>"+data+"</div>"
                             }},
-                            { "data": "sn_key",title:"站号",width:100, render:function(data, type,itemData){
+                            { "data": "sn_key",title:"站号",width:80, render:function(data, type,itemData){
                                 return itemData.sid;
                             }},
-                            { "data": "sn_key",title:"组号",width:100, render:function(data, type,itemData){
+                            { "data": "sn_key",title:"组号",width:80, render:function(data, type,itemData){
                                 if(itemData.type == "battery" || itemData.type == "group"){
                                     return itemData.sn_key.substring(10,12);
                                 }else{
@@ -2419,7 +2419,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 }
 
                             }  },//组序列号
-                            { "data": "sn_key",title:"电池号",width:100, render:function(data, type,itemData){
+                            { "data": "sn_key",title:"电池号",width:80, render:function(data, type,itemData){
                                 if(itemData.type == "battery")
                                     return itemData.sn_key.substring(12,14);
                                 else{
@@ -2451,7 +2451,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 }
                                 return "<div style='font-weight:bold;color:"+color+"'>"+data+"</div>";
                             }},
-                            { "data": "markup",title:"操作记录",width:400,render:function(data,type,itemData){
+                            { "data": "markup",title:"操作记录",render:function(data,type,itemData){
                                 var a = data == null ? "": data;
                                 if(itemData.status == 2){
                                     return '<div style="text-align:left;">已忽略</div>';
@@ -2459,7 +2459,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 return '<div style="text-align:left;">'+a+'</div>';
                             }},
                             { "data": "contact",title:"操作人",width:80},
-                            { "data": "markuptime",title:"操作时间",width:80},
+                            { "data": "markuptime",title:"操作时间",width:200},
                             //{ "data": "alarm_process_and_memo",title:"处理过程、时间、管理员" }
                         ]
                     })));
