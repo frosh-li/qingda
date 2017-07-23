@@ -33,7 +33,7 @@ class UserlogController extends Controller
             ->where($where)
             ->limit(5000)
             ->offset(0)
-            ->order('id desc')
+            ->order('modify_time desc')
             ->queryAll();
         }else{
             $logs = Yii::app()->db->createCommand()
@@ -42,7 +42,7 @@ class UserlogController extends Controller
             ->where($where)
             ->limit($this->count)
             ->offset(($this->page-1)*$this->count)
-            ->order('id desc')
+            ->order('modify_time desc')
             ->queryAll();
         }
         $totals = Yii::app()->db->createCommand()

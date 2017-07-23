@@ -84,9 +84,9 @@ class TreesController extends Controller
                     'type'=>2,
                     'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
                     'username'=>$username,
-                    'content'=>$username."创建了一级树形结构",
-                    'oldvalue'=>'',
-                    'newvalue'=>''
+                    'content'=>$username."创建了一级树形结构".$model->title,
+                    'oldvalue'=>$model->title,
+                    'newvalue'=>$model->title
                 );
                 $this->addlog($log);
             }else{
@@ -114,9 +114,9 @@ class TreesController extends Controller
                         'type'=>2,
                         'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
                         'username'=>$username,
-                        'content'=>$username."创建了二级树形结构",
-                        'oldvalue'=>'',
-                        'newvalue'=>''
+                        'content'=>$username."创建了二级树形结构".$model->title,
+                        'oldvalue'=>$model->title,
+                        'newvalue'=>$model->title
                     );
                     $this->addlog($log);
                 }else{
@@ -174,7 +174,7 @@ class TreesController extends Controller
                     'type'=>2,
                     'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
                     'username'=>$username,
-                    'content'=>$username."修改一级树形结构",
+                    'content'=>$username."修改一级树形结构".$oldvalue['title']."|".$title,
                     'oldvalue'=>json_encode($oldvalue),
                     'newvalue'=>json_encode($model->attributes)
                 );
@@ -205,7 +205,7 @@ class TreesController extends Controller
                         'type'=>2,
                         'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
                         'username'=>$username,
-                        'content'=>$username."修改一级树形结构",
+                        'content'=>$username."修改一级树形结构".$oldvalue['title']."|".$title,
                         'oldvalue'=>json_encode($oldvalue),
                         'newvalue'=>json_encode($model->attributes)
                     );

@@ -2229,6 +2229,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     //查询：UI日志：设置
     listConfig.uilog_options = $.extend(true,{},listConfig.reportUilog_options,{
         extObj:{
+            getNavData:function(){
+                return nav.getSites();
+            },
             fetchData:function(_param){
                 API.getUserlog({page:this.curPage,type:'2', start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
