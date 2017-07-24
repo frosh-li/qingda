@@ -1,4 +1,4 @@
-define(["require","api","backbone","context","ui","main","login","map"],function(require,API,Backbone,context,ui){
+define(["require","api","backbone","context","ui"],function(require,API,Backbone,context,ui){
     var defaultManagePage = "manage/station",main;
     var routeMap = {
         index:function(){
