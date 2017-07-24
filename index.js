@@ -47,7 +47,7 @@ require.config({
 
         fixedColumn:['jquery','table'],
 
-        common:['jquery'],
+        
         zTreeCore:['jquery'],
         zTreeExcheck:['zTreeCore'],
         jJson:['jquery'],
@@ -55,11 +55,12 @@ require.config({
         jqueryUI:['jquery'],
         jqueryTime:['jquery','jqueryUI'],
         backbone:['_'],
-	    respond:['']
+	    respond:[''],
+        common:['jquery'],
     }
 })
 
-require(["jquery","router","api","table","jJson","jtimer","charts","jJson","bootstrap","jqueryUI","ui","jForm","jqueryTime"],function($,router,API){
+require(["jquery","router","api"],function($,router,API){
     /**
      * 对Date的扩展，将 Date 转化为指定格式的String
      * 月(M)、日(d)、12小时(h)、24小时(H)、分(m)、秒(s)、周(E)、季度(q) 可以用 1-2 个占位符
@@ -154,6 +155,4 @@ require(["jquery","router","api","table","jJson","jtimer","charts","jJson","boot
       $.timepicker.setDefaults($.timepicker.regional['zh-CN']);
         $(document).tooltip();
         router.start();
-    
-
 })

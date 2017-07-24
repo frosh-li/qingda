@@ -1,4 +1,4 @@
-define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'],function(require,Backbone,context,ui,common, stationsinfoDialog,API){
+define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api',"stationsinfoDialog","map","blocks/list","blocks/nav","blocks/charts","blocks/listSearch","blocks/list","blocks/nav"],function(require,Backbone,context,ui,common, stationsinfoDialog,API){
     var curModules = [],
         maxLoadingTime = 1000,
         curLoadingTime = 0;
