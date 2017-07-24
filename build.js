@@ -11,7 +11,7 @@
     'jqueryTime':'./libs/jqueryui/jquery-ui-timepicker-addon.min',
     'jJson': './libs/jquery.json',
     'jForm': './libs/jquery.jqtransform',
-    'jtimer': './libs/jQuery.timers',
+    'jtimer': './libs/jquery.timers',
     'domReady':'./libs/domReady',
     'backbone':'./libs/backbone-min',
     '_':'./libs/underscore-min',

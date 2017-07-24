@@ -15,7 +15,7 @@ require.config({
         'jqueryTime':'libs/jqueryui/jquery-ui-timepicker-addon.min',
         'jJson': 'libs/jquery.json',
         'jForm': 'libs/jquery.jqtransform',
-        'jtimer': 'libs/jQuery.timers',
+        'jtimer': 'libs/jquery.timers',
         'domReady':'libs/domReady',
         'backbone':'libs/backbone-min',
         '_':'libs/underscore-min',
@@ -44,10 +44,7 @@ require.config({
         bootstrap:['jquery'],
         table:['jquery'],
         jtimer:['jquery'],
-
         fixedColumn:['jquery','table'],
-
-        
         zTreeCore:['jquery'],
         zTreeExcheck:['zTreeCore'],
         jJson:['jquery'],
@@ -60,7 +57,7 @@ require.config({
     }
 })
 
-require(["jquery","router","api"],function($,router,API){
+require(["jquery","router","api","jtimer"],function($,router,API){
     /**
      * 对Date的扩展，将 Date 转化为指定格式的String
      * 月(M)、日(d)、12小时(h)、24小时(H)、分(m)、秒(s)、周(E)、季度(q) 可以用 1-2 个占位符
