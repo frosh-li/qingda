@@ -1,14 +1,11 @@
 ({
-	name:"main",
+	name:"index",
 	// appDir:"./",
 	// dir:"builds",
-	baseUrl:"./js",
+	baseUrl:"./js/",
 	out:"main-build.js",
 	fileExclusionRegExp:/^(r|build)\.js$/,
 	paths:{
-		$:"../libs/jquery.min.js",
-		router:"../js/router.js",
-		API:"../js/api.js",
 		'jquery': '../libs/jquery.min',
     'jqueryUI':'../libs/jqueryui/jquery-ui.min',
     'jqueryTime':'../libs/jqueryui/jquery-ui-timepicker-addon.min',
@@ -27,7 +24,7 @@
     'table':'../libs/jquery.dataTables',
     'fixedColumn':'../libs/dataTables.fixedColumns.min',
     'fixedHeader':'../libs/dataTables.fixedHeader.min',
-  "respond":"../js/respond",
+  	"respond":"../js/respond",
     "router" :"../js/router",
     "api" :"../js/api",
     "main" :"../js/main",
@@ -43,9 +40,7 @@
       bootstrap:['jquery'],
       table:['jquery'],
       jtimer:['jquery'],
-
       fixedColumn:['jquery','table'],
-
       common:['jquery'],
       zTreeCore:['jquery'],
       zTreeExcheck:['zTreeCore'],
@@ -54,6 +49,6 @@
       jqueryUI:['jquery'],
       jqueryTime:['jquery','jqueryUI'],
       backbone:['_'],
-    respond:['']
+    	respond:['respond']
   }
 })
