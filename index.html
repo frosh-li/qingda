@@ -13,6 +13,15 @@
     <link rel="stylesheet" type="text/css" href="css/main.css" />
 </head>
 <body class="small"></body>
-<!--script src="libs/require.js" data-main="js/index.js"></script-->
-<script src="main-build.js"></script>
+<script src="libs/require.js"></script>
+<script>
+    require.config({
+        paths: {
+            //Comment out this line to go back to loading
+            //the non-optimized main.js source file.
+            "main": "main-build"
+        }
+    });
+    require(["main"]);
+</script>
 </html>
