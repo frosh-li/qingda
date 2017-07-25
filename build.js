@@ -1,9 +1,9 @@
 ({
-	name:"index",
-	// appDir:"./",
-	// dir:"builds",
+	//name:"index",
+	appDir:"./js/",
+	dir:"builds",
 	baseUrl:"./",
-	out:"main-build.js",
+	// out:"main-build.js",
 	fileExclusionRegExp:/^(r|build)\.js$/,
 	paths:{
 		'jquery': './libs/jquery.min',

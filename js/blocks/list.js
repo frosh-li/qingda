@@ -834,7 +834,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         "click .resolveBtn":"resove"
                     },
                     showStationOptionEditDialog:function(data){
-                        require(["js/dialog-stationEdit"],function(dialog){
+                        require(["dialogstationEdit"],function(dialog){
                             dialog && dialog.show(null,data);
                         })
                     },

@@ -159,7 +159,7 @@ define(function(require){
         },
         switchUser: function(){
 
-            require(["js/dialog-login"],function(dialog){
+            require(["dialoglogin"],function(dialog){
                 dialog && dialog.show();
             })
 
@@ -167,7 +167,7 @@ define(function(require){
 
         about: function(){
 
-            require(["js/dialog-about"],function(dialog){
+            require(["dialogabout"],function(dialog){
                 dialog.init();
                 dialog && dialog.show();
             })
@@ -304,7 +304,7 @@ define(function(require){
             $el.addClass('active');
         },
         showUnsolveDialog:function(id){
-            require(["js/dialog-resolveCaution"],function(dialog){
+            require(["dialogresolveCaution"],function(dialog){
                 dialog && dialog.show(id);
             })
         },
@@ -391,7 +391,7 @@ define(function(require){
             this.showStationEditDialog();
         },
         showStationEditDialog:function(id){
-            require(["js/dialog-stationEdit"],function(dialog){
+            require(["dialogstationEdit"],function(dialog){
                 dialog && dialog.show(id);
             })
         },
@@ -402,7 +402,7 @@ define(function(require){
             this.showBatteryEditDialog();
         },
         showBatteryEditDialog:function(id,data){
-            require(["js/dialog-batteryEdit"],function(dialog){
+            require(["dialogbatteryEdit"],function(dialog){
                 dialog && dialog.show(id,data);
             })
         },
@@ -413,7 +413,7 @@ define(function(require){
             this.showUPSEditDialog();
         },
         showUPSEditDialog:function(id,data){
-            require(["js/dialog-UPSEdit"],function(dialog){
+            require(["dialogUPSEdit"],function(dialog){
                 dialog && dialog.show(id,data);
             })
         },
@@ -424,7 +424,7 @@ define(function(require){
             this.showBMSEditDialog();
         },
         showBMSEditDialog:function(id){
-            require(["js/dialog-BMSEdit"],function(dialog){
+            require(["dialogBMSEdit"],function(dialog){
                 dialog && dialog.show(id);
             })
         },
@@ -435,7 +435,7 @@ define(function(require){
             this.showCompanyEditDialog();
         },
         showCompanyEditDialog:function(id){
-            require(["js/dialog-CompanyEdit"],function(dialog){
+            require(["dialogCompanyEdit"],function(dialog){
                 dialog && dialog.show(id);
             })
         },
@@ -446,7 +446,7 @@ define(function(require){
             this.showMessageEditDialog();
         },
         showMessageEditDialog:function(id){
-            require(["js/dialog-messageEdit"],function(dialog){
+            require(["dialogmessageEdit"],function(dialog){
                 dialog && dialog.show(id);
             })
         },
@@ -457,7 +457,7 @@ define(function(require){
             this.showPersonalEditDialog();
         },
         showPersonalEditDialog:function(id){
-            require(["js/dialog-personalEdit"],function(dialog){
+            require(["dialogpersonalEdit"],function(dialog){
                 dialog && dialog.show(id);
             })
         },
@@ -465,7 +465,7 @@ define(function(require){
          * 门限修改
          */
         showLimitationEditDialog:function(id){
-            require(["js/dialog-limitationEdit.js"],function(dialog){
+            require(["dialoglimitationEdit.js"],function(dialog){
                 dialog.init();
                 dialog.show(id);
             })
@@ -477,7 +477,7 @@ define(function(require){
             this.showStationdeviceEditDialog();
         },
         showStationdeviceEditDialog:function(id){
-            require(["js/dialog-deviceEdit.js"],function(dialog){
+            require(["dialogdeviceEdit.js"],function(dialog){
                 dialog && dialog.show(id);
             })
         },
@@ -540,7 +540,7 @@ define(function(require){
             this.showStationOptionEditDialog();
         },
         showStationOptionEditDialog:function(id){
-            require(["js/dialog-stationOptionEdit"],function(dialog){
+            require(["dialogstationOptionEdit"],function(dialog){
                 dialog && dialog.show(id);
             })
         },
@@ -548,7 +548,7 @@ define(function(require){
          * 组参数修改
          */
         showGroupOptionEditDialog:function(id){
-            require(["js/dialog-groupOptionEdit"],function(dialog){
+            require(["dialoggroupOptionEdit"],function(dialog){
                 dialog && dialog.show(id);
             })
         },
@@ -556,7 +556,7 @@ define(function(require){
          * 电池参数修改
          */
         showBatteryOptionEditDialog:function(id){
-            require(["js/dialog-batteryOptionEdit"],function(dialog){
+            require(["dialogbatteryOptionEdit"],function(dialog){
                 dialog && dialog.show(id);
             })
         },
@@ -564,7 +564,7 @@ define(function(require){
          * 其他参数修改
          */
         showOhterOptionEditDialog:function(id){
-            require(["js/dialog-otherOptionEdit"],function(dialog){
+            require(["dialogotherOptionEdit"],function(dialog){
                 dialog && dialog.show(id);
             })
         },

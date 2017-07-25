@@ -1,0 +1,1 @@
+define(["require","api","stationsinfoDialog","context","ui","table","blocks/block-staiton"],function(e,t,n,r,i,s){return{getExtObj:function(e){return s.getExtObj(e)}}});

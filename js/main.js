@@ -97,7 +97,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
 
         $stationPopDialog = null;
-        require(["js/dialog-stationsinfo"],function(dialog){
+        require(["dialogstationsinfo"],function(dialog){
             $stationPopDialog = dialog.init();
             // dialog && dialog.show(id.join(","));
         })
