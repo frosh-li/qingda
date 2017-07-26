@@ -511,7 +511,10 @@
             <div class="rowElem">
                 <label class="item-title">是否接收短信: </label>
                 <input type="hidden" key="functionary_sms" value=1 />
-                <input class="input-w-1" disable key="functionary_sms" value='是' type="text" />
+                <select class="input-w-1" key="functionary_sms">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
                 <label class="item-title">接收邮件(不接收填空): </label>
                 <input class="input-w-1" type="text" key="functionary_mail"/>
             </div>
