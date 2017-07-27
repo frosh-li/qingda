@@ -2648,7 +2648,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         { "data": "fix_phone",title:"固定电话"},
                         { "data": "functionary",title:"负责人",width:120,render:function(data,_,allData){
                             var html = [];
-                            if(allData.functionary_sms){
+                            if(allData.functionary_sms == 1){
                                 html.push('<span>')
                                 html.push('<img src="/images/sms.png">');
                                 html.push("</span>");
@@ -2671,7 +2671,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         { "data": "emergency_phone",title:"紧急联系人手机",width:120  },
                         { "data": "area_owner",title:"区域主管",width:120,render:function(data,_,allData){
                             var html = [];
-                            if(allData.area_owner_sms){
+                            if(allData.area_owner_sms == 1){
                                 html.push('<span>')
                                 html.push('<img src="/images/sms.png">');
                                 html.push("</span>");
@@ -2689,7 +2689,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         { "data": "area_owner_phone",title:"区域主管电话",width:120},
                         { "data": "parent_owner",title:"上级主管",width:120,render:function(data,_,allData){
                             var html = [];
-                            if(allData.parent_owner_sms){
+                            if(allData.parent_owner_sms == 1){
                                 html.push('<span>')
                                 html.push('<img src="/images/sms.png">');
                                 html.push("</span>");
