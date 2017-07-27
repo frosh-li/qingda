@@ -140,6 +140,7 @@ class SitesController extends Controller
         $device_mac=Yii::app()->request->getParam('device_mac','');
 
         $functionary_mail=Yii::app()->request->getParam('functionary_mail','');
+        $functionary_sms=Yii::app()->request->getParam('functionary_sms','');
         $area_owner_mail=Yii::app()->request->getParam('area_owner_mail','');
         $area_owner_sms=Yii::app()->request->getParam('area_owner_sms',0);
         $parent_owner_mail=Yii::app()->request->getParam('parent_owner_mail','');
@@ -208,6 +209,7 @@ class SitesController extends Controller
             $model->device_mac=$device_mac;
 
             $model->functionary_mail=$functionary_mail;
+            $model->functionary_sms=$functionary_sms;
             $model->area_owner_mail=$area_owner_mail;
             $model->area_owner_sms=$area_owner_sms;
             $model->parent_owner_mail=$parent_owner_mail;
