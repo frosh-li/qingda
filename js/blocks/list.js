@@ -1058,7 +1058,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     { "data": "fix_phone",title:"固定电话"},
                                     { "data": "functionary",title:"负责人",width:120,render:function(data,_,allData){
                                         var html = [];
-                                        if(allData.functionary_sms){
+                                        if(allData.functionary_sms == 1){
                                             html.push('<span>')
                                             html.push('<img src="/images/sms.png">');
                                             html.push("</span>");
