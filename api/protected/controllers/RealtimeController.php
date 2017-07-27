@@ -57,7 +57,7 @@ class RealtimeController extends Controller
 
         //观察员进行地域过滤 xl
         $sites = GeneralLogic::filterDataByAid($_SESSION['uid'], $sites);
-        $total = GeneralLogic::filterDataByAid($_SESSION['uid'], $total);
+        // $total = GeneralLogic::filterDataByAid($_SESSION['uid'], $total);
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
@@ -112,7 +112,7 @@ class RealtimeController extends Controller
             ')->queryScalar();
         //观察员进行地域过滤 xl
         $sites = GeneralLogic::filterDataByAid($_SESSION['uid'], $sites);
-        $totals = GeneralLogic::filterDataByAid($_SESSION['uid'], $totals);
+        // $totals = GeneralLogic::filterDataByAid($_SESSION['uid'], $totals);
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'

@@ -244,18 +244,18 @@ class QueryController extends Controller
         //xl
         //通过sql直接选择地域进行过滤
            $sites = array();
-           $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
-           if(!empty($sns)){
-                $sql = "select b.* from tb_group_module_history as b, my_site a ";
-                $sql .= " where {$where}";
-                $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
-                $sql .= "and a.serial_number in (" . implode(",", array_intersect($sns,$temp)) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . $this->count;
-                $totalsql = "select count(*) as totals from tb_group_module_history as b, my_site a  where {$where} and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000) and a.serial_number in (" . implode(",", array_intersect($sns,$temp)) .")";
-                $totals = Yii::app()->bms->createCommand($totalsql)->queryScalar();
-                $sites = Yii::app()->bms->createCommand($sql)->queryAll();
-            }elseif($sns === false){
+           // $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
+           // if(!empty($sns)){
+           //      $sql = "select b.* from tb_group_module_history as b, my_site a ";
+           //      $sql .= " where {$where}";
+           //      $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+           //      $sql .= "and a.serial_number in (" . implode(",", array_intersect($sns,$temp)) .") order by b.record_time desc limit " .($this->page - 1) * $this->count. "," . $this->count;
+           //      $totalsql = "select count(*) as totals from tb_group_module_history as b, my_site a  where {$where} and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000) and a.serial_number in (" . implode(",", array_intersect($sns,$temp)) .")";
+           //      $totals = Yii::app()->bms->createCommand($totalsql)->queryScalar();
+           //      $sites = Yii::app()->bms->createCommand($sql)->queryAll();
+           //  }elseif($sns === false){
 
-                $where .= " and sn_key in (".implode(",", $temp).")";
+                //$where .= " and sn_key in (".implode(",", $temp).")";
 
                 $sites = Yii::app()->bms->createCommand()
                 ->select('*')
@@ -269,7 +269,7 @@ class QueryController extends Controller
                 $totalsql = "select count(*) as totals from tb_group_module_history as b, my_site a  where {$where}"; 
                 $totals = Yii::app()->bms->createCommand($totalsql)->queryScalar();
 
-        }
+        //}
         //}
 
         $ret['response'] = array(
@@ -404,7 +404,8 @@ class QueryController extends Controller
             $where .= ' and b.record_time <= "'.$end.'"';
         }
         $temp = self::getStationIds("");
-         $sql = "
+        
+        $sql = "
             select b.* from tb_battery_module_history as b
         ";
 
@@ -413,20 +414,20 @@ class QueryController extends Controller
         $sqltotal = "";
         //xl
         //通过sql直接选择地域进行过滤
-        $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
-        if(!empty($sns)){
-            $sql = "select b.*,a.aid from tb_battery_module_history as b, my_site a ";
-            $sql .= " where ".$where;
-            $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
-            $sql .= "and a.serial_number in (" . implode(",", array_intersect($sns,$temp)) .")";
-            $sqltotal = $sql;
-            $sql .= " order by b.record_time desc ";
+        // $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
+        // if(!empty($sns)){
+        //     $sql = "select b.*,a.aid from tb_battery_module_history as b, my_site a ";
+        //     $sql .= " where ".$where;
+        //     $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
+        //     $sql .= "and a.serial_number in (" . implode(",", array_intersect($sns,$temp)) .")";
+        //     $sqltotal = $sql;
+        //     $sql .= " order by b.record_time desc ";
 
-        }else{
-            $sql .= " and sn_key in (" . implode(",", $temp) .")";
+        // }else{
+            // $sql .= " and sn_key in (" . implode(",", $temp) .")";
             $sql .= " order by b.record_time desc ";
             $sqltotal = $sql;
-        }
+        //}
 
         //var_dump($sql);
         if ($isDownload != 1){
