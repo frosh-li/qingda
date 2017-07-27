@@ -345,7 +345,7 @@ class TreesController extends Controller
     public function actionGetnav()
     {
         $keyword = Yii::app()->request->getParam('key','');
-        $areas = "select area from my_sysuser where id = ".$_SESSION["uid"];
+        $areas = "select area from my_sysuser where id = ".($_SESSION["uid"] || 0);
         $auths = Yii::app()->db->createCommand($areas)->queryScalar();
         $where = "";
         if($auths == "*"){
