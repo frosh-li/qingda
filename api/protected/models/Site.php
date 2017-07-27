@@ -143,6 +143,7 @@ class Site extends CActiveRecord
 			'humiture_type' => 'Humiture Type',
 			'create_time' => 'Create Time',
 			'update_time' => 'Update Time',
+			'functionary_sms' => 'functionary_sms'
 		);
 	}
 
