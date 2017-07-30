@@ -428,11 +428,14 @@ class SitesController extends Controller
 
             $area_owner !='' && $model->area_owner=$area_owner;
             $area_owner_phone !='' && $model->area_owner_phone=$area_owner_phone;
-            $functionary_mail !='' && $model->functionary_mail=$functionary_mail;
+            //$functionary_mail !='' && 
+            $model->functionary_mail=$functionary_mail;
             $functionary_sms !='' && $model->functionary_sms=$functionary_sms;
-            $area_owner_mail !='' && $model->area_owner_mail=$area_owner_mail;
+            // $area_owner_mail !='' && 
+            $model->area_owner_mail=$area_owner_mail;
             $area_owner_sms !='' && $model->area_owner_sms=$area_owner_sms;
-            $parent_owner_mail !='' && $model->parent_owner_mail=$parent_owner_mail;
+            //$parent_owner_mail !='' && 
+            $model->parent_owner_mail=$parent_owner_mail;
             $parent_owner_sms !='' && $model->parent_owner_sms=$parent_owner_sms;
 
             $remark !='' && $model->remark=$remark;
