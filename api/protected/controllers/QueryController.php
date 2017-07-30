@@ -239,7 +239,7 @@ class QueryController extends Controller
         }
 
         $temp = self::getStationIds('00');
-
+        $where .= " and sn_key in (" . implode(",", $temp) .")";
         // return;
         //xl
         //通过sql直接选择地域进行过滤
@@ -266,7 +266,7 @@ class QueryController extends Controller
                 ->order('record_time desc')
                 ->queryAll();
 
-                $totalsql = "select count(*) as totals from tb_group_module_history as b, my_site a  where {$where}"; 
+                $totalsql = "select count(*) as totals from tb_group_module_history as b  where {$where}"; 
                 $totals = Yii::app()->bms->createCommand($totalsql)->queryScalar();
 
         //}
@@ -403,14 +403,18 @@ class QueryController extends Controller
             $end = date('Y-m-d H:i:s', substr($end,0,10));
             $where .= ' and b.record_time <= "'.$end.'"';
         }
+
         $temp = self::getStationIds("");
         
         $sql = "
             select b.* from tb_battery_module_history as b
         ";
 
+        $where .= " and sn_key in (" . implode(",", $temp) .")";
+
         $offset = ($this->page-1)*$this->count;
         $sql .= " where ".$where;
+
         $sqltotal = "";
         //xl
         //通过sql直接选择地域进行过滤
@@ -424,24 +428,27 @@ class QueryController extends Controller
         //     $sql .= " order by b.record_time desc ";
 
         // }else{
-            // $sql .= " and sn_key in (" . implode(",", $temp) .")";
+            
             $sql .= " order by b.record_time desc ";
-            $sqltotal = $sql;
+            $sqltotal = 'select count(*) as totals from tb_battery_module_history as b where '.$where;
         //}
 
-        //var_dump($sql);
+
         if ($isDownload != 1){
             $sql .= " limit $offset, $this->count ";
         }else{
             $sql .= " limit 0,5000";
         }
 
+        // var_dump($sql);
+        // return;
+
         $sites = Yii::app()->bms->createCommand($sql)
             ->queryAll();
         //}
 
         $totals = Yii::app()->bms->createCommand($sqltotal)
-            ->queryAll();
+            ->queryScalar();
 
         $ret['response'] = array(
             'code' => 0,
@@ -452,7 +459,7 @@ class QueryController extends Controller
         if ($sites) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;
-            $ret['data']['totals'] = count($totals);
+            $ret['data']['totals'] = $totals;
             foreach($sites as $key=>$value){
                 $sn_key = $value['sn_key'];
                 $query = Yii::app()->bms->createCommand()

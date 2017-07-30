@@ -473,7 +473,7 @@ define(function(require){
             /***************************************告警***************************************/
             getCautionsData: function (args,event,unalert) {
                 var url = '/api/index.php/realtime/galarm';
-                this.fetch(url, event||"listdata:update", args, "get",window,unalert);
+                this.fetch(url, event||"listdata:update", args, "post",window,unalert);
                 return this;
             },
             resolveCaution:function(args){
