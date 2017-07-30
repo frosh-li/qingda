@@ -77,11 +77,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
                         var _this = this;
                         $(".mnext").click(function(){
+                            console.log('to next page');
                             if(_this.curPage >= _this.totalpage){
                                 return;
                             }
                             _this.curPage++;
-                            console.log(_this.curPage)
                             _this.fetchData();
                         });
                         $(".mprev").click(function(){
@@ -420,7 +420,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         stationInfoDialog.show(id.join(","));
                     },
                     fetchData:function(){
-                        var _param = {};
+                        var _param = {page:this.curPage};
                         var navData = nav.getSites();
                         var ids;
 
@@ -429,7 +429,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         }else{
                             ids = navData.ids.join(",");
                         }
-
+                        // _param.page = this.curPage;
                         $.extend(_param,{id:ids});
                         this.selectedIds = ids;
                         API.getStationRealTimeData(_param);
@@ -638,7 +638,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         return nav.getGroups();
                     },
                     fetchData:function(){
-                        var _param = {};
+                        var _param = {page:this.curPage};
                         var navData = nav.getGroups();
 
                         $.extend(_param,{id:navData.ids.join(",")});
@@ -912,6 +912,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         return nav.getSites();
                     },
                     fetchData:function(_param){
+                        var _param = {page:this.curPage};
                         API.getSystemAlarm(_param);
                     },
 
