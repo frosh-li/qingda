@@ -342,14 +342,53 @@ class BatteryinfoController extends Controller
         $this->setPageCount();
         $offset = ($this->page-1)*$this->count;
 
-        
 
+        $temp = false;
+        // if ($id) {
+        //     $arr = explode(',',$id);
+        //     $temp = array();
+        //     foreach ($arr as $key => $value) {
+        //         $temp[] = $value."0000";
+        //     }
+        // }else{
+        //     $temp = false;
+        // }
+
+
+        //xl
+        //通过sql直接选择地域进行过滤
+        $sites = array();
+        $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
+
+        if(!empty($sns)){
+            $sql = "SELECT b . * , s.site_name, s.sid
+                FROM  {{battery_info}} AS b 
+                LEFT JOIN {{site}} AS s ON b.sid = s.serial_number ";
+            if($temp){
+                $sql .= " where  s.serial_number in (" . implode(",", array_intersect($temp,$sns)) .") order by b.sid asc ";
+            }else{
+                $sql .= " where  s.serial_number in (" . implode(",", $sns) .") order by b.sid asc ";
+            }
+            $ups = Yii::app()->db->createCommand($sql)->queryAll();
+        }elseif($sns === false){
+            
             $sql = "SELECT b . * , s.site_name, s.sid
                 FROM  {{battery_info}} AS b
                 LEFT JOIN {{site}} AS s ON b.sid = s.serial_number";
             $sql .=" order by b.sid asc";
          
-        $ups = Yii::app()->db->createCommand($sql)->queryAll();
+            $ups = Yii::app()->db->createCommand($sql)->queryAll();
+
+            if($temp){
+                $sql = "SELECT b . * , s.site_name, s.sid
+                FROM  {{battery_info}} AS b
+                LEFT JOIN {{site}} AS s ON b.sid = s.serial_number";
+                $sql .= " where s.serial_number in ".implode(",",$temp).")";
+                $sql .=" order by b.sid asc";
+                $ups = Yii::app()->db->createCommand($sql)->queryAll();
+            }
+        }
+
         //$ups = Yii::app()->db->createCommand()
         //    ->select('s.site_name,bi.*')
         //    ->from('{{battery_info}} bi')

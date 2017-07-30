@@ -700,8 +700,6 @@ class SitesController extends Controller
             $sites = Yii::app()->db->createCommand()
                 ->select('*')
                 ->from('{{site}}')
-                //->limit($this->count)
-                //->offset(($this->page-1)*$this->count)
                 ->order('serial_number asc')
                 ->queryAll();
             
@@ -710,8 +708,6 @@ class SitesController extends Controller
                 ->select('*')
                 ->from('{{site}}')
                 ->where("serial_number in (".implode(",",$temp).")")
-                //->limit($this->count)
-                //->offset(($this->page-1)*$this->count)
                 ->order('serial_number asc')
                 ->queryAll();
             }
