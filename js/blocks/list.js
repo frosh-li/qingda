@@ -1174,7 +1174,21 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         ui.showBatteryEditDialog($(e.currentTarget).attr('pid'));
                     },
 
+                    getNavData:function(){
+                        return nav.getSites();
+                    },
                     fetchData:function(_param){
+                        _param = _param || {};
+                        var navData = nav.getSites();
+                        var ids;
+
+                        if(this.ids && this.ids.sid){
+                            ids = this.ids.sid;
+                        }else{
+                            ids = navData.ids.join(",");
+                        }
+
+                        $.extend(_param,{id:ids});
                         API.getBatteryInfosData(_param);
                     },
                     render:function(){
@@ -1248,8 +1262,22 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             });
                         }
                     },
-                    fetchData:function(){
-                        API.getUpsInfosData();
+                    getNavData:function(){
+                        return nav.getSites();
+                    },
+                    fetchData:function(_param){
+                        _param = _param || {};
+                        var navData = nav.getSites();
+                        var ids;
+
+                        if(this.ids && this.ids.sid){
+                            ids = this.ids.sid;
+                        }else{
+                            ids = navData.ids.join(",");
+                        }
+
+                        $.extend(_param,{id:ids});
+                        API.getUpsInfosData(_param);
                     },
                     render:function(){
                         var _this = this;

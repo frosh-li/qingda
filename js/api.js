@@ -281,7 +281,7 @@ define(function(require){
             },
             getGroupOptionData:function (args) {
                 var url = '/api/index.php/grouppara/index';
-                this.fetch(url, "listdata:update", args, "get");
+                this.fetch(url, "listdata:update", args, "post");
                 return this;
             },
             getGroupOption:function (args) {
@@ -338,7 +338,7 @@ define(function(require){
             },
             getBatteryOptionsData:function(args) {
             	var url = '/api/index.php/batterypara';
-                this.fetch(url, "listdata:update", args, "get");
+                this.fetch(url, "listdata:update", args, "post");
                 return this;
             },
             getBatteryOption:function(args) {
