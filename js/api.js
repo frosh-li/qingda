@@ -328,7 +328,7 @@ define(function(require){
             },
             getBatteryInfosData:function(args) {
             	var url = '/api/index.php/batteryinfo/index';
-                this.fetch(url, "listdata:update", args, "get");
+                this.fetch(url, "listdata:update", args, "post");
                 return this;
             },
             getBatteryInfo:function(args) {
@@ -421,7 +421,7 @@ define(function(require){
             /***************************************UPS***************************************/
             getUpsInfosData:function(args) {
             	var url = '/api/index.php/upsinfo/index';
-                this.fetch(url, "listdata:update", args, "get");
+                this.fetch(url, "listdata:update", args, "post");
                 return this;
             },
             getUpsInfo:function(args) {

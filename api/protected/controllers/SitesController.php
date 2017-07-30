@@ -664,23 +664,46 @@ class SitesController extends Controller
             Yii::app()->bms->createCommand($sql)->execute();
         }
     }
+
+    public static function getStationIds($zero = '0000'){
+        $id = Yii::app()->request->getParam('id',0);
+        if(!$id){
+            $ret['response'] = array(
+                'code' => -1,
+                'msg' => '暂无站点数据！'
+            );
+            echo json_encode($ret);
+            Yii::app()->end();
+        }
+        $arr = explode(',',$id);
+        $temp = array();
+
+        foreach ($arr as $key => $value) {
+            $temp[] = $value.$zero;
+        }
+
+        $id =  implode(',',$temp);
+        return $temp;
+    }
+
+    
 	/**
 	 * Lists all models.
 	 */
 	public function actionIndex()
 	{
         $this->setPageCount();
-        // $id = Yii::app()->request->getParam('id',0);
-        $temp = false;
-        // if ($id) {
-        //     $arr = explode(',',$id);
-        //     $temp = array();
-        //     foreach ($arr as $key => $value) {
-        //         $temp[] = $value."0000";
-        //     }
-        // }else{
-        //     $temp = false;
-        // }
+        $id = Yii::app()->request->getParam('id',0);
+        $temp = self::getStationIds();
+        if ($id) {
+            $arr = explode(',',$id);
+            $temp = array();
+            foreach ($arr as $key => $value) {
+                $temp[] = $value."0000";
+            }
+        }else{
+            $temp = false;
+        }
 
 
         //xl

@@ -999,7 +999,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         return nav.getSites();
                     },
                     fetchData:function(_param){
-                        var _param = {};
+                        _param = _param || {};
                         var navData = nav.getSites();
                         var ids;
 
@@ -2649,6 +2649,23 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         downloadUrl:"/api/index.php/query",
         getNavData:function(){
             return nav.getSites();
+        },
+        getNavData:function(){
+            return nav.getSites();
+        },
+        fetchData:function(_param){
+            var _param = {};
+            var navData = nav.getSites();
+            var ids;
+
+            if(this.ids && this.ids.sid){
+                ids = this.ids.sid;
+            }else{
+                ids = navData.ids.join(",");
+            }
+            console.log(navData);
+            $.extend(_param,{id:ids});
+            API.getStationsInfo(_param);
         },
         render:function(){
             var _this = this;

@@ -342,17 +342,17 @@ class BatteryinfoController extends Controller
         $this->setPageCount();
         $offset = ($this->page-1)*$this->count;
 
-
-        $temp = false;
-        // if ($id) {
-        //     $arr = explode(',',$id);
-        //     $temp = array();
-        //     foreach ($arr as $key => $value) {
-        //         $temp[] = $value."0000";
-        //     }
-        // }else{
-        //     $temp = false;
-        // }
+        $id = Yii::app()->request->getParam('id',0);
+        $temp = self::getStationIds();
+        if ($id) {
+            $arr = explode(',',$id);
+            $temp = array();
+            foreach ($arr as $key => $value) {
+                $temp[] = $value."0000";
+            }
+        }else{
+            $temp = false;
+        }
 
 
         //xl
@@ -383,7 +383,7 @@ class BatteryinfoController extends Controller
                 $sql = "SELECT b . * , s.site_name, s.sid
                 FROM  {{battery_info}} AS b
                 LEFT JOIN {{site}} AS s ON b.sid = s.serial_number";
-                $sql .= " where s.serial_number in ".implode(",",$temp).")";
+                $sql .= " where s.serial_number in (".implode(",",$temp).")";
                 $sql .=" order by b.sid asc";
                 $ups = Yii::app()->db->createCommand($sql)->queryAll();
             }
@@ -423,7 +423,26 @@ class BatteryinfoController extends Controller
         echo json_encode($ret);
 	}
 
+    public static function getStationIds($zero = '0000'){
+        $id = Yii::app()->request->getParam('id',0);
+        if(!$id){
+            $ret['response'] = array(
+                'code' => -1,
+                'msg' => '暂无站点数据！'
+            );
+            echo json_encode($ret);
+            Yii::app()->end();
+        }
+        $arr = explode(',',$id);
+        $temp = array();
 
+        foreach ($arr as $key => $value) {
+            $temp[] = $value.$zero;
+        }
+
+        $id =  implode(',',$temp);
+        return $temp;
+    }
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
