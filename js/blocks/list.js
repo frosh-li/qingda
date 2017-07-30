@@ -1707,7 +1707,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {leftColumns: 3},
                                 "columns": [
-                                    {"data": "sn_key", title: "站MAC",width:100},
+                                    {"data": "sn_key", title: "物理地址",width:100},
                                     {"data": "site_name", title: "站名称",width:100},
                                     {"data": "sid", title: "站号",width:100},
                                     {"data": "Groups", title: "站内组数",width:100},
@@ -3161,7 +3161,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     "scrollY": ui.getListHeight(),
                     "fixedColumns": {leftColumns: 1},
                     "columns": [
-                                    {"data": "sn_key", title: "站MAC",width:100},
+                                    {"data": "sn_key", title: "物理地址",width:100},
                                     {"data": "site_name", title: "站名称",width:100},
                                     {"data": "sid", title: "站号",width:100},
                                     {"data": "Groups", title: "站内组数",width:100},

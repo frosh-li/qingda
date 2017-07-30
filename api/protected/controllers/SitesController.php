@@ -221,7 +221,7 @@ class SitesController extends Controller
 
 
 
-            $model->is_checked = 0 ;
+            $model->is_checked = 1 ;
             if ($model->save()) {
                 $this->saveAlarm($model);
                 $ret['data'] = array(
