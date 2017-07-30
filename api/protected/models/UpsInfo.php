@@ -69,7 +69,7 @@ class UpsInfo extends CActiveRecord
 		return array(
 			array('sid, ups_factory, create_time, update_time', 'required'),
 			array('sid, redundancy_num, ups_reserve_hour, ups_period_days, ups_discharge_time, create_time, update_time', 'numerical', 'integerOnly'=>true),
-			array('ups_power, floting_charge, ups_vdc, ups_max_charge, ups_max_discharge, ups_discharge_capacity', 'numerical'),
+			array('ups_power, floting_charge, ups_max_charge, ups_max_discharge, ups_discharge_capacity', 'numerical'),
 			array('ups_factory', 'length', 'max'=>255),
 			array('ups_type, ups_charge_mode, ups_service', 'length', 'max'=>50),
 			array('ups_vender_phone, ups_service_phone', 'length', 'max'=>20),
