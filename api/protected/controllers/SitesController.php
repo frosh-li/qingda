@@ -691,9 +691,9 @@ class SitesController extends Controller
         if(!empty($sns)){
             $sql = "select * from my_site as a";
             if($temp){
-                $sql .= " where  a.serial_number in (" . implode(",", array_intersect($temp,$sns)) .") order by a.serial_number desc ";
+                $sql .= " where  a.serial_number in (" . implode(",", array_intersect($temp,$sns)) .") order by a.serial_number asc ";
             }else{
-                $sql .= " where  a.serial_number in (" . implode(",", $sns) .") order by a.serial_number desc ";
+                $sql .= " where  a.serial_number in (" . implode(",", $sns) .") order by a.serial_number asc ";
             }
             $sites = Yii::app()->bms->createCommand($sql)->queryAll();
         }elseif($sns === false){
@@ -702,7 +702,7 @@ class SitesController extends Controller
                 ->from('{{site}}')
                 //->limit($this->count)
                 //->offset(($this->page-1)*$this->count)
-                ->order('serial_number desc')
+                ->order('serial_number asc')
                 ->queryAll();
             
             if($temp){
@@ -712,7 +712,7 @@ class SitesController extends Controller
                 ->where("serial_number in (".implode(",",$temp).")")
                 //->limit($this->count)
                 //->offset(($this->page-1)*$this->count)
-                ->order('serial_number desc')
+                ->order('serial_number asc')
                 ->queryAll();
             }
         }

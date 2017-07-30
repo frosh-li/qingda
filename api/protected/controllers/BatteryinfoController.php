@@ -347,7 +347,7 @@ class BatteryinfoController extends Controller
             $sql = "SELECT b . * , s.site_name, s.sid
                 FROM  {{battery_info}} AS b
                 LEFT JOIN {{site}} AS s ON b.sid = s.serial_number";
-            $sql .=" order by b.sid desc";
+            $sql .=" order by b.sid asc";
          
         $ups = Yii::app()->db->createCommand($sql)->queryAll();
         //$ups = Yii::app()->db->createCommand()

@@ -392,7 +392,7 @@ class UpsinfoController extends Controller
                 FROM  {{ups_info}} AS b
                 LEFT JOIN {{site}} AS s ON b.sid = s.serial_number";
             
-            $sql .="  order by b.sid desc";
+            $sql .="  order by b.sid asc";
        
         $ups = Yii::app()->db->createCommand($sql)->queryAll();
         //$ups = Yii::app()->db->createCommand()
