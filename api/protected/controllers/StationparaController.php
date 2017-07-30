@@ -26,21 +26,23 @@ class StationparaController extends Controller
 	public function actionIndex()
 	{
         // $id = Yii::app()->request->getParam('id',0);
-        // $temp = self::getStationIds();
+        $temp = self::getStationIds();
 
         $this->setPageCount();
         // var_dump(implode(",",$temp));
         $site = Yii::app()->db->createCommand()
             ->select('*')
             ->from('my_site')
+            ->order('serial_number asc')
             ->queryAll();
-        // if($temp){
-        //     $site = Yii::app()->db->createCommand()
-        //         ->select('*')
-        //         ->from('{{site}}')
-        //         //->where('serial_number in ('.implode(",",$temp).')')
-        //         ->queryAll();
-        // }
+        if($temp){
+            $site = Yii::app()->db->createCommand()
+                ->select('*')
+                ->from('{{site}}')
+                ->where('serial_number in ('.implode(",",$temp).')')
+                ->order('serial_number asc')
+                ->queryAll();
+        }
 
         $data = array();
         if ($site) {
@@ -58,14 +60,14 @@ class StationparaController extends Controller
             ->select('*')
             ->from('{{station_param}}')
             ->queryAll();
-        // if($temp){
-        //     $batteryparm = Yii::app()->bms->createCommand()
-        //         ->select('*')
-        //         ->from('{{station_param}}')
-        //         //->where('sn_key in ('.implode(",",$temp).')')
-        //         ->order('sid desc')
-        //         ->queryAll();
-        // }
+        if($temp){
+            $batteryparm = Yii::app()->bms->createCommand()
+                ->select('*')
+                ->from('{{station_param}}')
+                ->where('sn_key in ('.implode(",",$temp).')')
+                ->order('sid desc')
+                ->queryAll();
+        }
         if ($batteryparm) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = $this->count;

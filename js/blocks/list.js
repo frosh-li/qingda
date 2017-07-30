@@ -1654,6 +1654,17 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         }
                     },
                     fetchData:function(_param){
+                        var _param = {};
+                        var navData = nav.getSites();
+                        var ids;
+
+                        if(this.ids && this.ids.sid){
+                            ids = this.ids.sid;
+                        }else{
+                            ids = navData.ids.join(",");
+                        }
+                        console.log(navData);
+                        $.extend(_param,{id:ids});
                         API.getSationOptionsData(_param);
                     },
                     render:function(){
@@ -1742,6 +1753,17 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         }
                     },
                     fetchData:function(_param){
+                        _param = _param || {};
+                        var navData = nav.getSites();
+                        var ids;
+
+                        if(this.ids && this.ids.sid){
+                            ids = this.ids.sid;
+                        }else{
+                            ids = navData.ids.join(",");
+                        }
+                        console.log(navData);
+                        $.extend(_param,{id:ids});
                         API.getGroupOptionData(_param);
                     },
                     render:function(){
@@ -1813,6 +1835,17 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         }
                     },
                     fetchData:function(_param){
+                        _param = _param || {};
+                        var navData = nav.getSites();
+                        var ids;
+
+                        if(this.ids && this.ids.sid){
+                            ids = this.ids.sid;
+                        }else{
+                            ids = navData.ids.join(",");
+                        }
+                        console.log(navData);
+                        $.extend(_param,{id:ids});
                         API.getBatteryOptionsData(_param);
                     },
                     render:function(){
