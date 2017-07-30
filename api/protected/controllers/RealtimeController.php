@@ -34,7 +34,7 @@ class RealtimeController extends Controller
                 ->leftJoin("my_ups_info","my_ups_info.sid=tb_station_module.sn_key")
                 ->leftJoin('tb_station_param as p','tb_station_module.sn_key=p.sn_key')
                 ->where(array("in","tb_station_module.sn_key",$temp))
-                ->order("my_site.serial_number asc")
+                ->order("my_site.id asc")
                 ->limit($this->count)
                 ->offset(($this->page - 1) * $this->count)
                 ->queryAll();
@@ -102,7 +102,7 @@ class RealtimeController extends Controller
             $id =  implode(',',$temp);
 
             $sql .= ' where g.sn_key in ('.$id.')';
-        $sql .= " order by my_site.serial_number asc ";
+        $sql .= " order by my_site.id asc ";
         $sql .= "limit $offset, $this->count ";
         
         $sites = Yii::app()->bms->createCommand($sql)->queryAll();
