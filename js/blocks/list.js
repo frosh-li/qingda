@@ -107,6 +107,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             $("#totaldatas").text(totals);
                             $("#currentpage").text(_this.curPage);
                             $("#totalpage").text(Math.ceil(totals/(pageSize||10)));
+                            $('#ctotals').text(data.list.length);
                             _this.totalpage = Math.ceil(totals/(pageSize||10));
                             if(_this.curPage == 1){
                             //    $(".mprev").hide();

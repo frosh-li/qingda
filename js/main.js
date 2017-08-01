@@ -218,6 +218,12 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             })
         }
 
+        if(/^(stationInfo\/stationSituation|stationInfo\/batterys|stationInfo\/upsInfo|optionSetting\/stationOption|optionSetting\/groupOption|optionSetting\/batteryOption)$/.test(pageType)){
+            $(".list-bottom.ctotals").show();
+        }else{
+            $(".list-bottom.ctotals").hide();
+        }
+
         if(/^systemAlarm$/.test(pageType)){
 
             $("#dataItem").html($("#listTpl").html());
