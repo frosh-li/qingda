@@ -545,7 +545,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     },
                     updateStations:function(){
 
-                        this.stations = nav.getSites();
+                        this.stations = nav.getTrueSites();
                         console.log('stations',this.stations)
                         this.prevIds = [];
                         this.curStation = '';

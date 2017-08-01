@@ -371,6 +371,7 @@ define(function(require){
          * 定时器---获取报警信息
          */
         startGetCaution:function(){
+            console.log('start interval 30');
             if(isMonitoring){return}
             isMonitoring = true;
             $("body").everyTime('30s','monitoring',function(){
