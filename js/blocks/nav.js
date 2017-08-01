@@ -178,7 +178,7 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
                 })
             }
             return ids;  
-        }
+        },
         getSelectedNodePid: function(){
             var getSelectedNodeId = [];
             if(navView.tree){
