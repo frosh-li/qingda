@@ -170,7 +170,7 @@ define(function(require){
             /***************************************站***************************************/
             getStationRealTimeData:function(args){
                 var url = '/api/index.php/realtime';
-                this.fetch(url, "stationdata:get", args, "get");
+                this.fetch(url, "stationdata:get", args, "post");
                 return this;
             },
             getAboutInfo:function(args){
@@ -180,7 +180,7 @@ define(function(require){
             },
             getStationHistoryData:function(args){
                 var url = '/api/index.php/query';
-                this.fetch(url, "stationdata:get", args, "get");
+                this.fetch(url, "stationdata:get", args, "post");
                 return this;
             },
             getSystemAlarm: function(args){
@@ -276,7 +276,7 @@ define(function(require){
             /***************************************组***************************************/
             getGroupsData: function (args) {
                 var url = '/api/index.php/realtime/groupmodule';
-                this.fetch(url, "listdata:update", args, "get");
+                this.fetch(url, "listdata:update", args, "post");
                 return this;
             },
             getGroupOptionData:function (args) {
@@ -323,7 +323,7 @@ define(function(require){
             /***************************************电池***************************************/
             getBatterysRealTimeData: function (args) {
                 var url = '/api/index.php/realtime/batterymodule';
-                this.fetch(url, "listdata:update", args, "get");
+                this.fetch(url, "listdata:update", args, "post");
                 return this;
             },
             getBatteryInfosData:function(args) {
