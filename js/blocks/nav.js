@@ -170,7 +170,7 @@ define(['require','api','backbone','context','common','zTreeExcheck'],function(r
             if(navView.tree){
                 var selectedNode = navView.tree.getCheckedNodes();
                 $.each(selectedNode,function(i,node){
-                    if(node.leveltype == "2" && node.children.length > 0){
+                    if(node.leveltype == "2" && node.children && node.children.length > 0){
                         ids.ids.push(node.id);
                         ids.pids.push(node.pid);
                         ids.map[node.id] = node;
