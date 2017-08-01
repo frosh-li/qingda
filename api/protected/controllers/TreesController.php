@@ -376,7 +376,7 @@ class TreesController extends Controller
             $sql = "";
             if ($keyword) {
                 $sql ="
-                    select m.*, a.*,m.sid as sid from tb_station_module as a,my_site as m
+                    select m.*, m.sid as sid from my_site as m
                     where m.is_checked = 1
                     and
                     a.sn_key = m.serial_number
@@ -385,7 +385,7 @@ class TreesController extends Controller
 
             }else{
                 $sql ="
-                    select m.*, a.*,m.sid as sid from tb_station_module as a,my_site as m
+                    select m.*, m.sid as sid from my_site as m
                     where m.is_checked = 1
                     and
                     a.sn_key = m.serial_number
