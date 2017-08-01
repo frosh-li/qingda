@@ -373,7 +373,7 @@ define(function(require){
         startGetCaution:function(){
             if(isMonitoring){return}
             isMonitoring = true;
-            $("body").everyTime('5s','monitoring',function(){
+            $("body").everyTime('30s','monitoring',function(){
                 //API.getMapData(false,'realtime:mapdata');
                 API.getNavData();
                 API.getLinkingStationNum();
