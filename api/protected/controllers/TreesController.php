@@ -378,8 +378,6 @@ class TreesController extends Controller
                 $sql ="
                     select m.*, m.sid as sid from my_site as m
                     where m.is_checked = 1
-                    and
-                    a.sn_key = m.serial_number
                     and m.site_name like '%".$keyword."%'
                 ".$where;
 
@@ -387,8 +385,6 @@ class TreesController extends Controller
                 $sql ="
                     select m.*, m.sid as sid from my_site as m
                     where m.is_checked = 1
-                    and
-                    a.sn_key = m.serial_number
                 ".$where;
             }
 
