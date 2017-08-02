@@ -305,7 +305,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     nav.run();
                     navTree=nav;
                 }
-
+                
                 isOver();
             })
         }else if (/^(limitation|baseinfo|equipment|option|runlog|adminConfig)$/.test(pageType)) {
@@ -321,7 +321,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     nav.run();
                     navTree=nav;
                 }
-
+                
                 isOver();
             })
         }else if(/^(uilog)$/.test(pageType)){
@@ -337,13 +337,13 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             $(".report-caution-selector",$searchWrap).parents('.jqTransformSelectWrapper').hide()
             $(".reportCaution",$searchWrap).hide()
             require(["blocks/listSearch","blocks/list","blocks/nav"],function(listSearch,list,nav){
-                refreshModules([nav,listSearch,list],_arg);
                 afterInit(sys,pageType,sub);
                 if(!navTree){
                     nav.run();
                     navTree=nav;
                 }
-
+                refreshModules([nav,listSearch,list],_arg);
+                
                 isOver();
             })
         }else if (/^(qureyBattery|qureyStation|qureyGroup|qureyCaution)$/.test(pageType)) {
@@ -363,22 +363,33 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                 $searchWrap.jqTransform();
                 ui.downHide(true);
                 require(["blocks/listSearch","blocks/list","blocks/nav"],function(listSearch,list,nav){
-                    refreshModules([nav,listSearch,list],_arg);
                     afterInit(sys,pageType,sub);
                     if(!navTree){
-                        nav.run();
-                        navTree=nav;
+                        refreshModules([nav],_arg);
+                        nav.run(function(){
+                            navTree=nav;
+                            refreshModules([listSearch,list],_arg);
+                        });
+                        
+                    }else{
+                        refreshModules([listSearch,list],_arg);
                     }
-
                     isOver();
                 })
             }else{
                 require(["blocks/listSearch","blocks/list","blocks/nav"],function(listSearch,list,nav){
-                    refreshModules([nav,listSearch,list],_arg);
-                    afterInit(sys,pageType,sub);
+                    afterInit(sys,pageType,sub);    
                     if(!navTree){
-                        nav.run();
-                        navTree=nav;
+                        refreshModules([nav],_arg);
+                        nav.run(function(){
+                            navTree=nav;
+                            refreshModules([listSearch,list],_arg);
+                                
+                        });
+                        
+                    }else{
+                        refreshModules([listSearch,list],_arg);
+                        
                     }
 
                     isOver();
@@ -425,11 +436,17 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             $(".report-caution-selector",$searchWrap).parents('.jqTransformSelectWrapper').hide()
             $(".reportCaution",$searchWrap).hide()
             require(["blocks/listSearch","blocks/list","blocks/nav"],function(listSearch,list,nav){
-                refreshModules([nav,listSearch,list],_arg);
+                
                 afterInit(sys,pageType,sub);
                 if(!navTree){
-                    nav.run();
-                    navTree=nav;
+                    refreshModules([nav],_arg);
+                    nav.run(function(){
+                        navTree=nav;   
+                        refreshModules([listSearch,list],_arg); 
+                    });
+                    
+                }else{
+                    refreshModules([listSearch,list],_arg); 
                 }
 
                 isOver();
@@ -454,11 +471,17 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             }else{
                 require(["blocks/list","blocks/nav"],function(list,nav) {
                     $("#dataItem").html($("#listTpl").html());
-                    refreshModules([nav,list],_arg);
+                    
                     afterInit(sys,pageType,sub);
                     if(!navTree){
-                        nav.run();
-                        navTree=nav;
+                        refreshModules([nav],_arg);
+                        nav.run(function(){
+                            navTree=nav;
+                            refreshModules([list],_arg);
+                        });
+                        
+                    }else{
+                        refreshModules([list],_arg);
                     }
 
                     isOver();
@@ -470,11 +493,17 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             ui.downHide(true);
             if(sub=="tree"){//树形结构图
                 require(["blocks/customTree","blocks/nav"],function(tree,nav) {
-                    refreshModules([nav,tree],_arg);
+                    
                     afterInit(sys,pageType,sub);
                     if(!navTree){
-                        nav.run();
-                        navTree=nav;
+                        refreshModules([nav],_arg);
+                        nav.run(function(){
+                            navTree=nav;   
+                            refreshModules([tree],_arg); 
+                        });
+                        
+                    }else{
+                        refreshModules([tree],_arg); 
                     }
 
                     isOver();
@@ -482,11 +511,17 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             }else{
                 require(["blocks/listSearch","blocks/list","blocks/nav"],function(listSearch,list,nav) {
                     $("#dataItem").html($("#listTpl").html());
-                    refreshModules([nav,listSearch,list],_arg);
+                    
                     afterInit(sys,pageType,sub);
                     if(!navTree){
-                        nav.run();
-                        navTree=nav;
+                        refreshModules([nav],_arg);
+                        nav.run(function(){
+                            navTree=nav;
+                            refreshModules([listSearch,list],_arg);
+                        });
+                        
+                    }else{
+                        refreshModules([listSearch,list],_arg);
                     }
 
                     isOver();
