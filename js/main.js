@@ -218,11 +218,8 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             })
         }
 
-        if(/(stationInfo\/stationSituation|stationInfo\/batterys|stationInfo\/upsInfo|optionSetting\/stationOption|optionSetting\/groupOption|optionSetting\/batteryOption)/.test(pageType)){
-            $(".list-bottom.ctotals").show();
-        }else{
-            $(".list-bottom.ctotals").hide();
-        }
+        
+        
 
         if(/^systemAlarm$/.test(pageType)){
 
@@ -556,6 +553,20 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             $('body').oneTime('0.2s',function(){
                 isOver();
             });
+        }
+        var ctotals_array = [
+            '#/settings/stationInfo/batterys',
+            '#/settings/stationInfo/stationSituation',
+            '#/settings/stationInfo/upsInfo',
+            '#/settings/optionSetting/stationOption',
+            '#/settings/optionSetting/groupOption',
+            '#/settings/optionSetting/batteryOption'
+        ];
+        if(ctotals_array.indexOf(window.location.hash) > -1){
+            $(".list-bottom.ctotals").show();
+        
+        }else{
+            $(".list-bottom.ctotals").hide();
         }
     }
     function refreshModules(modules,arg){
