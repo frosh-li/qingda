@@ -42,10 +42,6 @@ define(["require","backbone"],function(require,Backbone){
                             return data;
                         }
                     }},
-                    { "data": "start_time",title:"放电开始",width:150, render: function(data){
-                        return data != false ? data:""
-                    } },
-                    { "data": "end_time",title:"放电结束",width:150, render: function(data){return data != false ? data:""} },
                     { "data": "MaxTem_R",title:"温度上限℃",width:130 },
                     { "data": "MinTem_R",title:"温度下限℃",width:130 },
                     { "data": "MaxHum_R",title:"湿度上限%",width:130 },
@@ -128,10 +124,10 @@ define(["require","backbone"],function(require,Backbone){
                             return data;
                         }
                     }},
-                    { "data": "start_time",title:"放电开始",width:150, render: function(data){
-                        return data != false ? data:""
-                    } },
-                    { "data": "end_time",title:"放电结束",width:150, render: function(data){return data != false ? data:""} },
+                    // { "data": "start_time",title:"放电开始",width:150, render: function(data){
+                    //     return data != false ? data:""
+                    // } },
+                    // { "data": "end_time",title:"放电结束",width:150, render: function(data){return data != false ? data:""} },
                     { "data": "MaxTem_R",title:"温度上限℃",width:130 },
                     { "data": "MinTem_R",title:"温度下限℃",width:130 },
                     { "data": "MaxHum_R",title:"湿度上限%",width:130 },
