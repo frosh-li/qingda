@@ -141,8 +141,8 @@ class StationpersonController extends Controller
             ->from('{{sysuser}} sp')
             ->leftJoin('{{site}} s','sp.sn_key = s.serial_number')
             ->leftJoin('{{roles}} r', 'sp.role = r.id')
-            ->limit($this->count)
-            ->offset(($this->page-1)*$this->count)
+            // ->limit($this->count)
+            // ->offset(($this->page-1)*$this->count)
             ->order('id desc')
             ->queryAll();
 
