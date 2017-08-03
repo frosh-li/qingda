@@ -31,6 +31,11 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             $(".list-del-btn").hide();
             $("#listBtns li.undis").hide();
         }
+        /**
+         * 1 超级管理员
+         * 2 管理员
+         * 3 观察员
+         */
         if(roleid != 1){
             $(".manage.newstations").hide();
         }else{
@@ -42,6 +47,10 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         }
         if(roleid == 3){
             $(".switch-btn.settings").hide();//
+            $(".option.stationOption").hide();
+            $(".option.groupOption").hide();
+            $(".option.batteryOption").hide();
+            
             //$(".manage.newstations").show();
 
         }
@@ -50,7 +59,16 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             $("#addCompany").hide();
             $("#addBattery").hide();
             $("#addUps").hide();
+            $("#addStation").hide();
+
+            
             $(".settings.message").hide();
+
+            $(".option.stationOption").hide();
+            $(".option.groupOption").hide();
+            $(".option.batteryOption").hide();
+
+
         }
 
         if(roleid == 2 && area != "*"){
