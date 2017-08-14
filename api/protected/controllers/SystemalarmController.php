@@ -24,20 +24,20 @@ class SystemalarmController extends Controller
         $this->setPageCount();
         $offset = ($this->page-1)*$this->count;
 
-        $sql = "select * from systemAlarm  left join my_site on (my_site.serial_number=systemAlarm.station) order by systemAlarm.id desc";
+        $sql = "select * from systemalarm  left join my_site on (my_site.serial_number=systemalarm.station) order by systemalarm.id desc";
         $ups = Yii::app()->db->createCommand()
                 ->select("*")
-                ->from("systemAlarm")
-                ->leftJoin("my_site","my_site.serial_number=systemAlarm.station")
-                ->order("systemAlarm.id desc")
+                ->from("systemalarm")
+                ->leftJoin("my_site","my_site.serial_number=systemalarm.station")
+                ->order("systemalarm.id desc")
                 ->limit($this->count)
                 ->offset(($this->page - 1) * $this->count)
                 ->queryAll();
 
         $upsTotal = Yii::app()->db->createCommand()
                 ->select("count(*) as totals")
-                ->from("systemAlarm")
-                ->order("systemAlarm.id desc")
+                ->from("systemalarm")
+                ->order("systemalarm.id desc")
                 ->queryScalar();
         
         $ret['response'] = array(
