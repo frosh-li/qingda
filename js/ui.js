@@ -136,17 +136,21 @@ define(function(require){
 
             _this.listenTo(Backbone.Events,"monitoring:start",function(data){
                 if(data.totals && data.totals > 0){
-                    $(".baojing").css('display','block')
+                    $(".baojing").css('display','block');
+                    document.getElementById("alertmusic").play();
                 }else{
                     $(".baojing").css('display','none')
+                    document.getElementById("alertmusic").pause();
                 }
                 $(".baojing .bg").html(data.totals||0);
             });
             _this.listenTo(Backbone.Events,"monitoring:start:fail",function(data){
                 if(data.totals && data.totals > 0){
-                    $(".baojing").css('display','block')
+                    $(".baojing").css('display','block');
+                    document.getElementById("alertmusic").play();
                 }else{
-                    $(".baojing").css('display','none')
+                    $(".baojing").css('display','none');
+                    document.getElementById("alertmusic").pause();
                 }
                 $(".baojing .bg").html(data.totals||0);
             });
