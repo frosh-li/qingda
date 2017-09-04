@@ -109,7 +109,9 @@ define(function(require){
                     $("#map-switch").show();
                 }
                 if(data.sms_on_off == "1"){
-                    $("#alarm_sms").removeClass("graylight").addClass("grelight")
+                    $("#alarm_sms").removeClass("graylight").addClass("grelight");
+                    // 发送消息给软件
+                    API.sendAllMsg();
                 }else{
                     $("#alarm_sms").removeClass("grelight").addClass("graylight");
                 }

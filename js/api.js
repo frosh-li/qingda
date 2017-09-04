@@ -586,7 +586,10 @@ define(function(require){
             },
 			syncHard: function(args, ctype){
 				this.fetch(location.protocol+"//"+location.host+":3000/setparam?type="+ctype, null, args, "post");
-			}
+			},
+            sendAllMsg: function(args) {
+                this.fetch(location.protocol+"//"+location.host+":3000/sendmsg", null, args, "post");
+            }
         }
 
     return API;
