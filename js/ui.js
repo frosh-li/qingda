@@ -125,8 +125,9 @@ define(function(require){
                     $("#alarm_sound").removeClass("graylight").addClass("grelight")
                 }else{
                     $("#alarm_sound").removeClass("grelight").addClass("graylight");
+                    document.getElementById("alertmusic").pause();
                 }
-                if(data.light_on_off == "1"){
+                if(data.light_on_off === "1"){
                     $("#alarm_light").removeClass("graylight").addClass("grelight")
                 }else{
                     $("#alarm_light").removeClass("grelight").addClass("graylight");
@@ -137,9 +138,14 @@ define(function(require){
 
 
             _this.listenTo(Backbone.Events,"monitoring:start",function(data){
+                console.log('monitoring', data);
                 if(data.totals && data.totals > 0){
                     $(".baojing").css('display','block');
-                    document.getElementById("alertmusic").play();
+                    if(data.voice_on_off == "1"){
+                        document.getElementById("alertmusic").play();
+                    }else{
+                        document.getElementById("alertmusic").pause();
+                    }
                 }else{
                     $(".baojing").css('display','none')
                     document.getElementById("alertmusic").pause();
@@ -149,7 +155,11 @@ define(function(require){
             _this.listenTo(Backbone.Events,"monitoring:start:fail",function(data){
                 if(data.totals && data.totals > 0){
                     $(".baojing").css('display','block');
-                    document.getElementById("alertmusic").play();
+                    if(data.voice_on_off == "1"){
+                        document.getElementById("alertmusic").play();
+                    }else{
+                        document.getElementById("alertmusic").pause();
+                    }
                 }else{
                     $(".baojing").css('display','none');
                     document.getElementById("alertmusic").pause();
