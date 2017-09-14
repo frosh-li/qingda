@@ -1826,6 +1826,12 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     {"data": "MinTem_R", title: "组温度超下限_红",width:100},
                                     {"data": "MinTem_O", title: "组温度将达下限_橙",width:100},
                                     {"data": "MinTem_Y", title: "组温度偏低_黄",width:100},
+                                    {"data": "MaxHumi_R", title: "组湿度超上限_红",width:100},
+                                    {"data": "MaxHumi_O", title: "组湿度将达上限_橙",width:100},
+                                    {"data": "MaxHumi_Y", title: "组湿度偏高_黄",width:100},
+                                    {"data": "MinHumi_R", title: "组湿度超下限_红",width:100},
+                                    {"data": "MinHumi_O", title: "组湿度将达下限_橙",width:100},
+                                    {"data": "MinHumi_Y", title: "组湿度偏低_黄",width:100},
                                     {"data": "ChaCriterion", title: "组充放电判据",width:100},
                                     {
                                         data:"sn_key",
@@ -3108,6 +3114,12 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             {"data": "MinTem_R", title: "组温度超下限_红",width:100},
                             {"data": "MinTem_O", title: "组温度将达下限_橙",width:100},
                             {"data": "MinTem_Y", title: "组温度偏低_黄",width:100},
+                            {"data": "MaxHumi_R", title: "组湿度超上限_红",width:100},
+                            {"data": "MaxHumi_O", title: "组湿度将达上限_橙",width:100},
+                            {"data": "MaxHumi_Y", title: "组湿度偏高_黄",width:100},
+                            {"data": "MinHumi_R", title: "组湿度超下限_红",width:100},
+                            {"data": "MinHumi_O", title: "组湿度将达下限_橙",width:100},
+                            {"data": "MinHumi_Y", title: "组湿度偏低_黄",width:100},
                             {"data": "ChaCriterion", title: "组充放电判据",width:100},
                     ]
                 })));

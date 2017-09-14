@@ -233,6 +233,14 @@ class GroupparaController extends Controller
         $MinTem_R=Yii::app()->request->getParam('MinTem_R','');
         $MinTem_O=Yii::app()->request->getParam('MinTem_O','');
         $MinTem_Y=Yii::app()->request->getParam('MinTem_Y','');
+
+        $MaxHumi_R=Yii::app()->request->getParam('MaxHumi_R','');
+        $MaxHumi_O=Yii::app()->request->getParam('MaxHumi_O','');
+        $MaxHumi_Y=Yii::app()->request->getParam('MaxHumi_Y','');
+        $MinHumi_R=Yii::app()->request->getParam('MinHumi_R','');
+        $MinHumi_O=Yii::app()->request->getParam('MinHumi_O','');
+        $MinHumi_Y=Yii::app()->request->getParam('MinHumi_Y','');
+
         $ChaCriterion=Yii::app()->request->getParam('ChaCriterion','');
 
         if ($sn_key) {
@@ -253,6 +261,15 @@ class GroupparaController extends Controller
             $MinTem_R != '' && $row['MinTem_R']=$MinTem_R;
             $MinTem_O != '' && $row['MinTem_O']=$MinTem_O;
             $MinTem_Y != '' && $row['MinTem_Y']=$MinTem_Y;
+
+            $MaxHumi_R != '' && $row['MaxHumi_R']=$MaxHumi_R;
+            $MaxHumi_O != '' && $row['MaxHumi_O']=$MaxHumi_O;
+            $MaxHumi_Y != '' && $row['MaxHumi_Y']=$MaxHumi_Y;
+            $MinHumi_R != '' && $row['MinHumi_R']=$MinHumi_R;
+            $MinHumi_O != '' && $row['MinHumi_O']=$MinHumi_O;
+            $MinHumi_Y != '' && $row['MinHumi_Y']=$MinHumi_Y;
+
+
             $ChaCriterion != '' && $row['ChaCriterion']=$ChaCriterion;
 
             $upsql = Utils::buildUpdateSQL($row);
