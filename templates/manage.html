@@ -20,7 +20,7 @@
             </dl>
         </div><!--set-wrap-->
         <div class="clear"></div>
-        
+
         <!--div class="cx blocks" style="display:none;" id="duration">
             <div class="search-wrap"><input id="dbeginTime" type="text" class="search" placeholder="开始时间"><img src="images/xiala-bg.jpg"> </div>
             <div class="search-wrap"><input id="dendTime" type="text" class="search" placeholder="结束时间"><img src="images/xiala-bg.jpg"> </div>
@@ -114,7 +114,7 @@
                             <option value="R">红</option>
                             <option value="O">橙</option>
                             <option value="Y">黄</option>
-                            
+
                         </select>
                         <label class="item-title" for="name">开始时间</label>
                         <input type="text" id="beginTime"/>
@@ -318,7 +318,7 @@
     <input type="button" class="list-edit-btn" pid="<%= id %>" value="编辑"/>
 </script>
 <script type="text/html" id="sendSocketBtn">
-    <input type="button" class="list-send-btn" pid="<%= id %>" value="下发指令"/>
+    <input type="button" class="list-send-btn" pid="<%= sn %>" value="下发指令"/>
 </script>
 <script type="text/html" id="validateBtn">
     <input type="button" class="list-validate-btn" pid="<%= id %>" sn="<%= sn %>" value="校验"/>
@@ -475,12 +475,11 @@
 <script type="text/html" id="socketEditTpl">
     <div id="socketEditTpl-dialog" class="dialog">
         <form class="jqtransform">
-            <textarea style="height:500px;width:400px;">
-            </textarea>
+            <input type="hidden" key="sn_key" />
+            <textarea style="height:300px;width:400px;" key="cmd"></textarea>
         </form>
         <div class="form-btns">
-            <input type="button" class="submit-btn undis btn" value="确定"/>
-            <input type="button" class="cancel-btn btn" value="取消"/>
+            <input type="button" class="cancel-btn btn" value="确定"/>
         </div>
     </div>
 </script>
@@ -1681,7 +1680,7 @@
     </div>
 </script>
 
-<audio preload="auto" id="alertmusic" hidden loop> 
+<audio preload="auto" id="alertmusic" hidden loop>
     <source src="images/alert.mp3" />
     <source src="images/alert.ogg" />
 </audio>

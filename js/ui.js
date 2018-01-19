@@ -197,7 +197,7 @@ define(function(require){
                 $("#cj_password").val("");
                 return;
             }
-            
+
             require(['blocks/nav'], function(nav){
 
                 var navData = nav.getSites();
@@ -227,12 +227,12 @@ define(function(require){
 
 
                 API.updateCollect({
-                    stationid: ids, 
+                    stationid: ids,
                     batterys: battyerids
                 },"rCollect:start")
-    
+
             })
-            
+
             // Backbone.Events.trigger('startCollect');
         },
 
@@ -413,9 +413,9 @@ define(function(require){
             })
         },
 
-        showSendDataDialog:function(id){
-            require(["sendSockDialog"],function(dialog){
-                dialog && dialog.show(id);
+        showSendDataDialog:function(sn){
+            require(["js/sendSockDialog.js"],function(dialog){
+                dialog && dialog.show(sn);
             })
         },
 

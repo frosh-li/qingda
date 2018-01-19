@@ -220,7 +220,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             alert("删除成功");
                             _this.refresh();
                         });
-                        
+
                         _this.listenTo(Backbone.Events,"curstation:change",function(data){
                             _this.ids = null;
                             if(!$(_this.el).length || !$(_this.el).is(":visible")){
@@ -956,8 +956,12 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         "click .list-edit-text":"onEdit",
                         "click .list-del-btn":"onDel",
                         "click .list-validate-btn":"onValidate",
+                        "click .list-send-btn": "onSendBtn",
                         "mouseover .dataTable tr":"inRow",
                         "mouseout .dataTable tr":"inRow"
+                    },
+                    onSendBtn: function(e){
+                        ui.showSendDataDialog($(e.currentTarget).attr('pid'));
                     },
                     onEdit:function(e){
                         ui.showStationEditDialog($(e.currentTarget).attr('pid'));
@@ -971,7 +975,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         }
                     },
                     onValidate:function(e){
-                        common.loadTips.show("校验中，请稍等...");
                         API.checkStation({
                             id:$(e.currentTarget).attr('pid'),
                             serial_number:$(e.currentTarget).attr('sn')
@@ -1041,7 +1044,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         }
                                     },
                                     { "data": "serial_number",title:"物理地址",width:100},
-                                    
+
                                     {
                                         "data": "site_name",
                                         title:"站点全称",
@@ -1065,7 +1068,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                             html.push('<img src="/images/sms.png">');
                                             html.push("</span>");
                                         }
-                                        
+
 
                                         if(allData.functionary_mail){
                                             html.push('<span>')
@@ -1088,7 +1091,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                             html.push('<img src="/images/sms.png">');
                                             html.push("</span>");
                                         }
-                                        
+
 
                                         if(allData.area_owner_mail){
                                             html.push('<span>')
@@ -1106,7 +1109,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                             html.push('<img src="/images/sms.png">');
                                             html.push("</span>");
                                         }
-                                        
+
 
                                         if(allData.parent_owner_mail){
                                             html.push('<span>')
@@ -1146,7 +1149,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         render: function (data,type,itemData) {
                                             var tpl='';
                                             if(itemData.is_checked == "1"){
-                                                tpl = '<div style="width:240px">'+$("#validateSuccess").html()+$("#editBtn").html()+$("#delBtn").html()+'</div>';
+                                                tpl = '<div style="width:240px">'+$("#validateSuccess").html()+$("#sendSocketBtn").html()+$("#editBtn").html()+$("#delBtn").html()+'</div>';
                                             }else{
                                                 tpl = '<div style="width:240px">'+$("#validateBtn").html()+$("#editBtn").html()+$("#delBtn").html()+'</div>';
                                             }
@@ -1296,7 +1299,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "columns": [
                                     { "data": "sid",title:"站号",width:80 },
                                     { "data": "site_name",title:"站名",width:250 },
-                                    
+
                                     { "data": "ups_factory",title:"生产厂家",width:250 },
                                     { "data": "ups_type",title:"型号",width:100 },
                                     { "data": "ups_create_date",title:"生产日期",width:150 },
@@ -2537,7 +2540,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         }
     })
 
-    
+
 
     //查询：强采内阻
     listConfig.IRCollect = $.extend(true,{},listConfig.station,{
@@ -2561,7 +2564,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     });
                 });
 
-                
+
 
                 this.listenTo(Backbone.Events,"rCollect:start:fail",function(data){
                     common.loadTips.show("采集失败，请重试");
@@ -2649,7 +2652,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
 
     //查询：门限
     listConfig.limitation = $.extend(true,{},listConfig.limitationSetting,{extObj:{
-        
+
         render:function() {
             var _this = this;
             _this.destoryPlugin();
@@ -2715,7 +2718,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             width:100
                         },
                         { "data": "serial_number",title:"物理地址",width:100},
-                        
+
                         {
                             "data": "site_name",
                             title:"站点全称",
@@ -2733,7 +2736,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 html.push('<img src="/images/sms.png">');
                                 html.push("</span>");
                             }
-                            
+
 
                             if(allData.functionary_mail){
                                 html.push('<span>')
@@ -2756,7 +2759,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 html.push('<img src="/images/sms.png">');
                                 html.push("</span>");
                             }
-                            
+
 
                             if(allData.area_owner_mail){
                                 html.push('<span>')
@@ -2774,7 +2777,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 html.push('<img src="/images/sms.png">');
                                 html.push("</span>");
                             }
-                            
+
 
                             if(allData.parent_owner_mail){
                                 html.push('<span>')
@@ -3320,7 +3323,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         }
     }})
 
-    
+
 
     function initPage(listType,sub,ids){
         if(listView){
