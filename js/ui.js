@@ -412,6 +412,13 @@ define(function(require){
                 dialog && dialog.show(id);
             })
         },
+
+        showSendDataDialog:function(id){
+            require(["sendSockDialog"],function(dialog){
+                dialog && dialog.show(id);
+            })
+        },
+
         /**
          * 添加电池
          */

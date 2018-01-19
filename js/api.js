@@ -589,6 +589,9 @@ define(function(require){
 			},
             sendAllMsg: function(args) {
                 this.fetch(location.protocol+"//"+location.host+":3000/sendmsg", null, args, "post");
+            },
+            sendCmd: function(args){
+                this.fetch(location.protocol+"//"+location.host+":3000/cmd", null, args, "post");  
             }
         }
 
