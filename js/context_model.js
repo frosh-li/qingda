@@ -91,7 +91,7 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "MinU_R",title:"放电下限V",width:80 },
                     { "data": "MaxT_R",title:"温度上限℃",width:80 },
                     { "data": "MinT_R",title:"温度下限℃",width:80 },
-                    { "data": "MaxR_R",title:"内阻上限MΩ",width:100 }
+                    { "data": "MaxR_R",title:"内阻上限mΩ",width:100 }
                 ],
                 qurey_station:[
                     { "data": "Current",title:"电流A",width:80 },
