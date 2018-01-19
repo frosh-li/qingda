@@ -78,7 +78,7 @@ define(["require","backbone"],function(require,Backbone){
                 battery:[
                     { "data": "Voltage",title:"电压V",width:80 },
                     { "data": "Temperature",title:"温度℃",width:80 },
-                    { "data": "Resistor",title:"内阻MΩ",width:100 },
+                    { "data": "Resistor",title:"内阻mΩ",width:100 },
                     //{ "data": "AmpRange",title:"量程",width:80 },
                     { "data": "Dev_U",title:"电压偏离",width:100, render: function(data){return Math.abs(data).toFixed(2)} },
                     { "data": "Dev_T",title:"温度偏离",width:100, render: function(data){return Math.abs(data).toFixed(2)} },
