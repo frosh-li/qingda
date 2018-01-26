@@ -13,13 +13,6 @@ define(['require','api','common'],function(require,API,common){
                 initialize:function(data){
                     var _this = this;
 
-                    _this.listenTo(Backbone.Events,"stationinfo:foredit:update",function(data){
-                        _this.data = data;
-                        _this.data.serial_number = _this.data.serial_number.substring(0,10);
-                        level = level||levelSelector.init({value:data.aid});
-                        _this.setValue();
-                    });
-
                 },
 
                 showErrTips:function(tips){
