@@ -7,8 +7,9 @@ define(['require','api','common'],function(require,API,common){
                 listPlugin:[],
                 el:'#loginTpl-dialog',
                 events:{
-                    "click .submit-btn":"onsubmit",
-                    "click .cancel-btn":"oncancel"
+                    "click .loginsubmit":"onsubmit",
+                    "click .cancel-btn":"oncancel",
+                    "click .chanagepwd":"chanagepwd"
                 },
                 initialize:function(data){
                     var _this = this;
@@ -21,6 +22,13 @@ define(['require','api','common'],function(require,API,common){
                     })
                     _this.listenTo(Backbone.Events,"login:box:fail",function(data){
                         alert('登录失败，请重试');
+                    })
+                    _this.listenTo(Backbone.Events,"login:cpwd",function(data){
+                        alert('密码修改成功');
+                        _this.oncancel();
+                    })
+                    _this.listenTo(Backbone.Events,"login:cpwd:fail",function(data){
+                        alert('密码修改失败');
                     })
                 },
                 setValue:function(){
@@ -40,6 +48,15 @@ define(['require','api','common'],function(require,API,common){
                     var _this = this,
                         _param = _this.getParam();
                     _param.refresh = 1;
+                    if(_this.validate(_param)){
+                        API.login(_param);
+                    }
+                },
+                chanagepwd:function(){
+                    // this.stopListening();
+                    var _this = this,
+                        _param = _this.getParam();
+                    _param.chanagepwd = 1;
                     if(_this.validate(_param)){
                         API.login(_param);
                     }

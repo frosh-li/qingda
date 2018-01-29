@@ -232,6 +232,21 @@ class RealtimeController extends Controller
     // 实时报警数据
     public function actionGalarm()
     {
+        //需要根据my_sysuser的area区域字段来区分数据报警
+        //mysite的aid可以关联tree的id
+        $areas = "select area from my_sysuser where id = ".$_SESSION["uid"];
+        $auths = Yii::app()->db->createCommand($areas)->queryScalar();
+        // echo $auths;
+        $sn_key_list = array();
+        if ($auths != "*"){
+            $sql = "select serial_number from my_site where aid in ($auths)";
+            $search = Yii::app()->db->createCommand($sql)->queryAll();
+            foreach ($search as $value) {
+                $sn_key_list[] = $value['serial_number']/10000;
+            }
+        }
+        unset($where,$sql);
+
         // 具体流程见 警情判断流程判断逻辑.docx 文档
         // 数据直接出，通过command来处理数据
 
@@ -240,10 +255,15 @@ class RealtimeController extends Controller
         $type = Yii::app()->request->getParam('type',0);
         $cautionType = Yii::app()->request->getParam('cautionType','ALL');
 
-        //$id = Yii::app()->request->getParam('id',0);
-        $temp = false;
-        // if ($id) {
-        //     $arr = explode(',',$id);
+        $id = Yii::app()->request->getParam('id',0);
+
+        // print_r($sn_key_list);
+        if (count($sn_key_list) > 0 && $id == 0) {
+            // print_r($sn_key_list);
+            $id = implode(',', $sn_key_list);
+        }
+        // echo $id;
+
         //     $temp = array();
         //     foreach ($arr as $key => $value) {
         //         $temp[] = $value."0000";
@@ -266,28 +286,32 @@ class RealtimeController extends Controller
         //         ->queryAll();
 
         // }else{
-            if($type == 0){
-                $where = $cautionType == "ALL" ? 'status=0 or status=1':'(status=0 or status=1) and right(code,1)="'.$cautionType.'"';
-                $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('my_alerts')
-                ->where($where)
-                ->limit(20)
-                ->offset(($page-1)*20)
-                ->order('time desc')
-                ->queryAll();    
-            }else{
-                $where = $cautionType == "ALL" ? '(status <> 0 )':'(status <> 0 ) and right(code,1)="'.$cautionType.'"';
-                $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('my_alerts')
-                ->where($where)
-                ->limit(20)
-                ->offset(($page-1)*20)
-                ->order('time desc')
-                ->queryAll();    
-            }
-            
+        if($type == 0){
+            $where = $cautionType == "ALL" ? '(status=0 or status=1)':'(status=0 or status=1) and right(code,1)="'.$cautionType.'"';
+            if ($id != 0) $where .= " and floor(sn_key/10000) in ($id)";
+            // echo $where;
+        }else{
+            $where = $cautionType == "ALL" ? '(status <> 0 )':'(status <> 0 ) and right(code,1)="'.$cautionType.'"';
+            if ($id != 0) $where .= " and sn_key in ($id)";
+            // if($start){
+            //     $start = date('Y-m-d H:i:s', substr($start,0,10));
+            //     $where .= " and `time` >= '2018-01-16 21:08:00'";
+            // }
+            // if($end){
+            //     $end = date('Y-m-d H:i:s', substr($end,0,10));
+            //     $where .= " and `time` <= '$end'";
+            // }
+            // echo $where;
+        }
+
+        $sites = Yii::app()->bms->createCommand()
+        ->select('*')
+        ->from('my_alerts')
+        ->where($where)
+        ->limit(20)
+        ->offset(($page-1)*20)
+        ->order('time desc')
+        ->queryAll();    
 
         //}
         if($type == 0){

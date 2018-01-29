@@ -135,6 +135,7 @@ class StationpersonController extends Controller
 	 */
 	public function actionIndex()
 	{
+        
         $this->setPageCount();
         $ups = Yii::app()->db->createCommand()
             ->select('sp.*,s.site_name,r.rolename')

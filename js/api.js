@@ -97,6 +97,8 @@ define(function(require){
                 var url = '/api/index.php/login';
                 if(args.refresh){
                     this.fetch(url, "login:box", args, "post");
+                }else if(args.chanagepwd){
+                    this.fetch(url, "login:cpwd",args,"post");
                 }else{
                     this.fetch(url, "login", args, "post");
                 }
