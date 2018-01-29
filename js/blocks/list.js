@@ -1148,8 +1148,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         data:"id",
                                         render: function (data,type,itemData) {
                                             var tpl='';
+                                            var sendBtnHtml = "";
+                                            var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+                                            if(roleid === 1){
+                                                sendBtnHtml = $("#sendSocketBtn").html();
+                                            }
                                             if(itemData.is_checked == "1"){
-                                                tpl = '<div style="width:240px">'+$("#validateSuccess").html()+$("#sendSocketBtn").html()+$("#editBtn").html()+$("#delBtn").html()+'</div>';
+                                                tpl = '<div style="width:240px">'+$("#validateSuccess").html()+sendBtnHtml+$("#editBtn").html()+$("#delBtn").html()+'</div>';
                                             }else{
                                                 tpl = '<div style="width:240px">'+$("#validateBtn").html()+$("#editBtn").html()+$("#delBtn").html()+'</div>';
                                             }
