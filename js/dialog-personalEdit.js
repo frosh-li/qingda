@@ -18,9 +18,18 @@ define(['require','api','common','blocks/areaSelector'],function(require,API,com
                         _this.setValue();
                     });
                     _this.listenTo(Backbone.Events,"personal:create personal:update",function(){
+                        // return;
                         window.location.reload();
                         _this.oncancel();
                         Backbone.Events.trigger("listdata:refresh", "batteryInfo");
+                    });
+                    _this.listenTo(Backbone.Events,"personal:create:fail",function(data){
+                        console.log(data);
+                        if (data.response.code == -1){
+                            alert('已经存在相同的用户！');
+                        }else if(data.response.code == -2){
+                            alert(data.response.msg);
+                        }
                     });
 
                     _this.listenTo(Backbone.Events,"personal:update:fail",function(data){
@@ -28,8 +37,20 @@ define(['require','api','common','blocks/areaSelector'],function(require,API,com
                         return;
                         //Backbone.Events.trigger("listdata:refresh", "batteryInfo");
                     });
-
-
+                    $('[key=role]').prev().find('li a').click(function(){
+                        // console.log($(this).attr('index'));
+                        var user = $(this).html();
+                        if (user == '观察员'){
+                            $('[key=canedit]').prev().prev().find('span').html('否');
+                            $('[key=canedit]').prev().find('li a').removeClass().eq(1).addClass('selected');
+                            $('[key=canedit] option[index=1]').attr("selected",true);
+                        }else{
+                            $('[key=canedit]').prev().prev().find('span').html('是');
+                            $('[key=canedit]').prev().find('li a').removeClass().eq(0).addClass('selected');
+                            $('[key=canedit] option[index=0]').attr("selected",true);
+                        }
+                        // console.log(user);
+                    });
                 },
                 setValue:function(){
                     if(this.data){
@@ -92,7 +113,13 @@ define(['require','api','common','blocks/areaSelector'],function(require,API,com
                     view.oncancel();
                 },
                 open:function(){
+                    if (roleid == 2){
+                        $('[key=role]').prev().find('li').eq(0).remove();
+                        $('[key=role] option').eq(0).remove();
+                    }
+
                     $("form.jqtransform").jqTransform();
+
                     view = new (Backbone.View.extend(config.extobj))();
                     view.dialogObj = $(this);
 
@@ -104,18 +131,6 @@ define(['require','api','common','blocks/areaSelector'],function(require,API,com
                         _this.level = _this.level || areaSelector.init();
                         console.log(_this.level);
                     }
-                    setTimeout(function(){
-                        // if(roleid == 1){
-                        //     $('.rolelist').append('<option value=1>超级管理员</option>');
-                        //     $('.rolelist').append('<option value=2>管理员</option>');
-                        //     $('.rolelist').append('<option value=3>观察员</option>');
-                        // }else if(roleid == 2){
-                        //     $('.rolelist').append('<option value=1>超级管理员</option>');
-                        //     $('.rolelist').append('<option value=2>管理员</option>');
-                        //     $('.rolelist').append('<option value=3>观察员</option>');
-                        // }
-                    },1000)
-
 
                 }
             });

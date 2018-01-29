@@ -54,7 +54,55 @@ class StationpersonController extends Controller
         );
         if(isset($_POST))
         {
+            if (empty($_POST['password'])){
+                $msg = "密码为空";
+            }
+            if (empty($_POST['unit'])){
+                $msg = "单位为空";
+            }
+            if (empty($_POST['backup_phone'])){
+                $msg = "备用电话为空";
+            }
+            if (empty($_POST['name'])){
+                $msg= "姓名为空";
+            }
+            if (empty($_POST['phone'])){
+                $msg = "电话为空";
+            }
+            if (empty($_POST['postname'])){
+                $msg = "职位为空";
+            }
+            if (empty($_POST['email'])){
+                $msg = "邮箱为空";
+            }
+            if (empty($_POST['location'])){
+                $msg = "地址为空";
+            }
+            if (empty($_POST['duty_num'])){
+                $msg = "班次为空";
+            }
+            // print_r($_POST);
+            $username = $_POST['username'];
+            if (empty($username)){
+                $msg = "登陆名为空";
+            }
 
+            if (!empty($msg)){
+                $ret['response'] = array(
+                    'code' => -2,
+                    'msg' => $msg
+                );
+                echo json_encode($ret);exit;
+            }
+            $sql = "select * from my_sysuser where username = '$username'";
+            $row = Yii::app()->db->createCommand($sql)->queryRow();
+            if ($row){
+                $ret['response'] = array(
+                    'code' => -1,
+                    'msg' => 'has the same username'
+                );
+                echo json_encode($ret);exit;
+            }
             $model->attributes=$_POST;
             if($model->save()){
                 $ret['data'] = array(
