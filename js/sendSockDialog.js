@@ -24,10 +24,11 @@ define(['require','api','common'],function(require,API,common){
                     var _this = this;
                     var _param = common.getFormValue(this.el,true);
 
+                    _param.serial_number = $("[key=sn_key]").val();
 
                     common.loadTips.show("正在保存，请稍后...");
                     console.log('发送指令参数',_param);
-                    API.syncHard({
+                    API.sendCmd({
                         cmd: _param.cmd,
                         sn_key:_param.serial_number
                     });
@@ -36,17 +37,6 @@ define(['require','api','common'],function(require,API,common){
 
                 oncancel:function(){
                     var _this = this;
-
-                    var _param = common.getFormValue(this.el,true);
-                    _param.serial_number = $("[key=sn_key]").val();
-                    console.log('发送指令参数',_param);
-                    common.loadTips.show("正在保存，请稍后...");
-
-                    API.sendCmd({
-                        cmd: _param.cmd,
-                        sn_key:_param.serial_number
-                    });
-
                     $(".ui-dialog,.ui-widget-overlay").remove();
                 }
             }
