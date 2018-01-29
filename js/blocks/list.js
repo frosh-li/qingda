@@ -1396,9 +1396,15 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     {
                                         data:"id",
                                         render: function (data) {
-                                            return _.template('<div style="width:160px">'+$("#editBtn").html()+$("#delBtn").html()+'</div>')({
-                                                id:data
-                                            });
+                                            var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+                                            if(roleid != 1){
+                                                return "";
+                                            }else{
+                                                return _.template('<div style="width:160px">'+$("#editBtn").html()+$("#delBtn").html()+'</div>')({
+                                                    id:data
+                                                });    
+                                            }
+                                            
                                         }
                                     }
                                 ]
