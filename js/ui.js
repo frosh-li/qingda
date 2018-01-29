@@ -338,6 +338,15 @@ define(function(require){
          */
         onUpadtaTime:function(){
             var time = parseInt($("#collectDuration").val());
+            if(time < 15){
+                alert("最小间隔为15");
+                return;
+            }
+            var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+            if(roleid == 3){
+                alert("您没有权限修改最小间隔时间");
+                return;
+            }
             if(time){
                 API.updateParam({
                     refresh:time
