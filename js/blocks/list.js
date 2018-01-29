@@ -1150,7 +1150,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                             var tpl='';
                                             var sendBtnHtml = "";
                                             var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
-                                            if(roleid === 1){
+                                            if(roleid == 1){
                                                 sendBtnHtml = $("#sendSocketBtn").html();
                                             }
                                             if(itemData.is_checked == "1"){
