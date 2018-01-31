@@ -86,6 +86,9 @@ class StationpersonController extends Controller
             if (empty($username)){
                 $msg = "登陆名为空";
             }
+            if (empty($_POST['area'])){
+                $msg = "区域为空";
+            }
 
             if (!empty($msg)){
                 $ret['response'] = array(
@@ -94,6 +97,7 @@ class StationpersonController extends Controller
                 );
                 echo json_encode($ret);exit;
             }
+            // print_r($_POST);exit();
             $sql = "select * from my_sysuser where username = '$username'";
             $row = Yii::app()->db->createCommand($sql)->queryRow();
             if ($row){
