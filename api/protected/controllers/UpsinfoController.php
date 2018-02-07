@@ -471,6 +471,13 @@ class UpsinfoController extends Controller
             $ret['data']['pageSize'] = $this->count;
 
             foreach($ups as $key=>$value){
+                if ($value['ups_period_days'] > 0 && $value['ups_maintain_date'] == date('Y-m-d')){
+                    $ups_day = '+'.$value['ups_period_days'];
+                    $adddate = date('Y-m-d',strtotime($ups_day.' day'));
+                    $sql = "update my_ups_info set ups_maintain_date = '$adddate' where id = $value[id]";
+                    Yii::app()->db->createCommand($sql)->execute();
+                    $value['ups_maintain_date'] = $adddate;
+                }
                 $ret['data']['list'][] = $value;
             }
 
@@ -480,7 +487,6 @@ class UpsinfoController extends Controller
                 'msg' => '暂无UPS数据！'
             );
         }
-
         echo json_encode($ret);
 
 
