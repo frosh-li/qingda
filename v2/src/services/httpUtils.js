@@ -14,7 +14,7 @@ class HttpUtil {
         return new Promise((resolve, reject) => {
             axios.get(`${this.host}${url}`, {
                 headers: {
-                    "Content-Type": 'application/x-www-form-urlencoded',
+                    "Content-Type": 'application/json',
                     "X-Requested-With":'XMLHttpRequest',
 
                 },
@@ -42,7 +42,6 @@ class HttpUtil {
     post(url, params) {
         let http = axios.create();
         let cparam = this.buildParam(params);
-        http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
         return new Promise((resolve, reject) => {
             http.post(`${this.host}${url}`,
                 cparam,

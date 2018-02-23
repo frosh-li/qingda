@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ConnectionInfo from '../components/ConnectionInfo.js';
 import TopRightStatus from '../components/TopRightStatus.js';
+import TreeNav from '../components/TreeNav.js';
 
 class ManageController {
     realStation(request) {
@@ -30,7 +31,9 @@ class ManageController {
                             <div className="clear"></div>
                             <ConnectionInfo />
                             <div className="clear"></div>
-                            <div className="choose-nav" ><div className="nav-tree ztree" id="nav"></div></div>
+                            <div className="choose-nav" ><div className="nav-tree ztree" id="nav">
+                                <TreeNav />
+                            </div></div>
                             <div className="search-bar">
                                 <span className="search" id="navSearchBtn" ></span>
                                 <input type="text" id="navSearchKeyword" placeholder="搜索" autoComplete="false" name="navSearchKeyword" value="" />
