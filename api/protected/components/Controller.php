@@ -54,6 +54,9 @@ class Controller extends CController
 	**/
 	protected function beforeAction($action)
 	{
+		if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+		    exit; // finish preflight CORS requests here
+		}
 		if (!YII_DEBUG){
 			Yii::app( )->db->schemaCachingDuration = 86400;
 		}
