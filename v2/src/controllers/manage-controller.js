@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ConnectionInfo from '../components/ConnectionInfo.js';
+import TopRightStatus from '../components/TopRightStatus.js';
 
 class ManageController {
     realStation(request) {
@@ -24,20 +26,9 @@ class ManageController {
                 <div className="wrap" id="main">
                     <div className="left">
                         <div className="set">
-                                <span className="left-hide" title="隐藏树形图"></span>
+                            <span className="left-hide" title="隐藏树形图"></span>
                             <div className="clear"></div>
-                                <div className="set-wrap">
-                                    <dl className="set-list">
-                                        <dd>刷新频率 <input type="text" id="collectDuration"/>秒</dd>
-                                        <dd>已连接<span id="linkingNum"></span>个</dd>
-                                        <dd>未连接<span id="unlinkNum"></span>个</dd>
-                                    </dl>
-                                    <dl className="set-btn">
-                                    <dd><span className="ggsj">更改时间</span></dd>
-                                    <dd><span className="kscj" id="startCollectBtn">开始刷新</span></dd>
-                                    <dd><span className="tzcj undis">停止刷新</span></dd>
-                                </dl>
-                            </div>
+                            <ConnectionInfo />
                             <div className="clear"></div>
                             <div className="choose-nav" ><div className="nav-tree ztree" id="nav"></div></div>
                             <div className="search-bar">
@@ -52,30 +43,17 @@ class ManageController {
                                 <div className="show-bar">
                                     <b className="yx-show" title="显示树形图"><i className="icon yunxing"></i>树形图</b>
                                     <strong>实时数据</strong>
-                                    <div className="show-list">
-                                        <dl>
-                                            <dd><i className="icon graylight" id="alarm_collecting"></i><a>数据采集</a></dd>
-                                            <dd><i className="icon graylight" id="alarm_light"></i><a>灯光报警</a></dd>
-                                            <dd><i className="icon graylight" id="alarm_sound"></i><a>声音报警</a></dd>
-                                            <dd><i className="icon graylight" id="alarm_sms"></i><a>短信</a></dd>
-                                            <dd><i className="icon graylight" id="alarm_mail"></i><a>邮件</a></dd>
-                                            <dd className="baojing" style={{display: "none"}}><img src={require("../img/alarm.gif?v1")} /><em>数据报警</em><span className="bg">0</span><em>条</em></dd>
-                                            <dd><a className="btn1" href="#/manage/caution">查看警情</a></dd>
-                                            <dd className="mleft"><a className="btn2 stationPop">站信息</a></dd>
-                                            <dd style={{display: "none",}}><a className="btn1 exportdata">数据导出</a></dd>
-                                            <dd ><a className="map-switch" href="#/map" id="map-switch" style={{display:"none"}}><img src={require("../images/switch-map.png?v1")} title="切换为地图模式" style={{width:"30px",height:"30px",}} /></a></dd>
-                                        </dl>
-                                    </div>
+                                    <TopRightStatus />
                                 </div>
                                 <div className="title-list">
                                     <span className="zoom" title="窗口最大化"></span>
                                     <ul className="item-list">
-                                        <li className="active undis switch-btn manage station"><span><a href="#/manage/station">站数据</a></span><i for="station"></i></li>
-                                        <li className="switch-btn undis manage group"><span><a href="#/manage/group">组数据</a></span><i for="group"></i></li>
-                                        <li className="switch-btn undis manage battery"><span><a href="#/manage/battery">电池数据</a></span><i for="battery"></i></li>
-                                        <li className="switch-btn undis manage caution"><span><a href="#/manage/caution">数据报警</a></span><i for="caution"></i></li>
-                                        <li className="switch-btn undis manage systemAlarm"><span><a href="#/manage/systemAlarm">系统报警</a></span><i for="systemAlarm"></i></li>
-                                        <li className="switch-btn undis manage newstations"><span><a href="#/manage/newstations">待添加站</a></span><i for="newstations"></i></li>
+                                        <li className="active undis switch-btn manage station"><span><a href="#/manage/station">站数据</a></span><i htmlFor="station"></i></li>
+                                        <li className="switch-btn undis manage group"><span><a href="#/manage/group">组数据</a></span><i htmlFor="group"></i></li>
+                                        <li className="switch-btn undis manage battery"><span><a href="#/manage/battery">电池数据</a></span><i htmlFor="battery"></i></li>
+                                        <li className="switch-btn undis manage caution"><span><a href="#/manage/caution">数据报警</a></span><i htmlFor="caution"></i></li>
+                                        <li className="switch-btn undis manage systemAlarm"><span><a href="#/manage/systemAlarm">系统报警</a></span><i htmlFor="systemAlarm"></i></li>
+                                        <li className="switch-btn undis manage newstations"><span><a href="#/manage/newstations">待添加站</a></span><i htmlFor="newstations"></i></li>
 
                                         {/* <!-- 设置 --> */}
                                         <li className="active switch-btn undis settings stationInfo"><span><a href="#/settings/stationInfo/stationSituation">基本信息</a></span></li>
@@ -93,9 +71,9 @@ class ManageController {
                                         <li className="switch-btn undis report batteryLife"><span><a href="#/report/batteryLife">电池使用年限统计表</a></span></li>
                                         <li className="switch-btn undis report reportUilog"><span><a href="#/report/reportUilog/options">UI日志表</a></span></li>
                                         {/* <!-- 查询 --> */}
-                                        <li className="active switch-btn undis qurey qureyStation"><span><a href="#/qurey/qureyStation">站数据</a><i for="station"></i></span></li>
-                                        <li className="active switch-btn undis qurey qureyGroup"><span><a href="#/qurey/qureyGroup">组数据</a><i for="group"></i></span></li>
-                                        <li className="active switch-btn undis qurey qureyBattery"><span><a href="#/qurey/qureyBattery">电池数据</a><i for="battery"></i></span></li>
+                                        <li className="active switch-btn undis qurey qureyStation"><span><a href="#/qurey/qureyStation">站数据</a><i htmlFor="station"></i></span></li>
+                                        <li className="active switch-btn undis qurey qureyGroup"><span><a href="#/qurey/qureyGroup">组数据</a><i htmlFor="group"></i></span></li>
+                                        <li className="active switch-btn undis qurey qureyBattery"><span><a href="#/qurey/qureyBattery">电池数据</a><i htmlFor="battery"></i></span></li>
                                         <li className="active switch-btn undis qurey qureyCaution"><span><a href="#/qurey/qureyCaution">数据报警</a></span></li>
                                         <li className="active switch-btn undis qurey baseinfo"><span><a href="#/qurey/baseinfo/queryStationSituation">基本信息</a></span></li>
                                         {/* <!--li className="active switch-btn undis qurey stationOption"><span><a href="#/qurey/stationOption/queryStationOption">参数</a></span></li--> */}
@@ -122,9 +100,9 @@ class ManageController {
                                     </div>
                                     {/* <!--kscj--> */}
                                     {/* <!--搜索条--> */}
-                                    <form className="search-jqtransform undis">
+                                    <htmlForm className="search-jqtranshtmlForm undis">
                                         <div className="rowElem">
-                                            <label className="item-title reportCaution" for="name">警情分类</label>
+                                            <label className="item-title reportCaution" htmlFor="name">警情分类</label>
                                             <select name="ff" className="report-caution-selector" id="cationCategory">
                                                 <option value="ALL">全部</option>
                                                 <option value="R">红</option>
@@ -132,13 +110,13 @@ class ManageController {
                                                 <option value="Y">黄</option>
 
                                             </select>
-                                            <label className="item-title" for="name">开始时间</label>
+                                            <label className="item-title" htmlFor="name">开始时间</label>
                                             <input type="text" id="beginTime"/>
-                                            <label className="item-title" for="name">结束时间</label>
+                                            <label className="item-title" htmlFor="name">结束时间</label>
                                             <input type="text" id="endTime"/>
                                             <input type="button" value="查询" id="searchBtn"/>
                                         </div>
-                                    </form>
+                                    </htmlForm>
                                     {/* <!--列表二级导航--> */}
                                     <ul className="sub-list-tab" id="subListTab">
                                         <li className="active undis switch-btn stationInfo tree"><span><a href="#/settings/stationInfo/tree">树形结构图</a></span><i></i></li>

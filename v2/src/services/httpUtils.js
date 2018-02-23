@@ -1,7 +1,7 @@
 import axios from 'axios';
 class HttpUtil {
     constructor() {
-        this.host = 'http://47.94.238.179/';
+        this.host = 'http://47.94.238.179';
     }
     buildUrl(url, params){
         if(!params){
@@ -12,12 +12,19 @@ class HttpUtil {
     get(url, params = "") {
         url = this.buildUrl(url, params);
         return new Promise((resolve, reject) => {
-            axios.get(`${this.host}${url}`).then((data) => {
+            axios.get(`${this.host}${url}`, {
+                headers: {
+                    "Content-Type": 'application/x-www-form-urlencoded',
+                    "X-Requested-With":'XMLHttpRequest',
+
+                },
+                "withCredentials":true
+            }).then((data) => {
                 if(data.status !== 200 && data.status !== 304) {
                     return reject(new Error('服务器异常'));
                 }
                 let res = data.data;
-                if(res && res.reponse && res.response.code === 0){
+                if(res && res.response && res.response.code === 0){
                     return resolve(res.data);
                 }else{
                     return reject(new Error(res.response.message || res.response.msg));
@@ -41,8 +48,9 @@ class HttpUtil {
                 cparam,
                 {
                     headers: {
-                        "Content-Type": 'application/x-www-form-urlencoded'
-                    }
+                        "Content-Type": 'application/x-www-form-urlencoded',
+                    },
+                    withCredentials:true
                 }).then((data) => {
                 if(data.status !== 200 && data.status !== 304) {
                     return reject(new Error('服务器异常'));
