@@ -479,7 +479,7 @@ define(function(require){
                 return this;
             },
             getCautionsHistoryData:function (args,event,unalert) {
-                var url = '/api/index.php/realtime/galarmhisotry';
+                var url = '/api/index.php/realtime/galarmhistory';
                 this.fetch(url, event||"listdata:update", args, "post",window,unalert);
                 return this;
             },
