@@ -412,33 +412,10 @@ class RealtimeController extends Controller
         $page = Yii::app()->request->getParam('page',1);
         $this->setPageCount(20);
         $total = 0;
-        // if ($id != 0) {
-        //     $sites = Yii::app()->bms->createCommand()
-        //         ->select('*')
-        //         ->from('my_alerts')
-        //         ->where('status = 0')
-        //         ->limit(15)
-        //         ->offset(($page - 1) * 15)
-        //         ->order('time desc')
-        //         ->queryAll();
 
-        // }else{
-        if($type == 0){
-            $where = $cautionType == "ALL" ? '(status=0 or status=1)':'(status=0 or status=1) and right(code,1)="'.$cautionType.'"';
-            if ($id != 0) $where .= " and floor(sn_key/10000) in ($id)";
-            // echo $where;
-        }else{
-            $where = $cautionType == "ALL" ? '(status <> 0 )':'(status <> 0 ) and right(code,1)="'.$cautionType.'"';
-            if ($id != 0) $where .= " and sn_key in ($id)";
-            // if($start){
-            //     $start = date('Y-m-d H:i:s', substr($start,0,10));
-            //     $where .= " and `time` >= '2018-01-16 21:08:00'";
-            // }
-            // if($end){
-            //     $end = date('Y-m-d H:i:s', substr($end,0,10));
-            //     $where .= " and `time` <= '$end'";
-            // }
-            // echo $where;
+        $where = 'right(code,1)="'.$cautionType.'"';
+        if ($id != 0) {
+					$where .= " and sn_key in ($id)";
         }
 
         $sites = Yii::app()->bms->createCommand()
