@@ -412,8 +412,10 @@ class RealtimeController extends Controller
         $page = Yii::app()->request->getParam('page',1);
         $this->setPageCount(20);
         $total = 0;
-
-        $where = 'right(code,1)="'.$cautionType.'"';
+				$where = "1=1 ";
+				if($cautionType != "ALL"){
+					$where = 'right(code,1)="'.$cautionType.'"';
+				}
         if ($id != 0) {
 					$where .= " and sn_key in ($id)";
         }
@@ -427,20 +429,12 @@ class RealtimeController extends Controller
         ->order('time desc')
         ->queryAll();
 
-        //}
-        if($type == 0){
-            $total = Yii::app()->bms->createCommand()
-                ->select("count(*) as total")
-                ->from('my_alerts_history')
-                ->where($where)
-                ->queryScalar();
-        }else{
-            $total = Yii::app()->bms->createCommand()
-                ->select("count(*) as total")
-                ->from('my_alerts_history')
-                ->where($where)
-                ->queryScalar();
-        }
+        $total = Yii::app()->bms->createCommand()
+            ->select("count(*) as total")
+            ->from('my_alerts_history')
+            ->where($where)
+            ->queryScalar();
+
 
         // var_dump($total[0]['total']);
         $ret['response'] = array(
