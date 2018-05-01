@@ -2540,6 +2540,20 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             }},
                             { "data": "contact",title:"操作人",width:80},
                             { "data": "markuptime",title:"操作时间",width:200},
+                            {
+                                "data": "id",
+                                "title":"操作",
+                                "width":100,
+                                render: function (data,type,itemData) {
+                                    if(itemData.status != 0){
+                                      return "已处理";
+                                    }
+                                    return _.template('<a class="resolveBtn" pid="<%=id%>" suggestion="<%=suggest%>">处理</a>')({
+                                        id:data,
+                                        suggest:itemData.suggest
+                                    });
+                                }
+                            }
                             //{ "data": "alarm_process_and_memo",title:"处理过程、时间、管理员" }
                         ]
                     })));
