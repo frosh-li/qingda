@@ -1407,9 +1407,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                             }else{
                                                 return _.template('<div style="width:160px">'+$("#editBtn").html()+$("#delBtn").html()+'</div>')({
                                                     id:data
-                                                });    
+                                                });
                                             }
-                                            
+
                                         }
                                     }
                                 ]
@@ -2463,7 +2463,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     return;
                 }
                 var cautionType = $("#cationCategory").val();
-                API.getCautionsData({cautionType:cautionType,type:1,id:ids,page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
+                API.getCautionsHistoryData({cautionType:cautionType,type:1,id:ids,page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             refresh:function(){
                 this.fetchData();

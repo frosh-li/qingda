@@ -52,23 +52,23 @@ class GerneralalarmController extends Controller
 
 
 
-        
+
         if ($id) {
             if($status == 2){
-                $checkifignore = Yii::app()->bms->createCommand('select my_station_alert_desc.ignore from my_station_alert_desc,my_alerts where my_alerts.code=my_station_alert_desc.en and my_station_alert_desc.type=my_alerts.type and my_alerts.id= '.$id)->queryScalar();
+                $checkifignore = Yii::app()->bms->createCommand('select my_station_alert_desc.ignore from my_station_alert_desc,my_alerts_history where my_alerts_history.code=my_station_alert_desc.en and my_station_alert_desc.type=my_alerts_history.type and my_alerts_history.id= '.$id)->queryScalar();
                 if($checkifignore == 0){
                     // 不可忽略
                     $ret['response'] = array(
                         'code'=>-1,
                         'message'=>'该警情不可忽略'
                     );
-                    
+
                     echo json_encode($ret);
 
                     Yii::app()->end();
-                }    
+                }
             }
-            
+
             $ret['data'] = array();
             $row = array();
             $row['markup'] = $markup;
@@ -76,7 +76,7 @@ class GerneralalarmController extends Controller
             $row['markuptime'] = date('Y-m-d H:i:s');
             $row['status'] = $status;
             $upsql = Utils::buildUpdateSQL($row);
-            $sql = "update my_alerts set ".$upsql." where id=".$id;
+            $sql = "update my_alerts_history set ".$upsql." where id=".$id;
             // var_dump($sql);
             $exec = Yii::app()->bms->createCommand($sql)->execute();
             if ($exec) {

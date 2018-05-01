@@ -35,7 +35,7 @@ define(function(require){
                                     var filterdata = [];
                                     var userid = JSON.parse(localStorage.getItem("userinfo")).uid;
                                     var currentUser = null;
-                                    
+
                                     $.each(res.data.list,function(i,item){
                                         console.log(i,item);
                                         if(item.id == userid){
@@ -478,6 +478,11 @@ define(function(require){
                 this.fetch(url, event||"listdata:update", args, "post",window,unalert);
                 return this;
             },
+            getCautionsHistoryData:function (args,event,unalert) {
+                var url = '/api/index.php/realtime/galarmhisotry';
+                this.fetch(url, event||"listdata:update", args, "post",window,unalert);
+                return this;
+            },
             resolveCaution:function(args){
                 var url = '/api/index.php/gerneralalarm/update';
                 this.fetch(url, "caution:resolved", args, "post");
@@ -593,7 +598,7 @@ define(function(require){
                 this.fetch(location.protocol+"//"+location.host+":3000/sendmsg", null, args, "post");
             },
             sendCmd: function(args){
-                this.fetch(location.protocol+"//"+location.host+":3000/cmd", null, args, "post");  
+                this.fetch(location.protocol+"//"+location.host+":3000/cmd", null, args, "post");
             }
         }
 
