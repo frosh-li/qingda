@@ -334,7 +334,9 @@ class RealtimeController extends Controller
             'msg' => 'ok'
         );
         $ret['data'] = array();
-
+				// 查询出所有的忽略列表
+				$ignores = Yii:app()->bms->createCommand()->select('*')->from("my_ignores")->queryAll();
+				$ret['data']['ignores'] = $ignores;
         if ($sites) {
             $ret['data']['page'] = $this->page;
             $ret['data']['pageSize'] = 20;
@@ -354,10 +356,7 @@ class RealtimeController extends Controller
                 if($siteName && sizeof($siteName) > 0){
                     $ret['data']['list'][] = array_merge($value,$addinfo[0],$siteName[0]);
                 }else{
-
                     $ret['data']['list'][] = array_merge($value,$addinfo[0], array("site_name"=>"未知","sid"=>""));
-
-
                 }
 
             }
