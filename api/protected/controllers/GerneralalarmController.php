@@ -61,9 +61,7 @@ class GerneralalarmController extends Controller
         if ($id) {
             if($status == 2){
                 $sql ="select my_station_alert_desc.ignore from my_station_alert_desc where my_station_alert_desc.en='$code' and my_station_alert_desc.type='$type'";
-                var_dump($sql);
                 $checkifignore = Yii::app()->bms->createCommand($sql)->queryScalar();
-                var_dump($checkifignore);
                 if($checkifignore == 0){
                     // 不可忽略
                     $ret['response'] = array(
