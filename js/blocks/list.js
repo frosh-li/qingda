@@ -722,7 +722,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                           suggestion:$(e.currentTarget).attr('suggestion'),
                           type:$(e.currentTarget).attr('type'),
                           sn_key:$(e.currentTarget).attr('sn_key'),
-                          code:$(e.currentTarget).attr('code'), 
+                          code:$(e.currentTarget).attr('code'),
                           realtime: true
                         });
                     },
@@ -2477,6 +2477,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             },
             refresh:function(){
                 this.fetchData();
+            },
+            resove:function(e){
+                ui.showUnsolveDialog({
+                  id:$(e.currentTarget).attr('pid'),
+                  suggestion:$(e.currentTarget).attr('suggestion'),
+                  realtime: false
+                });
             },
             downloadUrl:"/api/index.php/query/batterymodule",
             render:function(){
