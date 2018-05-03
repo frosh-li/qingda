@@ -60,7 +60,7 @@ class GerneralalarmController extends Controller
 
         if ($id) {
             if($status == 2){
-                $checkifignore = Yii::app()->bms->createCommand('select my_station_alert_desc.ignore from my_station_alert_desc,my_alerts_history where my_alerts_history.code=my_station_alert_desc.en and my_station_alert_desc.type=my_alerts_history.type and my_alerts_history.id= '.$id)->queryScalar();
+                $checkifignore = Yii::app()->bms->createCommand("select my_station_alert_desc.ignore from my_station_alert_desc where my_station_alert_desc.en="$code" and my_station_alert_desc.type='$type'")->queryScalar();
                 if($checkifignore == 0){
                     // 不可忽略
                     $ret['response'] = array(
@@ -72,8 +72,8 @@ class GerneralalarmController extends Controller
 
                     Yii::app()->end();
                 }else{
-									$sql = "insert into my_ignores(sn_key, code) values(:sn_key, :code)";
-									Yii::app()->bms->createCommand($sql)->bindValues([":sn_key"=>$sn_key, ":code"=>$code])->execute();
+									$sql = "insert into my_ignores(sn_key, code, type) values(:sn_key, :code, :type)";
+									Yii::app()->bms->createCommand($sql)->bindValues([":sn_key"=>$sn_key, ":code"=>$code, ":type" => $type])->execute();
 									echo json_encode($ret);
 									Yii::app()->end();
 								}
