@@ -717,7 +717,14 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         stationInfoDialog.show(id.join(","));
                     },
                     resove:function(e){
-                        ui.showUnsolveDialog({id:$(e.currentTarget).attr('pid'),suggestion:$(e.currentTarget).attr('suggestion')});
+                        ui.showUnsolveDialog({
+                          id:$(e.currentTarget).attr('pid'),
+                          suggestion:$(e.currentTarget).attr('suggestion'),
+                          type:$(e.currentTarget).attr('type'),
+                          sn_key:$(e.currentTarget).attr('sn_key'),
+                          code:$(e.currentTarget).attr('code'), 
+                          realtime: true
+                        });
                     },
                     updateAtype: function(){
                         console.log('atypes',this.types);
@@ -795,19 +802,22 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         return "<div style='font-weight:bold;color:"+color+"'>"+data+"</div>";
                                     }},
                                     { "data": "climit",title:"参考值",width:80},
-                                    { "data": "markup",title:"操作记录",width:400,render:function(data){
-                                        var a = data == null ? "": data;
-
-                                        return '<div style="text-align:left;">'+a+'</div>';
-                                    }},
+                                    // { "data": "markup",title:"操作记录",width:400,render:function(data){
+                                    //     var a = data == null ? "": data;
+                                    //
+                                    //     return '<div style="text-align:left;">'+a+'</div>';
+                                    // }},
                                     {
                                         "data": "id",
                                         title:"操作",
                                         width:100,
                                         render: function (data,type,itemData) {
-                                            return _.template('<a class="resolveBtn" pid="<%=id%>" suggestion="<%=suggest%>">处理</a>')({
+                                            return _.template('<a class="resolveBtn" pid="<%=id%>" suggestion="<%=suggest%>" sn_key="<%=sn_key%>" type="<%=type%>" code="<%=code%>">忽略</a>')({
                                                 id:data,
-                                                suggest:itemData.suggest
+                                                suggest:itemData.suggest,
+                                                sn_key: itemData.sn_key,
+                                                type: itemData.type,
+                                                code: itemData.code
                                             });
                                         }
                                     },

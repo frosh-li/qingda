@@ -44,6 +44,11 @@ class GerneralalarmController extends Controller
         $markup = Yii::app()->request->getParam('markup','');
         $contact = $username = isset($_SESSION['username']) ? $_SESSION['username'] : '未知';
         $status = Yii::app()->request->getParam('status', 1);
+
+				$type = Yii::app()->request->getParam('type','');
+				$code = Yii::app()->request->getParam('$code','');
+				$sn_key = Yii::app()->request->getParam('$sn_key','');
+
         $ret = array();
         $ret['response'] = array(
             'code' => 0,
@@ -66,7 +71,12 @@ class GerneralalarmController extends Controller
                     echo json_encode($ret);
 
                     Yii::app()->end();
-                }
+                }else{
+									$sql = "insert into my_ignores(sn_key, code) values(:sn_key, :code)";
+									Yii::app()->bms->createCommand($sql)->bindValues([":sn_key"=>$sn_key, ":code"=>$code])->execute();
+									echo json_encode($ret);
+									Yii::app()->end();
+								}
             }
 
             $ret['data'] = array();

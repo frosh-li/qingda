@@ -66,7 +66,10 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                             "id":_param.id,
                             "markup":_param.markup,
                             "contact":_param.contact,
-                            "stauts":1
+                            "stauts":1,
+                            "sn_key":_param.sn_key,
+                            "code":_param.code,
+                            "type":_param.type
                         });
                     }
                 },
@@ -79,7 +82,10 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                             "id":_param.id,
                             "markup":"",
                             "contact":"",
-                            "status":2
+                            "status":2,
+                            "sn_key":_param.sn_key,
+                            "code":_param.code,
+                            "type":_param.type,
                         });
                     // }
                 },
@@ -100,7 +106,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                 show:300,
                 height:400,
                 width:600,
-                title:"警情处理",
+                title:data.realtime === true ? "忽略警情":"警情处理",
                 close:function(evt,ui){
                     view.oncancel();
                 },
@@ -111,7 +117,15 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     console.log(data);
                     if(data){
                         $("[key=id]",$dialogWrap).val(data.id);
+                        $("[key=code]",$dialogWrap).val(data.code);
+                        $("[key=sn_key]",$dialogWrap).val(data.sn_key);
+                        $("[key=type]",$dialogWrap).val(data.type);
                         $("#suggestion",$dialogWrap).html(data.suggestion);
+                    }
+                    if(data.realtime === true){
+                      $(".sdone", $dialogWrap).hide()
+                    }else{
+                      $(".ignore", $dialogWrap).hide()
                     }
                 }
             });

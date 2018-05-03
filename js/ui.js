@@ -319,9 +319,9 @@ define(function(require){
             $els.removeClass('active');
             $el.addClass('active');
         },
-        showUnsolveDialog:function(id){
+        showUnsolveDialog:function(params){
             require(["dialogresolveCaution"],function(dialog){
-                dialog && dialog.show(id);
+                dialog && dialog.show(params);
             })
         },
         /**
