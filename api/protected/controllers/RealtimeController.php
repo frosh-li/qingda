@@ -335,7 +335,7 @@ class RealtimeController extends Controller
         );
         $ret['data'] = array();
 				// 查询出所有的忽略列表
-				$ignores = Yii:app()->bms->createCommand()->select('*')->from("my_ignores")->queryAll();
+				$ignores = Yii::app()->bms->createCommand()->select('*')->from("my_ignores")->queryAll();
 				$ret['data']['ignores'] = $ignores;
         if ($sites) {
             $ret['data']['page'] = $this->page;
