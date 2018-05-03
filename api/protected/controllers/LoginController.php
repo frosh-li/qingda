@@ -87,8 +87,8 @@ class LoginController extends LController
                 'msg'=>'用户名或密码不能为空！'
             );
         }else{
-            $sql = "select * from {{sysuser}} where username='".$username."'";
-            $row = Yii::app()->db->createCommand($sql)->queryRow();
+            $sql = "select * from {{sysuser}} where username=:username";
+            $row = Yii::app()->db->createCommand($sql)->bindValues([':username' => $username])->queryRow();
 
             if ($row) {
                 if ($password == $row['password']) {
