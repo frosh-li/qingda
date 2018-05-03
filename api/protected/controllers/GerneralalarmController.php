@@ -45,9 +45,9 @@ class GerneralalarmController extends Controller
         $contact = $username = isset($_SESSION['username']) ? $_SESSION['username'] : '未知';
         $status = Yii::app()->request->getParam('status', 1);
 
-				$type = Yii::app()->request->getParam('type','');
-				$code = Yii::app()->request->getParam('$code','');
-				$sn_key = Yii::app()->request->getParam('$sn_key','');
+        $type = Yii::app()->request->getParam('type','');
+        $code = Yii::app()->request->getParam('code','');
+        $sn_key = Yii::app()->request->getParam('sn_key','');
 
         $ret = array();
         $ret['response'] = array(
@@ -60,7 +60,10 @@ class GerneralalarmController extends Controller
 
         if ($id) {
             if($status == 2){
-                $checkifignore = Yii::app()->bms->createCommand("select my_station_alert_desc.ignore from my_station_alert_desc where my_station_alert_desc.en="$code" and my_station_alert_desc.type='$type'")->queryScalar();
+                $sql ="select my_station_alert_desc.ignore from my_station_alert_desc where my_station_alert_desc.en='$code' and my_station_alert_desc.type='$type'";
+                var_dump($sql);
+                $checkifignore = Yii::app()->bms->createCommand($sql)->queryScalar();
+                var_dump($checkifignore);
                 if($checkifignore == 0){
                     // 不可忽略
                     $ret['response'] = array(
@@ -72,11 +75,15 @@ class GerneralalarmController extends Controller
 
                     Yii::app()->end();
                 }else{
-									$sql = "insert into my_ignores(sn_key, code, type) values(:sn_key, :code, :type)";
-									Yii::app()->bms->createCommand($sql)->bindValues([":sn_key"=>$sn_key, ":code"=>$code, ":type" => $type])->execute();
-									echo json_encode($ret);
-									Yii::app()->end();
-								}
+                    $sql = "insert into my_ignores(sn_key, code, type) values(:sn_key, :code, :type)";
+                    try{
+                        Yii::app()->bms->createCommand($sql)->bindValues([":sn_key"=>floor($sn_key/10000)*10000, ":code"=>$code, ":type" => $type])->execute();
+                    }catch(\Exception $e){
+                        
+                    } 
+                    echo json_encode($ret);
+                    Yii::app()->end();
+                }
             }
 
             $ret['data'] = array();
