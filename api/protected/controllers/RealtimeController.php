@@ -303,7 +303,7 @@ class RealtimeController extends Controller
             // }
             // echo $where;
         }
-
+        $where .= " and not exists (select * from my_ignores where my_ignores.sn_key=floor(my_alerts.sn_key/1000)*1000 and my_ignores.code=my_alerts.`code` and my_ignores.type=my_alerts.type)";
         $sites = Yii::app()->bms->createCommand()
         ->select('*')
         ->from('my_alerts')
@@ -360,7 +360,7 @@ class RealtimeController extends Controller
                 }
 
             }
-            $psql = "select count(*) as count,right(code,1) as atype from my_alerts where status=0 group by right(code,1) ";
+            $psql = "select count(*) as count,right(code,1) as atype from my_alerts where status=0 and  not exists (select * from my_ignores where my_ignores.sn_key=floor(my_alerts.sn_key/1000)*1000 and my_ignores.code=my_alerts.`code` and my_ignores.type=my_alerts.type) group by right(code,1) ";
             $alertType = Yii::app()->bms->createCommand($psql)->queryAll();
             $ret['data']['types'] = $alertType;
             $ret['data']['voice_on_off']= Yii::app()->config->get("voice_on_off");
