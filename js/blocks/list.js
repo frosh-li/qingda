@@ -916,6 +916,68 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     }
                 }
             },
+            ignores:{
+                extObj:{
+                    getNavData:function(){
+                        return nav.getSites();
+                    },
+                    fetchData:function(_param){
+                        var _param = {page:this.curPage};
+
+                        API.getIgnoresData(_param);
+                    },
+                    events:{
+                        "click .resolveBtn":"resove"
+                    },
+                    showStationOptionEditDialog:function(data){
+                        require(["dialogstationEdit"],function(dialog){
+                            dialog && dialog.show(null,data);
+                        })
+                    },
+                    resove:function(e){
+                        if(confirm("是否确定取消忽略")){
+                            API.deleteIgnore({
+                                sn_key:$(e.currentTarget).attr('sn_key'),
+                                code:$(e.currentTarget).attr('code'),
+                                type: $(e.currentTarget).attr('type'),
+                            });
+                            this.refresh();
+                        }
+                    },
+                    render:function(){
+                        var _this = this;
+                        if(_this.listPlugin && _this.listPlugin[0]){
+                            _this.updateList();
+
+                        }else{
+
+                            this.listPlugin.push($('#auto table').DataTable( $.extend(true,{},dataTableDefaultOption,{
+                                "data": this.data,
+                                "paging":false,
+                                "scrollX":ui.getListHeight(),
+                                //"scrollY":ui.getListHeight(),
+                                "columns": [
+
+                                    { "data": "site_name",title:"站名"},
+                                    { "data": "sn_key",title:"物理地址"},
+                                    { "data": "desc",title:"警情描述"},
+                                    { "data": "updateTime",title:"时间"},
+                                    { "data": "markup",title:"备注"},
+                                    {
+                                        "data": "id",
+                                        title:"取消忽略",
+                                        width:150,
+                                        render: function (data,type,itemData) {
+                                            return _.template('<a class="resolveBtn" sn_key="<%=sn_key%>" code="<%=code%>" type="<%=type%>">取消忽略</a>')(itemData);
+                                        }
+                                    },
+                                ]
+                            })));
+                        }
+                        return this;
+                    }
+                }
+            },
             // 系统报警
             systemAlarm:{
                 extObj:{

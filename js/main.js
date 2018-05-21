@@ -38,11 +38,14 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
          */
         if(roleid != 1){
             $(".manage.newstations").hide();
+            $(".manage.ignores").hide();
         }else{
             if(sys == "manage"){
                 $(".manage.newstations").show();
+                $(".manage.ignores").show();
             }else{
                 $(".manage.newstations").hide();
+                $(".manage.ignores").hide();
             }
         }
         if(roleid == 3){
@@ -200,7 +203,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             })
         }
 
-        if(/^newstations$/.test(pageType)){
+        if(/^(newstations|ignores)$/.test(pageType)){
 
             $("#dataItem").html($("#listTpl").html());
             ui.downHide(true);

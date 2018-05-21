@@ -80,7 +80,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     // if(_this.validate(_param)){
                         API.resolveCaution({
                             "id":_param.id,
-                            "markup":"",
+                            "markup":_param.markup,
                             "contact":"",
                             "status":2,
                             "sn_key":_param.sn_key,

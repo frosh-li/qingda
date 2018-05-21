@@ -575,6 +575,18 @@ define(function(require){
                 this.fetch(url, "listdata:update", args, "post");
                 return this;
             },
+            //忽略警情列表
+            getIgnoresData:function(args){
+                var url = '/api/index.php/realtime/ignores';
+                this.fetch(url, "listdata:update", args, "post");
+                return this;
+            },
+            //忽略警情列表
+            deleteIgnore:function(args){
+                var url = '/api/index.php/realtime/removeIgnores';
+                this.fetch(url, "listdata:update", args, "post");
+                return this;
+            },
             getChart:function(args,evttype,type){
                 var url = {
                     'battery':'/api/index.php/realtime/batterychart',

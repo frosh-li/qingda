@@ -228,7 +228,109 @@ class RealtimeController extends Controller
 
     }
 
+    public function actionRemoveIgnores()
+    {
+        $type = Yii::app()->request->getParam('type',0);
+        $code = Yii::app()->request->getParam('code',0);
+        $sn_key = Yii::app()->request->getParam('sn_key',0);
+        $sql = "delete from my_ignores where type='$type' and code='$code' and sn_key='$sn_key'";
+        Yii::app()->db->createCommand($sql)->execute();
+        $ret['response'] = array(
+            'code' => 0,
+            'msg' => 'ok'
+        );
+        $ret['data'] = array();
+        echo json_encode($ret);
+    }
 
+    public function actionIgnores()
+    {
+        //需要根据my_sysuser的area区域字段来区分数据报警
+        //mysite的aid可以关联tree的id
+        $areas = "select area from my_sysuser where id = ".$_SESSION["uid"];
+        $auths = Yii::app()->db->createCommand($areas)->queryScalar();
+        // echo $auths;
+        $sn_key_list = array();
+        if ($auths != "*"){
+            $sql = "select serial_number from my_site where aid in ($auths)";
+            $search = Yii::app()->db->createCommand($sql)->queryAll();
+            foreach ($search as $value) {
+                $sn_key_list[] = $value['serial_number']/10000;
+            }
+        }
+        unset($where,$sql);
+
+        // 具体流程见 警情判断流程判断逻辑.docx 文档
+        // 数据直接出，通过command来处理数据
+
+        $start =substr(Yii::app()->request->getParam('start'),0,10);
+        $end = substr(Yii::app()->request->getParam('end'),0,10);
+        $type = Yii::app()->request->getParam('type',0);
+        $cautionType = Yii::app()->request->getParam('cautionType','ALL');
+
+        $id = Yii::app()->request->getParam('id',0);
+
+        // print_r($sn_key_list);
+        if (count($sn_key_list) > 0 && $id == 0) {
+            // print_r($sn_key_list);
+            $id = implode(',', $sn_key_list);
+        }
+        // echo $id;
+
+        //     $temp = array();
+        //     foreach ($arr as $key => $value) {
+        //         $temp[] = $value."0000";
+        //     }
+        // }else{
+        //     $temp = false;
+        // }
+
+        $page = Yii::app()->request->getParam('page',1);
+        $this->setPageCount(20);
+        $total = 0;
+        $ret['response'] = array(
+            'code' => 0,
+            'msg' => 'ok'
+        );
+        $ret['data'] = array();
+				// 查询出所有的忽略列表
+        $ignores = Yii::app()->bms->createCommand()->select('*')->from("my_ignores")
+            ->limit(20)
+            ->offset(($page-1)*20)
+            ->queryAll();
+        $ignoresCounts = Yii::app()->bms->createCommand()->select("count(*) as total")->from('my_ignores')->queryScalar();
+				//$ret['data']['list'] = $ignores;
+        if ($ignores) {
+            $ret['data']['page'] = $this->page;
+            $ret['data']['pageSize'] = 20;
+            $ret['data']['totals'] = intval($ignoresCounts);
+            foreach($ignores as $key=>$value){
+                $addinfo = Yii::app()->bms
+                    ->createCommand("select `desc` from my_station_alert_desc where en='".$value['code']."' and type='".$value['type']."'")
+                    ->queryAll();
+                // $value = $addinfo[0];
+                // var_dump($value);
+                $sql = "select site_name,sid from my_site where serial_number=".(FLOOR($value['sn_key']/10000)*10000);
+                //var_dump($sql);
+                // Yii::app()->end();
+
+                $siteName = Yii::app()->bms
+                    ->createCommand($sql)->queryAll();
+                if($siteName && sizeof($siteName) > 0){
+                    $ret['data']['list'][] = array_merge($value,$addinfo[0],$siteName[0]);
+                }else{
+                    $ret['data']['list'][] = array_merge($value,$addinfo[0], array("site_name"=>"未知","sid"=>""));
+                }
+
+            }
+        }else{
+            $ret['response'] = array(
+                'code' => -1,
+                'msg' => '暂无报警信息！'
+            );
+        }
+        echo json_encode($ret);
+    }
     // 实时报警数据
     public function actionGalarm()
     {
