@@ -73,9 +73,9 @@ class GerneralalarmController extends Controller
 
                     Yii::app()->end();
                 }else{
-                    $sql = "insert into my_ignores(sn_key, code, type, markup) values(:sn_key, :code, :type, :markup)";
+                    $sql = "insert into my_ignores(sn_key, code, type, markup, operator) values(:sn_key, :code, :type, :markup, :operator)";
                     try{
-                        Yii::app()->bms->createCommand($sql)->bindValues([":sn_key"=>floor($sn_key/10000)*10000, ":code"=>$code, ":type" => $type, ":markup" => $markup])->execute();
+                        Yii::app()->bms->createCommand($sql)->bindValues([":sn_key"=>floor($sn_key/10000)*10000, ":code"=>$code, ":type" => $type, ":markup" => $markup, ":operator" => $contact])->execute();
                     }catch(\Exception $e){
                         
                     } 

@@ -121,6 +121,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                         $("[key=sn_key]",$dialogWrap).val(data.sn_key);
                         $("[key=type]",$dialogWrap).val(data.type);
                         $("#suggestion",$dialogWrap).html(data.suggestion);
+                        $("#desc",$dialogWrap).html(data.desc);
                     }
                     if(data.realtime === true){
                       $(".sdone", $dialogWrap).hide()

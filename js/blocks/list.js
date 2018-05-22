@@ -723,6 +723,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                           type:$(e.currentTarget).attr('type'),
                           sn_key:$(e.currentTarget).attr('sn_key'),
                           code:$(e.currentTarget).attr('code'),
+                          desc:$(e.currentTarget).attr('desc'),
                           realtime: true
                         });
                     },
@@ -812,12 +813,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         title:"操作",
                                         width:100,
                                         render: function (data,type,itemData) {
-                                            return _.template('<a class="resolveBtn" pid="<%=id%>" suggestion="<%=suggest%>" sn_key="<%=sn_key%>" type="<%=type%>" code="<%=code%>">忽略</a>')({
+                                            return _.template('<a class="resolveBtn" pid="<%=id%>" suggestion="<%=suggest%>" sn_key="<%=sn_key%>" type="<%=type%>" code="<%=code%>" desc="<%=desc%>">忽略</a>')({
                                                 id:data,
                                                 suggest:itemData.suggest,
                                                 sn_key: itemData.sn_key,
                                                 type: itemData.type,
-                                                code: itemData.code
+                                                code: itemData.code,
+                                                desc: itemData.desc
                                             });
                                         }
                                     },
@@ -923,7 +925,17 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     },
                     fetchData:function(_param){
                         var _param = {page:this.curPage};
+                        var navData = nav.getSites();
+                        var ids;
 
+                        if(this.ids && this.ids.sid){
+                            ids = this.ids.sid;
+                        }else{
+                            ids = navData.ids.join(",");
+                        }
+
+                        $.extend(_param,{id:ids});
+                        
                         API.getIgnoresData(_param);
                     },
                     events:{
@@ -959,10 +971,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "columns": [
 
                                     { "data": "site_name",title:"站名"},
-                                    { "data": "sn_key",title:"物理地址"},
+                                    { "data": "sid",title:"站号"},
                                     { "data": "desc",title:"警情描述"},
                                     { "data": "updateTime",title:"时间"},
                                     { "data": "markup",title:"备注"},
+                                    { "data": "operator",title:"操作人"},
                                     {
                                         "data": "id",
                                         title:"取消忽略",
@@ -2544,6 +2557,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 ui.showUnsolveDialog({
                   id:$(e.currentTarget).attr('pid'),
                   suggestion:$(e.currentTarget).attr('suggestion'),
+                  desc:$(e.currentTarget).attr('desc'),
+                 
                   realtime: false
                 });
             },
@@ -2627,9 +2642,10 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     if(itemData.status != 0){
                                       return "已处理";
                                     }
-                                    return _.template('<a class="resolveBtn" pid="<%=id%>" suggestion="<%=suggest%>">处理</a>')({
+                                    return _.template('<a class="resolveBtn" pid="<%=id%>" suggestion="<%=suggest%>" desc="<%=desc%>">处理</a>')({
                                         id:data,
-                                        suggest:itemData.suggest
+                                        suggest:itemData.suggest,
+                                        desc: itemData.desc
                                     });
                                 }
                             }

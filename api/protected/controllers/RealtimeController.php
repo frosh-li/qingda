@@ -249,6 +249,7 @@ class RealtimeController extends Controller
         //mysite的aid可以关联tree的id
         $areas = "select area from my_sysuser where id = ".$_SESSION["uid"];
         $auths = Yii::app()->db->createCommand($areas)->queryScalar();
+        $id = Yii::app()->request->getParam('id',0);
         // echo $auths;
         $sn_key_list = array();
         if ($auths != "*"){
@@ -268,7 +269,6 @@ class RealtimeController extends Controller
         $type = Yii::app()->request->getParam('type',0);
         $cautionType = Yii::app()->request->getParam('cautionType','ALL');
 
-        $id = Yii::app()->request->getParam('id',0);
 
         // print_r($sn_key_list);
         if (count($sn_key_list) > 0 && $id == 0) {
@@ -293,12 +293,23 @@ class RealtimeController extends Controller
             'msg' => 'ok'
         );
         $ret['data'] = array();
+        $where = " 1=1";
+        if($id){
+            $where .= " and sn_key/10000 in ($id)";
+        }
 				// 查询出所有的忽略列表
-        $ignores = Yii::app()->bms->createCommand()->select('*')->from("my_ignores")
+        $ignores = Yii::app()->bms->createCommand()
+            ->select('*')
+            ->from("my_ignores")
+            ->where($where)
             ->limit(20)
             ->offset(($page-1)*20)
             ->queryAll();
-        $ignoresCounts = Yii::app()->bms->createCommand()->select("count(*) as total")->from('my_ignores')->queryScalar();
+        $ignoresCounts = Yii::app()->bms->createCommand()
+            ->select("count(*) as total")
+            ->from('my_ignores')
+            ->where($where)
+            ->queryScalar();
 				//$ret['data']['list'] = $ignores;
         if ($ignores) {
             $ret['data']['page'] = $this->page;
