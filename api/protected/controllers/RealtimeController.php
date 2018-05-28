@@ -459,7 +459,6 @@ class RealtimeController extends Controller
                     ->createCommand("select `desc`,en,suggest,send_msg,send_email,tips,`type` from my_station_alert_desc where en='".$value['code']."' and type='".$value['type']."'")
                     ->queryAll();
                 // $value = $addinfo[0];
-                // var_dump($value);
                 $sql = "select site_name,sid from my_site where serial_number=".(FLOOR($value['sn_key']/10000)*10000);
                 //var_dump($sql);
                 // Yii::app()->end();
@@ -467,7 +466,10 @@ class RealtimeController extends Controller
                 $siteName = Yii::app()->bms
                     ->createCommand($sql)->queryAll();
                 if($siteName && sizeof($siteName) > 0){
-                    $ret['data']['list'][] = array_merge($value,$addinfo[0],$siteName[0]);
+                    //var_dump($value['code']);
+                    //var_dump($value['type']);
+                    //var_dump($addinfo[0]);
+                    $ret['data']['list'][] = array_merge($value,sizeof($addinfo) > 0 ? $addinfo[0]: array(),$siteName[0]);
                 }else{
                     $ret['data']['list'][] = array_merge($value,$addinfo[0], array("site_name"=>"未知","sid"=>""));
                 }

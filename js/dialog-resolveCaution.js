@@ -126,6 +126,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     if(data.realtime === true){
                       $(".sdone", $dialogWrap).hide()
                     }else{
+                      $(".ignoreTips", $dialogWrap).hide();
                       $(".ignore", $dialogWrap).hide()
                     }
                 }
