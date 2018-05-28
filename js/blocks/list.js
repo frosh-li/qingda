@@ -227,7 +227,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 return;
                             }
                             var navData = _this.getNavData();
-                            if(typeof navData == 'undefined' || !navData || !navData.ids.length){
+                            console.log('nav data change', navData);
+                            if(typeof navData == 'undefined' || !navData ||!navData.ids || !navData.ids.length){
                                 _this.data = [];
                                 var ctype = /qurey/.test(window.location.href) ? 1 : 0;
                                 _this.render(ctype);
@@ -534,11 +535,14 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         this.stations.ids = this.stations.ids.sort(function(a,b){
                             return a-b;
                         })
-                        console.log(stations, curStation);
+                        console.log('get batterys', stations, curStation);
 
                         var batteryId = nav.getBatterys(curStation);
+                        console.log('batteryid', batteryId, curStation);
                         if(curStation){
+                            console.log('重新显示分页')
                             $("#page .cur").html('当前站点：'+stations.map[curStation].title);
+                            $('#page').show();
                             this.updatePageView();
                         }
                         return batteryId?batteryId.ids.join(','):'';
@@ -548,19 +552,23 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         this.stations = nav.getTrueSites();
                         console.log('stations',this.stations)
                         this.prevIds = [];
-                        this.curStation = '';
+                        this.curStation = this.stations.ids[0];
                         return this;
                     },
                     refresh:function(){
                         this._fetch();
                     },
                     getNavData:function(){
-                        return nav.getBatterys(this.curStation);
+                        this.stations = nav.getSites();
+                        console.log(this.stations);
+                        this.curStation=this.stations.ids[0];
+                        this.getBatterys();
+                        this._fetch();
                     },
                     fetchData:function(){
                         this.updateStations();
                         if(!this.curStation){
-                            this.curStation = this.stations[0];
+                            this.curStation = this.stations.ids[0];
                         }
                         // if(this.curStation && this.curStation == this.stations[0]){
                         //     return;
@@ -571,7 +579,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     _fetch:function(){
                         var _this = this,_param = {};
                         $.extend(_param,{
-                            id:this.getBatterys()
+                            id:this.getBatterys(this.curStation)
                         });
                         if(!_param.id){
                             _this.data=[];
@@ -583,6 +591,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             return;
                         }
                         console.log('_param'+ $.toJSON(_param));
+                        $('#page').show();
                         API.getBatterysRealTimeData(_param);
                     },
                     extEvent:function(){
@@ -598,6 +607,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         var _this = this,colums = _this.getCols(ctype == 1 ?'qurey_battery':'battery');
                         if(this.data.length == 0){
                             $("#page").hide();
+                        }else{
+                            $("#page").show();
                         }
                         //this.destoryPlugin();
                         if(_this.listPlugin && _this.listPlugin[0]){
