@@ -544,6 +544,15 @@ class RealtimeController extends Controller
 					$where .= " and sn_key in ($id)";
         }
 
+        if($start){
+            $start = date('Y-m-d H:i:s', substr($start,0,10));
+            $where .= " and `time` >= '$start'";
+        }
+        if($end){
+            $end = date('Y-m-d H:i:s', substr($end,0,10));
+            $where .= " and `time` <= '$end'";
+        }
+        // echo $where;
         $sites = Yii::app()->bms->createCommand()
         ->select('*')
         ->from('my_alerts_history')
