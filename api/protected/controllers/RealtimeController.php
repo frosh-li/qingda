@@ -240,6 +240,16 @@ class RealtimeController extends Controller
             'msg' => 'ok'
         );
         $ret['data'] = array();
+        $contact = isset($_SESSION['username']) ? $_SESSION['username'] : '未知用户';
+        $log = array(
+            'type'=>3,
+            'uid'=>$this->session->getUid(),
+            'username'=>$contact,
+            'content'=>$contact."取消忽略警情$sn_key $type $code",
+            'oldvalue'=>'',
+            'newvalue'=>''
+        );
+        $this->addlog($log); 
         echo json_encode($ret);
     }
 

@@ -40,6 +40,15 @@ class LoginController extends LController
                 'code'=>-1,
                 'msg'=> '输入的账号不为当前账号'
             );
+            $log = array(
+                'type'=>3,
+                'uid'=>$this->session->getUid(),
+                'username'=>$this->session->getUserName(),
+                'content'=>$this->session->getUserName()."尝试修改他人密码失败",
+                'oldvalue'=>'',
+                'newvalue'=>''
+            );
+            $this->addlog($log);
             echo json_encode($ret);
             Yii::app()->end();
         }
@@ -52,6 +61,15 @@ class LoginController extends LController
             'msg'=>'ok'
         );
 
+        $log = array(
+            'type'=>3,
+            'uid'=>$this->session->getUid(),
+            'username'=>$this->session->getUserName(),
+            'content'=>$this->session->getUserName()."成功修改密码",
+            'oldvalue'=>'',
+            'newvalue'=>''
+        );
+        $this->addlog($log);
         $ret['data'] = array();
 
         echo json_encode($ret);

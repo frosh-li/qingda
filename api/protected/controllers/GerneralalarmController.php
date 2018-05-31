@@ -78,7 +78,16 @@ class GerneralalarmController extends Controller
                         Yii::app()->bms->createCommand($sql)->bindValues([":sn_key"=>floor($sn_key/10000)*10000, ":code"=>$code, ":type" => $type, ":markup" => $markup, ":operator" => $contact])->execute();
                     }catch(\Exception $e){
                         
-                    } 
+                    }
+                    $log = array(
+                        'type'=>3,
+                        'uid'=>$this->session->getUid(),
+                        'username'=>$contact,
+                        'content'=>$contact."忽略警情$sn_key $type $code",
+                        'oldvalue'=>'',
+                        'newvalue'=>''
+                    );
+                    $this->addlog($log); 
                     echo json_encode($ret);
                     Yii::app()->end();
                 }

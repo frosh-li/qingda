@@ -16,6 +16,17 @@ class IRCollectController extends Controller
             'code' => 0,
             'msg' => 'ok'
         );
+        $contact = isset($_SESSION['username']) ? $_SESSION['username'] : '未知'; 
+        $sn_key = Yii::app()->request->getParam('stationid', '');
+        $log = array(
+            'type'=>3,
+            'uid'=>$this->session->getUid(),
+            'username'=>$contact,
+            'content'=>$contact."内阻采集，站点$sn_key",
+            'oldvalue'=>'',
+            'newvalue'=>''
+        );
+        $this->addlog($log); 
         
         echo json_encode($ret);   
     }
