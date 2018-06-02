@@ -5,6 +5,8 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
     window.navTree = null;
 
     function init(sys,pageType,sub,params){
+        $("#endTime").datetimepicker("setDate", new Date());
+        $("#beginTime").datetimepicker("setDate", new Date((new Date()) - 7*24*60*60*1000));
         var $stationPop = $(".stationPop");
         $("body").stopTime('irc');
         $stationPop.off('click').on('click',function(e){
@@ -315,6 +317,8 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         }else if (/^(IRCollect)$/.test(pageType)) {
             $(".stationPop").hide();
             ui.downHide(true);
+            $(".collect-jqtransform").jqTransform();
+
             $("#dataItem").html($("#listTpl").html());
         	$collectIRWrap.show();
             // $(".list-bottom.upage").show();

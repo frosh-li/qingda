@@ -237,6 +237,7 @@ define(function(require){
         },
 
         onSearch: function(){
+            console.log('start to search');
             Backbone.Events.trigger('search:done');
         },
         onExportCSV: function(){

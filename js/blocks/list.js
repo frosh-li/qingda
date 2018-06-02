@@ -133,13 +133,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     $("#listBtns li.undis").hide();
                                 }
                             },100);
-
-
-
                             overFlag = true;
                         });
 
                         _this.listenTo(Backbone.Events,"search:done",function(){
+                            _this.curPage = 1;
                             _this.fetchData();
                             Backbone.Events.trigger("curstation:change",{});
                         });
@@ -228,7 +226,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             }
                             var navData = _this.getNavData();
                             console.log('nav data change', navData);
-                            if(typeof navData == 'undefined' || !navData ||!navData.ids || !navData.ids.length){
+                            if(typeof navData == 'undefined' || !navData || !navData.ids.length){
                                 _this.data = [];
                                 var ctype = /qurey/.test(window.location.href) ? 1 : 0;
                                 _this.render(ctype);
@@ -2507,6 +2505,28 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     _this.render(1);
                 });
             },
+            _fetch: function(_param){
+                var _param = {};
+                var navData = nav.getBatteryIds();
+                var ids;
+
+                if(this.ids && this.ids.sid){
+                    ids = this.ids.sid;
+                }else{
+                    ids = navData.ids.join(",");
+                }
+
+                if($('#beginTime').val() == ""){
+                    alert('请选择时间');
+                    return;
+                }
+                if($('#startTime').val() == ""){
+                    alert('请选择时间');
+                    return;
+                }
+                console.log('get batteryhistory');
+                API.getBatteryHistoryData({id:ids,page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
+            },
             fetchData:function(_param){
                 var _param = {};
                 var navData = nav.getBatteryIds();
@@ -2526,6 +2546,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     alert('请选择时间');
                     return;
                 }
+                console.log('get batteryhistory');
                 API.getBatteryHistoryData({id:ids,page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             refresh:function(){
@@ -3483,6 +3504,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             'uilog'
         ];
         console.log('listType', listType);
+        $("#beginTime").datetimepicker("setDate", new Date((new Date()) - 7*24*60*60*1000));
+        $("#endTime").datetimepicker("setDate", new Date());
         if(queryAndReport.indexOf(listType) > -1){
             if(checkSelectDate()){
                 listView.fetchData();

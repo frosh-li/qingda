@@ -98,15 +98,16 @@
         </div>
         <div class="data-wrap">
             <div class="list-header">
-                <div class="kscj blocks" style="display:none;height:50px;line-height: 50px;" id="collectIRWrap">
+                <form class="collect-jqtransform collectIRWrap kscj" id="collectIRWrap">
+                    <div class="rowElem">
+                        <label class="item-title">每次只能采集一个站点</label>
 
-                    <span>每次只能采集一个站点</span>
-
-                    <input type="password" id="cj_password" value="" />
-
-                    <a href="javascript:void(0)" id="startCollectR">开始采集</a>
-
-                </div><!--kscj-->
+                        <input type="password" id="cj_password" value="" style="width:100px;margin-right:10px;" autocomplete="false" />
+                        &nbsp;
+                        &nbsp;
+                        <input type="button" id="startCollectR" value="开始采集" style="margin-left:15px;" />
+                    </div>
+                </form>
                 <!--搜索条-->
                 <form class="search-jqtransform undis">
                     <div class="rowElem">
