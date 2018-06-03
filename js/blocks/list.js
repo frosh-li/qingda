@@ -557,7 +557,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         this._fetch();
                     },
                     getNavData:function(){
-                        this.stations = nav.getSites();
+                        this.stations = nav.getTrueSites();
                         console.log(this.stations);
                         this.curStation=this.stations.ids[0];
                         this.getBatterys();
