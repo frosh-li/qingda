@@ -226,6 +226,10 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             }
                             var navData = _this.getNavData();
                             console.log('nav data change', navData);
+                            if(/manage\/battery/.test(window.location.href)){
+                                _this.fetchData();
+                                return;
+                            }
                             if(typeof navData == 'undefined' || !navData || !navData.ids.length){
                                 _this.data = [];
                                 var ctype = /qurey/.test(window.location.href) ? 1 : 0;
@@ -554,23 +558,23 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         return this;
                     },
                     refresh:function(){
-                        this._fetch();
+                        this.fetchData();
                     },
                     getNavData:function(){
                         this.stations = nav.getTrueSites();
                         console.log(this.stations);
                         this.curStation=this.stations.ids[0];
                         this.getBatterys();
-                        this._fetch();
+                        this.fetchData();
                     },
                     fetchData:function(){
                         this.updateStations();
                         if(!this.curStation){
                             this.curStation = this.stations.ids[0];
                         }
-                        // if(this.curStation && this.curStation == this.stations[0]){
-                        //     return;
-                        // }
+                         if(this.curStation && this.curStation == this.stations[0]){
+                             return;
+                         }
                         this.nextStation();
                         this._fetch();
                     },
@@ -579,6 +583,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         $.extend(_param,{
                             id:this.getBatterys(this.curStation)
                         });
+                        console.log('_param battery'+ $.toJSON(_param));
                         if(!_param.id){
                             _this.data=[];
                             if(_this.listPlugin && _this.listPlugin[0]){
@@ -588,13 +593,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             }
                             return;
                         }
-                        console.log('_param'+ $.toJSON(_param));
                         $('#page').show();
                         API.getBatterysRealTimeData(_param);
                     },
                     extEvent:function(){
                         var _this = this;
                         _this.listenTo(Backbone.Events,"batteryColsChange",function(data){
+                            console.log('battery cols change')
                             _this.destoryPlugin();
                             _this.render();
                         });
@@ -603,6 +608,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     },
                     render:function(ctype){
                         var _this = this,colums = _this.getCols(ctype == 1 ?'qurey_battery':'battery');
+                        console.log('battery data length', this.data.length);
                         if(this.data.length == 0){
                             $("#page").hide();
                         }else{
@@ -610,6 +616,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         }
                         //this.destoryPlugin();
                         if(_this.listPlugin && _this.listPlugin[0]){
+                            console.log('just update list');
                             _this.updateList();
                         }else{
                             console.log('colums.width', colums.width);
@@ -2717,6 +2724,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 });
 
 
+                this.listenTo(Backbone.Events,"clear:start",function(data){
+                    common.loadTips.show("清空强采内阻历史中，请稍等");
+                    setTimeout(function(){
+                        common.loadTips.close();
+                        _this.fetchData();
+                    },5000);
+                });
 
                 this.listenTo(Backbone.Events,"rCollect:start:fail",function(data){
                     common.loadTips.show("采集失败，请重试");

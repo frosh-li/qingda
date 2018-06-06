@@ -37,6 +37,7 @@ define(function(require){
             "click #searchBtn span span":"onSearch",
             "click #switchUser": "switchUser",
             "click #startCollectR": "startCollectR",
+            "click #clearCollect": "clearCollect",
             "click #about": "about"
             //"click .stationPop": "stationPop"
         },
@@ -234,6 +235,10 @@ define(function(require){
             })
 
             // Backbone.Events.trigger('startCollect');
+        },
+
+        clearCollect: function() {
+            API.clearCollect({}, "clear:start")
         },
 
         onSearch: function(){

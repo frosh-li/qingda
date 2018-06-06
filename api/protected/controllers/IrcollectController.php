@@ -7,7 +7,16 @@ class IRCollectController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/main';
+    public function actionClear() {
+        
+        Yii::app()->db->createCommand("delete FROM  {{collect}}")->execute();
 
+        $ret['response'] = array(
+            'code' => 0,
+            'msg' => 'ok'
+        );
+        echo json_encode($ret);
+    }
 	public function actionUpdate(){
         // 内阻采集之前清理表里面的数据
         Yii::app()->db->createCommand("delete FROM  {{collect}}")->execute();

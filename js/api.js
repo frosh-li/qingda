@@ -235,6 +235,11 @@ define(function(require){
                 this.fetch(url, "rCollect:start", args, "post");
                 return this;
             },
+            clearCollect: function(args){
+                var url = '/api/index.php/ircollect/clear';
+                this.fetch(url, "clear:start", args, "post");
+                return this;
+            },
             checkStation:function(args){
                 var url = '/api/index.php/sites/check';
                 this.fetch(url, "station:check", args, "get");
