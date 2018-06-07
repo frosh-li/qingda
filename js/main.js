@@ -333,7 +333,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                 
                 isOver();
             })
-        }else if (/^(limitation|baseinfo|equipment|option|runlog|adminConfig)$/.test(pageType)) {
+        }else if (/^(limitation|baseinfo|equipment|option|adminConfig)$/.test(pageType)) {
             ui.downHide(true);
             $(".stationPop").hide();
             $("#dataItem").html($("#listTpl").html());
@@ -371,6 +371,34 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                 
                 isOver();
             })
+        }else if(/^runlog$/.test(pageType)){
+            $("#dataItem").html($("#listTpl").html());
+            $(".stationPop").hide();
+            ui.downHide(true);
+            //$searchWrap.show();
+            //$searchWrap.jqTransform();
+            $(".exportdata").hide();
+
+            $(".list-bottom.upage").show();
+            $(".report-caution-selector",$searchWrap).parents('.jqTransformSelectWrapper').hide()
+            $(".reportCaution",$searchWrap).hide()
+                require(["blocks/listSearch","blocks/list","blocks/nav"],function(listSearch,list,nav){
+                    afterInit(sys,pageType,sub);    
+                    if(!navTree){
+                        refreshModules([nav],_arg);
+                        nav.run(function(){
+                            navTree=nav;
+                            refreshModules([listSearch,list],_arg);
+                                
+                        });
+                        
+                    }else{
+                        refreshModules([listSearch,list],_arg);
+                        
+                    }
+                    isOver();
+                })    
+
         }else if (/^(qureyBattery|qureyStation|qureyGroup|qureyCaution)$/.test(pageType)) {
             $("#dataItem").html($("#listTpl").html());
             $(".stationPop").hide();

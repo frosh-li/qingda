@@ -2434,6 +2434,43 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
             downloadUrl:"/api/index.php/userlog?type=3"
         }
     })
+    //查询：运行日志
+    listConfig.runlog = $.extend(true,{},listConfig.reportUilog_other,{
+        extObj:{
+            fetchData:function(_param){
+                API.getRunlog({page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
+        },
+        render:function() {
+                var _this = this;
+                _this.destoryPlugin();
+                _this.listPlugin.push($('#auto table').DataTable($.extend(true, {
+                    "data": _this.data,
+                    "language": {
+                        "emptyTable": "运行日志数据为空"
+                    },
+                    "scrollX": ui.getListHeight(),
+                    "scrollY": ui.getListHeight(),
+                    "columns": [
+                        {"data": "content", title: "内容",align:"left",render:function(_,__,data){
+                            if(!data.newvalue){
+                                return data.content;
+                            }
+                            var json = JSON.parse(data.newvalue);
+                            if(json.site_name){
+                                var site = json.site_name;
+                                site = unescape(site.replace(/(u[a-z0-9]{4,4})/g,"%$1"));
+                                console.log(site);
+                                return data.content+"(站名:"+site+")";
+                            }else{
+                                return data.content
+                            }
+                        }},
+                        {"data": "modify_time", title: "时间", width: 150}
+                    ]
+                }, dataTableDefaultOption)));
+            }
+        }
+    })
     //查询：站
     listConfig.qureyStation = $.extend(true,{},listConfig.station,{
         extObj:{

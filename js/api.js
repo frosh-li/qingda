@@ -574,6 +574,12 @@ define(function(require){
                 this.fetch(url, "listdata:update", args, "get");
                 return this;
             },
+            //运行日志
+            getRunlog:function(args){
+                var url = '/api/index.php/runlog';
+                this.fetch(url, "listdata:update", args, "get");
+                return this;
+            },
             //UI日志
             getUserlog:function(args){
                 var url = '/api/index.php/userlog';
