@@ -47,7 +47,7 @@
                         <dd class="baojing" style="display: none;"><img src="/css/img/alarm.gif?v1" /><em>数据报警</em><span class="bg">0</span><em>条</em></dd>
                         <dd><a class="btn1" href="#/manage/caution">查看警情</a></dd>
                         <dd class="mleft"><a class="btn2 stationPop">站信息</a></dd>
-                        <dd style="display: none;"><a class="btn1 exportdata">数据导出</a></dd>
+                        <dd style="display: ;"><a class="btn1 exportdata">数据导出</a></dd>
                         <dd ><a class="map-switch" href="#/map" id="map-switch" style="display:none"><img src="images/switch-map.png?v1" title="切换为地图模式" style="width:30px;height:30px;"></a></dd>
                     </dl>
                 </div>
@@ -66,11 +66,11 @@
                     <!-- 设置 -->
                     <li class="active switch-btn undis settings stationInfo"><span><a href="#/settings/stationInfo/stationSituation">基本信息</a></span></li>
                     <li class="switch-btn undis settings manager"><span><a href="#/settings/manager/personal">管理人员</a></span></li>
-                    <li class="switch-btn undis settings message"><span><a href="#/settings/message">短信/邮箱</a></span></li>
+                    <li class="switch-btn undis settings message"><span><a href="#/settings/message">报警设置</a></span></li>
                     <li class="switch-btn undis settings optionSetting"><span><a href="#/settings/optionSetting/stationOption">参数</a></span></li>
-                    <li class="switch-btn undis settings limitationSetting"><span><a href="#/settings/limitationSetting">报警级别</a></span></li>
+                    <li class="switch-btn undis settings limitationSetting" id="limitationSetting" style="display:"><span><a href="#/settings/limitationSetting">报警级别</a></span></li>
                     <li class="switch-btn undis settings cautionEquipmentSetting"><span><a href="#/settings/cautionEquipmentSetting/upperMonitor">报警设备</a></span></li>
-                    <li class="switch-btn undis settings update"><span><a href="#/settings/update">远程升级</a></span></li>
+                    <li class="switch-btn undis settings update" id="update" style="display:"><span><a href="#/settings/update">远程升级</a></span></li>
                     <li class="switch-btn undis settings equipmentSetting"><span><a href="#/settings/equipmentSetting">外控设备</a></span></li>
                     <!-- 报表 -->
                     <li class="active switch-btn undis report reportCaution"><span><a href="#/report/reportCaution">警情历史表</a></span></li>
@@ -86,13 +86,13 @@
                     <li class="active switch-btn undis qurey ignores"><span><a href="#/qurey/ignores">忽略警情</a></span><i for="ignores"></i></li>
                     <li class="active switch-btn undis qurey baseinfo"><span><a href="#/qurey/baseinfo/queryStationSituation">基本信息</a></span></li>
                     <!--li class="active switch-btn undis qurey stationOption"><span><a href="#/qurey/stationOption/queryStationOption">参数</a></span></li-->
-                    <li class="active switch-btn undis qurey uilog"><span><a href="#/qurey/uilog/options">UI日志</a></span></li>
+                    <li class="active switch-btn undis qurey uilog"><span><a href="#/qurey/uilog/options">系统日志</a></span></li>
                     <!--li class="active switch-btn undis qurey limitation"><span><a href="#/qurey/limitation">门限</a></span></li-->
                     <li class="active switch-btn undis qurey runlog"><span><a href="#/qurey/runlog">运行日志</a></span></li>
                     <!--li class="active switch-btn undis qurey option"><span><a href="#/qurey/option/stationOption">参数</a></span></li-->
                     <li class="active switch-btn undis qurey equipment"><span><a href="#/qurey/equipment">外控设备</a></span></li>
                     <li class="active switch-btn undis qurey adminConfig"><span><a href="#/qurey/adminConfig">管理人员</a></span></li>
-                    <li class="active switch-btn undis qurey IRCollect"><span><a href="#/qurey/IRCollect">强制内阻采集</a></span></li>
+                    <li class="active switch-btn undis qurey IRCollect"><span><a href="#/qurey/IRCollect">实时内阻采集</a></span></li>
                 </ul>
             </div><!--title-list-->
         </div>
@@ -133,9 +133,9 @@
                 <ul class="sub-list-tab" id="subListTab">
                     <li class="active undis switch-btn stationInfo tree"><span><a href="#/settings/stationInfo/tree">树形结构图</a></span><i></i></li>
                     <li class="active undis switch-btn stationInfo stationSituation"><span><a href="#/settings/stationInfo/stationSituation">站点情况</a></span><i></i></li>
-                    <li class="active undis switch-btn stationInfo batterys"><span><a href="#/settings/stationInfo/batterys">电池信息表</a></span><i></i></li>
-                    <li class="active undis switch-btn stationInfo institutions"><span><a href="#/settings/stationInfo/institutions">用户单位信息表</a></span><i></i></li>
-                    <li class="active undis switch-btn stationInfo upsInfo"><span><a href="#/settings/stationInfo/upsInfo">UPS信息表</a></span><i></i></li>
+                    <li class="active undis switch-btn stationInfo batterys"><span><a href="#/settings/stationInfo/batterys">电池信息</a></span><i></i></li>
+                    <li class="active undis switch-btn stationInfo institutions"><span><a href="#/settings/stationInfo/institutions">主管单位信息</a></span><i></i></li>
+                    <li class="active undis switch-btn stationInfo upsInfo"><span><a href="#/settings/stationInfo/upsInfo">UPS信息</a></span><i></i></li>
                     <li class="active undis switch-btn stationInfo monitorSeller"><span><a href="#/settings/stationInfo/monitorSeller">BMS厂家信息</a></span><i></i></li>
 
                     <li class="active undis switch-btn baseinfo queryStationSituation"><span><a href="#/qurey/baseinfo/queryStationSituation">站点信息</a></span><i></i></li>
@@ -146,12 +146,12 @@
                     <li class="active undis switch-btn baseinfo queryMonitorSeller"><span><a href="#/qurey/baseinfo/queryMonitorSeller">BMS厂家信息</a></span><i></i></li>
 
                     <li class="active undis switch-btn manager personal"><span><a href="#/settings/manager/personal">人员</a></span><i></i></li>
-                    <li class="active undis switch-btn manager role"><span><a href="#/settings/manager/role">角色权限</a></span><i></i></li>
+                    <li class="active undis switch-btn manager role" id="role"><span><a href="#/settings/manager/role">角色权限</a></span><i></i></li>
 
                     <li class="switch-btn undis optionSetting stationOption"><span><a href="#/settings/optionSetting/stationOption">站参数</a></span><i></i></li>
                     <li class="switch-btn undis optionSetting groupOption"><span><a href="#/settings/optionSetting/groupOption">组参数</a></span><i></i></li>
                     <li class="switch-btn undis optionSetting batteryOption"><span><a href="#/settings/optionSetting/batteryOption">电池参数</a></span><i></i></li>
-                    <li class="switch-btn undis optionSetting systemOption"><span><a href="#/settings/optionSetting/systemOption">系统报警参数</a></span><i></i></li>
+                    <li class="switch-btn undis optionSetting systemOption" id="systemOption"><span><a href="#/settings/optionSetting/systemOption">系统报警参数</a></span><i></i></li>
                     <li class="switch-btn optionSetting otherOption"><span><a href="#/settings/optionSetting/otherOption">其他参数</a></span><i></i></li>
 
                     <li class="switch-btn undis option stationOption"><span><a href="#/qurey/option/stationOption">站参数</a></span><i></i></li>
