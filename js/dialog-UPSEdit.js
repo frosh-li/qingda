@@ -104,7 +104,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                 show:300,
                 height:660,
                 width:1000,
-                title:"UPS信息表",
+                title:id?"编辑UPS信息":"添加UPS信息",
                 close:function(evt,ui){
                     view.oncancel();
                 },
