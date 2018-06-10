@@ -25,6 +25,8 @@ class UserlogController extends Controller
             $where .= ' and modify_time <= "'.$end.'"';
         }
 
+        $where .= ' and uid = '.$_SESSION["uid"];
+
         $this->setPageCount();
         if ($isDownload == 1) {
             $logs = Yii::app()->db->createCommand()
