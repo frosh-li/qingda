@@ -70,7 +70,7 @@ define(['require','api','common','blocks/areaSelector'],function(require,API,com
                 onsubmit:function(){
                     var _this = this,
                         _param = _this.getParam();
-                    _param.area = this.level.getValue();
+                    _param.area = this.level.getValue(true);
                     _param.role = $("[key=role]",this.el).val();
                     _param.canedit = $("[key=canedit]",this.el).val();
                     console.log(_param);
