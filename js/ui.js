@@ -310,6 +310,15 @@ define(function(require){
                             Backbone.Events.trigger(type+'ColsChange');
                             $( this ).dialog( "close" );
                         }
+                    },
+                    {
+                        text: "取消",
+                        icons: {
+                            primary: "ui-icon-heart"
+                        },
+                        click: function(){
+                            $(this).dialog("close");
+                        }
                     }
                 ]
             });

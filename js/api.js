@@ -113,7 +113,12 @@ define(function(require){
             },
             /***************************************左侧导航***************************************/
             getNavData: function (cb,args) {
+                var hash = window.location.hash;
+                // console.log(hash);
                 var url = '/api/index.php/trees/getnav';
+                if (hash == '#/qurey/qureyGroup' || hash == '#/qurey/qureyBattery' || hash == '#/qurey/qureyCaution'){
+                    url += '?history=1';
+                }
                 this.fetch(url, "nav:update", args, "get",this,true, cb);
                 return this;
             },
