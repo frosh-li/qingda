@@ -1,0 +1,4 @@
+2018.6.10
+增加隶属区域字段
+ALTER TABLE `my_company_info`
+ADD COLUMN `area`  varchar(255) NULL COMMENT '隶属区域' AFTER `area_level`;
