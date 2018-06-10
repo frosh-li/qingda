@@ -22,7 +22,7 @@ class QueryController extends Controller
         $id =  implode(',',$temp);
         return $temp;
     }
-    //站点实时数据
+    //站点历史数据
 	public function actionIndex()
 	{
         $this->setPageCount(20);
@@ -31,14 +31,17 @@ class QueryController extends Controller
         $start =Yii::app()->request->getParam('start');
         $end = Yii::app()->request->getParam('end');
         $where = ' 1 =1 ';
-        if($start){
-            $start = date('Y-m-d H:i:s', substr($start,0,10));
-            $where .= ' and record_time >= "'.$start.'"';
-        }
-        if($end){
-            $end = date('Y-m-d H:i:s', substr($end,0,10));
-            $where .= ' and record_time <= "'.$end.'"';
-        }
+
+        $default_start_time = date('Y-m-d H:i:s', strtotime('-7 days'));
+        // exit;
+        // if($start){
+            $start_time = $start ? date('Y-m-d H:i:s', substr($start,0,10)) : $default_start_time;
+            $where .= ' and record_time >= "'.$start_time.'"';
+        // }
+        // if($end){
+            $end_time = $end ? date('Y-m-d H:i:s', substr($end,0,10)) : date('Y-m-d H:i:s');
+            $where .= ' and record_time <= "'.$end_time.'"';
+        // }
 
         //xl
         $sites = array();
@@ -64,10 +67,11 @@ class QueryController extends Controller
             $sql .= "and a.serial_number in (" . implode(",", array_intersect($sns,$temp)) .") order by b.record_time desc ";
             $totalquery = "select count(*) as totals from (".$sql.") as c";
             $totals = Yii::app()->bms->createCommand($totalquery)->queryScalar();
+            if ($totals > 1000) $totals = 1000;
             if ($isDownload != 1){
                 $sql .= "limit " .($this->page - 1) * $this->count. "," . $this->count;
             }else{
-                $sql .= " limit 0, 5000";
+                $sql .= " limit 0, 1000";
             }
             $sites = Yii::app()->bms->createCommand($sql)->queryAll();
         }else{
@@ -78,15 +82,18 @@ class QueryController extends Controller
             $sql .= " order by record_time desc ";
             $totalquery = "select count(*) as totals from (".$sql.") as c";
             $totals = Yii::app()->bms->createCommand($totalquery)->queryScalar();
+            if ($totals > 1000) $totals = 1000;
             if ($isDownload != 1){
                 $sql .= " limit $offset, $this->count ";
             }else{
-                $sql .= " limit 0,5000";
+                $sql .= " limit 0,1000";
             }
 
             $sites = Yii::app()->bms->createCommand($sql)
                 ->queryAll();
         }
+
+        // echo $sql;
 
         //}
         //
@@ -218,7 +225,7 @@ class QueryController extends Controller
 	}
 
 
-    //组实时数据
+    //组历史数据
     public function actionGroupmodule()
     {
         $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
@@ -229,14 +236,16 @@ class QueryController extends Controller
         $end = Yii::app()->request->getParam('end');
         $where = ' 1 = 1 ';
 
-        if($start){
-            $start = date('Y-m-d H:i:s', substr($start, 0,10));
-            $where .= ' and record_time >= "'.$start.'"';
-        }
-        if($end){
-            $end = date('Y-m-d H:i:s', substr($end,0,10));
-            $where .= ' and record_time <= "'.$end.'"';
-        }
+        $default_start_time = date('Y-m-d H:i:s', strtotime('-7 days'));
+        // exit;
+        // if($start){
+            $start_time = $start ? date('Y-m-d H:i:s', substr($start,0,10)) : $default_start_time;
+            $where .= ' and record_time >= "'.$start_time.'"';
+        // }
+        // if($end){
+            $end_time = $end ? date('Y-m-d H:i:s', substr($end,0,10)) : date('Y-m-d H:i:s');
+            $where .= ' and record_time <= "'.$end_time.'"';
+        // }
 
         $temp = self::getStationIds('00');
         $where .= " and sn_key in (" . implode(",", $temp) .")";
@@ -257,20 +266,32 @@ class QueryController extends Controller
 
                 //$where .= " and sn_key in (".implode(",", $temp).")";
 
-                $sites = Yii::app()->bms->createCommand()
-                ->select('*')
-                ->from('tb_group_module_history')
-                ->where($where)
-                ->limit($this->count)
-                ->offset(($this->page-1)*$this->count)
-                ->order('record_time desc')
-                ->queryAll();
+        $offset = ($this->page-1) * $this->count;
 
-                $totalsql = "select count(*) as totals from tb_group_module_history as b  where {$where}"; 
-                $totals = Yii::app()->bms->createCommand($totalsql)->queryScalar();
+        // $sites = Yii::app()->bms->createCommand()
+        // ->select('*')
+        // ->from('tb_group_module_history')
+        // ->where($where)
+        // ->limit($this->count)
+        // ->offset(($this->page-1)*$this->count)
+        // ->order('record_time desc')
+        // ->queryAll();
+        $sql = "select * from tb_group_module_history where {$where} order by record_time desc";
+        
+
+        $totalsql = "select count(*) as totals from tb_group_module_history as b  where {$where}"; 
+        $totals = Yii::app()->bms->createCommand($totalsql)->queryScalar();
+        if ($totals > 1000) $totals = 1000;
 
         //}
         //}
+
+        if ($isDownload != 1){
+            $sql .= " limit $offset, $this->count ";
+        }else{
+            $sql .= " limit 0,1000";
+        }
+        $sites = Yii::app()->bms->createCommand($sql)->queryAll();
 
         $ret['response'] = array(
             'code' => 0,
@@ -386,7 +407,7 @@ class QueryController extends Controller
 
     }
 
-    // 电池实时数据
+    // 电池历史数据
     public function actionBatterymodule()
     {
         $this->setPageCount(20);
@@ -395,14 +416,17 @@ class QueryController extends Controller
         $end = Yii::app()->request->getParam('end');
         $isDownload = Yii::app()->request->getParam('isdownload',0);
         $where = ' 1 =1 ';
-        if($start){
-            $start = date('Y-m-d H:i:s', substr($start, 0,10));
-            $where .= ' and b.record_time >= "'.$start.'"';
-        }
-        if($end){
-            $end = date('Y-m-d H:i:s', substr($end,0,10));
-            $where .= ' and b.record_time <= "'.$end.'"';
-        }
+        $default_start_time = date('Y-m-d H:i:s', strtotime('-7 days'));
+        // echo $start.'/'.$end.'/';
+        // exit;
+        // if($start){
+            $start_time = $start ? date('Y-m-d H:i:s', substr($start,0,10)) : $default_start_time;
+            $where .= ' and record_time >= "'.$start_time.'"';
+        // }
+        // if($end){
+            $end_time = $end ? date('Y-m-d H:i:s', substr($end,0,10)) : date('Y-m-d H:i:s');
+            $where .= ' and record_time <= "'.$end_time.'"';
+        // }
 
         $temp = self::getStationIds("");
         
@@ -437,10 +461,10 @@ class QueryController extends Controller
         if ($isDownload != 1){
             $sql .= " limit $offset, $this->count ";
         }else{
-            $sql .= " limit 0,5000";
+            $sql .= " limit 0,1000";
         }
 
-        // var_dump($sql);
+        // var_dump($sql);exit;
         // return;
 
         $sites = Yii::app()->bms->createCommand($sql)
@@ -449,6 +473,7 @@ class QueryController extends Controller
 
         $totals = Yii::app()->bms->createCommand($sqltotal)
             ->queryScalar();
+        if ($totals > 1000) $totals = 1000;
 
         $ret['response'] = array(
             'code' => 0,
@@ -559,24 +584,21 @@ class QueryController extends Controller
                 ->setCellValue('B1', '站号')
                 ->setCellValue('C1', '组号')
                 ->setCellValue('D1', '电池号')
-                ->setCellValue('E1', '电池电压（V）')
-                ->setCellValue('F1', '电极温度（℃）')
-                ->setCellValue('G1', '电池内阻（MΩ）')
-                ->setCellValue('H1', '电压偏离（组均值）度%')
-                ->setCellValue('I1', '温度偏离（组均值）度%')
-                ->setCellValue('J1', '内阻偏离（组均值）度%')
-                ->setCellValue('K1', '预估容量（%）')
-                ->setCellValue('L1', '电池寿命（%）')
+                ->setCellValue('E1', '电压V')
+                ->setCellValue('F1', '温度℃')
+                ->setCellValue('G1', '内阻MΩ')
+                ->setCellValue('H1', '电压偏离')
+                ->setCellValue('I1', '温度偏离')
+                ->setCellValue('J1', '内阻偏离')
+                ->setCellValue('K1', '电池寿命%')
+                ->setCellValue('L1', '容量%')
                 ->setCellValue('M1', '时间')
-                ->setCellValue('N1', '浮充态电压上限')
-                ->setCellValue('O1', '充电状态电压上限')
-                ->setCellValue('P1', '放电态电压上限')
-                ->setCellValue('Q1', '浮充态电压下限')
-                ->setCellValue('R1', '充电态电压下限')
-                ->setCellValue('S1', '放电态电压下限')
-                ->setCellValue('T1', '温度上限（A）')
-                ->setCellValue('U1', '温度下限')
-                ->setCellValue('V1', '内阻上限');
+                ->setCellValue('N1', '浮充上限V')
+                ->setCellValue('O1', '浮充偏差V')
+                ->setCellValue('P1', '放电下限V')
+                ->setCellValue('Q1', '温度上限℃')
+                ->setCellValue('R1', '温度下限℃')
+                ->setCellValue('S1', '内阻上限MΩ');
             $index = 1;
             foreach ($ret['data']['list'] as $v) {
                 $index ++;
@@ -584,24 +606,21 @@ class QueryController extends Controller
                     ->setCellValue('B'.$index, $v['sid'])
                     ->setCellValue('C'.$index, $v['gid'])
                     ->setCellValue('D'.$index, $v['bid'])
-                    ->setCellValue('E'.$index, $v['U'])
-                    ->setCellValue('F'.$index, $v['T'])
-                    ->setCellValue('G'.$index, $v['R'])
-                    ->setCellValue('H'.$index, round(abs($v['cau']*100),2))
-                    ->setCellValue('I'.$index, round(abs($v['cat']*100),2))
-                    ->setCellValue('J'.$index, round(abs($v['car']*100),2))
-                    ->setCellValue('K'.$index, "")
-                    ->setCellValue('L'.$index, "")
-                    ->setCellValue('M'.$index, $v['record_time'])
-                    ->setCellValue('N'.$index, $v['FloatingbytegeStatus_U_upper'])
-                    ->setCellValue('O'.$index, $v['bytegeStatus_U_upper'])
-                    ->setCellValue('P'.$index, $v['DisbytegeStatus_U_upper'])
-                    ->setCellValue('Q'.$index, $v['FloatingbytegeStatus_U_lower'])
-                    ->setCellValue('R'.$index, $v['bytegeStatus_U_lower'])
-                    ->setCellValue('S'.$index, $v['DisbytegeStatus_U_lower'])
-                    ->setCellValue('T'.$index, $v['BatteryU_H'])
-                    ->setCellValue('U'.$index, $v['BaterryU_L'])
-                    ->setCellValue('V'.$index, $v['Rin_High_Limit']);
+                    ->setCellValue('E'.$index, isset($v['Voltage']) ? $v['Voltage']:"")
+                    ->setCellValue('F'.$index, isset($v['Temperature']) ? $v['Temperature']:"")
+                    ->setCellValue('G'.$index, isset($v['Resistor']) ? $v['Resistor']:"")
+                    ->setCellValue('H'.$index, isset($v['Dev_U']) ? $v['Dev_U']:"")
+                    ->setCellValue('I'.$index, isset($v['Dev_T']) ? $v['Dev_T']:"")
+                    ->setCellValue('J'.$index, isset($v['Dev_R']) ? $v['Dev_R']:"")
+                    ->setCellValue('K'.$index, isset($v['Lifetime']) ? $v['Lifetime']:"")
+                    ->setCellValue('L'.$index, isset($v['Capacity']) ? $v['Capacity']:"")
+                    ->setCellValue('M'.$index, isset($v['record_time']) ? $v['record_time']:"")
+                    ->setCellValue('N'.$index, isset($v['MaxU_R']) ? $v['MaxU_R']:"")
+                    ->setCellValue('O'.$index, isset($v['MaxDevU_R']) ? $v['MaxDevU_R']:"")
+                    ->setCellValue('P'.$index, isset($v['MinU_R']) ? $v['MinU_R']:"")
+                    ->setCellValue('Q'.$index, isset($v['MaxT_R']) ? $v['MaxT_R']:"")
+                    ->setCellValue('R'.$index, isset($v['MinT_R']) ? $v['MinT_R']:"")
+                    ->setCellValue('S'.$index, isset($v['MaxR_R']) ? $v['MaxR_R']:"");
             }
             // Rename worksheet
             $objPHPExcel->getActiveSheet()->setTitle('电池数据查询');
