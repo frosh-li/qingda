@@ -76,8 +76,9 @@ define(['require','api','backbone','zTreeExcheck'],function(require,API,Backbone
             }
             return checkedData;
         },
-        getValue:function(){
+        getValue:function(val){
             this.getCheckedData();
+            if (val) return this.ids.join(",");
             if(this.checkedall){
                 return "*";
             }
