@@ -44,7 +44,26 @@ class IRCollectController extends Controller
 	 */
 	public function actionIndex()
 	{
+        //需要根据my_sysuser的area区域字段来区分数据报警
+        //mysite的aid可以关联tree的id
+        $areas = "select area from my_sysuser where id = ".$_SESSION["uid"];
+        $auths = Yii::app()->db->createCommand($areas)->queryScalar();
+        // echo $auths;
+        $sn_key_list = array();
+        if ($auths != "*"){
+            $sql = "select serial_number from my_site where aid in ($auths)";
+            $search = Yii::app()->db->createCommand($sql)->queryAll();
+            foreach ($search as $value) {
+                $sn_key_list[] = $value['serial_number'];
+            }
+        }
+        $query = '';
+        if (count($sn_key_list) > 0){
+            $query = 'WHERE b.stationid in ('.implode(',', $sn_key_list).')';
+        }
         
+        unset($where,$sql);
+
         $this->setPageCount();
         $offset = ($this->page-1)*$this->count;
 
@@ -53,12 +72,12 @@ class IRCollectController extends Controller
 
         $sql = "SELECT b . * , s.site_name, s.sid
             FROM  {{collect}} AS b
-            LEFT JOIN {{site}} AS s ON b.stationid = s.serial_number 
+            LEFT JOIN {{site}} AS s ON b.stationid = s.serial_number $query
             order by collect_time desc ";
 
         $total = Yii::app()->db->createCommand("SELECT count(*) as totals 
             FROM  {{collect}} AS b
-            LEFT JOIN {{site}} AS s ON b.stationid = s.serial_number")->queryScalar();
+            LEFT JOIN {{site}} AS s ON b.stationid = s.serial_number $query")->queryScalar();
          
         $ups = Yii::app()->db->createCommand($sql)->queryAll();
         
