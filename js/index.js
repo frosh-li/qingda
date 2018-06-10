@@ -127,7 +127,7 @@ require(["jquery","router","api","table","jJson","jtimer","charts","jJson","boot
 
 
     setInterval(function(){
-        $("#realtime").html((new Date()).pattern("yyyy-MM-dd EEE HH:mm:ss"));
+        $("#realtime").html('本地时间：'+ (new Date()).pattern("yyyy-MM-dd EEE HH:mm:ss"));
         // API.stat();
     },1000)
 
