@@ -17,7 +17,7 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "Temperature",title:"温度℃",width:80},
                     { "data": "Humidity",title:"湿度%",width:80 },
                     { "data": "Lifetime",title:"寿命%",width:80 },
-                    { "data": "Capacity",title:"预估容量%",width:80 },
+                    { "data": "Capacity",title:"预估容量%",width:100 },
 
                     { "data": "ChaState",title:"UPS状态",width:70, render: function(data){
                         if(data == 1){
@@ -31,7 +31,6 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "record_time",title:"时间",width:150},
                     { "data": "Groups",title:"组数",width:50  },
                     { "data": "GroBats",title:"电池数",width:80  },
-                    { "data": "ups_power",title:"功率W/h",width:70 },
                     { "data": "ups_maintain_date",title:"维护日期",width:100, render:function(data){
                         var wh = +new Date(data);
                         var now = +new Date();
@@ -42,12 +41,13 @@ define(["require","backbone"],function(require,Backbone){
                             return data;
                         }
                     }},
+                    { "data": "ups_power",title:"功率W/h",width:70 },
                     { "data": "MaxTem_R",title:"温度上限℃",width:130 },
                     { "data": "MinTem_R",title:"温度下限℃",width:130 },
                     { "data": "MaxHum_R",title:"湿度上限%",width:130 },
                     { "data": "MinHum_R",title:"湿度下限%",width:130 },
-                    { "data": "DisChaLim_R",title:"最大放电电流A",width:70 },
-                    { "data": "ChaLim_R",title:"最大充电电流A",width:70 }
+                    { "data": "DisChaLim_R",title:"最大放电电流A",width:130 },
+                    { "data": "ChaLim_R",title:"最大充电电流A",width:130 }
                 ],
                 group:[
 
@@ -61,8 +61,8 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "Avg_R",title:"内阻均值",width:100 },
                     { "data": "",title:"氢气浓度%",width:100 },
                     { "data": "",title:"氧气浓度%",width:100 },
-                    { "data": "GroBats",title:"电池数",width:80  },
                     { "data": "record_time",title:"时间",width:150 },
+                    { "data": "GroBats",title:"电池数",width:80  },
                     { "data": "DisChaLim_R",title:"最大放电电流A",width:150 },
                     { "data": "ChaLim_R",title:"最大充电电流A",width:150 },
                     { "data": "",title:"氢气上限%",width:100 },
@@ -86,11 +86,11 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "Lifetime",title:"电池寿命%",width:100 },
                     { "data": "Capacity",title:"容量%",width:100 },
                     { "data": "record_time",title:"时间",width:150 },
-                    { "data": "MaxU_R",title:"浮充上限V",width:80 },
-                    { "data": "MaxDevU_R",title:"浮充偏差V",width:80 },
-                    { "data": "MinU_R",title:"放电下限V",width:80 },
-                    { "data": "MaxT_R",title:"温度上限℃",width:80 },
-                    { "data": "MinT_R",title:"温度下限℃",width:80 },
+                    { "data": "MaxU_R",title:"浮充上限V",width:100 },
+                    { "data": "MaxDevU_R",title:"浮充偏差V",width:100 },
+                    { "data": "MinU_R",title:"放电下限V",width:100 },
+                    { "data": "MaxT_R",title:"温度上限℃",width:100 },
+                    { "data": "MinT_R",title:"温度下限℃",width:100 },
                     { "data": "MaxR_R",title:"内阻上限mΩ",width:100 }
                 ],
                 qurey_station:[
@@ -99,7 +99,7 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "Temperature",title:"温度℃",width:80},
                     { "data": "Humidity",title:"湿度%",width:80 },
                     { "data": "Lifetime",title:"寿命%",width:80 },
-                    { "data": "Capacity",title:"预估容量%",width:80 },
+                    { "data": "Capacity",title:"预估容量%",width:100 },
 
                     { "data": "ChaState",title:"UPS状态",width:70, render: function(data){
                         if(data == 1){
@@ -113,7 +113,7 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "record_time",title:"时间",width:150},
                     { "data": "Groups",title:"组数",width:50  },
                     { "data": "GroBats",title:"电池数",width:80  },
-                    { "data": "ups_power",title:"功率W/h",width:70 },
+                    
                     { "data": "ups_maintain_date",title:"维护日期",width:100, render:function(data){
                         var wh = +new Date(data);
                         var now = +new Date();
@@ -124,6 +124,7 @@ define(["require","backbone"],function(require,Backbone){
                             return data;
                         }
                     }},
+                    { "data": "ups_power",title:"功率W/h",width:70 },
                     // { "data": "start_time",title:"放电开始",width:150, render: function(data){
                     //     return data != false ? data:""
                     // } },
@@ -132,8 +133,8 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "MinTem_R",title:"温度下限℃",width:130 },
                     { "data": "MaxHum_R",title:"湿度上限%",width:130 },
                     { "data": "MinHum_R",title:"湿度下限%",width:130 },
-                    { "data": "DisChaLim_R",title:"最大放电电流A",width:70 },
-                    { "data": "ChaLim_R",title:"最大充电电流A",width:70 }
+                    { "data": "DisChaLim_R",title:"最大放电电流A",width:120 },
+                    { "data": "ChaLim_R",title:"最大充电电流A",width:120 }
                 ],
                 qurey_group:[
 
@@ -147,8 +148,8 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "Avg_R",title:"内阻均值",width:100 },
                     { "data": "",title:"氢气浓度%",width:100 },
                     { "data": "",title:"氧气浓度%",width:100 },
-                    { "data": "GroBats",title:"电池数",width:80  },
                     { "data": "record_time",title:"时间",width:150 },
+                    { "data": "GroBats",title:"电池数",width:80  },
                     { "data": "DisChaLim_R",title:"最大放电电流A",width:150 },
                     { "data": "ChaLim_R",title:"最大充电电流A",width:150 },
                     { "data": "",title:"氢气上限%",width:100 },
@@ -172,11 +173,11 @@ define(["require","backbone"],function(require,Backbone){
                     { "data": "Lifetime",title:"电池寿命%",width:100 },
                     { "data": "Capacity",title:"容量%",width:100 },
                     { "data": "record_time",title:"时间",width:150 },
-                    { "data": "MaxU_R",title:"浮充上限V",width:80 },
-                    { "data": "MaxDevU_R",title:"浮充偏差V",width:80 },
-                    { "data": "MinU_R",title:"放电下限V",width:80 },
-                    { "data": "MaxT_R",title:"温度上限℃",width:80 },
-                    { "data": "MinT_R",title:"温度下限℃",width:80 },
+                    { "data": "MaxU_R",title:"浮充上限V",width:100 },
+                    { "data": "MaxDevU_R",title:"浮充偏差V",width:100 },
+                    { "data": "MinU_R",title:"放电下限V",width:100 },
+                    { "data": "MaxT_R",title:"温度上限℃",width:100 },
+                    { "data": "MinT_R",title:"温度下限℃",width:100 },
                     { "data": "MaxR_R",title:"内阻上限MΩ",width:100 }
                 ]
             }[type];
