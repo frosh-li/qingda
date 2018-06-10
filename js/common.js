@@ -221,7 +221,7 @@ define(function(require){
         loadTips:{
             time:2,
             dialogEl:null,
-            show:function(message){
+            show:function(message,customHeight){
                 var tpl = '<div id="loadding">'+
                                 '<div><img src="images/loading.gif" alt=""/></div>'+
                                 '<div class="message"><img src="" alt=""/><%= message %></div>'+
@@ -231,11 +231,12 @@ define(function(require){
                 if($("#loadding").length){
                     $("#loadding").parents('.ui-dialog').remove();    
                 }
+                if (customHeight == undefined) customHeight = 70;
                 this.dialogEl = $(html).dialog({
                     modal:true,
                     dialogClass:'tips',
                     width:300,
-                    height:70
+                    height:customHeight
                 })
             },
             success:function(message){
