@@ -84,7 +84,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                 show:300,
                 height:660,
                 width:1000,
-                title:"编辑",
+                title:id?"编辑主管单位信息":"添加主管单位信息",
                 close:function(evt,ui){
                     view.oncancel();
                 },

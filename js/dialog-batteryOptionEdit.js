@@ -79,7 +79,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                 show:300,
                 height:660,
                 width:1000,
-                title:"编辑参数",
+                title:"编辑电池参数",
                 close:function(evt,ui){
                     view.oncancel();
                 },

@@ -111,7 +111,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                 show:300,
                 height:560,
                 width:1000,
-                title:"电池信息",
+                title:id?"编辑电池信息":"添加电池信息",
                 close:function(evt,ui){
                     view.oncancel();
                 },

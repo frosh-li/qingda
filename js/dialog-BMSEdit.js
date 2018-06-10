@@ -84,7 +84,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                 show:300,
                 height:400,
                 width:1000,
-                title:"编辑",
+                title:id?"编辑BMS信息":"添加BMS信息",
                 close:function(evt,ui){
                     view.oncancel();
                 },
