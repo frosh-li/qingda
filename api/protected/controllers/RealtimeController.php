@@ -77,6 +77,10 @@ class RealtimeController extends Controller
                 // $value['start_time'] = $start_time;
                 $value['end_time'] = '';
                 $value['start_time'] = '';
+
+                $sql = "select count(*) from my_alerts where status = 0 and type='station' and floor(sn_key/10000)= ".floor($value['sn_key']/10000);
+                $value['site_name_alert'] = Yii::app()->bms->createCommand($sql)->queryScalar();
+
                 $ret['data']['list'][] = $value;
             }
 
@@ -132,6 +136,11 @@ class RealtimeController extends Controller
                     $data = array();
                 }
                 $value = array_merge($value, $data);
+
+                $value['site_name_snkey'] = floor($value['sn_key']/100) + $value['gid'];
+                $sql = "select count(*) from my_alerts where status = 0 and type='group' and floor(sn_key/100)= ".$value['site_name_snkey'];
+                $value['site_name_alert'] = Yii::app()->bms->createCommand($sql)->queryScalar();
+
                 $ret['data']['list'][] = $value;
             }
 
@@ -211,9 +220,13 @@ class RealtimeController extends Controller
                     }
                     $value = array_merge($value, $data);
 
+                    $value['site_name_snkey'] = $value['sn_key'] + ($value['gid'].'00') + $value['bid'] ;
+                    $sql = "select count(*) from my_alerts where status = 0 and type='battery' and sn_key = '$value[site_name_snkey]'";
+                    $value['site_name_alert'] = Yii::app()->bms->createCommand($sql)->queryScalar();
+
                     $ret['data']['list'][] = $value;
                 }
-
+                // print_r($ret['data']);
             }
 
             echo json_encode($ret);
@@ -424,6 +437,16 @@ class RealtimeController extends Controller
             //     $end = date('Y-m-d H:i:s', substr($end,0,10));
             //     $where .= " and `time` <= '$end'";
             // }
+            $default_start_time = date('Y-m-d H:i:s', strtotime('-7 days'));
+            // exit;
+            // if($start){
+                $start_time = $start ? date('Y-m-d H:i:s', substr($start,0,10)) : $default_start_time;
+                $where .= ' and time >= "'.$start_time.'"';
+            // }
+            // if($end){
+                $end_time = $end ? date('Y-m-d H:i:s', substr($end,0,10)) : date('Y-m-d H:i:s');
+                $where .= ' and time <= "'.$end_time.'"';
+
             // echo $where;
         }
         $where .= " and not exists (select * from my_ignores where my_ignores.sn_key=floor(my_alerts.sn_key/1000)*1000 and my_ignores.code=my_alerts.`code` and my_ignores.type=my_alerts.type)";
@@ -485,7 +508,11 @@ class RealtimeController extends Controller
                 }
 
             }
-            $psql = "select count(*) as count,right(code,1) as atype from my_alerts where status=0 and  not exists (select * from my_ignores where my_ignores.sn_key=floor(my_alerts.sn_key/1000)*1000 and my_ignores.code=my_alerts.`code` and my_ignores.type=my_alerts.type) group by right(code,1) ";
+            $alertfilter = '';
+            if (count($sn_key_list) > 0){
+                $alertfilter = 'and floor(my_alerts.sn_key/10000) in ('.implode(',', $sn_key_list).') ';
+            }
+            $psql = "select count(*) as count,right(code,1) as atype from my_alerts where status=0 $alertfilter and  not exists (select * from my_ignores where my_ignores.sn_key=floor(my_alerts.sn_key/1000)*1000 and my_ignores.code=my_alerts.`code` and my_ignores.type=my_alerts.type) group by right(code,1) ";
             $alertType = Yii::app()->bms->createCommand($psql)->queryAll();
             $ret['data']['types'] = $alertType;
             $ret['data']['voice_on_off']= Yii::app()->config->get("voice_on_off");
@@ -499,7 +526,7 @@ class RealtimeController extends Controller
         echo json_encode($ret);
     }
 
-		// 实时报警数据
+	// 历史报警数据
     public function actionGalarmhistory()
     {
         //需要根据my_sysuser的area区域字段来区分数据报警
@@ -519,6 +546,8 @@ class RealtimeController extends Controller
 
         // 具体流程见 警情判断流程判断逻辑.docx 文档
         // 数据直接出，通过command来处理数据
+
+        $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
 
         $start =substr(Yii::app()->request->getParam('start'),0,10);
         $end = substr(Yii::app()->request->getParam('end'),0,10);
@@ -553,21 +582,30 @@ class RealtimeController extends Controller
             $where .= " and `time` <= '$end'";
         }
         // echo $where;
-        $sites = Yii::app()->bms->createCommand()
-        ->select('*')
-        ->from('my_alerts_history')
-        ->where($where)
-        ->limit(20)
-        ->offset(($page-1)*20)
-        ->order('time desc')
-        ->queryAll();
+        // $sites = Yii::app()->bms->createCommand()
+        // ->select('*')
+        // ->from('my_alerts_history')
+        // ->where($where)
+        // ->limit(20)
+        // ->offset(($page-1)*20)
+        // ->order('time desc')
+        // ->queryAll();
+        $offset = ($page-1)*20;
+        $sql = "select * from my_alerts_history where $where order by time desc";
+        if ($isDownload != 1){
+            $sql .= " limit $offset, 20";
+        }else {
+            $sql .= " limit 0,1000";
+        }
+        // echo $sql;
+        $sites = Yii::app()->bms->createCommand($sql)->queryAll();
 
         $total = Yii::app()->bms->createCommand()
             ->select("count(*) as total")
             ->from('my_alerts_history')
             ->where($where)
             ->queryScalar();
-
+        if ($total > 1000) $total = 1000;
 
         // var_dump($total[0]['total']);
         $ret['response'] = array(
@@ -589,6 +627,8 @@ class RealtimeController extends Controller
                 $sql = "select site_name,sid from my_site where serial_number=".(FLOOR($value['sn_key']/10000)*10000);
                 //var_dump($sql);
                 // Yii::app()->end();
+                $value['gid'] = substr($value['sn_key'],10,2);
+                $value['bid'] = substr($value['sn_key'],12,2);
 
                 $siteName = Yii::app()->bms
                     ->createCommand($sql)->queryAll();
@@ -612,8 +652,64 @@ class RealtimeController extends Controller
                 'msg' => '暂无报警信息！'
             );
         }
+        // var_dump($ret);exit;
 
-        echo json_encode($ret);
+        if ($isDownload == 1 && isset($ret['data']['list'])) {
+            Yii::$enableIncludePath = false;
+            Yii::import('application.extensions.PHPExcel.PHPExcel', 1);
+            $objPHPExcel = new PHPExcel();
+            $workSheet = $objPHPExcel->setActiveSheetIndex(0);
+            $workSheet->setCellValue('A1', '站名')
+                ->setCellValue('B1', '站号')
+                ->setCellValue('C1', '组号')
+                ->setCellValue('D1', '电池号')
+                ->setCellValue('E1', '时间')
+                ->setCellValue('F1', '警情内容')
+                ->setCellValue('G1', '数值')
+                ->setCellValue('H1', '操作记录')
+                ->setCellValue('I1', '操作人')
+                ->setCellValue('J1', '操作时间');
+            $index = 1;
+            foreach ($ret['data']['list'] as $v) {
+                $index ++;
+                if ($v['status'] == 2){
+                    $v['markup'] = "已忽略";
+                }
+                
+                $workSheet->setCellValue('A'.$index, isset($v['site_name']) ? $v['site_name']:"")
+                ->setCellValue('B'.$index, isset($v['sid']) ? $v['sid']:"")
+                ->setCellValue('C'.$index, isset($v['gid']) ? $v['gid']:"")
+                ->setCellValue('D'.$index, isset($v['bid']) ? $v['bid']:"")
+                ->setCellValue('E'.$index, isset($v['time']) ? $v['time']:"")
+                ->setCellValue('F'.$index, isset($v['desc']) ? $v['desc']:"")
+                ->setCellValue('G'.$index, isset($v['current']) ? $v['current']:"")
+                ->setCellValue('H'.$index, isset($v['markup']) ? $v['markup']:"")
+                ->setCellValue('I'.$index, isset($v['contact']) ? $v['contact']:"")
+                ->setCellValue('J'.$index, isset($v['markuptime']) ? $v['markuptime']:"");
+            }
+            // Rename worksheet
+            $objPHPExcel->getActiveSheet()->setTitle('数据报警数据');
+            // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+            $objPHPExcel->setActiveSheetIndex(0);
+            // Redirect output to a client’s web browser (Excel5)
+            // header("Content-type:application/vnd.ms-excel");
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="alerts_history.xls"');
+            header('Cache-Control: max-age=0');
+// If you're serving to IE 9, then the following may be needed
+            header('Cache-Control: max-age=1');
+
+// If you're serving to IE over SSL, then the following may be needed
+            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header ('Pragma: public'); // HTTP/1.0
+
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+        }else{
+            echo json_encode($ret);
+        }
     }
 
     public function actionGalarmchart()
@@ -784,6 +880,40 @@ class RealtimeController extends Controller
         }
 
         return $ret['data'];
+    }
+
+    public function actionExternalConsole(){
+        $ret['response'] = array(
+            'code' => 1,
+            'msg' => 'test'
+        );
+        $ret['data'] = array(
+            array(
+                'site_name'=>'test1',
+                'sid' => '123',
+                'station' => '456',
+                'record_time' => '2018.2.10',
+                'desc' => 'test',
+                'tips' => 'test'
+            ),
+            array(
+                'site_name'=>'test2',
+                'sid' => '123',
+                'station' => '456',
+                'record_time' => '2018.2.10',
+                'desc' => 'test',
+                'tips' => 'test'
+            ),
+            array(
+                'site_name'=>'test3',
+                'sid' => '123',
+                'station' => '456',
+                'record_time' => '2018.2.10',
+                'desc' => 'test',
+                'tips' => 'test'
+            ),
+        );
+        echo json_encode($ret);
     }
 
 }
