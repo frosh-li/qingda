@@ -330,6 +330,8 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     nav.run();
                     navTree=nav;
                 }
+
+                API.getLinkingStationNum().getParam({},'refresh:get');
                 
                 isOver();
             })
@@ -340,12 +342,18 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         	$durationWrap.show();
 
             require(["blocks/list","blocks/nav"],function(list,nav){
-                refreshModules([nav,list],_arg);
                 afterInit(sys,pageType,sub);
                 if(!navTree){
-                    nav.run();
-                    navTree=nav;
+                    refreshModules([nav],_arg);
+                    nav.run(function(){
+                        navTree=nav;
+                        refreshModules([list],_arg);
+                    });
+                }else{
+                    refreshModules([list],_arg);
                 }
+
+                API.getLinkingStationNum().getParam({},'refresh:get');
                 
                 isOver();
             })
@@ -405,7 +413,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             ui.downShow(false);
             $searchWrap.show();
             $searchWrap.jqTransform();
-            $(".exportdata").hide();
+            $(".exportdata").show();
 
             $(".list-bottom.upage").show();
             $(".report-caution-selector",$searchWrap).parents('.jqTransformSelectWrapper').hide()
@@ -427,6 +435,9 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     }else{
                         refreshModules([listSearch,list],_arg);
                     }
+
+                    API.getLinkingStationNum().getParam({},'refresh:get');
+
                     isOver();
                 })
             }else{
@@ -444,6 +455,8 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                         refreshModules([listSearch,list],_arg);
                         
                     }
+
+                    API.getLinkingStationNum().getParam({},'refresh:get');
 
                     isOver();
                 })    
@@ -474,6 +487,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     nav.run();
                     navTree=nav;
                 }
+                API.getLinkingStationNum().getParam({},'refresh:get');
 
                 isOver();
             })
@@ -518,6 +532,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                         navTree=nav;
                     }
                     API.getParam({},"otherOption:get");
+                    API.getLinkingStationNum().getParam({},'refresh:get');
 
                     isOver();
                 })
@@ -536,6 +551,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     }else{
                         refreshModules([list],_arg);
                     }
+                    API.getLinkingStationNum().getParam({},'refresh:get');
 
                     isOver();
                 })
@@ -559,6 +575,8 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                         refreshModules([tree],_arg); 
                     }
 
+                    API.getLinkingStationNum().getParam({},'refresh:get');
+
                     isOver();
                 })
             }else{
@@ -576,6 +594,8 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     }else{
                         refreshModules([listSearch,list],_arg);
                     }
+
+                    API.getLinkingStationNum().getParam({},'refresh:get');
 
                     isOver();
 
@@ -656,6 +676,13 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         }else{
             $(".list-bottom.ctotals").hide();
         }
+        //当为超管时，在设置面板中，显示报警级别，远程升级，其它人隐藏
+        var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+        console.log(roleid);
+        if (location.hash.indexOf('#/settings/') != -1 && roleid > 1){
+            $('#limitationSetting').hide();
+            $('#update').hide();
+        }
     }
     function refreshModules(modules,arg){
     	var adds = [];
@@ -686,8 +713,40 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
     function afterInit(sys,pageType,sub){
         ui.resize().switchNav(sys,pageType,sub);
     }
+    function filterBoxCookie(){
+        var station = "Current,Voltage,Temperature,Humidity,Lifetime,Capacity,ChaState,record_time,Groups,GroBats,ups_maintain_date,ups_power";
+        var stationStr = common.cookie.getCookie('stationCols');
+        if (stationStr == null || stationStr == undefined || stationStr == ""){
+            common.cookie.setCookie('stationCols',station);
+        }
+        var stationStrQuery = common.cookie.getCookie('qurey_stationCols');
+        if (stationStrQuery == null || stationStrQuery == undefined || stationStrQuery == ""){
+            common.cookie.setCookie('qurey_stationCols',station);
+        }
+
+        var group = "Voltage,Current,Temperature,Humidity,Avg_U,Avg_T,Avg_R,record_time,GroBats";
+        var groupStr = common.cookie.getCookie('groupCols');
+        if (groupStr == null || groupStr == undefined || groupStr == ""){
+            common.cookie.setCookie('groupCols',group);
+        }
+        var groupStrQuery = common.cookie.getCookie('qurey_groupCols');
+        if (groupStrQuery == null || groupStrQuery == undefined || groupStrQuery == ""){
+            common.cookie.setCookie('qurey_groupCols',group);
+        }
+
+        var battery = "Voltage,Temperature,Resistor,Dev_U,Dev_T,Dev_R,Lifetime,Capacity,record_time";
+        var batteryStr = common.cookie.getCookie('batteryCols');
+        if (batteryStr == null || batteryStr == undefined || batteryStr == ""){
+            common.cookie.setCookie('batteryCols',battery);
+        }
+        var batteryStrQuery = common.cookie.getCookie('qurey_batteryCols');
+        if (batteryStrQuery == null || batteryStrQuery == undefined || batteryStrQuery == ""){
+            common.cookie.setCookie('qurey_batteryCols',battery);
+        }
+    }
     return {
         init:function(sys,pageType,sub,ids){
+            filterBoxCookie();
             pagetype = pageType;
             init(sys,pageType,sub,ids);
             if(ids){
