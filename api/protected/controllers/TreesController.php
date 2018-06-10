@@ -345,6 +345,8 @@ class TreesController extends Controller
     public function actionGetnav()
     {
         $keyword = Yii::app()->request->getParam('key','');
+        $history = Yii::app()->request->getParam('history',0);
+
         $areas = "select area from my_sysuser where id = ".$_SESSION["uid"];
         $auths = Yii::app()->db->createCommand($areas)->queryScalar();
         $where = "";
@@ -405,6 +407,39 @@ class TreesController extends Controller
                         $ret['data']['list'][] = $data;
                         $sids[] = $value['serial_number']/10000;
                     }
+                }
+                //add by pk 历史树
+                if ($history == 1){
+                    $i = 0;
+                    $sql = 'select * from my_site where floor(serial_number/10000) in ('.implode(',',$sids).')';
+                    $my_site_list = Yii::app()->bms->createCommand($sql)->queryAll();
+                    // $groupdata = $batterydata = array();
+                    foreach ($my_site_list as $key => $value) {
+                        $sid = $value['serial_number']/10000;
+                        $gids= $value['groups'];
+                        $batterys = $value['batteries'];
+                        for ($idx=1; $idx <= $gids; $idx++) { 
+                            $gid = $sid.sprintf("%02d",$idx);
+                            $data1 = array();
+                            $data1['leveltype'] = 3;
+                            $data1['id'] = substr($gid.'00', 0,-2);
+                            $data1['pid']= substr($gid.'00', 0,-4);
+                            $data1['title'] = '组'.substr($data1['id'], -2);
+                            $ret['data']['list'][] = $data1;
+                            unset($data1);
+                            for ($idv=1; $idv<=$batterys; $idv++){
+                                $bid = $gid.sprintf("%02d",$idv);
+                                $data2 = array();
+                                $data2['leveltype'] = 4;
+                                $data2['id'] = $bid;
+                                $data2['pid']= substr($bid, 0,-2);
+                                $data2['title'] = '电池'.substr($bid, -2);
+                                $ret['data']['list'][] = $data2;
+                            }
+                            unset($data2);
+                        }
+                    }
+                    // $ret['data']['list'][] = $sn_key;
                 }
                 if ($i) {
                     // group
