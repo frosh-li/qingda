@@ -5,9 +5,29 @@ class StatController extends Controller
 	public function actionIndex()
 	{
         date_default_timezone_set("Asia/Shanghai");
-		$sql = "select count(*) from {{station_module}}";
+        //需要根据my_sysuser的area区域字段来区分数据报警
+        //mysite的aid可以关联tree的id
+        $areas = "select area from my_sysuser where id = ".$_SESSION["uid"];
+        $auths = Yii::app()->db->createCommand($areas)->queryScalar();
+        // echo $auths;
+        $sn_key_list = array();
+        if ($auths != "*"){
+            $sql = "select serial_number from my_site where aid in ($auths)";
+            $search = Yii::app()->db->createCommand($sql)->queryAll();
+            foreach ($search as $value) {
+                $sn_key_list[] = $value['serial_number']/10000;
+            }
+        }
+        unset($where,$sql);
+        $offlinealertfilter = $alertfilter = '';
+        if (count($sn_key_list) > 0){
+            $alertfilter = 'where floor(sn_key/10000) in ('.implode(',', $sn_key_list).') ';
+            $offlinealertfilter = 'and floor(site.serial_number/10000) in ('.implode(',', $sn_key_list).') ';
+        }
+
+		$sql = "select count(*) from {{station_module}} $alertfilter";
         $online = Yii::app()->bms->createCommand($sql)->queryScalar();
-        $sql = "select count(*) from my_site as site where is_checked=1 and  site.serial_number not in (select sn_key from tb_station_module)";
+        $sql = "select count(*) from my_site as site where is_checked=1 $offlinealertfilter and site.serial_number not in (select sn_key from tb_station_module)";
         $total = Yii::app()->db->createCommand($sql)->queryScalar();
 
         $statusSql = Yii::app()->db->createCommand('select * from tb_ds_working_parameters')->queryAll();
