@@ -1,4 +1,4 @@
-define(['require','api','common','blocks/stationSelector'],function(require,API,common,stationSelector){
+define(['require','api','common','blocks/areaSelector'],function(require,API,common,areaSelector){
     var view = null,
         config = {
             extobj : {
@@ -13,6 +13,8 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     var _this = this;
                     _this.listenTo(Backbone.Events,"companyInfo:get",function(data){
                         _this.data = data;
+                        //选择器编辑的情况
+                        level = areaSelector.init({value:data.area});
                         _this.setValue();
                     });
                     _this.listenTo(Backbone.Events,"company:create",function(){
@@ -58,6 +60,9 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                 onsubmit:function(){
                     var _this = this,
                         _param = _this.getParam();
+                    _param.area = level.getValue(true);
+                    // alert(_param.area);
+                    // return;
 
                     if(_this.validate(_param)){
                         if(_param.id){
@@ -70,11 +75,13 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                 oncancel:function(){
                     this.stopListening();
                     this.dialogObj.dialog( "destroy" );
+                    level.destroy();
+                    level = null;
                     $(".ui-dialog,.ui-widget-overlay").remove();
                 }
             }
         },
-        stationList;
+        level;
     return {
         show:function(id){
             var $dialogWrap = $("#CompanyEditTpl-dialog").length?$("#CompanyEditTpl-dialog").replaceWith($($("#CompanyEditTpl").html())):$($("#CompanyEditTpl").html());
@@ -95,6 +102,9 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
 
                     if(id){
                         API.getCompanyInfo({id:id});
+                    }else{
+                        //区域选择器
+                        level = areaSelector.init();
                     }
 
                     //日期选择器

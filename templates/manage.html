@@ -847,8 +847,12 @@
 <script type="text/html" id="CompanyEditTpl">
     <div id="CompanyEditTpl-dialog" class="dialog">
         <form class="jqtransform">
-
-            <div class="rowElem">
+        <div class="rowElem tree">
+            <label class="item-title"><i class="mast-fill">*</i>隶属区域: </label>
+            <div id="treesWrap" class="tree-selector ztree"></div>
+            <input type="hidden" key="treeid" />
+        </div>
+        <div class="rowElem">
             <label class="item-title" for="name">单位名称 : </label>
             <input class="input-w-1" type="text" key="company_name" />
             <label class="item-title" for="name">单位地址 : </label>

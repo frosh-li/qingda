@@ -95,6 +95,8 @@ class CompanyinfoController extends Controller
         $viewer=Yii::app()->request->getParam('viewer','');
         $remark=Yii::app()->request->getParam('remark','');
 
+        $area=Yii::app()->request->getParam('area','');//隶属区域
+
         if ($company_name) {
             $company_name !='' && $model->company_name=$company_name;
             $company_address !='' && $model->company_address=$company_address;
@@ -135,6 +137,7 @@ class CompanyinfoController extends Controller
             $manage !='' && $model->manage=$manage;
             $viewer !='' && $model->viewer=$viewer;
             $remark !='' && $model->remark=$remark;
+            $area != '' && $model->area=$area;
 
 
             if ($model->save()) {
@@ -214,6 +217,8 @@ class CompanyinfoController extends Controller
         $viewer=Yii::app()->request->getParam('viewer','');
         $remark=Yii::app()->request->getParam('remark','');
 
+        $area=Yii::app()->request->getParam('area','');//隶属区域
+
 
         if ($model) {
             $company_name !='' && $model->company_name=$company_name;
@@ -254,6 +259,7 @@ class CompanyinfoController extends Controller
             $owner_phone !='' && $model->owner_phone=$owner_phone;
             $manage !='' && $model->manage=$manage;
             $viewer !='' && $model->viewer=$viewer;
+            $area != '' && $model->area=$area;
 
             $model->remark=$remark;
 
@@ -310,14 +316,24 @@ class CompanyinfoController extends Controller
 	 */
 	public function actionIndex()
 	{
+        //需要根据my_sysuser的area区域字段来区分数据报警
+        //mysite的aid可以关联tree的id
+        $sql = "select area from my_sysuser where id = ".$_SESSION["uid"];
+        $auths = Yii::app()->db->createCommand($sql)->queryScalar();
         $this->setPageCount();
-        $ups = Yii::app()->db->createCommand()
-            ->select('*')
-            ->from('{{company_info}}')
-            ->limit($this->count)
-            ->offset(($this->page-1)*$this->count)
-            ->order('id desc')
-            ->queryAll();
+        // $ups = Yii::app()->db->createCommand()
+        //     ->select('*')
+        //     ->from('{{company_info}}')
+        //     ->limit($this->count)
+        //     ->offset(($this->page-1)*$this->count)
+        //     ->order('id desc')
+        //     ->queryAll();
+
+        $ct = $this->count;
+        $pg = ($this->page - 1) * $ct;
+        $sql = "select * from my_company_info order by id desc limit $pg,$ct";
+        $ups = Yii::app()->db->createCommand($sql)->queryAll();
+
         $ret['response'] = array(
             'code' => 0,
             'msg' => 'ok'
@@ -329,7 +345,16 @@ class CompanyinfoController extends Controller
             $ret['data']['pageSize'] = $this->count;
 
             foreach($ups as $key=>$value){
-                $ret['data']['list'][] = $value;
+                if ($auths == '*' || $value['area'] == '*') {
+                    $ret['data']['list'][] = $value;
+                }else{
+                    $area_arr = explode(',',$value['area']); //大集合
+                    $auth_arr = explode(',',$auths); //小集合
+                    //计算数组的交集，并返回重叠集合的结果
+                    if ($auth_arr == array_intersect($auth_arr,$area_arr)){
+                        $ret['data']['list'][] = $value;
+                    }                   
+                }
             }
 
         }else{
