@@ -2295,6 +2295,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         return "周报"
                                     }else if(data=="month"){
                                         return "月报";
+                                    }else if(data == "quarter"){
+                                        return "季度报";
                                     }else if(data == "year"){
                                         return "年报";
                                     }else{
@@ -2336,6 +2338,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         return "周报"
                                     }else if(data=="month"){
                                         return "月报";
+                                    }else if(data == "quarter"){
+                                        return "季度报";
                                     }else if(data == "year"){
                                         return "年报";
                                     }else{
