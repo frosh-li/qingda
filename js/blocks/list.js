@@ -2269,11 +2269,52 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     }
                 }
             },
+            //报表：忽略警情
+            "reportIgnore":{
+                extObj:{
+                    fetchData:function(_param){
+                        var param = {page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""};
+                        param.table = "my_ignores";
+                        API.getByearlog(param);
+                    },
+                    downloadUrl:"/api/index.php/report/byearlog",
+                    render:function() {
+                        var _this = this;
+                        _this.destoryPlugin();
+                        _this.listPlugin.push($('#auto table').DataTable($.extend(true, {
+                            "data": _this.data,
+                            "language": {
+                                "emptyTable": "报表数据为空"
+                            },
+                            "scrollX": ui.getListHeight(),
+                            "scrollY": ui.getListHeight(),
+                            "columns": [
+                                {"data": "report_index", title: "报表名称", },
+                                {"data": "report_type", title: "报表类型",  render: function (data, type, itemData) {
+                                    if(data == "week"){
+                                        return "周报"
+                                    }else if(data=="month"){
+                                        return "月报";
+                                    }else if(data == "year"){
+                                        return "年报";
+                                    }else{
+                                        return "未知类型"
+                                    }
+                                }},
+                                {"data": "report_path", title: "下载", render: function(data, type, itemData){
+                                    return _.template('<a class="resolveBtn" href="/reports/<%=data%>" target="_blank">下载</a>')({
+                                        data: data
+                                    });
+                                }},
+                            ]
+                        }, dataTableDefaultOption)));
+                    }
+                }
+            } ,
             //报表：电池使用年限
             "batteryLife":{
                 extObj:{
                     fetchData:function(_param){
-
                         var param = {page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""};
                         API.getByearlog(param);
                     },
@@ -2289,14 +2330,23 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                             "scrollX": ui.getListHeight(),
                             "scrollY": ui.getListHeight(),
                             "columns": [
-
-                                {"data": "brand", title: "品牌", width: 100},
-                                {"data": "battery_date", title: "生产日期", width: 100},
-                                {"data": "battery_install_date", title: "电池安装日期", width: 100},
-                                {"data": "U", title: "电池的电压", width: 100},
-                                {"data": "battery_oum", title: "出厂标称内阻", width: 200},
-                                {"data": "R", title: "电池的内阻", width: 100},
-                                {"data": "battery_scrap_date", title: "强制报废日期"}
+                                {"data": "report_index", title: "报表名称", },
+                                {"data": "report_type", title: "报表类型",  render: function (data, type, itemData) {
+                                    if(data == "week"){
+                                        return "周报"
+                                    }else if(data=="month"){
+                                        return "月报";
+                                    }else if(data == "year"){
+                                        return "年报";
+                                    }else{
+                                        return "未知类型"
+                                    }
+                                }},
+                                {"data": "report_path", title: "下载", render: function(data, type, itemData){
+                                    return _.template('<a class="resolveBtn" href="/reports/<%=data%>" target="_blank">下载</a>')({
+                                        data: data
+                                    });
+                                }},
                             ]
                         }, dataTableDefaultOption)));
                     }

@@ -466,9 +466,9 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         }else if (/^(reportUilog|chargeOrDischarge|deviationTrend|batteryLife|reportCaution)$/.test(pageType)) {
             ui.downHide(true);
             $(".stationPop").hide();
-            $(".exportdata").show();
+            $(".exportdata").hide();
             $("#dataItem").html($("#listTpl").html());
-            $searchWrap.show();
+            $searchWrap.hide();
             $searchWrap.jqTransform();
             if(pageType != "reportCaution"){
                 $(".report-caution-selector",$searchWrap).parents('.jqTransformSelectWrapper').hide()
@@ -478,7 +478,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                 $(".reportCaution",$searchWrap).show()
             }
 
-            $(".list-bottom.upage").show();
+            $(".list-bottom.upage").hide();
 
             require(["blocks/listSearch","blocks/list","blocks/nav"],function(listSearch,list,nav){
                 refreshModules([nav,listSearch,list],_arg);

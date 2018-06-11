@@ -33,16 +33,8 @@ class ReportController  extends Controller
         $id = Yii::app()->request->getParam('id',0);
 
         $isDownload = intval(Yii::app()->request->getParam('isdownload', '0'));
-
+        $table = Yii::app()->request->getParam('table', 'my_battery_info');
         $this->setPageCount();
-
-        if ($isDownload == 1) {
-            $limit = 5000;
-            $offset = 0;
-        }else{
-            $limit = $this->count;
-            $offset = ($this->page - 1) * $this->count;
-        }
 
         $ret['response'] = array(
             'code' => 0,
@@ -51,145 +43,17 @@ class ReportController  extends Controller
         $ret['data'] = array();
         
 
-        $sql = "select * from {{battery_info}} ";
+        $sql = "select * from my_report_log where report_table='".$table."'";
 
-        $start =substr(Yii::app()->request->getParam('start'),0,10);
-        $end = substr(Yii::app()->request->getParam('end'),0,10);
-        $where = 'where 1=1 ';
-        if($start){
-            $start = date('Y-m-d H:i:s', substr(Yii::app()->request->getParam('start'),0,10));
-            $where .= ' and battery_date >= "'.$start.'"';
-        }
-        if($end){
-            $end = date('Y-m-d H:i:s', substr(Yii::app()->request->getParam('end'),0,10));
-            $where .= ' and battery_date <= "'.$end.'"';
-        }
-
-        $sql .= $where;
-
-        $bettery = Yii::app()->db->createCommand($sql)->queryAll();
-        if ($bettery) {
-            foreach ($bettery as $index => $item) {
-                $b[$item['sid']] = $item;
-            }
-        }
-
-        //xl
-        $bets = array();
-        $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
-        if ($id) {
-            $sql = "select sid from my_site where serial_number in (".$id.")";
-            $sids =  Yii::app()->db->createCommand($sql)->queryColumn();
-
-            $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
-            if(!empty($sns)){
-                $sql = "select b.* from tb_battery_module_history as b, my_site a ";
-                $sql .= " where b.sid in (" .implode(',',$sids) . ')';
-                $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
-                $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit " .$offset. "," . $limit;
-                $bets = Yii::app()->bms->createCommand($sql)->queryAll();
-            }elseif($sns === false){
-                $bets = Yii::app()->bms->createCommand()
-                    ->select('*')
-                    ->from('{{battery_module_history}}')
-                    ->where('sid in ('.implode(',',$sids).')')
-                    ->limit($limit)
-                    ->offset($offset)
-                    ->order('record_time desc')
-                    ->queryAll();
-            }
-
-        }else{
-            //xl
-            //通过sql直接选择地域进行过滤
-            $bets = array();
-            $sns = GeneralLogic::getWatchSeriNumByAid($_SESSION['uid']);
-            if(!empty($sns)){
-                $sql = "select b.* from tb_battery_module_history as b, my_site a ";
-                $sql .= $where;
-                $sql .= " and FLOOR(b.sn_key/1000) = FLOOR(a.serial_number/1000)";
-                $sql .= "and a.serial_number in (" . implode(",", $sns) .") order by b.record_time desc limit {$offset}, {$limit}";
-                $bets = Yii::app()->bms->createCommand($sql)->queryAll();
-            }elseif($sns === false){
-                $bets = Yii::app()->bms->createCommand()
-                    ->select('*')
-                    ->from('{{battery_module_history}}')
-                    ->limit($limit)
-                    ->offset($offset)
-                    ->order('record_time desc')
-                    ->queryAll();
-            }
-        }
-        if ($bets) {
-            $ret['data']['page'] = $this->page;
-            $ret['data']['pageSize'] = $this->count;
-
-            foreach ($bets as $index => $bet) {
-                $ret['data']['list'][] = array(
-                    'brand'=>isset($b[$bet['sid']]) ? $b[$bet['sid']]['battery_factory']:'',
-                    'battery_date'=>isset($b[$bet['sid']]) ? $b[$bet['sid']]['battery_date']:'',
-                    'battery_oum'=>isset($b[$bet['sid']]) ? $b[$bet['sid']]['battery_oum']:'',
-                    'battery_voltage'=>isset($b[$bet['sid']]) ?$b[$bet['sid']]['battery_voltage']:'',
-                    'battery_scrap_date'=>isset($b[$bet['sid']]) ?$b[$bet['sid']]['battery_scrap_date']:'',
-                    'battery_life'=>isset($b[$bet['sid']]) ?$b[$bet['sid']]['battery_life']:'',
-                    'battery_install_date'=>isset($b[$bet['sid']]) ? date('Y-m-d H:i:s',$b[$bet['sid']]['create_time']) :'',
-                    'R'=>$bet['R'],
-                    'U'=>$bet['U'],
-                    'sn_key'=>$bet['sn_key'],
-                );
-            }
-        }else{
-            $ret['response'] = array(
-                'code' => -1,
-                'msg' => '暂无电池信息！'
-            );
-        }
-        if ($isDownload == 1) {
-            Yii::$enableIncludePath = false;
-            Yii::import('application.extensions.PHPExcel.PHPExcel', 1);
-            $objPHPExcel = new PHPExcel();
-            $workSheet = $objPHPExcel->setActiveSheetIndex(0);
-            // Add some data
-            $workSheet->setCellValue('A1', '品牌')
-                ->setCellValue('B1', '生产日期')
-                ->setCellValue('C1', '电池安装日期')
-                ->setCellValue('D1', '电池的电压')
-                ->setCellValue('E1', '出厂标称内阻')
-                ->setCellValue('F1', '电池的内阻')
-                ->setCellValue('G1', '强制报废日期');
-            $index = 1;
-            foreach ($ret['data']['list'] as $v) {
-                $index ++;
-                $workSheet->setCellValue('A'.$index, isset($v['brand']) ? $v['brand']:"")
-                    ->setCellValue('B'.$index, isset($v['battery_date']) ? $v['battery_date']:"")
-                    ->setCellValue('C'.$index, isset($v['battery_install_date']) ? $v['battery_install_date']:"")
-                    ->setCellValue('D'.$index, isset($v['U']) ? $v['U']:"")
-                    ->setCellValue('E'.$index, isset($v['battery_oum']) ? $v['battery_oum']:"")
-                    ->setCellValue('F'.$index, isset($v['R']) ? $v['R']:"")
-                    ->setCellValue('G'.$index, isset($v['battery_scrap_date']) ? $v['battery_scrap_date']:"");
-            }
-            // Rename worksheet
-            $objPHPExcel->getActiveSheet()->setTitle('电池使用年限');
-            // Set active sheet index to the first sheet, so Excel opens this as the first sheet
-            $objPHPExcel->setActiveSheetIndex(0);
-            // Redirect output to a client’s web browser (Excel5)
-            header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename="byearlog.xls"');
-            header('Cache-Control: max-age=0');
-// If you're serving to IE 9, then the following may be needed
-            header('Cache-Control: max-age=1');
-
-// If you're serving to IE over SSL, then the following may be needed
-            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-            header ('Pragma: public'); // HTTP/1.0
-
-            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-            $objWriter->save('php://output');
-        } else {
-            echo json_encode($ret);
-        }
+        $bettery = Yii::app()->db->createCommand()
+            ->select("*")
+            ->from("my_report_log")
+            ->where("report_table='".$table."'")
+            ->limit($this->count)
+            ->offset(($this->page -1)*$this->count)
+            ->queryAll();
+        $ret['data'] = $bettery;
+        echo json_encode($ret);
     }
 
     public function actionIndex()
