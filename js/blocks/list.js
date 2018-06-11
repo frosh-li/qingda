@@ -2270,7 +2270,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 }
             },
             //报表：忽略警情
-            "reportIgnore":{
+            "reportIgnores":{
                 extObj:{
                     fetchData:function(_param){
                         var param = {page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""};

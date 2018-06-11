@@ -463,7 +463,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
             }
             ui.downShow(false);
             
-        }else if (/^(reportUilog|chargeOrDischarge|deviationTrend|batteryLife|reportCaution)$/.test(pageType)) {
+        }else if (/^(reportUilog|chargeOrDischarge|deviationTrend|batteryLife|reportCaution|reportIgnores)$/.test(pageType)) {
             ui.downHide(true);
             $(".stationPop").hide();
             $(".exportdata").hide();
