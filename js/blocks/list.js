@@ -155,6 +155,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 return;
                             }
 
+                            //add by pk
+                            var gridLen = $("tbody tr[role='row']").length;
+                            if (gridLen == 0){
+                                alert('未查询到任何数据，不可导出！');
+                                return;
+                            }
+
                             //add by pk 
                             if (!confirm('您要导出查询页面所有数据吗？')){
                                 return;
