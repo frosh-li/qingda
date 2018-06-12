@@ -2476,6 +2476,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     if(!data.newvalue){
                                         return data.content;
                                     }
+                                    try{
                                     var json = JSON.parse(data.newvalue);
                                     if(json.site_name){
                                         var site = json.site_name;
@@ -2483,6 +2484,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         console.log(site);
                                         return data.content+"(站名:"+site+")";
                                     }else{
+                                        return data.content
+                                    }
+                                    }catch(e){
                                         return data.content
                                     }
                                 }},

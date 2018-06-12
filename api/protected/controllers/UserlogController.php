@@ -24,8 +24,15 @@ class UserlogController extends Controller
             $end = date('Y-m-d H:i:s', $end);
             $where .= ' and modify_time <= "'.$end.'"';
         }
-
-        $where .= ' and uid = '.$_SESSION["uid"];
+        /*
+        $areaUser = Yii::app()->db->createCommand()
+            ->select('*')
+            ->from('my_sysuser')
+            ->where("id=$_SESSION["uid"]")
+            ->queryScale();
+         */
+        //$where .= ' and uid = '.$_SESSION["uid"];
+        //$where .= ' and uid = '.$_SESSION["uid"];
 
         $this->setPageCount();
         if ($isDownload == 1) {
