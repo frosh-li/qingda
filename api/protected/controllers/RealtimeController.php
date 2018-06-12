@@ -423,9 +423,16 @@ class RealtimeController extends Controller
 
         // }else{
         if($type == 0){
-            $where = $cautionType == "ALL" ? '(status=0 or status=1)':'(status=0 or status=1) and right(code,1)="'.$cautionType.'"';
+            //$where = $cautionType == "ALL" ? '(status=0 or status=1)':
+            //    "(status=0 or status=1) and right(code,1) in ($cautionType)";
+            if ($cautionType == "ALL"){
+                $where = '(status=0 or status=1)';
+            }else{
+                $cautionType = "'".str_replace(',',"','",$cautionType)."'";
+                $where = "(status=0 or status=1) and right(code,1) in ($cautionType)";
+            }
             if ($id != 0) $where .= " and floor(sn_key/10000) in ($id)";
-            // echo $where;
+            //echo $where;
         }else{
             $where = $cautionType == "ALL" ? '(status <> 0 )':'(status <> 0 ) and right(code,1)="'.$cautionType.'"';
             if ($id != 0) $where .= " and sn_key in ($id)";

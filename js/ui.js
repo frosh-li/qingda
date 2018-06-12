@@ -254,9 +254,93 @@ define(function(require){
                 position = $el.offset(),
                 type = /qurey/.test(window.location.href) ? 'qurey_'+$el.attr('for'):$el.attr('for'),
                 customCols = common.cookie.getCookie(type+'Cols'),
-                allCols = context.getListCols(type).concat([]),
                 retCols=[],
                 htmls='';
+            var allCols = type != 'caution' ? context.getListCols(type).concat([]) : '';
+            
+            //add by pk 实时报警弹窗筛选
+            if (/caution/.test(window.location.href)){
+                console.log('报警！');
+                costomCols = common.cookie.getCookie('cautionCols');
+                allCols = [
+                    {
+                        key:'R',
+                        title:'红色警情'
+                    },
+                    {
+                        key:'Y',
+                        title:'黄色警情'
+                    },
+                    {
+                        key:'O',
+                        title:'橙色警情'
+                    }
+                ];
+                if (costomCols) {
+                    costomCols = customCols.split(',');
+                }
+                $.each(allCols,function(i,col){
+                    if (common.inArray(col.key,costomCols)){
+                        col.ischeck = 'checked';
+                    }else{
+                        col.ischeck = '';
+                    }
+                    htmls += '<label><input name="cols" type="checkbox" key="'+ col.key +'" '+ col.ischeck +'>'+ col.title +'</label>';
+                });
+                $("<div class='config-item-list'>"+ htmls +"</div>").dialog({
+                    dialogClass:"submenu",
+                    modal:true,
+                    buttons: [
+                        {
+                            text:'全选',
+                            icons:{
+                                primary:'ui-icon-heart'
+                            },
+                            click: function(){
+                                $("[type=checkbox]",$(this)).each(function(i,el){
+                                    $(el).attr('checked','checked');
+                                })
+                            }
+                        },
+                        {
+                            text: "确认",
+                            icons: {
+                                primary: "ui-icon-heart"
+                            },
+                            click: function() {
+                                var selectCols='';
+                                $("[type=checkbox]:checked",$(this)).each(function(i,el){
+                                    selectCols += $(el).attr('key')+',';
+                                })
+    
+                                if(!selectCols){
+                                    alert('请至少选择一列展示');
+                                    return;
+                                }
+    
+                                common.cookie.setCookie(type+'Cols', selectCols.replace(/,$/,''));
+                                console.log('start trigger', type+'ColsChange');
+                                Backbone.Events.trigger(type+'ColsChange');
+                                $( this ).dialog( "close" );
+                            }
+                        },
+                        {
+                            text: "取消",
+                            icons: {
+                                primary: "ui-icon-heart"
+                            },
+                            click: function(){
+                                $(this).dialog("close");
+                            }
+                        }
+                    ]
+                });
+                $(".ui-dialog").css({
+                    top:position.top+$el.height(),
+                    left:position.left+$el.width()
+                })
+                return;
+            }
 
             if(customCols){
                 customCols = customCols.split(',');

@@ -155,6 +155,13 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 return;
                             }
 
+                            //add by pk
+                            var gridLen = $("tbody tr[role='row']").length;
+                            if (gridLen == 0){
+                                alert('未查询到任何数据，不可导出！');
+                                return;
+                            }
+
                             //add by pk 
                             if (!confirm('您要导出查询页面所有数据吗？')){
                                 return;
@@ -755,8 +762,14 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     fetchData:function(_param){
                         var _param = {page:this.curPage};
                         var navData = nav.getSites();
+                        var cautionCols = common.cookie.getCookie('cautionCols');
 
                         $.extend(_param,{id:navData.ids.join(","), type:0,});
+                        if (cautionCols){
+                            $.extend(_param,{cautionType:cautionCols});
+                        }else{
+                            $.extend(_param,{cautionType:'ALL'});
+                        }
                         API.getCautionsData(_param);
                     },
                     events:{
@@ -801,6 +814,15 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 $("#ayellow").html(obj.count+"条");
                             }
                         }
+                    },
+                    extEvent:function(){
+                        var _this = this;
+                        _this.listenTo(Backbone.Events,"cautionColsChange",function(data){
+                            console.log('报警事件被激活',data);
+                            _this.fetchData();
+                            _this.destoryPlugin();
+                            _this.render();
+                        });
                     },
                     render:function(){
                         //this.destoryPlugin();

@@ -743,6 +743,12 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         if (batteryStrQuery == null || batteryStrQuery == undefined || batteryStrQuery == ""){
             common.cookie.setCookie('qurey_batteryCols',battery);
         }
+
+        var caution = "R,Y,O";
+        var cautionStr = common.cookie.getCookie('cautionCols');
+        if (cautionStr == null || cautionStr == undefined || cautionStr == ""){
+            common.cookie.setCookie('cautionCols',caution);
+        }
     }
     return {
         init:function(sys,pageType,sub,ids){
