@@ -24,21 +24,46 @@ class UserlogController extends Controller
             $end = date('Y-m-d H:i:s', $end);
             $where .= ' and modify_time <= "'.$end.'"';
         }
-        /*
-        $areaUser = Yii::app()->db->createCommand()
+
+        //add by pk
+        $userList = Yii::app()->db->createCommand()
             ->select('*')
             ->from('my_sysuser')
-            ->where("id=$_SESSION["uid"]")
-            ->queryScale();
-         */
-        //$where .= ' and uid = '.$_SESSION["uid"];
-        //$where .= ' and uid = '.$_SESSION["uid"];
+            ->queryAll(); //queryRow
+        $userIds = array();
+        foreach ($userList as $value){
+            if ($value['area'] == '*' || $_SESSION['area'] == '*'){
+                $userIds[] = $value['id'];
+            }else{
+                $area_arr = explode(',',$value['area']); //大集合
+                $auth_arr = explode(',',$_SESSION['area']); //小集合
+                if ($auth_arr == array_intersect($auth_arr,$area_arr)){
+                    $userIds[] = $value['id'];
+                }
+            }
+        }
+        $userIds = join(',',$userIds);
+        // var_dump($userIds);
+        $role = '3';
+        switch($_SESSION['role']){
+            case 1:
+                $role = '1,2,3';
+                break;
+            case 2:
+                $role = '2,3';
+                break;
+        }
+        // $sql = "SELECT * FROM `my_action_log` a,my_sysuser b where a.uid = b.id and b.role in ($role) and a.uid in ($userIds)";
+        // echo $sql;
+        
+        $where.= " and my_sysuser.role in ($role) and my_action_log.uid in ($userIds)";
 
         $this->setPageCount();
         if ($isDownload == 1) {
             $logs = Yii::app()->db->createCommand()
             ->select('*')
             ->from('{{action_log}}')
+            ->join('{{sysuser}}','{{action_log}}.uid = {{sysuser}}.id')
             ->where($where)
             ->limit(5000)
             ->offset(0)
@@ -48,6 +73,7 @@ class UserlogController extends Controller
             $logs = Yii::app()->db->createCommand()
             ->select('*')
             ->from('{{action_log}}')
+            ->join('{{sysuser}}','{{action_log}}.uid = {{sysuser}}.id')
             ->where($where)
             ->limit($this->count)
             ->offset(($this->page-1)*$this->count)
@@ -57,8 +83,9 @@ class UserlogController extends Controller
         $totals = Yii::app()->db->createCommand()
             ->select('count(*) as totals')
             ->from('{{action_log}}')
+            ->join('{{sysuser}}','{{action_log}}.uid = {{sysuser}}.id')
             ->where($where)
-            ->order('id desc')
+            ->order('{{action_log}}.id desc')
             ->queryScalar();
         $ret['response'] = array(
             'code' => 0,
