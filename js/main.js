@@ -376,7 +376,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     navTree=nav;
                 }
                 refreshModules([nav,listSearch,list],_arg);
-                
+                API.getLinkingStationNum().getParam({},'refresh:get');
                 isOver();
             })
         }else if(/^runlog$/.test(pageType)){
@@ -404,6 +404,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                         refreshModules([listSearch,list],_arg);
                         
                     }
+                    API.getLinkingStationNum().getParam({},'refresh:get');
                     isOver();
                 })    
 

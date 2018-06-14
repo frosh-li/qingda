@@ -1735,11 +1735,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "data": _this.data,
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {leftColumns: 1},
+                                "fixedColumns": {leftColumns: 2},
                                 "columns": [
                                     {"data": "unit", title: "单位名称",width:200},
-                                    {"data": "name", title: "姓名",width:100},
                                     {"data": "username", title: "登陆名",width:100},
+                                    {"data": "name", title: "姓名",width:100},
                                     {"data": "phone", title: "联系电话",width:100},
                                     {"data": "backup_phone", title: "备用电话",width:100},
                                     {"data": "email", title: "邮箱",width:100},

@@ -21,10 +21,22 @@ class RunlogController extends Controller
             //$where .= ' and modify_time <= "'.$end.'"';
         }
 
+        $area = $_SESSION['area'];
+        if ($area == '*'){
+            $sql = "select id from my_trees";
+            $trees = Yii::app()->db->createCommand($sql)->queryAll();
+            $trees = array_map('array_shift',$trees);
+            $area = join(',',$trees);
+        }
+        // $sql = "select * from my_running_log a,my_site b where a.sid = b.serial_number and b.aid in ($area)";
+        // echo $sql;
+        $where .= " and my_site.aid in ($area)";
+
         $this->setPageCount();
         $logs = Yii::app()->db->createCommand()
             ->select('*')
             ->from('{{running_log}}')
+            ->join('{{site}}','{{running_log}}.sid = {{site}}.serial_number')
             ->where($where)
             ->limit($this->count)
             ->offset(($this->page-1)*$this->count)
@@ -33,8 +45,9 @@ class RunlogController extends Controller
         $totals = Yii::app()->db->createCommand()
             ->select('count(*) as totals')
             ->from('{{running_log}}')
+            ->join('{{site}}','{{running_log}}.sid = {{site}}.serial_number')
             ->where($where)
-            ->order('id desc')
+            ->order('{{running_log}}.id desc')
             ->queryScalar();
         $ret['response'] = array(
             'code' => 0,

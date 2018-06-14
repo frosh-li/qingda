@@ -71,7 +71,7 @@
                     <li class="switch-btn undis settings limitationSetting" id="limitationSetting" style="display:"><span><a href="#/settings/limitationSetting">报警级别</a></span></li>
                     <li class="switch-btn undis settings cautionEquipmentSetting"><span><a href="#/settings/cautionEquipmentSetting/upperMonitor">报警设备</a></span></li>
                     <li class="switch-btn undis settings update" id="update" style="display:"><span><a href="#/settings/update">远程升级</a></span></li>
-                    <li class="switch-btn undis settings equipmentSetting"><span><a href="#/settings/equipmentSetting">外控设备</a></span></li>
+                    <li class="switch-btn undis settings equipmentSetting"><span><a href="#/settings/equipmentSetting">动环测控</a></span></li>
                     <!-- 报表 -->
                     <!--li class="active switch-btn undis report reportCaution"><span><a href="#/report/reportCaution">警情历史表</a></span></li>
                     <li class="switch-btn undis report deviationTrend"><span><a href="#/report/deviationTrend">偏离趋势报表</a></span></li>
@@ -91,7 +91,7 @@
                     <!--li class="active switch-btn undis qurey limitation"><span><a href="#/qurey/limitation">门限</a></span></li-->
                     <li class="active switch-btn undis qurey runlog"><span><a href="#/qurey/runlog">运行日志</a></span></li>
                     <!--li class="active switch-btn undis qurey option"><span><a href="#/qurey/option/stationOption">参数</a></span></li-->
-                    <li class="active switch-btn undis qurey equipment"><span><a href="#/qurey/equipment">外控设备</a></span></li>
+                    <li class="active switch-btn undis qurey equipment"><span><a href="#/qurey/equipment">动环测控</a></span></li>
                     <li class="active switch-btn undis qurey adminConfig"><span><a href="#/qurey/adminConfig">管理人员</a></span></li>
                     <li class="active switch-btn undis qurey IRCollect"><span><a href="#/qurey/IRCollect">实时内阻采集</a></span></li>
                 </ul>
@@ -182,7 +182,7 @@
                     <li class="manager-role undis" id="addRole">添加角色</li>
                     <li class="message undis" id="addMessage">设置短信/邮箱</li>
                     <li class="cautionEquipmentSetting-upperMonitor undis" id="optionPort">设置端口</li>
-                    <li class="equipmentSetting undis" id="addDevice">添加外控设备</li>
+                    <li class="equipmentSetting undis" id="addDevice">添加动环测控</li>
                 </ul>
             </div>
             <div class="data-item" id="dataItem"></div><!--data-item-->
@@ -803,7 +803,7 @@
         </div>
     </div>
 </script>
-<!-- 外控设备 -->
+<!-- 动环测控 -->
 <script type="text/html" id="deviceEditTpl">
     <div id="deviceEditTpl-dialog" class="dialog">
         <form class="jqtransform">
