@@ -1,3 +1,6 @@
+2018.6.13
+ALTER TABLE `my_running_log` ADD `sid` BIGINT NOT NULL COMMENT 'Õ¾id' AFTER `content`;
+
 2018.6.10
 Ôö¼ÓÁ¥ÊôÇøÓò×Ö¶Î
 ALTER TABLE `my_company_info`
