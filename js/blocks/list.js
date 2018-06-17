@@ -2554,6 +2554,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 if (new Date().toLocaleDateString() == new Date($endTime).toLocaleDateString()){
                     $endTime = $endTime.split(' ')[0] + ' 23:59:59';
                     $endTime = +new Date($endTime);
+                }else{
+                    $endTime = +new Date($endTime);
                 }
                 API.getUserlog({page:this.curPage,type:'2', start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $endTime})
             },
@@ -2568,6 +2570,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 if (new Date().toLocaleDateString() == new Date($endTime).toLocaleDateString()){
                     $endTime = $endTime.split(' ')[0] + ' 23:59:59';
                     $endTime = +new Date($endTime);
+                }else{
+                    $endTime = +new Date($endTime);
                 }
                 API.getUserlog({page:this.curPage,type:'1', start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $endTime})
             },
@@ -2581,6 +2585,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                 $endTime = $('#endTime').val();
                 if (new Date().toLocaleDateString() == new Date($endTime).toLocaleDateString()){
                     $endTime = $endTime.split(' ')[0] + ' 23:59:59';
+                    $endTime = +new Date($endTime);
+                }else{
                     $endTime = +new Date($endTime);
                 }
                 API.getUserlog({page:this.curPage,type:'3', start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $endTime})
