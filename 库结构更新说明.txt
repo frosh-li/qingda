@@ -1,3 +1,6 @@
+2018.6.17
+ALTER TABLE `my_action_log` ADD `ipaddress` VARCHAR(20) NOT NULL AFTER `newvalue`; 
+
 2018.6.13
 ALTER TABLE `my_running_log` ADD `sid` BIGINT NOT NULL COMMENT 'վid' AFTER `content`;
 
