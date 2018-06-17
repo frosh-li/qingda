@@ -145,13 +145,23 @@ class LoginController extends LController
 	}
 
     public function actionLoginOut() {
+        $uid = $_SESSION['uid'];
+        $username = $_SESSION['username'];
         $this->session->loginOut();
         $ret = array();
         $ret['response'] = array(
             'code'=>0,
             'msg'=>'ok'
         );
-
+        $log = array(
+            'type'=>1,
+            'uid'=>$uid,
+            'username'=>$username,
+            'content'=>$username."登出了系统",
+            'oldvalue'=>'',
+            'newvalue'=>''
+        );
+        $this->addlog($log);
         echo json_encode($ret);
         Yii::app()->end();
     }
