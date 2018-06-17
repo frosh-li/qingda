@@ -101,15 +101,6 @@ class StationpersonController extends Controller
             $sql = "select * from my_sysuser where username = '$username'";
             $row = Yii::app()->db->createCommand($sql)->queryRow();
             if ($row){
-                $log = array(
-                    'type'=>2,
-                    'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
-                    'username'=>$_SESSION['username'],
-                    'content'=>$_SESSION['username']."添加了一条用户信息",
-                    'oldvalue'=>'',
-                    'newvalue'=>json_encode($model)
-                );
-                $this->addlog($log);
                 $ret['response'] = array(
                     'code' => -1,
                     'msg' => 'has the same username'
@@ -118,6 +109,15 @@ class StationpersonController extends Controller
             }
             $model->attributes=$_POST;
             if($model->save()){
+                $log = array(
+                    'type'=>2,
+                    'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
+                    'username'=>$_SESSION['username'],
+                    'content'=>$_SESSION['username']."添加了一条用户信息",
+                    'oldvalue'=>'',
+                    'newvalue'=>json_encode($model->attributes)
+                );
+                $this->addlog($log);
                 $ret['data'] = array(
                     'id'=>$model->id
                 );
@@ -184,6 +184,7 @@ class StationpersonController extends Controller
 	public function actionDelete()
 	{
         $id = Yii::app()->request->getParam('id' ,0);
+        $model=Sysuser::model()->findByAttributes(array('id' => $id));
         $ret['response'] = array(
             'code' => 0,
             'msg' => '删除设备成功!'
@@ -194,7 +195,7 @@ class StationpersonController extends Controller
             'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
             'username'=>$_SESSION['username'],
             'content'=>$_SESSION['username']."删除了一条用户信息",
-            'oldvalue'=>'',
+            'oldvalue'=>json_encode($model->attributes),
             'newvalue'=>''
         );
         $this->addlog($log);
