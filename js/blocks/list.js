@@ -593,7 +593,9 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         return batteryId?batteryId.ids.join(','):'';
                     },
                     updateStations:function(){
-
+                        //add by pk 将历史树还原
+                        API.getNavData();
+                        console.log('将历史树还原');
                         this.stations = nav.getTrueSites();
                         console.log('stations',this.stations)
                         this.prevIds = [];
@@ -2512,7 +2514,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         return data.content
                                     }
                                 }},
-                                {"data": "modify_time", title: "操作时间", width: 150}
+                                {"data":"ipaddress",title:"登录ip",width:100},
+                                {"data": "modify_time", title: "操作时间", width: 200}
                             ]
                         }, dataTableDefaultOption)));
                     },
@@ -2967,11 +2970,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 "data": _this.data,
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
-                                "fixedColumns": {leftColumns: 1},
+                                "fixedColumns": {leftColumns: 2},
                                 "columns": [
                                     {"data": "unit", title: "单位名称",width:200},
-                                    {"data": "name", title: "姓名",width:100},
                                     {"data": "username", title: "登陆名",width:100},
+                                    {"data": "name", title: "姓名",width:100},
                                     {"data": "phone", title: "联系电话",width:100},
                                     {"data": "backup_phone", title: "备用电话",width:150},
                                     {"data": "email", title: "邮箱",width:150},

@@ -58,10 +58,32 @@ class LController extends CController
 	}
     public function addlog($log)
     {
-        $log['modify_time'] = date("Y-m-d H:i:s");
+		$log['modify_time'] = date("Y-m-d H:i:s");
+		$log['ipaddress'] = $this->get_ip();
         $insql = Utils::buildInsertSQL($log);
         $sql = "insert into {{action_log}} ".$insql;
         $ret = Yii::app()->db->createCommand($sql)->execute();
         return $ret;
-    }
+	}
+	
+	function get_ip()
+	{
+	  $ip=false;
+	  if(!empty($_SERVER["HTTP_CLIENT_IP"])){
+		$ip = $_SERVER["HTTP_CLIENT_IP"];
+	  }
+	  if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		$ips = explode (", ", $_SERVER['HTTP_X_FORWARDED_FOR']);
+		if ($ip) { array_unshift($ips, $ip); $ip = FALSE; }
+		for ($i = 0; $i < count($ips); $i++) {
+		  if (!eregi ("^(10│172.16│192.168).", $ips[$i])) {
+			$ip = $ips[$i];
+			break;
+		  }
+		}
+	  }
+	  $ip = ($ip ? $ip : $_SERVER['REMOTE_ADDR']);
+	  if ($ip == '::1') $ip = '127.0.0.1';
+	  return $ip;
+	}
 }
