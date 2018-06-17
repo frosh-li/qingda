@@ -101,6 +101,15 @@ class StationpersonController extends Controller
             $sql = "select * from my_sysuser where username = '$username'";
             $row = Yii::app()->db->createCommand($sql)->queryRow();
             if ($row){
+                $log = array(
+                    'type'=>2,
+                    'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
+                    'username'=>$_SESSION['username'],
+                    'content'=>$_SESSION['username']."添加了一条用户信息",
+                    'oldvalue'=>'',
+                    'newvalue'=>json_encode($model)
+                );
+                $this->addlog($log);
                 $ret['response'] = array(
                     'code' => -1,
                     'msg' => 'has the same username'
@@ -139,9 +148,19 @@ class StationpersonController extends Controller
         $ret['data'] = array();
         if ($model) {
             // $sid=Yii::app()->request->getParam('sid','');
+            $oldvalue = $model->attributes;
             $model->attributes=$_POST;
 
                 if ($model->save()) {
+                    $log = array(
+                        'type'=>2,
+                        'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
+                        'username'=>$_SESSION['username'],
+                        'content'=>$_SESSION['username']."更新了一条用户信息",
+                        'oldvalue'=>json_encode($oldvalue),
+                        'newvalue'=>json_encode($model->attributes)
+                    );
+                    $this->addlog($log);
                     $ret['data'] = array(
                         'id'=>$model->id,
                         'Operater'=>$model->username,
@@ -170,6 +189,15 @@ class StationpersonController extends Controller
             'msg' => '删除设备成功!'
         );
         $ret['data'] = array();
+        $log = array(
+            'type'=>2,
+            'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
+            'username'=>$_SESSION['username'],
+            'content'=>$_SESSION['username']."删除了一条用户信息",
+            'oldvalue'=>'',
+            'newvalue'=>''
+        );
+        $this->addlog($log);
         $result = $this->loadModel($id)->delete();
 
         if (!$result) {

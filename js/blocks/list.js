@@ -2543,32 +2543,47 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
     })
 
 
-    //查询：UI日志：设置
+    //查询：系统日志：设置
     listConfig.uilog_options = $.extend(true,{},listConfig.reportUilog_options,{
         extObj:{
             getNavData:function(){
                 return nav.getSites();
             },
             fetchData:function(_param){
-                API.getUserlog({page:this.curPage,type:'2', start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
+                $endTime = $('#endTime').val();
+                if (new Date().toLocaleDateString() == new Date($endTime).toLocaleDateString()){
+                    $endTime = $endTime.split(' ')[0] + ' 23:59:59';
+                    $endTime = +new Date($endTime);
+                }
+                API.getUserlog({page:this.curPage,type:'2', start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $endTime})
             },
             downloadUrl:"/api/index.php/userlog?type=2"
         }
     })
-    //查询：UI日志：用户登录登出
+    //查询：系统日志：用户登录登出
     listConfig.uilog_user = $.extend(true,{},listConfig.reportUilog_user,{
         extObj:{
             fetchData:function(_param){
-                API.getUserlog({page:this.curPage,type:'1', start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
+                $endTime = $('#endTime').val();
+                if (new Date().toLocaleDateString() == new Date($endTime).toLocaleDateString()){
+                    $endTime = $endTime.split(' ')[0] + ' 23:59:59';
+                    $endTime = +new Date($endTime);
+                }
+                API.getUserlog({page:this.curPage,type:'1', start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $endTime})
             },
             downloadUrl:"/api/index.php/userlog?type=1"
         }
     })
-    //查询：UI日志：其他
+    //查询：系统日志：其他
     listConfig.uilog_other = $.extend(true,{},listConfig.reportUilog_other,{
         extObj:{
             fetchData:function(_param){
-                API.getUserlog({page:this.curPage,type:'3', start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
+                $endTime = $('#endTime').val();
+                if (new Date().toLocaleDateString() == new Date($endTime).toLocaleDateString()){
+                    $endTime = $endTime.split(' ')[0] + ' 23:59:59';
+                    $endTime = +new Date($endTime);
+                }
+                API.getUserlog({page:this.curPage,type:'3', start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $endTime})
             },
             downloadUrl:"/api/index.php/userlog?type=3"
         }

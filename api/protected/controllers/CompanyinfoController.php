@@ -141,6 +141,15 @@ class CompanyinfoController extends Controller
 
 
             if ($model->save()) {
+                $log = array(
+                    'type'=>2,
+                    'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
+                    'username'=>$_SESSION['username'],
+                    'content'=>$_SESSION['username']."添加了一条单位信息",
+                    'oldvalue'=>'',
+                    'newvalue'=>json_encode($model)
+                );
+                $this->addlog($log);
                 $ret['data'] = array(
                     'id'=>$model->id,
                     'company_name'=>$model->company_name,
@@ -221,6 +230,7 @@ class CompanyinfoController extends Controller
 
 
         if ($model) {
+            $oldvalue = $model;
             $company_name !='' && $model->company_name=$company_name;
             $company_address !='' && $model->company_address=$company_address;
             $supervisor_phone !='' && $model->supervisor_phone=$supervisor_phone;
@@ -265,6 +275,15 @@ class CompanyinfoController extends Controller
 
 
             if ($model->save()) {
+                $log = array(
+                    'type'=>2,
+                    'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
+                    'username'=>$_SESSION['username'],
+                    'content'=>$_SESSION['username']."更新了一条单位信息",
+                    'oldvalue'=>json_encode($oldvalue),
+                    'newvalue'=>json_encode($model)
+                );
+                $this->addlog($log);
                 $ret['data'] = array(
                     'id'=>$model->id,
                     'company_name'=>$model->company_name,
@@ -300,7 +319,15 @@ class CompanyinfoController extends Controller
         );
         $ret['data'] = array();
         $result = $this->loadModel($id)->delete();
-
+        $log = array(
+            'type'=>2,
+            'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
+            'username'=>$_SESSION['username'],
+            'content'=>$_SESSION['username']."删除了一条用户信息",
+            'oldvalue'=>'',
+            'newvalue'=>''
+        );
+        $this->addlog($log);
         if (!$result) {
             $ret['response'] = array(
                 'code' => -1,
