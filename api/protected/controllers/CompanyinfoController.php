@@ -145,9 +145,9 @@ class CompanyinfoController extends Controller
                     'type'=>2,
                     'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
                     'username'=>$_SESSION['username'],
-                    'content'=>$_SESSION['username']."添加了一条单位信息",
+                    'content'=>$_SESSION['username']."添加了 $company_name 的单位信息",
                     'oldvalue'=>'',
-                    'newvalue'=>json_encode($model)
+                    'newvalue'=>json_encode($model->attributes)
                 );
                 $this->addlog($log);
                 $ret['data'] = array(
@@ -279,9 +279,9 @@ class CompanyinfoController extends Controller
                     'type'=>2,
                     'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
                     'username'=>$_SESSION['username'],
-                    'content'=>$_SESSION['username']."更新了一条单位信息",
+                    'content'=>$_SESSION['username']."将 $company_name 的单位信息更新了",
                     'oldvalue'=>json_encode($oldvalue),
-                    'newvalue'=>json_encode($model)
+                    'newvalue'=>json_encode($model->attributes)
                 );
                 $this->addlog($log);
                 $ret['data'] = array(
@@ -318,13 +318,14 @@ class CompanyinfoController extends Controller
             'msg' => '删除公司信息成功!'
         );
         $ret['data'] = array();
+        $model = $this->loadModel($id);
         $result = $this->loadModel($id)->delete();
         $log = array(
             'type'=>2,
             'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
             'username'=>$_SESSION['username'],
-            'content'=>$_SESSION['username']."删除了一条用户信息",
-            'oldvalue'=>'',
+            'content'=>$_SESSION['username']."删除了 $model->company_name 的单位信息",
+            'oldvalue'=>json_encode($model->attributes),
             'newvalue'=>''
         );
         $this->addlog($log);

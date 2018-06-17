@@ -113,7 +113,7 @@ class StationpersonController extends Controller
                     'type'=>2,
                     'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
                     'username'=>$_SESSION['username'],
-                    'content'=>$_SESSION['username']."添加了一条用户信息",
+                    'content'=>$_SESSION['username']."添名为 $username 的用户信息",
                     'oldvalue'=>'',
                     'newvalue'=>json_encode($model->attributes)
                 );
@@ -156,7 +156,7 @@ class StationpersonController extends Controller
                         'type'=>2,
                         'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
                         'username'=>$_SESSION['username'],
-                        'content'=>$_SESSION['username']."更新了一条用户信息",
+                        'content'=>$_SESSION['username']."将 $_POST[username] 的用户信息更新了",
                         'oldvalue'=>json_encode($oldvalue),
                         'newvalue'=>json_encode($model->attributes)
                     );
@@ -194,7 +194,7 @@ class StationpersonController extends Controller
             'type'=>2,
             'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
             'username'=>$_SESSION['username'],
-            'content'=>$_SESSION['username']."删除了一条用户信息",
+            'content'=>$_SESSION['username']."将 $model->username 的用户信息删除了",
             'oldvalue'=>json_encode($model->attributes),
             'newvalue'=>''
         );
