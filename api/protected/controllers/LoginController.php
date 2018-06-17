@@ -152,7 +152,7 @@ class LoginController extends LController
         $ret['response'] = array(
             'code'=>0,
             'msg'=>'ok'
-        );
+        ); 
         $log = array(
             'type'=>1,
             'uid'=>$uid,
