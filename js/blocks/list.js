@@ -463,6 +463,10 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         stationInfoDialog.show(id.join(","));
                     },
                     fetchData:function(){
+                        //add by pk 将历史树还原
+                        API.getNavData();
+                        console.log('将历史树还原');
+                        
                         var _param = {page:this.curPage};
                         var navData = nav.getSites();
                         var ids;
@@ -593,9 +597,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         return batteryId?batteryId.ids.join(','):'';
                     },
                     updateStations:function(){
-                        //add by pk 将历史树还原
-                        API.getNavData();
-                        console.log('将历史树还原');
                         this.stations = nav.getTrueSites();
                         console.log('stations',this.stations)
                         this.prevIds = [];
