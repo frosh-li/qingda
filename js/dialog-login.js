@@ -48,6 +48,13 @@ define(['require','api','common'],function(require,API,common){
                     var _this = this,
                         _param = _this.getParam();
                     _param.refresh = 1;
+                    $.ajax({
+                        url:"/api/index.php/login/loginOut",
+                        type:"get",
+                        async:false,
+                        success:function(){
+                        }
+                    });
                     if(_this.validate(_param)){
                         API.login(_param);
                     }
