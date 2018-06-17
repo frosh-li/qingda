@@ -2954,7 +2954,7 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
         }
     })
 
-    //查询：强采内阻
+    //管理人员
     listConfig.adminConfig = $.extend(true,{},listConfig.station,{
         extObj:{
             fetchData:function(_param){
