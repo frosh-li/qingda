@@ -1,3 +1,14 @@
+2018.6.19
+登录信息提示调整
+LoginController.php
+login.js
+
+主管单位表小号无添加单位按钮
+main.js
+
+报警查询列调整
+list.js
+
 2018.6.17
 ALTER TABLE `my_action_log` ADD `ipaddress` VARCHAR(20) NOT NULL AFTER `newvalue`; 
 
