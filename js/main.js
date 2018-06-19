@@ -61,7 +61,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
         }
         if(roleid == 2){
             $("#addBMS").hide();
-            $("#addCompany").hide();
+            // $("#addCompany").hide();
             $("#addBattery").hide();
             $("#addUps").hide();
             $("#addStation").hide();
