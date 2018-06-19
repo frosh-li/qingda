@@ -19,7 +19,8 @@ define(["require","backbone","api","router","common"],function(require,Backbone,
                 })
                 _this.listenTo(Backbone.Events,"login:fail",function(data){
                     localStorage.clear();
-                    alert('登录失败，请重试');
+                    // console.log(data);
+                    alert(data.response.msg);
                 })
             },
             onSbumit:function(){

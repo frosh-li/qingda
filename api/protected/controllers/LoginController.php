@@ -108,6 +108,7 @@ class LoginController extends LController
             $sql = "select * from {{sysuser}} where username=:username";
             $row = Yii::app()->db->createCommand($sql)->bindValues([':username' => $username])->queryRow();
 
+            // var_dump($row);
             if ($row) {
                 if ($password == $row['password']) {
                     $ret['data'] = array(
@@ -130,13 +131,13 @@ class LoginController extends LController
                 }else{
                     $ret['response'] = array(
                         'code'=>-1,
-                        'msg'=>'用户名或密码错误！'
+                        'msg'=>'密码错误，请输入正确的用户名和密码！'
                     );
                 }
             }else{
                 $ret['response'] = array(
                     'code'=>-1,
-                    'msg'=>'没有该用户！'
+                    'msg'=>'无此用户，请输入正确的用户名和密码！'
                 );
             }
         }
