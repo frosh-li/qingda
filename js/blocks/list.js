@@ -2868,15 +2868,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                 }
                                 return "<div style='font-weight:bold;color:"+color+"'>"+data+"</div>";
                             }},
-                            { "data": "markup",title:"操作记录",width:300,render:function(data,type,itemData){
-                                var a = data == null ? "": data;
-                                if(itemData.status == 2){
-                                    return '<div style="text-align:left;">已忽略</div>';
-                                }
-                                return '<div style="text-align:left;">'+a+'</div>';
-                            }},
-                            { "data": "contact",title:"操作人",width:80},
-                            { "data": "markuptime",title:"操作时间",width:200},
                             {
                                 "data": "id",
                                 "title":"操作",
@@ -2891,7 +2882,17 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         desc: itemData.desc
                                     });
                                 }
-                            }
+                            },
+                            { "data": "markup",title:"操作记录",width:300,render:function(data,type,itemData){
+                                var a = data == null ? "": data;
+                                if(itemData.status == 2){
+                                    return '<div style="text-align:left;">已忽略</div>';
+                                }
+                                return '<div style="text-align:left;">'+a+'</div>';
+                            }},
+                            { "data": "contact",title:"操作人",width:80},
+                            { "data": "markuptime",title:"操作时间",width:200}
+
                             //{ "data": "alarm_process_and_memo",title:"处理过程、时间、管理员" }
                         ]
                     })));
