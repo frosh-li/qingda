@@ -5,6 +5,7 @@ class ParamController extends Controller
 	public function actionIndex()
 	{
         $refresh = Yii::app()->request->getParam('refresh','');
+        $refreshall = Yii::app()->request->getParam('refreshall','');
         $collection  = Yii::app()->request->getParam('collection','');
         $resistance  = Yii::app()->request->getParam('resistance','');
         $dismap  = Yii::app()->request->getParam('dismap','');
@@ -12,12 +13,30 @@ class ParamController extends Controller
         $email_on_off  = Yii::app()->request->getParam('email_on_off','');
         $light_on_off  = Yii::app()->request->getParam('light_on_off','');
         $voice_on_off  = Yii::app()->request->getParam('voice_on_off','');
+        // echo $refreshall;exit;
         $ret['response'] = array(
             'code'=>0,
             'msg'=>'设置参数成功！'
         );
         $ret['data'] = array();
         $i = 0;
+        if ($refreshall != ''){
+            $i ++;
+            $sql = "update my_sysuser set refresh = 20";
+            Yii::app()->bms->createCommand($sql)->execute();
+            $log = array(
+                'type'=>2,
+                'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
+                'username'=>$_SESSION['username'],
+                'content'=>$_SESSION['username']."调整了全部的刷新时间",
+                'oldvalue'=>'',
+                'newvalue'=>$refreshall
+            );
+            $this->addlog($log);
+            $ret['data'] = array(
+                'refreshall'=>$refreshall
+            );
+        }
         if ($refresh != '') {
             $i++;
             // Yii::app( )->config->set( 'refresh', $refresh );

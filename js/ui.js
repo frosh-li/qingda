@@ -620,13 +620,17 @@ define(function(require){
             require(["common"],function(common){
                 var param = common.getFormValue($("#otherOptionEdit"));
 
-
-
-                if(parseInt(param.refresh) < 8){
-                    alert('刷新频率最小间隔8秒');
-                    $("#otherOptionEdit [key=refresh]").val(8);
-                    return;
+                var refresh = $('#otherOptionEdit [key=refresh]').attr('checked');
+                if (refresh){
+                    // alert(refresh);
+                    param.refreshall = 1;
                 }
+
+                // if(parseInt(param.refresh) < 15){
+                //     alert('刷新频率最小间隔15秒');
+                //     $("#otherOptionEdit [key=refresh]").val(15);
+                //     return;
+                // }
                 if(parseInt(param.collection) < 8){
                     alert('采集频率最小间隔8秒');
                     $("#otherOptionEdit [key=collection]").val(8);
