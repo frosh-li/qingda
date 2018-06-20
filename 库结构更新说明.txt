@@ -7,6 +7,11 @@ dialog-personalEdit.js
 manage.html
 ALTER TABLE `my_sysuser` ADD `refresh` INT NOT NULL DEFAULT '20' COMMENT '刷新频率' AFTER `canedit`;
 
+设置参数其它参赛刷新频率全部为20秒
+ParamController.php
+ui.js
+manage.html
+
 2018.6.19
 登录信息提示调整
 LoginController.php
