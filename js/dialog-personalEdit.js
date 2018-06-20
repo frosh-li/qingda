@@ -130,6 +130,7 @@ define(['require','api','common','blocks/areaSelector'],function(require,API,com
                     }else{
                         _this.level = _this.level || areaSelector.init();
                         console.log(_this.level);
+                        $('[key=refresh').val(20);
                     }
 
                 }

@@ -108,6 +108,7 @@ class StationpersonController extends Controller
                 echo json_encode($ret);exit;
             }
             $model->attributes=$_POST;
+            $model->refresh = $_POST['refresh'];
             if($model->save()){
                 $log = array(
                     'type'=>2,
@@ -150,6 +151,7 @@ class StationpersonController extends Controller
             // $sid=Yii::app()->request->getParam('sid','');
             $oldvalue = $model->attributes;
             $model->attributes=$_POST;
+            $model->refresh = $_POST['refresh'];
 
                 if ($model->save()) {
                     $log = array(

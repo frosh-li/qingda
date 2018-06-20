@@ -20,7 +20,18 @@ class ParamController extends Controller
         $i = 0;
         if ($refresh != '') {
             $i++;
-            Yii::app( )->config->set( 'refresh', $refresh );
+            // Yii::app( )->config->set( 'refresh', $refresh );
+            $sql = "update my_sysuser set refresh = $refresh where id = $_SESSION[uid]";
+            Yii::app()->bms->createCommand($sql)->execute();
+            $log = array(
+                'type'=>2,
+                'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
+                'username'=>$_SESSION['username'],
+                'content'=>$_SESSION['username']."调整了刷新时间",
+                'oldvalue'=>'',
+                'newvalue'=>$refresh
+            );
+            $this->addlog($log);
             $ret['data'] = array(
                 'refresh'=>$refresh
             );
@@ -83,7 +94,12 @@ class ParamController extends Controller
         }else{
             $array = array('refresh','collection','resistance','dismap','sms_on_off','email_on_off','light_on_off','voice_on_off');
             foreach ($array as $key => $k) {
-                $v = Yii::app()->config->get($k);
+                if ($k == 'refresh'){
+                    $sql = "select refresh from my_sysuser where id = $_SESSION[uid]";
+                    $v = Yii::app()->bms->createCommand($sql)->queryScalar();
+                }else{
+                    $v = Yii::app()->config->get($k);
+                }
                 $ret['data'][$k] = $v;
             }
         }

@@ -43,10 +43,12 @@ class StatController extends Controller
             'code' => 0,
             'msg' => '站点链接统计'
         );
+        $sql = "select refresh from my_sysuser where id = $_SESSION[uid]";
+        $refresh = Yii::app()->bms->createCommand($sql)->queryScalar();
         $ret['data'] = array(
             'online'=>$online,
             'offline'=>$total,
-            'refresh'=>Yii::app()->config->get("refresh"),
+            'refresh'=>$refresh,
             'dismap'=>Yii::app()->config->get("dismap"),
             'sms_on_off'=>Yii::app()->config->get("sms_on_off"),
             'email_on_off'=>Yii::app()->config->get("email_on_off"),
