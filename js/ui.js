@@ -441,6 +441,10 @@ define(function(require){
                 alert("最小间隔为15");
                 return;
             }
+            if (time > 60){
+                alert('最大间隔为60');
+                return;
+            }
             var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
             if(roleid == 3){
                 alert("您没有权限修改最小间隔时间");
