@@ -75,6 +75,15 @@ define(['require','api','common','blocks/areaSelector'],function(require,API,com
                     _param.canedit = $("[key=canedit]",this.el).val();
                     console.log(_param);
                     console.log(this.level,'level');
+                    var refresh = $("[key=refresh]",this.el).val();
+                    if (refresh < 15){
+                        alert('刷新频率不得小于15秒');
+                        return;
+                    }
+                    if (refresh > 60){
+                        alert('刷新频率不得大于60秒');
+                        return;
+                    }
                     if(_this.validate(_param)){
                         if(_param.id){
                             API.updatePersonalInfo(_param);
