@@ -64,6 +64,18 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                     if(!param.sid){
                         return this.showErrTips('站号为必填项');
                     }
+                    if (!param.CurSensor){
+                        return this.showErrTips('电流传感器安装状态为必填项');
+                    }
+                    if (!param.StationFullChineseName){
+                        return this.showErrTips('站点全称为必填项');
+                    }
+                    if (!param.groups){
+                        return this.showErrTips('电池组数为必填项');
+                    }
+                    if (!param.batteries){
+                        return this.showErrTips('每组电池数为必填项');
+                    }
 
                     var isvalidate = true;
                     var $mastFills = $(".mast-fill",this.el);
@@ -71,6 +83,7 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
                         var key = $(mf).attr("for"),title;
                         if(key && (typeof param[key] == "undefined" || !param[key])){
                             title = $(mf).parent().html().replace(/<i[^>]*>.*(?=<\/i>)<\/i>/gi,'');
+                            title = title.replace(': ','');
                             alert(title+"为必填项");
                             isvalidate = false;
                             return false;

@@ -1,6 +1,17 @@
+2018.6.23
+添加站点电池ups的bug修正
+dialog-UPSEdit.js
+dialog-batteryEdit.js
+dialog-stationEdit.js
+manage.html
+
+
 2018.6.21
 刷新时间调整管理人员表单限制
 dialog-personalEdit.js
+
+修复日志表的log
+ALTER TABLE `my_action_log` CHANGE `ipaddress` `ipaddress` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT ' ';
 
 2018.6.20
 刷新时间调整

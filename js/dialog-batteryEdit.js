@@ -28,6 +28,10 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                         _this.oncancel();
                         Backbone.Events.trigger("battery:next", data);
                     });
+                    _this.listenTo(Backbone.Events,"battery:create:next:fail",function(data){
+                        common.loadTips.close();
+                        alert(data.response.msg);
+                    });
                 },
                 setValue:function(data){
                     var data = data || this.data;
@@ -59,6 +63,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                         var key = $(mf).attr("for"),title;
                         if(key && (typeof param[key] == "undefined" || !param[key])){
                             title = $(mf).parent().html().replace(/<i[^>]*>.*(?=<\/i>)<\/i>/gi,'');
+                            title = title.replace(': ','');
                             alert(title+"为必填项");
                             isvalidate = false;
                             return false;

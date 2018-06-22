@@ -20,6 +20,10 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                         window.location.reload();
                         Backbone.Events.trigger("listdata:refresh", "batteryInfo");
                     });
+                    _this.listenTo(Backbone.Events,"ups:create:fail ups:update:fail",function(data){
+                        common.loadTips.close();
+                        alert(data.response.msg);
+                    });
                 },
                 setValue:function(data){
                     console.log('now data', data);
@@ -46,11 +50,17 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     return false;
                 },
                 validate:function(param){
-                    // if(!param.site_name){
-                    //     return this.showErrTips('站点为必填项');
-                    // }
+                    if(!param.site_name){
+                        return this.showErrTips('站点为必填项');
+                    }
                     if(!param.sid){
                         return this.showErrTips('站点不存在');
+                    }
+                    if (!param.ups_factory){
+                        return this.showErrTips('生产厂家为必填项');
+                    }
+                    if (!param.ups_power){
+                        return this.showErrTips('功率为必填项');
                     }
 
                     var isvalidate = true;
@@ -59,6 +69,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                         var key = $(mf).attr("for"),title;
                         if(key && (typeof param[key] == "undefined" || !param[key])){
                             title = $(mf).parent().html().replace(/<i[^>]*>.*(?=<\/i>)<\/i>/gi,'');
+                            title = title.replace(': ','');
                             alert(title+"为必填项");
                             isvalidate = false;
                             return false;
