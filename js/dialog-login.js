@@ -21,7 +21,9 @@ define(['require','api','common'],function(require,API,common){
                         _this.oncancel();
                     })
                     _this.listenTo(Backbone.Events,"login:box:fail",function(data){
-                        alert('登录失败，请重试');
+                        // console.log(data);
+                        alert(data.response.msg);
+                        // alert('登录失败，请重试');
                     })
                     _this.listenTo(Backbone.Events,"login:cpwd",function(data){
                         alert('密码修改成功');
@@ -48,8 +50,10 @@ define(['require','api','common'],function(require,API,common){
                     var _this = this,
                         _param = _this.getParam();
                     _param.refresh = 1;
+                    console.log(_param);
+                    // return;
                     $.ajax({
-                        url:"/api/index.php/login/loginOut",
+                        url:"/api/index.php/login/loginOut?username="+_param.username+"&password="+_param.password,
                         type:"get",
                         async:false,
                         success:function(){

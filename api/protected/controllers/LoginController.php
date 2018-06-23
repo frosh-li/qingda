@@ -148,6 +148,16 @@ class LoginController extends LController
     public function actionLoginOut() {
         $uid = $_SESSION['uid'];
         $username = $_SESSION['username'];
+        $uname = Yii::app()->request->getParam('username','');
+        $pword = Yii::app()->request->getParam('password','');
+        //切换用户时验证用户是否存在
+        if ($uname != '' && $pword != ''){
+            $sql = "select * from my_sysuser where username='$uname' and password='$pword'";
+            $row = Yii::app()->db->createCommand($sql)->queryRow();
+            if (!$row){
+                Yii::app()->end();
+            }
+        }
         $this->session->loginOut();
         $ret = array();
         $ret['response'] = array(
