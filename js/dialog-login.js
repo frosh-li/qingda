@@ -86,7 +86,7 @@ define(['require','api','common'],function(require,API,common){
             $dialogWrap.dialog({
                 modal:true,
                 show:300,
-                height:250,
+                height:300,
                 width:500,
                 title:"切换用户",
                 close:function(evt,ui){
