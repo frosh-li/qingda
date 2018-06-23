@@ -109,6 +109,8 @@ class StationpersonController extends Controller
             }
             $model->attributes=$_POST;
             $model->refresh = $_POST['refresh'];
+            $model->salt = Utils::createCode();
+            $model->password = md5($_POST['password'].$model->salt);
             if($model->save()){
                 $log = array(
                     'type'=>2,
@@ -152,6 +154,7 @@ class StationpersonController extends Controller
             $oldvalue = $model->attributes;
             $model->attributes=$_POST;
             $model->refresh = $_POST['refresh'];
+            $model->password = md5($_POST['password'].$model->salt);
 
                 if ($model->save()) {
                     $log = array(
