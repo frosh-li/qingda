@@ -1891,66 +1891,77 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         $('#lock').hide();
                         var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
                         if (roleid > 1) $('#systemOption').hide();
-                        
+                        var columnsArr = [
+                            {"data": "sn_key", title: "物理地址",width:100},
+                            {"data": "site_name", title: "站名称",width:100},
+                            {"data": "sid", title: "站号",width:100},
+                            {"data": "Groups", title: "站内组数",width:100},
+                            {"data": "GroBats", title: "每组电池数",width:100},
+                            {"data": "CurSensor", title: "电流传感安装状态",width:140},
+                            {"data": "Time_MR", title: "内阻测量间隔",width:100},
+                            {"data": "SampleInt", title: "数据间隔",width:100},
+                            {"data": "MaxTem_R", title: "高温报警_红",width:100},
+                            {"data": "MaxTem_O", title: "高温报警_橙",width:100},
+                            {"data": "MaxTem_Y", title: "高温报警_黄",width:100},
+                            {"data": "MinTem_R", title: "低温报警_红",width:100},
+                            {"data": "MinTem_O", title: "低温报警_橙",width:100},
+                            {"data": "MinTem_Y", title: "低温报警_黄",width:100},
+                            {"data": "MaxHum_R", title: "高湿报警_红",width:100},
+                            {"data": "MaxHum_O", title: "高湿报警_橙",width:100},
+                            {"data": "MaxHum_Y", title: "高湿报警_黄",width:100},
+                            {"data": "MinHum_R", title: "低湿报警_红",width:100},
+                            {"data": "MinHum_O", title: "低湿报警_橙",width:100},
+                            {"data": "MinHum_Y", title: "低湿报警_黄",width:100},
+                            {"data": "CurRange", title: "站电流量程",width:100},
+                            {"data": "KI", title: "站电流系数",width:100},
+                            {"data": "ZeroCurADC", title: "站电流零位",width:100},
+                            {"data": "DisChaLim_R", title: "放电报警_红",width:100},
+                            {"data": "DisChaLim_O", title: "放电报警_橙",width:100},
+                            {"data": "DisChaLim_Y", title: "放电报警_黄",width:100},
+                            {"data": "ChaLim_R", title: "充电报警_红",width:100},
+                            {"data": "ChaLim_O", title: "充电报警_橙",width:100},
+                            {"data": "ChaLim_Y", title: "充电报警_黄",width:100},
+                            {"data": "HiVolLim_R", title: "高压报警_红",width:100},
+                            {"data": "HiVolLim_O", title: "高压报警_橙",width:100},
+                            {"data": "HiVolLim_Y", title: "高压报警_黄",width:100},
+                            {"data": "LoVolLim_R", title: "低压报警_红",width:100},
+                            {"data": "LoVolLim_O", title: "低压报警_橙",width:100},
+                            {"data": "LoVolLim_Y", title: "低压报警_黄",width:100},
+                            {"data": "ChaCriterion", title: "站充放电判据",width:100},
+                            {
+                                data:"sn_key",
+                                render: function (data) {
+                                    var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+
+                                    if(roleid!=1){
+                                        return "";
+                                    }
+                                    return _.template($("#editBtn").html())({
+                                        id:data
+                                    });
+                                }
+                            }
+                        ];
+                        var newColumns = [];
+                        for (var row in columnsArr){
+                            var data1 = columnsArr[row].data;
+                            if (data1 == 'KI' || data1 == 'ZeroCurADC' || data1 == 'CurSensor' || data1 == 'Time_MR' || data1 == 'SampleInt' || data1 == 'CurRange' || data1 == 'ChaCriterion'){
+                                continue;
+                            }
+                            newColumns.push(columnsArr[row]);
+                        }
+                        var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+                        if (roleid != 1){
+                            columnsArr = newColumns;
+                        }
+                        console.log(newColumns);
                         require(["fixedColumn"],function() {
                             _this.listPlugin.push($('#auto table').DataTable($.extend(true, {}, dataTableDefaultOption, {
                                 "data": _this.data,
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {leftColumns: 3},
-                                "columns": [
-                                    {"data": "sn_key", title: "物理地址",width:100},
-                                    {"data": "site_name", title: "站名称",width:100},
-                                    {"data": "sid", title: "站号",width:100},
-                                    {"data": "Groups", title: "站内组数",width:100},
-                                    {"data": "GroBats", title: "每组电池数",width:100},
-                                    {"data": "CurSensor", title: "电流传感安装状态",width:140},
-                                    {"data": "Time_MR", title: "内阻测量间隔",width:100},
-                                    {"data": "SampleInt", title: "数据间隔",width:100},
-                                    {"data": "MaxTem_R", title: "高温报警_红",width:100},
-                                    {"data": "MaxTem_O", title: "高温报警_橙",width:100},
-                                    {"data": "MaxTem_Y", title: "高温报警_黄",width:100},
-                                    {"data": "MinTem_R", title: "低温报警_红",width:100},
-                                    {"data": "MinTem_O", title: "低温报警_橙",width:100},
-                                    {"data": "MinTem_Y", title: "低温报警_黄",width:100},
-                                    {"data": "MaxHum_R", title: "高湿报警_红",width:100},
-                                    {"data": "MaxHum_O", title: "高湿报警_橙",width:100},
-                                    {"data": "MaxHum_Y", title: "高湿报警_黄",width:100},
-                                    {"data": "MinHum_R", title: "低湿报警_红",width:100},
-                                    {"data": "MinHum_O", title: "低湿报警_橙",width:100},
-                                    {"data": "MinHum_Y", title: "低湿报警_黄",width:100},
-                                    {"data": "CurRange", title: "站电流量程",width:100},
-                                    {"data": "KI", title: "站电流系数",width:100},
-                                    {"data": "ZeroCurADC", title: "站电流零位",width:100},
-                                    {"data": "DisChaLim_R", title: "放电报警_红",width:100},
-                                    {"data": "DisChaLim_O", title: "放电报警_橙",width:100},
-                                    {"data": "DisChaLim_Y", title: "放电报警_黄",width:100},
-                                    {"data": "ChaLim_R", title: "充电报警_红",width:100},
-                                    {"data": "ChaLim_O", title: "充电报警_橙",width:100},
-                                    {"data": "ChaLim_Y", title: "充电报警_黄",width:100},
-                                    {"data": "HiVolLim_R", title: "高压报警_红",width:100},
-                                    {"data": "HiVolLim_O", title: "高压报警_橙",width:100},
-                                    {"data": "HiVolLim_Y", title: "高压报警_黄",width:100},
-                                    {"data": "LoVolLim_R", title: "低压报警_红",width:100},
-                                    {"data": "LoVolLim_O", title: "低压报警_橙",width:100},
-                                    {"data": "LoVolLim_Y", title: "低压报警_黄",width:100},
-                                    {"data": "ChaCriterion", title: "站充放电判据",width:100},
-
-
-                                    {
-                                        data:"sn_key",
-                                        render: function (data) {
-                                            var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
-
-                                            if(roleid!=1){
-                                                return "";
-                                            }
-                                            return _.template($("#editBtn").html())({
-                                                id:data
-                                            });
-                                        }
-                                    }
-                                ]
+                                "columns": columnsArr
                             })));
                         })
                         return this;
@@ -1993,47 +2004,59 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         $('#lock').hide();
                         var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
                         if (roleid > 1) $('#systemOption').hide();
+                        var columnsArr = [
+                            {"data": "site_name", title: "站名称",width:100},
+                            {"data": "sid", title: "站号",width:100},
+                            {"data": "GroBatNum", title: "每组电池数",width:100},
+                            {"data": "CurRange", title: "组电流量程",width:100},
+                            {"data": "KI", title: "组电流系数",width:100},
+                            {"data": "ZeroCurADC", title: "组电流零位",width:100},
+                            {"data": "DisChaLim_R", title: "组放电电流超上限_红",width:200},
+                            {"data": "DisChaLim_O", title: "组放电电流将达上限_橙",width:200},
+                            {"data": "DisChaLim_Y", title: "组放电电流偏高_黄",width:200},
+                            {"data": "ChaLim_R", title: "组充电电流超上限_红",width:200},
+                            {"data": "ChaLim_O", title: "组充电电流将达上限_橙",width:200},
+                            {"data": "ChaLim_Y", title: "组充电电流偏高_黄",width:200},
+                            {"data": "MaxTem_R", title: "组温度超上限_红",width:200},
+                            {"data": "MaxTem_O", title: "组温度将达上限_橙",width:200},
+                            {"data": "MaxTem_Y", title: "组温度偏高_黄",width:200},
+                            {"data": "MinTem_R", title: "组温度超下限_红",width:200},
+                            {"data": "MinTem_O", title: "组温度将达下限_橙",width:200},
+                            {"data": "MinTem_Y", title: "组温度偏低_黄",width:200},
+                            {"data": "ChaCriterion", title: "组充放电判据",width:200},
+                            {
+                                data:"sn_key",
+                                render: function (data) {
+                                    var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+
+                                    if(roleid!=1){
+                                        return "";
+                                    }
+                                    return _.template($("#editBtn").html())({
+                                        id:data
+                                    });
+                                }
+                            }
+                        ];
+                        var newColumns = [];
+                        for (var row in columnsArr){
+                            var data1 = columnsArr[row].data;
+                            if (data1 == 'KI' || data1 == 'ZeroCurADC' || data1 == 'CurRange' || data1 == 'ChaCriterion'){
+                                continue;
+                            }
+                            newColumns.push(columnsArr[row]);
+                        }
+                        var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+                        if (roleid != 1){
+                            columnsArr = newColumns;
+                        }
                         require(["fixedColumn"],function() {
                             _this.listPlugin.push($('#auto table').DataTable($.extend(true, {}, dataTableDefaultOption, {
                                 "data": _this.data,
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {leftColumns: 2},
-                                "columns": [
-
-                                    {"data": "site_name", title: "站名称",width:100},
-                                    {"data": "sid", title: "站号",width:100},
-                                    {"data": "GroBatNum", title: "每组电池数",width:100},
-                                    {"data": "CurRange", title: "组电流量程",width:100},
-                                    {"data": "KI", title: "组电流系数",width:100},
-                                    {"data": "ZeroCurADC", title: "组电流零位",width:100},
-                                    {"data": "DisChaLim_R", title: "组放电电流超上限_红",width:200},
-                                    {"data": "DisChaLim_O", title: "组放电电流将达上限_橙",width:200},
-                                    {"data": "DisChaLim_Y", title: "组放电电流偏高_黄",width:200},
-                                    {"data": "ChaLim_R", title: "组充电电流超上限_红",width:200},
-                                    {"data": "ChaLim_O", title: "组充电电流将达上限_橙",width:200},
-                                    {"data": "ChaLim_Y", title: "组充电电流偏高_黄",width:200},
-                                    {"data": "MaxTem_R", title: "组温度超上限_红",width:200},
-                                    {"data": "MaxTem_O", title: "组温度将达上限_橙",width:200},
-                                    {"data": "MaxTem_Y", title: "组温度偏高_黄",width:200},
-                                    {"data": "MinTem_R", title: "组温度超下限_红",width:200},
-                                    {"data": "MinTem_O", title: "组温度将达下限_橙",width:200},
-                                    {"data": "MinTem_Y", title: "组温度偏低_黄",width:200},
-                                    {"data": "ChaCriterion", title: "组充放电判据",width:200},
-                                    {
-                                        data:"sn_key",
-                                        render: function (data) {
-                                            var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
-
-                                            if(roleid!=1){
-                                                return "";
-                                            }
-                                            return _.template($("#editBtn").html())({
-                                                id:data
-                                            });
-                                        }
-                                    }
-                                ]
+                                "columns": columnsArr
                             })));
                         })
                         return this;
@@ -2076,60 +2099,73 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         $('#auto').width('100%');
                         var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
                         if (roleid > 1) $('#systemOption').hide();
+                        var columnsArr = [
+                            {"data": "site_name", title: "站名称",width:100},
+                            {"data": "sid", title: "站号",width:100},
+                            {"data": "KV", title: "电压系数",width:100},
+                            {"data": "KT", title: "温度系数",width:100},
+                            {"data": "KI", title: "激励电流系数",width:100},
+                            {"data": "T0", title: "T0校准温度",width:100},
+                            {"data": "ADC_T0", title: "T0温度码",width:100},
+                            {"data": "T1", title: "T1校准温度",width:100},
+                            {"data": "ADC_T1", title: "T1温度码",width:100},
+                            {"data": "MaxU_R", title: "电池电压超上限_红",width:200},
+                            {"data": "MaxU_O", title: "电池电压将达上限_橙",width:200},
+                            {"data": "MaxU_Y", title: "电池电压偏高_黄",width:200},
+                            {"data": "MinU_R", title: "电池电压超下限_红",width:200},
+                            {"data": "MinU_O", title: "电池电压将达下限_橙",width:200},
+                            {"data": "MinU_Y", title: "电池电压偏低_黄",width:200},
+                            {"data": "MaxT_R", title: "电池温度超上限_红",width:200},
+                            {"data": "MaxT_O", title: "电池温度将达上限_橙",width:200},
+                            {"data": "MaxT_Y", title: "电池温度偏高_黄",width:200},
+                            {"data": "MinT_R", title: "电池温度超下限_红",width:200},
+                            {"data": "MinT_O", title: "电池温度将达下限_橙",width:200},
+                            {"data": "MinT_Y", title: "电池温度偏低_黄",width:200},
+                            {"data": "MaxR_R", title: "电池内阻超上限_红",width:200},
+                            {"data": "MaxR_O", title: "电池内阻将达上限_橙",width:200},
+                            {"data": "MaxR_Y", title: "电池内阻偏高_黄",width:200},
+                            {"data": "MaxDevU_R", title: "电池电压偏差_红",width:200},
+                            {"data": "MaxDevU_O", title: "电池电压偏差_橙",width:200},
+                            {"data": "MaxDevU_Y", title: "电池电压偏差_黄",width:200},
+                            {"data": "MaxDevT_R", title: "电池温度偏差_红",width:200},
+                            {"data": "MaxDevT_O", title: "电池温度偏差_橙",width:200},
+                            {"data": "MaxDevT_Y", title: "电池温度偏差_黄",width:200},
+                            {"data": "MaxDevR_R", title: "电池内阻偏差_红",width:200},
+                            {"data": "MaxDevR_O", title: "电池内阻偏差_橙",width:200},
+                            {"data": "MaxDevR_Y", title: "电池内阻偏差_黄",width:200},
+                            {
+                                data:"sn_key",
+                                render: function (data) {
+                                    var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+
+                                    if(roleid!=1){
+                                        return "";
+                                    }
+                                    return _.template($("#editBtn").html())({
+                                        id:data
+                                    });
+                                }
+                            }
+                        ];
+                        var newColumns = [];
+                        for (var row in columnsArr){
+                            var data1 = columnsArr[row].data;
+                            if (data1 == 'KV' || data1 == 'KT' || data1 == 'KI' || data1 == 'T0' || data1 == 'ADC_T0' || data1 == 'T1' || data1 == 'ADC_T1'){
+                                continue;
+                            }
+                            newColumns.push(columnsArr[row]);
+                        }
+                        var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+                        if (roleid != 1){
+                            columnsArr = newColumns;
+                        }
                         require(["fixedColumn"],function() {
                             _this.listPlugin.push($('#auto table').DataTable($.extend(true, {}, dataTableDefaultOption, {
                                 "data": _this.data,
                                 "scrollX": ui.getListHeight(),
                                 "scrollY": ui.getListHeight(),
                                 "fixedColumns": {leftColumns: 2},
-                                "columns": [
-                                    {"data": "site_name", title: "站名称",width:100},
-                                    {"data": "sid", title: "站号",width:100},
-                                    {"data": "KV", title: "电压系数",width:100},
-                                    {"data": "KT", title: "温度系数",width:100},
-                                    {"data": "KI", title: "激励电流系数",width:100},
-                                    {"data": "T0", title: "T0校准温度",width:100},
-                                    {"data": "ADC_T0", title: "T0温度码",width:100},
-                                    {"data": "T1", title: "T1校准温度",width:100},
-                                    {"data": "ADC_T1", title: "T1温度码",width:100},
-                                    {"data": "MaxU_R", title: "电池电压超上限_红",width:200},
-                                    {"data": "MaxU_O", title: "电池电压将达上限_橙",width:200},
-                                    {"data": "MaxU_Y", title: "电池电压偏高_黄",width:200},
-                                    {"data": "MinU_R", title: "电池电压超下限_红",width:200},
-                                    {"data": "MinU_O", title: "电池电压将达下限_橙",width:200},
-                                    {"data": "MinU_Y", title: "电池电压偏低_黄",width:200},
-                                    {"data": "MaxT_R", title: "电池温度超上限_红",width:200},
-                                    {"data": "MaxT_O", title: "电池温度将达上限_橙",width:200},
-                                    {"data": "MaxT_Y", title: "电池温度偏高_黄",width:200},
-                                    {"data": "MinT_R", title: "电池温度超下限_红",width:200},
-                                    {"data": "MinT_O", title: "电池温度将达下限_橙",width:200},
-                                    {"data": "MinT_Y", title: "电池温度偏低_黄",width:200},
-                                    {"data": "MaxR_R", title: "电池内阻超上限_红",width:200},
-                                    {"data": "MaxR_O", title: "电池内阻将达上限_橙",width:200},
-                                    {"data": "MaxR_Y", title: "电池内阻偏高_黄",width:200},
-                                    {"data": "MaxDevU_R", title: "电池电压偏差_红",width:200},
-                                    {"data": "MaxDevU_O", title: "电池电压偏差_橙",width:200},
-                                    {"data": "MaxDevU_Y", title: "电池电压偏差_黄",width:200},
-                                    {"data": "MaxDevT_R", title: "电池温度偏差_红",width:200},
-                                    {"data": "MaxDevT_O", title: "电池温度偏差_橙",width:200},
-                                    {"data": "MaxDevT_Y", title: "电池温度偏差_黄",width:200},
-                                    {"data": "MaxDevR_R", title: "电池内阻偏差_红",width:200},
-                                    {"data": "MaxDevR_O", title: "电池内阻偏差_橙",width:200},
-                                    {"data": "MaxDevR_Y", title: "电池内阻偏差_黄",width:200},
-                                    {
-                                        data:"sn_key",
-                                        render: function (data) {
-                                            var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
-
-                                            if(roleid!=1){
-                                                return "";
-                                            }
-                                            return _.template($("#editBtn").html())({
-                                                id:data
-                                            });
-                                        }
-                                    }
-                                ]
+                                "columns": columnsArr
                             })));
                         })
                         return this;
