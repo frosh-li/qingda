@@ -1744,11 +1744,6 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     {"data": "username", title: "登陆名",width:100},
                                     {"data": "name", title: "姓名",width:100},
                                     {"data": "phone", title: "联系电话",width:100},
-                                    {"data": "backup_phone", title: "备用电话",width:100},
-                                    {"data": "email", title: "邮箱",width:100},
-                                    {"data": "postname", title: "职位",width:100},
-                                    {"data": "duty_num", title: "班次",width:100},
-                                    {"data": "location", title: "住址",width:250},
                                     {"data": "areaname", title: "管理范围",width:200, render:function(data){
                                         var a = data.split(" ");
                                         if(a.length > 1)
@@ -1756,7 +1751,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                         return "<div>"+a.join(" ")+"</div>";
                                     }},
                                     {"data": "rolename", title: "角色",width:100},
-
+                                    {"data": "backup_phone", title: "备用电话",width:100},
+                                    {"data": "email", title: "邮箱",width:100},
+                                    {"data": "postname", title: "职位",width:100},
+                                    {"data": "duty_num", title: "班次",width:100},
+                                    {"data": "location", title: "住址",width:250},
                                     {
                                         data:"id",
                                         render: function (data) {
@@ -2999,18 +2998,18 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                                     {"data": "username", title: "登陆名",width:100},
                                     {"data": "name", title: "姓名",width:100},
                                     {"data": "phone", title: "联系电话",width:100},
-                                    {"data": "backup_phone", title: "备用电话",width:150},
-                                    {"data": "email", title: "邮箱",width:150},
-                                    {"data": "postname", title: "职位",width:100},
-                                    {"data": "duty_num", title: "班次",width:100},
-                                    {"data": "location", title: "住址",width:250},
                                     {"data": "areaname", title: "管理范围",width:200, render:function(data){
                                         var a = data.split(" ");
                                         if(a.length > 1)
                                             a.shift();
                                         return "<div>"+a.join(" ")+"</div>";
                                     }},
-                                    {"data": "rolename", title: "角色",width:100}
+                                    {"data": "rolename", title: "角色",width:100},
+                                    {"data": "backup_phone", title: "备用电话",width:150},
+                                    {"data": "email", title: "邮箱",width:150},
+                                    {"data": "postname", title: "职位",width:100},
+                                    {"data": "duty_num", title: "班次",width:100},
+                                    {"data": "location", title: "住址",width:250}
                                 ]
                             })));
                             _this.checkAllRows();
