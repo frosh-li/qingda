@@ -76,22 +76,27 @@ class StationpersonController extends Controller
             if (empty($_POST['area'])){
                 $msg = "区域为空";
             }
-            // if (empty($_POST['backup_phone'])){
-            //     $msg = "备用电话为空";
-            // }
 
-            // if (empty($_POST['postname'])){
-            //     $msg = "职位为空";
-            // }
-            // if (empty($_POST['email'])){
-            //     $msg = "邮箱为空";
-            // }
-            // if (empty($_POST['location'])){
-            //     $msg = "地址为空";
-            // }
-            // if (empty($_POST['duty_num'])){
-            //     $msg = "班次为空";
-            // }
+            if (empty($_POST['backup_phone'])){
+                // $msg = "备用电话为空";
+                $_POST['backup_phone'] = '';
+            }
+            if (empty($_POST['postname'])){
+                // $msg = "职位为空";
+                $_POST['postname'] = '';
+            }
+            if (empty($_POST['email'])){
+                // $msg = "邮箱为空";
+                $_POST['email'] = '';
+            }
+            if (empty($_POST['location'])){
+                // $msg = "地址为空";
+                $_POST['location'] = '';
+            }
+            if (empty($_POST['duty_num'])){
+                // $msg = "班次为空";
+                $_POST['duty_num'] = '';
+            }
             // print_r($_POST);
 
             if (!empty($msg)){
@@ -112,17 +117,22 @@ class StationpersonController extends Controller
                 echo json_encode($ret);exit;
             }
             $model->attributes=$_POST;
-            $model->refresh = $_POST['refresh'];
-            $model->salt = Utils::createCode();
-            $model->password = md5($_POST['password'].$model->salt);
-            if($model->save()){
+            // $model->refresh = $_POST['refresh'];
+            // $model->salt = Utils::createCode();
+            // $model->password = md5($_POST['password'].$model->salt);
+            unset($_POST['undefined']);
+            $_POST['salt'] = Utils::createCode();
+            $_POST['password'] = md5($_POST['password'].$_POST['salt']);
+            $sql = "insert into my_sysuser ".Utils::buildInsertSQL($_POST);
+            $exec = Yii::app()->bms->createCommand($sql)->execute();
+            if($exec >= 0){
                 $log = array(
                     'type'=>2,
                     'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
                     'username'=>$_SESSION['username'],
                     'content'=>$_SESSION['username']."添名为 $username 的用户信息",
                     'oldvalue'=>'',
-                    'newvalue'=>json_encode($model->attributes)
+                    'newvalue'=>json_encode($_POST)
                 );
                 $this->addlog($log);
                 $ret['data'] = array(
@@ -161,17 +171,24 @@ class StationpersonController extends Controller
             // echo $oldvalue['password'],$_POST['password'];
             if ($oldvalue['password'] != $_POST['password']){
                 $model->password = md5($_POST['password'].$model->salt);
+                $_POST['password'] = $model->password;
                 // echo $model->password;exit;
             }
             // var_dump($model->attributes);exit;
-                if ($model->save()) {
+            unset($_POST['undefined'],$_POST['id']);
+            $sql = "update my_sysuser set ".Utils::buildUpdateSQL($_POST)." where id =$id";
+            // echo $sql;exit;
+            // update my_sysuser set username='aaa',password='f36e00892f865de0cfb6e19a50c20903',unit='aaa',backup_phone='',name='1',phone='1',postname='',email='',location='',duty_num='',refresh='20',role='2',canedit='1',area='1,49,68' where id =71
+            $exec = Yii::app()->bms->createCommand($sql)->execute();
+            // var_dump($exec);exit;
+                if ($exec >= 0) {
                     $log = array(
                         'type'=>2,
                         'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
                         'username'=>$_SESSION['username'],
                         'content'=>$_SESSION['username']."将 $_POST[username] 的用户信息更新了",
                         'oldvalue'=>json_encode($oldvalue),
-                        'newvalue'=>json_encode($model->attributes)
+                        'newvalue'=>json_encode($_POST)
                     );
                     $this->addlog($log);
                     $ret['data'] = array(
@@ -181,7 +198,7 @@ class StationpersonController extends Controller
                 }else{
                     $ret['response'] = array(
                         'code'=>-1,
-                        'msg'=>'更新站点人员失败！'
+                        'msg'=>'更新站点人员失败或未进行改动！'
                     );
                 }
 
