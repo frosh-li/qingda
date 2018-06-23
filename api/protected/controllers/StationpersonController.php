@@ -154,8 +154,9 @@ class StationpersonController extends Controller
             $oldvalue = $model->attributes;
             $model->attributes=$_POST;
             $model->refresh = $_POST['refresh'];
-            $model->password = md5($_POST['password'].$model->salt);
-
+            if ($model->password != $_POST['password']){
+                $model->password = md5($_POST['password'].$model->salt);
+            }
                 if ($model->save()) {
                     $log = array(
                         'type'=>2,
