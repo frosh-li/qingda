@@ -54,41 +54,44 @@ class StationpersonController extends Controller
         );
         if(isset($_POST))
         {
+            if (empty($_POST['area'])){
+                $msg = "区域为空";
+            }
+            $username = $_POST['username'];
+            if (empty($username)){
+                $msg = "用户名为空";
+            }
             if (empty($_POST['password'])){
                 $msg = "密码为空";
             }
             if (empty($_POST['unit'])){
-                $msg = "单位为空";
+                $msg = "单位名称为空";
             }
-            if (empty($_POST['backup_phone'])){
-                $msg = "备用电话为空";
-            }
+            // if (empty($_POST['backup_phone'])){
+            //     $msg = "备用电话为空";
+            // }
             if (empty($_POST['name'])){
                 $msg= "姓名为空";
             }
             if (empty($_POST['phone'])){
                 $msg = "电话为空";
             }
-            if (empty($_POST['postname'])){
-                $msg = "职位为空";
+            if (empty($_POST['refresh'])){
+                $msg = "刷新频率为空";
             }
-            if (empty($_POST['email'])){
-                $msg = "邮箱为空";
-            }
-            if (empty($_POST['location'])){
-                $msg = "地址为空";
-            }
-            if (empty($_POST['duty_num'])){
-                $msg = "班次为空";
-            }
+            // if (empty($_POST['postname'])){
+            //     $msg = "职位为空";
+            // }
+            // if (empty($_POST['email'])){
+            //     $msg = "邮箱为空";
+            // }
+            // if (empty($_POST['location'])){
+            //     $msg = "地址为空";
+            // }
+            // if (empty($_POST['duty_num'])){
+            //     $msg = "班次为空";
+            // }
             // print_r($_POST);
-            $username = $_POST['username'];
-            if (empty($username)){
-                $msg = "登陆名为空";
-            }
-            if (empty($_POST['area'])){
-                $msg = "区域为空";
-            }
 
             if (!empty($msg)){
                 $ret['response'] = array(
