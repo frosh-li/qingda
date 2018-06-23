@@ -52,8 +52,9 @@ class LoginController extends LController
             echo json_encode($ret);
             Yii::app()->end();
         }
-        // $sql = "select * from {{sysuser}} where username='".$uname."'";
-        // $row = Yii::app()->db->createCommand($sql)->queryRow();
+        $sql = "select * from {{sysuser}} where username='$uname'";
+        $row = Yii::app()->db->createCommand($sql)->queryRow();
+        $password = md5($password.$row['salt']);
         $sql = "update {{sysuser}} set password = '$password' where username = '$username'";
         Yii::app()->db->createCommand($sql)->execute();
         $ret['response'] = array(
@@ -108,9 +109,9 @@ class LoginController extends LController
             $sql = "select * from {{sysuser}} where username=:username";
             $row = Yii::app()->db->createCommand($sql)->bindValues([':username' => $username])->queryRow();
 
-            // var_dump($row);
+            // echo md5($password.$row['salt']).'/'.$row['password'];exit;
             if ($row) {
-                if ($password == $row['password']) {
+                if (md5($password.$row['salt']) == $row['password']) {
                     $ret['data'] = array(
                         'username'=>$username,
                         'uid'=>$row['id'],
@@ -152,11 +153,12 @@ class LoginController extends LController
         $pword = Yii::app()->request->getParam('password','');
         //切换用户时验证用户是否存在
         if ($uname != '' && $pword != ''){
-            $sql = "select * from my_sysuser where username='$uname' and password='$pword'";
+            $sql = "select * from my_sysuser where username='$uname'";
             $row = Yii::app()->db->createCommand($sql)->queryRow();
-            if (!$row){
-                Yii::app()->end();
-            }
+            if (!$row) Yii::app()->end();
+            $oldpwd = $row['password'];
+            $newpwd = md5($pword.$row['salt']);
+            if ($oldpwd != $newpwd) Yii::app()->end();
         }
         $this->session->loginOut();
         $ret = array();
