@@ -646,7 +646,11 @@ define(function(require){
                 param.email_on_off = "0";
                 param.light_on_off = "0";
                 param.voice_on_off = "0";
+                param.disOther = "0";
                 $("#map-switch").hide();
+                if ($('#otherOptionEdit [key=disOther]').siblings(".jqTransformChecked").length){
+                    param.disOther = "1";
+                }
                 if($("#otherOptionEdit [key=dismap]").siblings(".jqTransformChecked").length){
                     param.dismap = "1";
                     $("#map-switch").show();

@@ -1,3 +1,10 @@
+2018.6.24
+是否在管理员显示其它参数
+main.js
+ui.js
+manage.html
+ParamController.php
+
 2018.6.23
 添加站点电池ups的bug修正
 dialog-UPSEdit.js

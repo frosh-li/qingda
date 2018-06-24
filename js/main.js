@@ -78,10 +78,24 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
         if(roleid == 2 && area != "*"){
             $(".optionSetting.otherOption").hide();
+            $.get('/api/index.php/param/getpara',function(str){
+                var data = eval('('+ str +')');
+                // console.log(data.response);
+                if (data.response.code == 0){
+                    var disOther = data.data.disOther == null ? 0 : data.data.disOther;
+                    if (disOther == 1){
+                        $('#otherOption').hide();
+                        $(".optionSetting.otherOption").show();
+                    }
+                }
+            });
         }
-
-
-
+        if (roleid == 1){
+            setTimeout(function(){
+                $('#otherOption').show();
+            },100);
+            
+        }
 
         Backbone.listenTo(Backbone.Events,"stat",function(data){
             $("#stat_login_time").html(data.loginTime);
@@ -536,6 +550,8 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     API.getLinkingStationNum().getParam({},'refresh:get');
 
                     isOver();
+                    var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
+                    if (roleid > 1) $('#systemOption').hide();
                 })
             }else{
                 require(["blocks/list","blocks/nav"],function(list,nav) {

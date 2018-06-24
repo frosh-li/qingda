@@ -13,13 +13,30 @@ class ParamController extends Controller
         $email_on_off  = Yii::app()->request->getParam('email_on_off','');
         $light_on_off  = Yii::app()->request->getParam('light_on_off','');
         $voice_on_off  = Yii::app()->request->getParam('voice_on_off','');
-        // echo $refreshall;exit;
+        $disOther = Yii::app()->request->getParam('disOther','');
+        // echo $disOther;exit;
         $ret['response'] = array(
             'code'=>0,
             'msg'=>'设置参数成功！'
         );
         $ret['data'] = array();
         $i = 0;
+        if ($disOther != ''){
+            $i ++;
+            Yii::app()->config->set('disOther', $disOther);
+            $log = array(
+                'type'=>2,
+                'uid'=>isset($_SESSION['uid']) ? $_SESSION['uid'] : 1,
+                'username'=>$_SESSION['username'],
+                'content'=>$_SESSION['username']."调整管理员显示其它参数",
+                'oldvalue'=>'',
+                'newvalue'=>$disOther
+            );
+            $this->addlog($log);
+            $ret['data'] = array(
+                'disOther'=>$disOther
+            );
+        }
         if ($refreshall != ''){
             $i ++;
             $sql = "update my_sysuser set refresh = 20";
@@ -111,7 +128,7 @@ class ParamController extends Controller
                 $key=>$value
             );
         }else{
-            $array = array('refresh','collection','resistance','dismap','sms_on_off','email_on_off','light_on_off','voice_on_off');
+            $array = array('refresh','collection','resistance','dismap','sms_on_off','email_on_off','light_on_off','voice_on_off','disOther');
             foreach ($array as $key => $k) {
                 if ($k == 'refresh'){
                     $sql = "select refresh from my_sysuser where id = $_SESSION[uid]";
