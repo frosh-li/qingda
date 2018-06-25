@@ -2711,6 +2711,8 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                     alert('请选择时间');
                     return;
                 }
+                //add by pk 同时切换组为历史树
+                API.getNavData();
                 API.getStationHistoryData({id:ids,page:this.curPage,start:$('#beginTime').val()?+new Date($('#beginTime').val()):"", end: $('#endTime').val()?+new Date($('#endTime').val()):""})
             },
             downloadUrl:"/api/index.php/query/",

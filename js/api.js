@@ -116,7 +116,7 @@ define(function(require){
                 var hash = window.location.hash;
                 // console.log(hash);
                 var url = '/api/index.php/trees/getnav';
-                if (hash == '#/qurey/qureyGroup' || hash == '#/qurey/qureyBattery' || hash == '#/qurey/qureyCaution'){
+                if (hash == '#/qurey/qureyGroup' || hash == '#/qurey/qureyBattery' || hash == '#/qurey/qureyCaution' || hash == '#/qurey/qureyStation'){
                     url += '?history=1';
                 }
                 this.fetch(url, "nav:update", args, "get",this,true, cb);
