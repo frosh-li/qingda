@@ -1891,6 +1891,11 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         $('#lock').hide();
                         var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
                         if (roleid > 1) $('#systemOption').hide();
+
+                        if (common.cookie.getCookie('otherOption') == 1){
+                            $(".optionSetting.otherOption").show();
+                        }
+                        
                         var columnsArr = [
                             {"data": "sn_key", title: "物理地址",width:100},
                             {"data": "site_name", title: "站名称",width:100},
@@ -2004,6 +2009,10 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         $('#lock').hide();
                         var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
                         if (roleid > 1) $('#systemOption').hide();
+
+                        if (common.cookie.getCookie('otherOption') == 1){
+                            $(".optionSetting.otherOption").show();
+                        }
                         var columnsArr = [
                             {"data": "site_name", title: "站名称",width:100},
                             {"data": "sid", title: "站号",width:100},
@@ -2099,6 +2108,10 @@ define(['require','api','blocks/nav','stationsinfoDialog','context','ui','common
                         $('#auto').width('100%');
                         var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
                         if (roleid > 1) $('#systemOption').hide();
+
+                        if (common.cookie.getCookie('otherOption') == 1){
+                            $(".optionSetting.otherOption").show();
+                        }
                         var columnsArr = [
                             {"data": "site_name", title: "站名称",width:100},
                             {"data": "sid", title: "站号",width:100},

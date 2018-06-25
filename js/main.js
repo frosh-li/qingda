@@ -76,6 +76,7 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
 
         }
 
+        common.cookie.setCookie('otherOption','');
         if(roleid == 2 && area != "*"){
             $(".optionSetting.otherOption").hide();
             $.get('/api/index.php/param/getpara',function(str){
@@ -85,7 +86,8 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     var disOther = data.data.disOther == null ? 0 : data.data.disOther;
                     if (disOther == 1){
                         $('#otherOption').hide();
-                        $(".optionSetting.otherOption").show();
+                        common.cookie.setCookie('otherOption','1');
+                        // $(".optionSetting.otherOption").show();
                     }
                 }
             });
@@ -552,6 +554,10 @@ define(["require","backbone","context","ui",'common', 'stationsinfoDialog','api'
                     isOver();
                     var roleid = JSON.parse(localStorage.getItem('userinfo')).role;
                     if (roleid > 1) $('#systemOption').hide();
+
+                    if (common.cookie.getCookie('otherOption') == 1){
+                        $(".optionSetting.otherOption").show();
+                    }
                 })
             }else{
                 require(["blocks/list","blocks/nav"],function(list,nav) {
