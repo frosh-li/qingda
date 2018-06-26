@@ -177,7 +177,7 @@ define(['require','api','common','blocks/levelSlector'],function(require,API,com
 
                     view.dialogObj = $(this);
                     $("form.jqtransform").html($("form.jqtransform").html().replace(/{{disabled}}/g,ifdisabled));
-                    $("form.jqtransform").find("[changedisabled=disabled]").attr('disabled',true);
+                    // $("form.jqtransform").find("[changedisabled=disabled]").attr('disabled',true);
                     if(id){
                         $(".submit-btn",view.el).show();
                         API.getStationEditInfo({id:id});

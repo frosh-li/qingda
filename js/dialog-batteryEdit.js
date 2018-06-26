@@ -129,7 +129,7 @@ define(['require','api','common','blocks/stationSelector'],function(require,API,
                     view = new (Backbone.View.extend(config.extobj))();
                     view.dialogObj = $(this);
                     $("form.jqtransform").html($("form.jqtransform").html().replace(/{{disabled}}/g,ifdisabled));
-                    $("form.jqtransform").find("[changedisabled=disabled]").attr('disabled',true);
+                    // $("form.jqtransform").find("[changedisabled=disabled]").attr('disabled',true);
                     if(id){
                         $(".submit-btn",view.el).show();
                         API.getBatteryInfo({id:id});
